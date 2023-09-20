@@ -2,6 +2,7 @@ package es.udc.fi.dc.fd.model.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
@@ -36,7 +37,7 @@ public class Post {
 	/**The post category.*/
 	private Category category;
 	/**Images related to the post.*/
-	private Set<Image> images;
+	private Set<Image> images = new HashSet<>();
 	
 	/**
 	 * Instantiates a new post.
