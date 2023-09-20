@@ -13,7 +13,7 @@ import es.udc.fi.dc.fd.model.entities.Image;
 import es.udc.fi.dc.fd.model.entities.User;
 
 /**
- * The class PostDto
+ * The class PostParamsDto
  */
 public class PostParamsDto {
 	
