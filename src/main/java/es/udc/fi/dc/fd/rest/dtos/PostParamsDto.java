@@ -15,7 +15,7 @@ import es.udc.fi.dc.fd.model.entities.User;
 /**
  * The class PostDto
  */
-public class PostDto {
+public class PostParamsDto {
 	
 	/** The post id*/
 	private Long id;
@@ -37,7 +37,7 @@ public class PostDto {
 	/**
 	 * Instantiates a new post dto. 
 	 */
-	public PostDto () {}
+	public PostParamsDto () {}
 	
 	/**
 	 * @param id the id
@@ -49,7 +49,7 @@ public class PostDto {
 	 * @param category of the post
 	 * @param images of the post
 	 */
-	public PostDto(Long id, String title, String description, String url, BigDecimal price, User user,
+	public PostParamsDto(Long id, String title, String description, String url, BigDecimal price, User user,
 			Category category, Set<Image> images) {
 		this.id = id;
 		this.title = title;
