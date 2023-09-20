@@ -2,6 +2,7 @@ package es.udc.fi.dc.fd.model.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,7 +11,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
+/**
+ * The Class Entity.
+ */
 @Entity
 public class Post {
 	
@@ -27,9 +32,11 @@ public class Post {
 	/**The creation date.*/
 	private LocalDateTime creationDate;
 	/**The post author.*/
-	private User userId;
+	private User user;
 	/**The post category.*/
-	private Category categoryId;
+	private Category category;
+	/**Images related to the post.*/
+	private Set<Image> images;
 	
 	/**
 	 * Instantiates a new post.
@@ -154,8 +161,8 @@ public class Post {
 	 */
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
-	public User getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
 	/**
@@ -163,8 +170,8 @@ public class Post {
 	 * 
 	 * @param userId the userId to set
 	 */
-	public void setUserId(User userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	/**
@@ -174,8 +181,8 @@ public class Post {
 	 */
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "categoryId")
-	public Category getCategoryId() {
-		return categoryId;
+	public Category getCategory() {
+		return category;
 	}
 
 	/**
@@ -183,9 +190,32 @@ public class Post {
 	 * 
 	 * @param categoryId the categoryId to set
 	 */
-	public void setCategoryId(Category categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
+
+	/**
+	 * Gets images related to the post.
+	 * 
+	 * @return the images
+	 */
+	@OneToMany(mappedBy = "post")
+	public Set<Image> getImages() {
+		return images;
+	}
+
+	/**
+	 * Sets images related to the post.
+	 * 
+	 * @param images the images to set
+	 */
+	public void setImages(Set<Image> images) {
+		this.images = images;
+	}
+
+	
+	
+	
 	
 	
 
