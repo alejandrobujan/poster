@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    jkube.io/scm-url: https://gitlab.fic.udc.es/ferramentas.2023/poster
+    jkube.io/issue-system: Redmine
+    jkube.io/issue-tracker-url: https://redmine.fic.udc.es/project/poster/issues
+    jkube.io/scm-tag: head
+  labels:
+    app: poster
+    provider: jkube
+    version: 0.1-SNAPSHOT
+    group: es.udc.fi.dc.fd
+  name: poster
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: poster
+      provider: jkube
+      group: es.udc.fi.dc.fd
+  template:
+    metadata:
+      annotations:
+        jkube.io/scm-url: https://gitlab.fic.udc.es/ferramentas.2023/poster
+        jkube.io/issue-system: Redmine
+        jkube.io/issue-tracker-url: https://redmine.fic.udc.es/project/poster/issues
+        jkube.io/scm-tag: head
+      labels:
+        app: poster
+        provider: jkube
+        version: 0.1-SNAPSHOT
+        group: es.udc.fi.dc.fd
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        image: gitlab.fic.udc.es:5050/ferramentas.2023/poster:latest
+        imagePullPolicy: Always
+        name: deploy-poster
+        securityContext:
+          privileged: false
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name: fd-reg-cred

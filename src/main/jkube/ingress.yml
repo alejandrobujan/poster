@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: poster-ingress
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /poster
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /poster
+            pathType: Prefix
+            backend:
+              service:
+                name: poster
+                port:
+                  number: 8080

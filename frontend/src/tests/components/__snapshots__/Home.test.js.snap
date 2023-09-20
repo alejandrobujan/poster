@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home renders correctly 1`] = `
+<div
+  className="App"
+>
+  <header
+    className="App-header"
+  >
+    <img
+      alt="logo"
+      className="App-logo"
+      src="/assets/logo.svg"
+    />
+    <h1
+      className="App-title"
+    />
+  </header>
+  <p
+    className="App-intro"
+  >
+    To get started, edit 
+    <code>
+      src/App.js
+    </code>
+     and save to reload.
+  </p>
+  <p>
+    <a
+      href="/test"
+      onClick={[Function]}
+    >
+      App route
+    </a>
+  </p>
+  <form
+    action=""
+    onSubmit={[Function]}
+  >
+    <p>
+      <label
+        htmlFor="some-text"
+      >
+        Input some text: 
+      </label>
+      <input
+        id="some-text"
+        name="some-text"
+        onChange={[Function]}
+        value="Sreenzragnf"
+      />
+    </p>
+    <button>
+      Calculate
+    </button>
+  </form>
+</div>
+`;

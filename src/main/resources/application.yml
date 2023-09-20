@@ -1,0 +1,40 @@
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+spring:
+  datasource:
+    url: @dataSource.url@
+    username: @dataSource.user@
+    password: @dataSource.password@
+    max-active: 4
+    max-idle: 2
+    max-wait: 10000
+    remove-abandoned: true
+    remove-abandoned-timeout: 60
+    log-abandoned: true
+    validation-query: SELECT 1
+  devtools:
+    restart:
+      trigger-file: reload
+    livereload:
+      enabled: false
+  jackson:
+    default-property-inclusion: NON_NULL
+  jpa:
+    hibernate:
+      ddl-auto: none
+      show-sql: true
+      format-sql: true
+      use-sql-comments: true
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+server:
+  servlet:
+    context-path: @project.contextPath@
+project:
+  jwt:
+    signKey: WzROun12eUiDvko3UrJ74gNeJz2TWEWPMTh6DxyE8HWXIf4hETUrkM4IUGqqHq66PuVS
+    expirationMinutes: 1440
+
