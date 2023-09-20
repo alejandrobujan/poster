@@ -1,9 +1,12 @@
 package es.udc.fi.dc.fd.model.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  * The Class Image.
@@ -19,7 +22,7 @@ public class Image {
 	private String url;
 	
 	/** The id of the post. */
-	private Long postId;
+	private Post post;
 	
 	/**
 	 * Instantiates a new image.
@@ -67,21 +70,23 @@ public class Image {
 	}
 
 	/**
-	 * Gets the postId.
+	 * Gets the post.
 	 *
-	 * @return the postId
+	 * @return the post
 	 */
-	public Long getPostId() {
-		return postId;
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "postId")
+	public Post getpost() {
+		return post;
 	}
 
 	/**
-	 * Sets the postId.
+	 * Sets the post.
 	 *
-	 * @param postId the postId to set
+	 * @param post the post to set
 	 */
-	public void setPostId(Long postId) {
-		this.postId = postId;
+	public void setPost(Post post) {
+		this.post = post;
 	}
 
 	
