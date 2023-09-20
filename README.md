@@ -1,6 +1,8 @@
-# Spring-Boot React Project
+# Poster
 
-_Example project to start building your own web application_
+## Documentation
+
+- [Backend Documentation](doc/backend.md)
 
 ## Starting 🚀
 
