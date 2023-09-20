@@ -21,7 +21,7 @@ public class Image {
 	/** The movie url. */
 	private String url;
 	
-	/** The id of the post. */
+	/** The object post. */
 	private Post post;
 	
 	/**
