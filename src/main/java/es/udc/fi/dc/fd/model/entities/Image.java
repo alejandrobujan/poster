@@ -18,10 +18,10 @@ public class Image {
 	/** The image id. */
 	private Long id;
 	
-	/** The movie url. */
-	private String url;
+	/** The image binary data. */
+	private byte[] data;
 	
-	/** The object post. */
+	/** The image post. */
 	private Post post;
 	
 	/**
@@ -52,21 +52,17 @@ public class Image {
 	}
 
 	/**
-	 * * Gets the url.
-	 *
-	 * @return the url
+	 * @return the data
 	 */
-	public String getUrl() {
-		return url;
+	public byte[] getData() {
+		return data;
 	}
 
 	/**
-	 * Sets the url.
-	 *
-	 * @param url the url to set
+	 * @param data the data to set
 	 */
-	public void setUrl(String url) {
-		this.url = url;
+	public void setData(byte[] data) {
+		this.data = data;
 	}
 
 	/**
@@ -76,7 +72,7 @@ public class Image {
 	 */
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "postId")
-	public Post getpost() {
+	public Post getPost() {
 		return post;
 	}
 
@@ -89,7 +85,9 @@ public class Image {
 		this.post = post;
 	}
 
-	
-	
+	@Override
+	public String toString() {
+		return "Image [id=" + id + ", post=" + post + "]";
+	}
 	
 }

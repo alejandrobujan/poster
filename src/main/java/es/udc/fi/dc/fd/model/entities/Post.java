@@ -19,26 +19,26 @@ import jakarta.persistence.OneToMany;
  */
 @Entity
 public class Post {
-	
-	/**The id.*/
+
+	/** The id. */
 	private Long id;
-	/**The post title.*/
+	/** The post title. */
 	private String title;
-	/**The post description.*/
+	/** The post description. */
 	private String description;
-	/**The post url.*/
+	/** The post url. */
 	private String url;
-	/**The price.*/
+	/** The price. */
 	private BigDecimal price;
-	/**The creation date.*/
+	/** The creation date. */
 	private LocalDateTime creationDate;
-	/**The post author.*/
+	/** The post author. */
 	private User user;
-	/**The post category.*/
+	/** The post category. */
 	private Category category;
-	/**Images related to the post.*/
+	/** Images related to the post. */
 	private Set<Image> images = new HashSet<>();
-	
+
 	/**
 	 * Instantiates a new post.
 	 */
@@ -214,10 +214,11 @@ public class Post {
 		this.images = images;
 	}
 
-	
-	
-	
-	
-	
+	@Override
+	public String toString() {
+		return "Post [id=" + id + ", title=" + title + ", description=" + description + ", url=" + url + ", price="
+				+ price + ", creationDate=" + creationDate + ", user=" + user + ", category=" + category + ", images="
+				+ images + "]";
+	}
 
 }
