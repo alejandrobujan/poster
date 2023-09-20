@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
@@ -112,6 +113,23 @@ public class CommonControllerAdvice {
 
 		return new ErrorsDto(errorMessage);
 
+	}
+	
+	/**
+	 * Handle method argument type mismatch exception.
+	 *
+	 * @param exception the exception
+	 * @param locale    the locale
+	 * @return the errors dto
+	 */
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorsDto handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception, Locale locale) {
+		String errorMessage = messageSource.getMessage(exception.getClass().getName(),
+				new Object[] {exception.getValue(), exception.getName()}, exception.getClass().getName(), locale);
+
+		return new ErrorsDto(errorMessage);
 	}
 
 }
