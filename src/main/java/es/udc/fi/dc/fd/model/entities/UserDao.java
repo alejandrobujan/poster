@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * The Interface UserDao.
  */
-public interface UserDao extends JpaRepository<Users, Long> {
+public interface UserDao extends JpaRepository<User, Long> {
 
 	/**
 	 * Exists by user name.
@@ -23,6 +23,6 @@ public interface UserDao extends JpaRepository<Users, Long> {
 	 * @param userName the user name
 	 * @return the optional
 	 */
-	Optional<Users> findByUserName(String userName);
+	Optional<User> findByUserName(String userName);
 
 }

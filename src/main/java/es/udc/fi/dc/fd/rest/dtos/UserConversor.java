@@ -1,6 +1,6 @@
 package es.udc.fi.dc.fd.rest.dtos;
 
-import es.udc.fi.dc.fd.model.entities.Users;
+import es.udc.fi.dc.fd.model.entities.User;
 
 /**
  * The Class UserConversor.
@@ -19,7 +19,7 @@ public class UserConversor {
 	 * @param user the user
 	 * @return the user dto
 	 */
-	public static final UserDto toUserDto(Users user) {
+	public static final UserDto toUserDto(User user) {
 		return new UserDto(user.getId(), user.getUserName(), user.getFirstName(), user.getLastName(), user.getEmail(),
 				user.getRole().toString());
 	}
@@ -30,9 +30,9 @@ public class UserConversor {
 	 * @param userDto the user dto
 	 * @return the user
 	 */
-	public static final Users toUser(UserDto userDto) {
+	public static final User toUser(UserDto userDto) {
 
-		return new Users(userDto.getUserName(), userDto.getPassword(), userDto.getFirstName(), userDto.getLastName(),
+		return new User(userDto.getUserName(), userDto.getPassword(), userDto.getFirstName(), userDto.getLastName(),
 				userDto.getEmail());
 	}
 
@@ -43,7 +43,7 @@ public class UserConversor {
 	 * @param user         the user
 	 * @return the authenticated user dto
 	 */
-	public static final AuthenticatedUserDto toAuthenticatedUserDto(String serviceToken, Users user) {
+	public static final AuthenticatedUserDto toAuthenticatedUserDto(String serviceToken, User user) {
 
 		return new AuthenticatedUserDto(serviceToken, toUserDto(user));
 

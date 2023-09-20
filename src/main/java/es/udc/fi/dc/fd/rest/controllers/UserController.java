@@ -26,7 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
-import es.udc.fi.dc.fd.model.entities.Users;
+import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
@@ -114,7 +114,7 @@ public class UserController {
 			@Validated({ UserDto.AllValidations.class }) @RequestBody UserDto userDto)
 			throws DuplicateInstanceException {
 
-		Users user = toUser(userDto);
+		User user = toUser(userDto);
 
 		userService.signUp(user);
 
@@ -135,7 +135,7 @@ public class UserController {
 	@PostMapping("/login")
 	public AuthenticatedUserDto login(@Validated @RequestBody LoginParamsDto params) throws IncorrectLoginException {
 
-		Users user = userService.login(params.getUserName(), params.getPassword());
+		User user = userService.login(params.getUserName(), params.getPassword());
 
 		return toAuthenticatedUserDto(generateServiceToken(user), user);
 
@@ -153,7 +153,7 @@ public class UserController {
 	public AuthenticatedUserDto loginFromServiceToken(@RequestAttribute Long userId,
 			@RequestAttribute String serviceToken) throws InstanceNotFoundException {
 
-		Users user = userService.loginFromId(userId);
+		User user = userService.loginFromId(userId);
 
 		return toAuthenticatedUserDto(serviceToken, user);
 
@@ -213,7 +213,7 @@ public class UserController {
 	 * @param user the user
 	 * @return the string
 	 */
-	private String generateServiceToken(Users user) {
+	private String generateServiceToken(User user) {
 
 		JwtInfo jwtInfo = new JwtInfo(user.getId(), user.getUserName(), user.getRole().toString());
 

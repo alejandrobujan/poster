@@ -1,7 +1,7 @@
 package es.udc.fi.dc.fd.model.services;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
-import es.udc.fi.dc.fd.model.entities.Users;
+import es.udc.fi.dc.fd.model.entities.User;
 
 /**
  * The Interface PermissionChecker.
@@ -23,6 +23,6 @@ public interface PermissionChecker {
 	 * @return the user
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
-	public Users checkUser(Long userId) throws InstanceNotFoundException;
+	public User checkUser(Long userId) throws InstanceNotFoundException;
 	
 }

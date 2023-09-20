@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
-import es.udc.fi.dc.fd.model.entities.Users;
+import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.entities.UserDao;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
@@ -40,14 +40,14 @@ public class UserServiceImpl implements UserService {
 	 * @throws DuplicateInstanceException the duplicate instance exception
 	 */
 	@Override
-	public void signUp(Users user) throws DuplicateInstanceException {
+	public void signUp(User user) throws DuplicateInstanceException {
 
 		if (userDao.existsByUserName(user.getUserName())) {
 			throw new DuplicateInstanceException("project.entities.user", user.getUserName());
 		}
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setRole(Users.RoleType.USER);
+		user.setRole(User.RoleType.USER);
 
 		userDao.save(user);
 
@@ -63,9 +63,9 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public Users login(String userName, String password) throws IncorrectLoginException {
+	public User login(String userName, String password) throws IncorrectLoginException {
 
-		Optional<Users> user = userDao.findByUserName(userName);
+		Optional<User> user = userDao.findByUserName(userName);
 
 		if (!user.isPresent()) {
 			throw new IncorrectLoginException(userName, password);
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public Users loginFromId(Long id) throws InstanceNotFoundException {
+	public User loginFromId(Long id) throws InstanceNotFoundException {
 		return permissionChecker.checkUser(id);
 	}
 
@@ -103,10 +103,10 @@ public class UserServiceImpl implements UserService {
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	@Override
-	public Users updateProfile(Long id, String firstName, String lastName, String email)
+	public User updateProfile(Long id, String firstName, String lastName, String email)
 			throws InstanceNotFoundException {
 
-		Users user = permissionChecker.checkUser(id);
+		User user = permissionChecker.checkUser(id);
 
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
 	public void changePassword(Long id, String oldPassword, String newPassword)
 			throws InstanceNotFoundException, IncorrectPasswordException {
 
-		Users user = permissionChecker.checkUser(id);
+		User user = permissionChecker.checkUser(id);
 
 		if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
 			throw new IncorrectPasswordException();

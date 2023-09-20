@@ -2,7 +2,7 @@ package es.udc.fi.dc.fd.model.services;
 
 import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
-import es.udc.fi.dc.fd.model.entities.Users;
+import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
 
@@ -17,7 +17,7 @@ public interface UserService {
 	 * @param user the user
 	 * @throws DuplicateInstanceException the duplicate instance exception
 	 */
-	void signUp(Users user) throws DuplicateInstanceException;
+	void signUp(User user) throws DuplicateInstanceException;
 	
 	/**
 	 * Login.
@@ -27,7 +27,7 @@ public interface UserService {
 	 * @return the user
 	 * @throws IncorrectLoginException the incorrect login exception
 	 */
-	Users login(String userName, String password) throws IncorrectLoginException;
+	User login(String userName, String password) throws IncorrectLoginException;
 	
 	/**
 	 * Login from id.
@@ -36,7 +36,7 @@ public interface UserService {
 	 * @return the user
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
-	Users loginFromId(Long id) throws InstanceNotFoundException;
+	User loginFromId(Long id) throws InstanceNotFoundException;
 	
 	/**
 	 * Update profile.
@@ -48,7 +48,7 @@ public interface UserService {
 	 * @return the user
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
-	Users updateProfile(Long id, String firstName, String lastName, String email) throws InstanceNotFoundException;
+	User updateProfile(Long id, String firstName, String lastName, String email) throws InstanceNotFoundException;
 	
 	/**
 	 * Change password.
