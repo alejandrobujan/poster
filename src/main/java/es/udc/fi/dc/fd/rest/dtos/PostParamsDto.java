@@ -1,38 +1,35 @@
-/**
- * 
- */
 package es.udc.fi.dc.fd.rest.dtos;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import es.udc.fi.dc.fd.model.entities.Category;
-import es.udc.fi.dc.fd.model.entities.Image;
-import es.udc.fi.dc.fd.model.entities.User;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 /**
  * The class PostParamsDto
  */
 public class PostParamsDto {
 	
-	/** The post id*/
-	private Long id;
 	/** The post title. */
+    @NotNull
+    @Size(min = 1, max = 60)
 	private String title;
 	/** The post description. */
+    @NotNull
+    @Size(min = 1, max = 256)
 	private String description;
 	/** The post url. */
+    @Size(min = 0, max = 2048)
 	private String url;
 	/** The price. */
+    @NotNull
 	private BigDecimal price;
-	/** The post author. */
-	private User user;
 	/** The post category. */
-	private Category category;
+	private Long categoryId;
 	/** Images related to the post. */
-	private Set<Image> images = new HashSet<>();
+    @NotNull
+	private List<byte[]> images = new ArrayList<>();
 	
 	/**
 	 * Instantiates a new post dto. 
@@ -40,43 +37,23 @@ public class PostParamsDto {
 	public PostParamsDto () {}
 	
 	/**
-	 * @param id the id
-	 * @param title of the post
-	 * @param description of the post
-	 * @param url of the post
-	 * @param price of the post
-	 * @param user of the post
-	 * @param category of the post
-	 * @param images of the post
+	 * @param title the title of the post
+	 * @param description the description of the post
+	 * @param url the url of the post
+	 * @param price the price of the post
+	 * @param categoryId the category id of the post
+	 * @param images the images of the post
 	 */
-	public PostParamsDto(Long id, String title, String description, String url, BigDecimal price, User user,
-			Category category, Set<Image> images) {
-		this.id = id;
+	public PostParamsDto(String title, String description, String url, BigDecimal price,
+			Long categoryId, List<byte[]> images) {
 		this.title = title;
 		this.description = description;
 		this.url = url;
 		this.price = price;
-		this.user = user;
-		this.category = category;
+		this.categoryId = categoryId;
 		this.images = images;
 	}
-
-	/**
-	 * Gets the id.
-	 * 
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-	/**
-	 * Sets the id.
-	 * 
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
 	/**
 	 * Gets the title.
 	 * 
@@ -141,43 +118,27 @@ public class PostParamsDto {
 		this.price = price;
 	}
 	/**
-	 * Gets the user.
-	 * 
-	 * @return the user
-	 */
-	public User getUser() {
-		return user;
-	}
-	/**
-	 * Sets the user.
-	 * 
-	 * @param user the user to set
-	 */
-	public void setUser(User user) {
-		this.user = user;
-	}
-	/**
 	 * Gets the category.
 	 *
 	 * @return the category
 	 */
-	public Category getCategory() {
-		return category;
+	public Long getCategoryId() {
+		return categoryId;
 	}
 	/**
 	 * Sets the category.
 	 * 
 	 * @param category the category to set
 	 */
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 	/**
 	 * Gets the images.
 	 * 
 	 * @return the images
 	 */
-	public Set<Image> getImages() {
+	public List<byte[]> getImages() {
 		return images;
 	}
 	/**
@@ -185,12 +146,7 @@ public class PostParamsDto {
 	 * 
 	 * @param images the images to set
 	 */
-	public void setImages(Set<Image> images) {
+	public void setImages(List<byte[]> images) {
 		this.images = images;
 	}
-	
-	
-	
-	
-
 }
