@@ -1,10 +1,7 @@
 package es.udc.fi.dc.fd.model.services;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Category;
@@ -21,7 +18,7 @@ public interface PostService {
 	 * @param post
 	 */
 	void createPost(String title, String description, String url, BigDecimal price, Long userId, 
-			Long categoryId, List<MultipartFile> images) throws InstanceNotFoundException, IOException;
+			Long categoryId, List<byte[]> imageList) throws InstanceNotFoundException;
 	
 	/**
 	 * Find all posts.

@@ -1,7 +1,6 @@
 package es.udc.fi.dc.fd.model.services;
 
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Category;
@@ -56,23 +54,28 @@ public class PostServiceImpl implements PostService {
 	 */
 	@Override
 	public void createPost(String title, String description, String url, BigDecimal price, Long userId, 
-			Long categoryId, List<MultipartFile> imageList) throws InstanceNotFoundException, IOException{
+			Long categoryId, List<byte[]> imageList) throws InstanceNotFoundException{
 		
 		User user = permissionChecker.checkUser(userId);
 		
-		Optional<Category> categoryOptional = categoryDao.findById(categoryId);
-        if (!categoryOptional.isPresent())
-            throw new InstanceNotFoundException("project.entities.category", categoryId);
-        
-        Category category = categoryOptional.get();
+		Category category = null;
+		
+		if(categoryId != null) {
+			Optional<Category> categoryOptional = categoryDao.findById(categoryId);
+			
+	        if (!categoryOptional.isPresent())
+	            throw new InstanceNotFoundException("project.entities.category", categoryId);
+	        
+	        category = categoryOptional.get();
+		}
         
         LocalDateTime creationDate = LocalDateTime.now();
         
 		Post post = postDao.save(new Post(title, description, url, price, creationDate, user, category));
 		
-		for (MultipartFile imageFile : imageList) {
+		for (byte[] imageBytes : imageList) {
 			
-			Image image = new Image(imageFile.getBytes(), post);
+			Image image = new Image(imageBytes, post);
 			
 			post.addImage(image);
 			imageDao.save(image);
