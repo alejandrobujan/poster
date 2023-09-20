@@ -6,7 +6,7 @@
 
 ## Logic Design (Relational Model)
 
-User(**id**, login, password, name, avatarUrl)
+User(**id**, login, password, name, avatar)
 
 Category(**id**, name)
 
@@ -16,6 +16,6 @@ categoryId)
 + **categoryId** references Category(id) ON UPDATE CASCADE ON DELETE SET 
 NULL
 
-Image(**id**, url, postId)
+Image(**id**, data, postId)
 + **postId** references Post(id) ON UPDATE CASCADE ON DELETE CASCADE
 
