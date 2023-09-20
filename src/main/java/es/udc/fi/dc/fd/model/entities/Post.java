@@ -47,6 +47,8 @@ public class Post {
 
 	
 	/**
+	 * Instantiates a new post.
+	 * 
 	 * @param title
 	 * @param description
 	 * @param url
