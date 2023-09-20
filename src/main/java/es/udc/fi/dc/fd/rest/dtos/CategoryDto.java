@@ -1,48 +1,40 @@
-package es.udc.fi.dc.fd.model.entities;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+/**
+ * 
+ */
+package es.udc.fi.dc.fd.rest.dtos;
 
 /**
- * The Class Category.
+ * The class CategoryDto
  */
-@Entity
-public class Category {
-	
+public class CategoryDto {
 	/**The id.*/
 	private Long id;
-	
 	/**The category name.*/
 	private String name;
 	
 	/**
-	 * Instantiates a new category.
+	 * Instantiates a new category dto.
 	 */
-	public Category() {
-	}
-
+	public CategoryDto() {}
+	
 	/**
 	 * @param id the id
 	 * @param name the category name
 	 */
-	public Category(Long id, String name) {
+	public CategoryDto(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	/**
 	 * Gets the id.
 	 * 
 	 * @return the id
 	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
 	}
-	
+
 	/**
 	 * Sets the id.
 	 * 
@@ -51,28 +43,24 @@ public class Category {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	/**
-	 * Gets the category name.
+	 * Gets the name.
 	 * 
 	 * @return the name
 	 */
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
-	 * Sets the category name.
+	 * Sets the name.
 	 * 
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", name=" + name + "]";
-	}
+	
 	
 }
