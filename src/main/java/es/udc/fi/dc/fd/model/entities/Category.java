@@ -13,6 +13,7 @@ public class Category {
 	
 	/**The id.*/
 	private Long id;
+	
 	/**The category name.*/
 	private String name;
 	

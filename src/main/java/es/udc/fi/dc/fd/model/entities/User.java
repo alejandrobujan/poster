@@ -5,17 +5,24 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+/**
+ * The Class User.
+ */
 @Entity
 public class User {
 	
 	/**The id.*/
 	private Long id;
+	
 	/**The login.*/
 	private String login;
+	
 	/**The password.*/
 	private String password;
+	
 	/**The name.*/
 	private String name;
+	
 	/**The avatar url.*/
 	private String avatarUrl;
 
