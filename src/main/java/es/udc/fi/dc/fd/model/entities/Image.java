@@ -30,6 +30,17 @@ public class Image {
 	public Image() {
 		
 	}
+	
+	/**
+	 * Instantiates a new image.
+	 * 
+	 * @param data
+	 * @param post
+	 */
+	public Image(byte[] data, Post post) {
+		this.data = data;
+		this.post = post;
+	}
 
 	/**
 	 * Gets the id.

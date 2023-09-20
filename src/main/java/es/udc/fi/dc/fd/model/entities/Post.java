@@ -45,6 +45,28 @@ public class Post {
 	public Post() {
 	}
 
+	
+	/**
+	 * @param title
+	 * @param description
+	 * @param url
+	 * @param price
+	 * @param creationDate
+	 * @param user
+	 * @param category
+	 */
+	public Post(String title, String description, String url, BigDecimal price, 
+			LocalDateTime creationDate, User user, Category category) {
+		this.title = title;
+		this.description = description;
+		this.url = url;
+		this.price = price;
+		this.creationDate = creationDate;
+		this.user = user;
+		this.category = category;
+	}
+
+
 	/**
 	 * Gets the id
 	 * 
@@ -213,7 +235,17 @@ public class Post {
 	public void setImages(Set<Image> images) {
 		this.images = images;
 	}
-
+	
+	/**
+	 * Add image.
+	 * 
+	 * @param image the image to add
+	 */
+	public void addImage(Image image) {
+		images.add(image);
+		image.setPost(this);
+	}
+	
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", title=" + title + ", description=" + description + ", url=" + url + ", price="
