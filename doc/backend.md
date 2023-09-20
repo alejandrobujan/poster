@@ -2,7 +2,7 @@
 
 ## Conceptual Design
 
-![UML Design](img/uml-poster.png)
+![UML Design](img/poster-uml.png)
 
 ## Logic Design (Relational Model)
 
