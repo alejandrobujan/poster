@@ -17,7 +17,8 @@ public class CategoryConversor {
 	private CategoryConversor () {}
 	
 	public final static CategoryDto toCategoryDto(Category category) {
-		return new CategoryDto(category.getId(), category.getName());
+		return new CategoryDto(category != null ? category.getId() : null, 
+				category != null ? category.getName() : null);
 	}
 	
 	public final static List<CategoryDto> toCategoryDtos(List<Category> categories) {
