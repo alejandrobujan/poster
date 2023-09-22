@@ -1,3 +1,5 @@
+import {combineReducers} from 'redux';
+
 import * as actionTypes from './actionTypes';
 
 const initialState = {
@@ -21,4 +23,8 @@ const postSearch = (state = initialState.postSearch, action) => {
 
 }
 
-export default postSearch;
+const reducer = combineReducers({
+    postSearch
+});
+
+export default reducer;
