@@ -12,7 +12,7 @@ const FindPosts = () => {
     useEffect(() => {
 
         dispatch(actions.findPosts({page: 0}));
-        navigate('/post/find-posts-result');
+        navigate('/post/feed');
 
     });
 
