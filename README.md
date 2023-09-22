@@ -98,9 +98,12 @@ Steps to follow:
 
 ## Authors ✒️
 
-* **Jorge Gabín**
-* **Alfonso Landín**
-* **Javier Parapar**
+* **Sergio Goyanes Legazpi**
+* **Patricia Mato Miragaya**
+* **Martín Regueiro Golán**
+* **Daniel Jueguen Pérez**
+* **Alejandro Buján Pampín**
+* **Alfredo Javier Freire Bouzas**
 
 ---
 IRLab ©2021
