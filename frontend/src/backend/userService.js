@@ -10,7 +10,7 @@ import {
 const processLoginSignUp = (authenticatedUser, reauthenticationCallback) => {
   setServiceToken(authenticatedUser.serviceToken);
   setReauthenticationCallback(reauthenticationCallback);
-  onSuccess(authenticatedUser);
+  //onSuccess(authenticatedUser);
 }
 
 export const login = (
