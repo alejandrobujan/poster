@@ -2,7 +2,6 @@ import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 
-import {Errors} from '../../common';
 import * as actions from '../actions';
 
 const SignUp = () => {
@@ -28,7 +27,7 @@ const SignUp = () => {
             dispatch(actions.signUp(
                 {login: login.trim(),
                 password: password,
-                name: firstName.trim(),
+                name: name.trim(),
                 avatar: avatar},
                 () => navigate('/'),
                 errors => setBackendErrors(errors),
@@ -73,7 +72,6 @@ const SignUp = () => {
 
     return (
         <div>
-            <Errors id="signUpErrors" errors={backendErrors} onClose={() => setBackendErrors(null)}/>
             <div className="card bg-light border-dark">
                 <h5 className="card-header">
                     Sign up
