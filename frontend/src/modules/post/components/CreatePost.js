@@ -1,13 +1,11 @@
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 
-import {useNavigate} from 'react-router-dom';
 
 import * as actions from '../actions';
 
 const CreatePost = () => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 	
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
@@ -16,6 +14,8 @@ const CreatePost = () => {
 	const [categoryId, setCategoryId] = useState(0);
 	const [images, setImages] = useState([]);
 	const [backendErrors, setBackendErrors] = useState(null);
+	
+	let form;
 	
 	const handleSubmit = event => {
 
