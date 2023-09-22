@@ -1,5 +1,5 @@
 import NetworkError from "./NetworkError";
-import { config } from "../../../config/constants.js";
+import { config } from "../config/constants";
 
 let networkErrorCallback;
 let reauthenticationCallback;
