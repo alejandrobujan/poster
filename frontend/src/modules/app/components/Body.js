@@ -5,6 +5,7 @@ import Home from "./Home";
 import Test from "./Test";
 
 import {Login, SignUp, Logout} from '../../users';
+import users from '../../users';
 
 import {FindPosts, FindPostsResult, CreatePost} from '../../post';
 
