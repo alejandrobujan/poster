@@ -1,10 +1,6 @@
 import {
   fetchConfig,
-  appFetch,
-  setServiceToken,
-  getServiceToken,
-  removeServiceToken,
-  setReauthenticationCallback,
+  appFetch
 } from "./appFetch";
 
 export const createPost = (title, description, url, price, categoryId, images, onSuccess, onErrors) => {
