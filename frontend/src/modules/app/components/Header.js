@@ -43,15 +43,9 @@ const Header = () => {
                             {userName}
                         </a>
                         <div className="dropdown-menu dropdown-menu-right">
-                            <Link className="dropdown-item" to="/users/update-profile">
-                                <FormattedMessage id="project.users.UpdateProfile.title"/>
-                            </Link>
-                            <Link className="dropdown-item" to="/users/change-password">
-                                <FormattedMessage id="project.users.ChangePassword.title"/>
-                            </Link>
                             <div className="dropdown-divider"></div>
                             <Link className="dropdown-item" to="/users/logout">
-                                <FormattedMessage id="project.app.Header.logout"/>
+                                Logout
                             </Link>
                         </div>
 
@@ -64,7 +58,7 @@ const Header = () => {
                 <ul className="navbar-nav">
                     <li className="nav-item">
                         <Link id="loginLink" className="nav-link" to="/users/login">
-                            <FormattedMessage id="project.users.Login.title"/>
+                            Login
                         </Link>
                     </li>
                 </ul>
