@@ -4,4 +4,5 @@ import * as postService from "./postService";
 
 export { default as NetworkError } from "./NetworkError";
 
+// eslint-disable-next-line
 export default { init, userService, postService };
