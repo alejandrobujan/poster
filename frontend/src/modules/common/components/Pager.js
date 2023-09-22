@@ -1,4 +1,3 @@
-import {FormattedMessage} from 'react-intl';
 
 const Pager = ({back, next}) => (
 
@@ -7,13 +6,13 @@ const Pager = ({back, next}) => (
             <li className={`page-item ${back.enabled ? "": "disabled"}`}>
                 <button className="page-link"
                     onClick={back.onClick}>
-                    <FormattedMessage id='project.global.buttons.back'/>
+                    Back
                 </button>
             </li>
             <li className={`page-item ${next.enabled ? "": "disabled"}`}>
                 <button className="page-link"
                     onClick={next.onClick}>
-                    <FormattedMessage id='project.global.buttons.next'/>
+                    Next
                 </button>
             </li>
         </ul>
