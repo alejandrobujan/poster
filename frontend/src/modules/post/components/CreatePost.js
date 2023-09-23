@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 
+import {Errors} from '../../common';
 
 import * as actions from '../actions';
 
@@ -34,6 +35,7 @@ const CreatePost = () => {
      
      return(
 		 <div>
+             <Errors id="createPostErrors" errors={backendErrors} onClose={() => setBackendErrors(null)}/>
 			 <form ref={node => form = node}
 	                  className="needs-validation" noValidate
 	                  onSubmit={e => handleSubmit(e)}>
@@ -121,11 +123,11 @@ const CreatePost = () => {
                         Images
                     </label>
                     <div>
-                        <input type="image"
+                        <input type="file"
+                                accept="image/*"
                                value={images}
                                onChange={e => setImages(Image(e.target.value))}
-                               autoFocus
-                               required/>
+                               autoFocus/>
                     </div>
                 </div>
 	         </form>
