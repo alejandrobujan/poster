@@ -1,11 +1,9 @@
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import Posts from './Posts';
 import * as selectors from '../selectors';
-import * as actions from '../actions';
 
 const Feed = () => {
     const posts = useSelector(selectors.getPosts);
-    const dispatch = useDispatch();
 
     if (!posts) {
         return null;
