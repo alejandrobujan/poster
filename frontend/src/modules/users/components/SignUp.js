@@ -4,6 +4,9 @@ import {useNavigate} from 'react-router-dom';
 
 import * as actions from '../actions';
 
+import {Errors} from '../../common';
+
+
 const SignUp = () => {
 
     const dispatch = useDispatch();
@@ -12,7 +15,7 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [name, setName] = useState('');
-    const [avatar, setAvatar] = useState(null);
+    const [avatar, setAvatar] = useState('');
     const [backendErrors, setBackendErrors] = useState(null);
     const [passwordsDoNotMatch, setPasswordsDoNotMatch] = useState(false);
     let form;
@@ -72,6 +75,7 @@ const SignUp = () => {
 
     return (
         <div>
+        	<Errors id="signUpErrors" errors={backendErrors} onClose={() => setBackendErrors(null)}/>
             <div className="card bg-light border-dark">
                 <h5 className="card-header">
                     Sign up
@@ -131,9 +135,9 @@ const SignUp = () => {
                                 Avatar
                             </label>
                             <div className="col-md-4">
-                                <input type="image" id="avatar" className="form-control"
+                                <input type="file" id="avatar" className="form-control" accept="image/*"
                                     value={avatar}
-                                    onChange={e => setAvatar(Image(e.target.value))}
+                                    onChange={e => setAvatar(e.target.files[0])}
                                     required/>
                             </div>
                         </div>
