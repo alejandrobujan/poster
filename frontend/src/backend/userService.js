@@ -7,10 +7,10 @@ import {
   setReauthenticationCallback,
 } from "./appFetch";
 
-const processLoginSignUp = (authenticatedUser, reauthenticationCallback) => {
+const processLoginSignUp = (authenticatedUser, reauthenticationCallback, onSuccess) => {
   setServiceToken(authenticatedUser.serviceToken);
   setReauthenticationCallback(reauthenticationCallback);
-  //onSuccess(authenticatedUser);
+  onSuccess(authenticatedUser);
 }
 
 export const login = (
@@ -24,7 +24,7 @@ export const login = (
     "/users/login",
     fetchConfig("POST", { userName, password }),
     (authenticatedUser) => {
-      processLoginSignUp(authenticatedUser, reauthenticationCallback);
+      processLoginSignUp(authenticatedUser, reauthenticationCallback, onSuccess);
     },
     onErrors
   );
