@@ -6,6 +6,8 @@ import {useNavigate} from 'react-router-dom';
 
 import * as actions from '../actions';
 
+import {Errors} from '../../common';
+
 const Login = () => {
 
     const dispatch = useDispatch();
@@ -41,6 +43,7 @@ const Login = () => {
 
     return (
         <div>
+            <Errors id="signUpErrors" errors={backendErrors} onClose={() => setBackendErrors(null)}/>
             <p className="text-center">
                 <Link to="/users/signup">
                     Sign up
