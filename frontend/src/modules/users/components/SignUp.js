@@ -14,7 +14,10 @@ const SignUp = () => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [name, setName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastname, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [role, setRole] = useState('');
     const [avatar, setAvatar] = useState('');
     const [backendErrors, setBackendErrors] = useState(null);
     const [passwordsDoNotMatch, setPasswordsDoNotMatch] = useState(false);
@@ -30,7 +33,10 @@ const SignUp = () => {
             dispatch(actions.signUp(
                 {login: login.trim(),
                 password: password,
-                name: name.trim(),
+                firstName: firstName.trim(),
+                lastname: lastname.trim(),
+                email: email.trim(),
+                role: role.trim(),
                 avatar: avatar},
                 () => navigate('/'),
                 errors => setBackendErrors(errors),
@@ -120,13 +126,35 @@ const SignUp = () => {
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label htmlFor="name" className="col-md-3 col-form-label">
-                                Name
+                            <label htmlFor="firstName" className="col-md-3 col-form-label">
+                                First name
                             </label>
                             <div className="col-md-4">
-                                <input type="text" id="name" className="form-control"
-                                    value={name}
-                                    onChange={e => setName(e.target.value)}
+                                <input type="text" id="firstName" className="form-control"
+                                    value={firstName}
+                                    onChange={e => setFirstName(e.target.value)}
+                                    required/>
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <label htmlFor="lastName" className="col-md-3 col-form-label">
+                                Last name
+                            </label>
+                            <div className="col-md-4">
+                                <input type="text" id="LastName" className="form-control"
+                                    value={lastname}
+                                    onChange={e => setLastName(e.target.value)}
+                                    required/>
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <label htmlFor="role" className="col-md-3 col-form-label">
+                                Role
+                            </label>
+                            <div className="col-md-4">
+                                <input type="text" id="role" className="form-control"
+                                    value={role}
+                                    onChange={e => setRole(e.target.value)}
                                     required/>
                             </div>
                         </div>
