@@ -130,6 +130,13 @@ const CreatePost = () => {
                                autoFocus/>
                     </div>
                 </div>
+                <div className="form-group row">
+                            <div className="offset-md-3 col-md-2">
+                                <button type="submit" className="btn btn-primary">
+                                    Submit
+                                </button>
+                            </div>
+                </div>
 	         </form>
 	     </div>             
 	 );	
