@@ -1,8 +1,8 @@
-import {FindPosts} from '../../post';
+import {Feed} from '../../post';
 
 const Home = () => (
     <div className="text-center">
-        <FindPosts/>
+        <Feed/>
     </div>
 );
 
