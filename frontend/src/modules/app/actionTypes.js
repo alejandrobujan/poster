@@ -1,0 +1,1 @@
+export const ERROR = 'poster/common/error';
