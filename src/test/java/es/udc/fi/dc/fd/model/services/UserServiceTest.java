@@ -15,6 +15,7 @@ import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
+import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import jakarta.transaction.Transactional;
 
 /**
@@ -50,7 +51,7 @@ public class UserServiceTest {
 	 * @throws InstanceNotFoundException  the instance not found exception
 	 */
 	@Test
-	public void testSignUpAndLoginFromId() throws DuplicateInstanceException, InstanceNotFoundException {
+	public void testSignUpAndLoginFromId() throws DuplicateInstanceException, InstanceNotFoundException, MaximumImageSizeExceededException {
 
 		User user = createUser("user");
 
@@ -69,7 +70,7 @@ public class UserServiceTest {
 	 * @throws DuplicateInstanceException the duplicate instance exception
 	 */
 	@Test
-	public void testSignUpDuplicatedUserName() throws DuplicateInstanceException {
+	public void testSignUpDuplicatedUserName() throws DuplicateInstanceException, MaximumImageSizeExceededException {
 		
 		User user = createUser("user");
 		
@@ -94,7 +95,7 @@ public class UserServiceTest {
 	 * @throws IncorrectLoginException the incorrect login exception
 	 */
 	@Test
-	public void testLogin() throws DuplicateInstanceException, IncorrectLoginException {
+	public void testLogin() throws DuplicateInstanceException, IncorrectLoginException, MaximumImageSizeExceededException {
 		
 		User user = createUser("user");
 		String clearPassword = user.getPassword();
@@ -113,7 +114,7 @@ public class UserServiceTest {
 	 * @throws DuplicateInstanceException the duplicate instance exception
 	 */
 	@Test
-	public void testLoginWithIncorrectPassword() throws DuplicateInstanceException {
+	public void testLoginWithIncorrectPassword() throws DuplicateInstanceException, MaximumImageSizeExceededException {
 		
 		User user = createUser("user");
 		String clearPassword = user.getPassword();
@@ -139,7 +140,7 @@ public class UserServiceTest {
 	 * @throws InstanceNotFoundException  the instance not found exception
 	 */
 	@Test
-	public void testUpdateProfile() throws InstanceNotFoundException, DuplicateInstanceException {
+	public void testUpdateProfile() throws InstanceNotFoundException, DuplicateInstanceException, MaximumImageSizeExceededException {
 		
 		User user = createUser("user");
 		
@@ -180,7 +181,7 @@ public class UserServiceTest {
 	 */
 	@Test
 	public void testChangePassword() throws DuplicateInstanceException, InstanceNotFoundException,
-		IncorrectPasswordException, IncorrectLoginException {
+		IncorrectPasswordException, IncorrectLoginException, MaximumImageSizeExceededException {
 		
 		User user = createUser("user");
 		String oldPassword = user.getPassword();
@@ -207,7 +208,7 @@ public class UserServiceTest {
 	 * @throws DuplicateInstanceException the duplicate instance exception
 	 */
 	@Test
-	public void testChangePasswordWithIncorrectPassword() throws DuplicateInstanceException {
+	public void testChangePasswordWithIncorrectPassword() throws DuplicateInstanceException, MaximumImageSizeExceededException {
 		
 		User user = createUser("user");
 		String oldPassword = user.getPassword();
