@@ -64,6 +64,21 @@ public class UserServiceTest {
 	}
 	
 	/**
+	 * Test sign up with duplicated user name.
+	 *
+	 * @throws DuplicateInstanceException the duplicate instance exception
+	 */
+	@Test
+	public void testSignUpDuplicatedUserName() throws DuplicateInstanceException {
+		
+		User user = createUser("user");
+		
+		userService.signUp(user);
+		assertThrows(DuplicateInstanceException.class, () -> userService.signUp(user));
+		
+	}
+	
+	/**
 	 * Test login with non existent Id.
 	 */
 	
