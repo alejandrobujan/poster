@@ -180,6 +180,19 @@ public class PostServiceTest {
     	
     }
     
+    /**
+	 * Test create post without a category.
+     * @throws MaximumImageSizeExceededException 
+	 * @throws InstanceNotFoundException  the instance not found exception
+	 */
+	
+	@Test
+	public void testCreatePostWithNoCategory() throws MaximumImageSizeExceededException {
+		User user = signUpUser("userName");
+		List<byte[]> list = new ArrayList<byte[]>();
+		assertThrows(InstanceNotFoundException.class, () -> postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(), (long) 10, list));
+	}
+    
 	/**
 	 * Test find all posts.
 	 * @throws MaximumImageSizeExceededException 
@@ -206,8 +219,7 @@ public class PostServiceTest {
     	
     	Block <Post> expectedBlock = new Block<>(List.of(post1, post2), true);
         assertEquals(expectedBlock, postService.findAllPosts(0, 2));
-        
-
 
     }
+    
 }
