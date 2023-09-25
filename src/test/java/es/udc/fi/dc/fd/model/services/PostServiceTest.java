@@ -84,7 +84,12 @@ public class PostServiceTest {
 		
 		List<Category> listCategory = postService.findAllCategories();
 		
-		assertEquals(expectedListCategory, listCategory);
+		assertEquals(expectedListCategory.size(), listCategory.size());
+		
+		for (int i = 0; i < listCategory.size(); i++) {
+			assertEquals(listCategory.get(i).getId(), expectedListCategory.get(i).getId());
+			assertEquals(listCategory.get(i).getName(), expectedListCategory.get(i).getName());
+		}
 		
 	}
 
