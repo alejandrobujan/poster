@@ -41,7 +41,8 @@ public class UserServiceTest {
 	 * @return the user
 	 */
 	private User createUser(String userName) {
-		return new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com", null);
+		byte avatar[] = new byte[] {50};
+		return new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com", avatar);
 	}
 
 	/**

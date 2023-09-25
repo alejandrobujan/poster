@@ -20,6 +20,7 @@ import es.udc.fi.dc.fd.model.common.exceptions.*;
 
 import es.udc.fi.dc.fd.model.entities.*;
 import es.udc.fi.dc.fd.model.services.*;
+import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import jakarta.transaction.Transactional;
 
 /**
@@ -55,7 +56,9 @@ public class PostServiceTest {
 	 * @return the user
 	 */
 	private User createUser(String userName) {
-		return new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com",  null);
+		
+		byte avatar[] = new byte[] {50};
+		return new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com", avatar);
 	}
 	
 	/**
@@ -80,9 +83,10 @@ public class PostServiceTest {
 		return new Post("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category);
 	}
 	
-    private User signUpUser(String userName) {
+    private User signUpUser(String userName) throws MaximumImageSizeExceededException {
 
-        User user = new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com");
+		byte avatar[] = new byte[] {50};
+        User user = new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com", avatar);
 
         try {
             userService.signUp(user);
@@ -104,7 +108,7 @@ public class PostServiceTest {
 		Category c2 = createCategory(2,"Motor");
 		Category c3 = createCategory(3,"Hogar");
 		Category c4 = createCategory(4,"Juguetes");
-		Category c5 = createCategory(5,"Tecnologia");
+		Category c5 = createCategory(5,"Tecnología");
 		Category c6 = createCategory(6,"Entretenimiento");
 		List<Category> expectedListCategory = new ArrayList<>();
 		Collections.addAll(expectedListCategory, c1, c2, c3, c4, c5, c6);
@@ -136,10 +140,11 @@ public class PostServiceTest {
 
 	/**
 	 * Test create post.
+	 * @throws MaximumImageSizeExceededException 
 	 *
 	 */
     @Test
-    public void testCreatePost() {
+    public void testCreatePost() throws MaximumImageSizeExceededException {
     	
     	User user1 = signUpUser("userName1");
     	User user2 = signUpUser("userName2");
@@ -177,10 +182,11 @@ public class PostServiceTest {
     
 	/**
 	 * Test find all posts.
+	 * @throws MaximumImageSizeExceededException 
 	 *
 	 */
     @Test
-    public void testFindAllPosts() {
+    public void testFindAllPosts() throws MaximumImageSizeExceededException {
     	
     	User user1 = signUpUser("userName1");
     	User user2 = signUpUser("userName2");
