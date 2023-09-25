@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.assertj.core.util.*;
+import java.util.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,10 +147,11 @@ public class PostServiceTest {
     	
 		List<Category> listCategory = postService.findAllCategories();
     	
+    	postDao.deleteAll();
+    	
     	Post post1 = createPost(user1,listCategory.get(1));
     	Post post2 = createPost(user2,listCategory.get(2));
     	
-    	postDao.deleteAll();
     	postDao.save(post1);
     	postDao.save(post2);
     	@SuppressWarnings("deprecation")
@@ -172,4 +175,33 @@ public class PostServiceTest {
     	
     }
     
+	/**
+	 * Test find all posts.
+	 *
+	 */
+    @Test
+    public void testFindAllPosts() {
+    	
+    	User user1 = signUpUser("userName1");
+    	User user2 = signUpUser("userName2");
+
+    	
+		List<Category> listCategory = postService.findAllCategories();
+    	
+    	postDao.deleteAll();
+    	
+    	Post post1 = createPost(user1,listCategory.get(1));
+    	Post post2 = createPost(user2,listCategory.get(2));
+    	Post post3 = createPost(user1,listCategory.get(3));
+    	
+    	postDao.save(post1);
+    	postDao.save(post2);
+    	postDao.save(post3);
+    	
+    	Block <Post> expectedBlock = new Block<>(List.of(post1, post2), true);
+        assertEquals(expectedBlock, postService.findAllPosts(0, 2));
+        
+
+
+    }
 }
