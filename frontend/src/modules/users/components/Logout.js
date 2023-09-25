@@ -11,7 +11,7 @@ const Logout = () => {
 
     useEffect(() => {
         dispatch(users.actions.logout());
-        navigate('/');
+        navigate('/poster');
     });
 
     return null;
