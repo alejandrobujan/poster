@@ -1,9 +1,12 @@
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import Posts from './Posts';
 import * as selectors from '../selectors';
+import {Pager} from '../../common';
+import * as actions from '../actions';
 
 const Feed = () => {
-    const posts = useSelector(selectors.getPosts);
+    const posts = useSelector(selectors.getPostSearch);
+    const dispatch = useDispatch();
 
     if (!posts) {
         return null;
@@ -11,7 +14,14 @@ const Feed = () => {
 
     return (
         <div>
-            <Posts posts={posts}/>
+            <Posts posts={posts.result.items}/>
+            <Pager
+                back={{
+                    enabled: posts.criteria.page >= 1,
+                    onClick: () => dispatch(actions.previousFindPostsResultPage(posts.criteria))}}
+                next={{
+                    enabled: posts.result.existMoreItems,
+                    onClick: () => dispatch(actions.nextFindPostsResultPage(posts.criteria))}}/>
         </div>
     );
 
