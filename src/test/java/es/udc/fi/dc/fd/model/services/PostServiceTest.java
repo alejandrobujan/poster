@@ -240,4 +240,17 @@ public class PostServiceTest {
         
     }
     
+    /**
+	 * Test find no posts.
+	 *
+	 */
+    @Test
+    public void testFindNoPosts() {
+    	
+    	postDao.deleteAll();
+        Block<Post> emptyList = new Block<>(List.of(), false);;
+        assertEquals(emptyList, postService.findAllPosts(0, 1));
+    	
+    }
+    
 }
