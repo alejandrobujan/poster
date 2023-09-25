@@ -20,6 +20,7 @@ import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.User;
 import jakarta.transaction.Transactional;
+import java.sql.*;
 
 /**
  * The Class PostServiceTest.
@@ -33,6 +34,9 @@ public class PostServiceTest {
 	/** The user service. */
 	@Autowired
 	private PostService postService;
+	
+    @Autowired
+    private CategoryDao categoryDao;
 
 	/**
 	 * Creates the user.
@@ -84,7 +88,6 @@ public class PostServiceTest {
 		
 		List<Category> listCategory = postService.findAllCategories();
 		
-		
 		assertEquals(expectedListCategory.size(), listCategory.size());
 		
 		for (int i = 0; i < listCategory.size(); i++) {
@@ -94,5 +97,13 @@ public class PostServiceTest {
 		
 	}
 
+    @Test
+    public void testFindNoCategories() {
+    	
+    	categoryDao.deleteAll();
+        List<Category> emptyList = new ArrayList<>();
+        assertEquals(emptyList, postService.findAllCategories());
+    	
+    }
 
 }
