@@ -29,7 +29,7 @@ const Login = () => {
                 () => navigate('/'),
                 errors => setBackendErrors(errors),
                 () => {
-                    navigate('/users/login');
+                    navigate('/poster/users/login');
                     dispatch(actions.logout());
                 }
             ));
@@ -43,9 +43,9 @@ const Login = () => {
 
     return (
         <div>
-            <Errors id="signUpErrors" errors={backendErrors} onClose={() => setBackendErrors(null)}/>
+            <Errors id="loginErrors" errors={backendErrors} onClose={() => setBackendErrors(null)}/>
             <p className="text-center">
-                <Link to="/users/signup">
+                <Link to="/poster/users/signup">
                     Sign up
                 </Link>
             </p>
