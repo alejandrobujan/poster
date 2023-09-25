@@ -55,7 +55,7 @@ public class PostServiceTest {
 	 * @return the user
 	 */
 	private User createUser(String userName) {
-		return new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com");
+		return new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com",  null);
 	}
 	
 	/**

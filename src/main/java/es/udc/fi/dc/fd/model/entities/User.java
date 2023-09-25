@@ -59,14 +59,16 @@ public class User {
 	 * @param firstName the first name
 	 * @param lastName  the last name
 	 * @param email     the email
+	 * @param avatar    the avatar
 	 */
-	public User(String userName, String password, String firstName, String lastName, String email) {
+	public User(String userName, String password, String firstName, String lastName, String email, byte[] avatar) {
 
 		this.userName = userName;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.avatar = avatar;
 
 	}
 

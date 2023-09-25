@@ -16,6 +16,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
+import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 
 /**
@@ -32,6 +33,9 @@ public class CommonControllerAdvice {
 
 	/** The Constant PERMISSION_EXCEPTION_CODE. */
 	private static final String PERMISSION_EXCEPTION_CODE = "project.exceptions.PermissionException";
+	
+	/** The Constant MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE. */
+	private static final String MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE = "project.exceptions.MaximumImageSizeExceededException";
 
 	/** The message source. */
 	@Autowired
@@ -109,6 +113,25 @@ public class CommonControllerAdvice {
 	public ErrorsDto handlePermissionException(PermissionException exception, Locale locale) {
 
 		String errorMessage = messageSource.getMessage(PERMISSION_EXCEPTION_CODE, null, PERMISSION_EXCEPTION_CODE,
+				locale);
+
+		return new ErrorsDto(errorMessage);
+
+	}
+	
+	/**
+	 * Handle permission exception.
+	 *
+	 * @param exception the exception
+	 * @param locale    the locale
+	 * @return the errors dto
+	 */
+	@ExceptionHandler(MaximumImageSizeExceededException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorsDto handleMaximumImageSizeExceededException(MaximumImageSizeExceededException exception, Locale locale) {
+
+		String errorMessage = messageSource.getMessage(MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE, null, MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE,
 				locale);
 
 		return new ErrorsDto(errorMessage);

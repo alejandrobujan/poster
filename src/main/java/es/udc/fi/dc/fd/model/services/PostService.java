@@ -6,6 +6,7 @@ import java.util.List;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.Post;
+import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 
 /**
  * The Interface PostService.
@@ -18,7 +19,7 @@ public interface PostService {
 	 * @param post
 	 */
 	void createPost(String title, String description, String url, BigDecimal price, Long userId, 
-			Long categoryId, List<byte[]> imageList) throws InstanceNotFoundException;
+			Long categoryId, List<byte[]> imageList) throws InstanceNotFoundException, MaximumImageSizeExceededException;
 	
 	/**
 	 * Find all posts.

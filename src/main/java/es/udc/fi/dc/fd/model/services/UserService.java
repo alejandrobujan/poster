@@ -5,6 +5,7 @@ import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
+import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 
 /**
  * The Interface UserService.
@@ -17,7 +18,7 @@ public interface UserService {
 	 * @param user the user
 	 * @throws DuplicateInstanceException the duplicate instance exception
 	 */
-	void signUp(User user) throws DuplicateInstanceException;
+	void signUp(User user) throws DuplicateInstanceException, MaximumImageSizeExceededException;
 	
 	/**
 	 * Login.

@@ -38,7 +38,7 @@ public class UserDto {
 	private String email;
 	
 	/** The role. */
-	private String role;
+	private byte[] avatar;
 
 	/**
 	 * Instantiates a new user dto.
@@ -53,16 +53,16 @@ public class UserDto {
 	 * @param firstName the first name
 	 * @param lastName the last name
 	 * @param email the email
-	 * @param role the role
+	 * @param avatar the avatar
 	 */
-	public UserDto(Long id, String userName, String firstName, String lastName, String email, String role) {
+	public UserDto(Long id, String userName, String firstName, String lastName, String email, byte[] avatar) {
 
 		this.id = id;
 		this.userName = userName != null ? userName.trim() : null;
 		this.firstName = firstName.trim();
 		this.lastName = lastName.trim();
 		this.email = email.trim();
-		this.role = role;
+		this.avatar = avatar;
 		
 	}
 
@@ -186,21 +186,21 @@ public class UserDto {
 	}
 
 	/**
-	 * Gets the role.
+	 * Gets the avatar.
 	 *
-	 * @return the role
+	 * @return the avatar
 	 */
-	public String getRole() {
-		return role;
+	public byte[] getAvatar() {
+		return avatar;
 	}
 
 	/**
-	 * Sets the role.
+	 * Sets the avatar.
 	 *
-	 * @param role the new role
+	 * @param avatar the new avatar
 	 */
-	public void setRole(String role) {
-		this.role = role;
+	public void setAvatar(byte[] avatar) {
+		this.avatar = avatar;
 	}
 
 }

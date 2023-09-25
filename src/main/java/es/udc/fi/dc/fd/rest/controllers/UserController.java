@@ -29,6 +29,7 @@ import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
+import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 import es.udc.fi.dc.fd.model.services.UserService;
 import es.udc.fi.dc.fd.rest.common.ErrorsDto;
@@ -112,7 +113,7 @@ public class UserController {
 	@PostMapping("/signUp")
 	public ResponseEntity<AuthenticatedUserDto> signUp(
 			@Validated({ UserDto.AllValidations.class }) @RequestBody UserDto userDto)
-			throws DuplicateInstanceException {
+			throws DuplicateInstanceException, MaximumImageSizeExceededException {
 
 		User user = toUser(userDto);
 

@@ -1,11 +1,9 @@
 const Footer = () => (
 
-    <div className="fixed-bottom">
-        <br/>
-        <hr/>
+    <div className="fixed-bottom bg-light border-top pt-3">
         <footer>
             <p className="text-center">
-                Poster project
+                © 2023 Poster Group - Development Tools - University of A Coruña
             </p>
         </footer>
     </div>

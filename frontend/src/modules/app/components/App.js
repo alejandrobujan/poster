@@ -7,15 +7,13 @@ import Footer from './Footer';
 import users from '../../users';
 import post from '../../post';
 
-
 const App = () => {
     const dispatch = useDispatch();
     useEffect(() => {
 
         dispatch(users.actions.tryLoginFromServiceToken(
             () => dispatch(users.actions.logout())));
-
-            dispatch(post.actions.findAllCategories());
+        dispatch(post.actions.findAllCategories());
     });
     
     return(

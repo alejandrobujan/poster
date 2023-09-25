@@ -8,3 +8,6 @@ export const isLoggedIn = state =>
 
 export const getUserName = state => 
     isLoggedIn(state) ? getUser(state).userName : null;
+    
+export const getAvatar = state => 
+    isLoggedIn(state) ? getUser(state).avatar : null;
