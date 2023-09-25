@@ -21,6 +21,7 @@ import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.services.Block;
 import es.udc.fi.dc.fd.model.services.PostService;
+import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.rest.dtos.BlockDto;
 import es.udc.fi.dc.fd.rest.dtos.CategoryDto;
 import es.udc.fi.dc.fd.rest.dtos.PostParamsDto;
@@ -39,7 +40,7 @@ public class PostController {
     @PostMapping("/post")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void createPost(@RequestAttribute Long userId, @Validated @RequestBody PostParamsDto params) 
-    		throws InstanceNotFoundException{
+    		throws InstanceNotFoundException, MaximumImageSizeExceededException{
     	
     	postService.createPost(params.getTitle(), params.getDescription(), params.getUrl(), 
     			params.getPrice(), userId, params.getCategoryId(), params.getImages());

@@ -23,6 +23,7 @@ import es.udc.fi.dc.fd.model.entities.ImageDao;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
+import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 
 /**
  * The Class PostServiceImpl.
@@ -54,7 +55,7 @@ public class PostServiceImpl implements PostService {
 	 */
 	@Override
 	public void createPost(String title, String description, String url, BigDecimal price, Long userId, 
-			Long categoryId, List<byte[]> imageList) throws InstanceNotFoundException{
+			Long categoryId, List<byte[]> imageList) throws InstanceNotFoundException, MaximumImageSizeExceededException{
 		
 		User user = permissionChecker.checkUser(userId);
 		
@@ -73,9 +74,18 @@ public class PostServiceImpl implements PostService {
         
 		Post post = postDao.save(new Post(title, description, url, price, creationDate, user, category));
 		
+		int maxSize = 1024000;
+		Image image;
+		
 		for (byte[] imageBytes : imageList) {
 			
-			Image image = new Image(imageBytes, post);
+			image = new Image(imageBytes, post);
+			
+			
+			if(image.getData().length > maxSize) {
+				throw new MaximumImageSizeExceededException(maxSize);
+			}
+
 			
 			post.addImage(image);
 			imageDao.save(image);

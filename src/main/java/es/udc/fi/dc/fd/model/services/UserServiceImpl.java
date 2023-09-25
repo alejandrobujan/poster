@@ -13,6 +13,7 @@ import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.entities.UserDao;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
+import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 
 /**
  * The Class UserServiceImpl.
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
 	 * @throws DuplicateInstanceException the duplicate instance exception
 	 */
 	@Override
-	public void signUp(User user) throws DuplicateInstanceException {
+	public void signUp(User user) throws DuplicateInstanceException, MaximumImageSizeExceededException {
 
 		if (userDao.existsByUserName(user.getUserName())) {
 			throw new DuplicateInstanceException("project.entities.user", user.getUserName());
@@ -48,6 +49,12 @@ public class UserServiceImpl implements UserService {
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRole(User.RoleType.USER);
+		
+		int maxSize = 1024000;
+		
+		if(user.getAvatar().length > maxSize) {
+			throw new MaximumImageSizeExceededException(maxSize);
+		}
 
 		userDao.save(user);
 
