@@ -65,7 +65,7 @@ public class UserControllerTest {
 	private AuthenticatedUserDto createAuthenticatedUser(String userName, RoleType roleType)
 			throws IncorrectLoginException {
 
-		User user = new User(userName, PASSWORD, "newUser", "user", "user@test.com");
+		User user = new User(userName, PASSWORD, "newUser", "user", "user@test.com", null);
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRole(roleType);
