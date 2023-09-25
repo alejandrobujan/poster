@@ -39,7 +39,7 @@ const SignUp = () => {
 					email: email.trim(),
 					avatar: avatar
 				},
-				() => navigate('/'),
+				() => navigate('/poster'),
 				errors => setBackendErrors(errors),
 				() => {
 					navigate('/poster/users/login');
@@ -80,13 +80,13 @@ const SignUp = () => {
 
 	}
 
-	
+
 
 	return (
-		<div>
+		<div className="container">
 			<Errors id="signUpErrors" errors={backendErrors} onClose={() => setBackendErrors(null)} />
-			<div className="card bg-light border-dark">
-				<h5 className="card-header">
+			<div className="card bg-light border-dark m-4">
+				<h5 className="card-header text-center">
 					Sign up
 				</h5>
 				<div className="card-body">
@@ -94,89 +94,107 @@ const SignUp = () => {
 						className="needs-validation" noValidate
 						onSubmit={e => handleSubmit(e)}>
 						<div className="form-group row">
-							<label htmlFor="login" className="col-md-3 col-form-label">
+							<label htmlFor="login" className="col-md-6 col-form-label">
 								Login
 							</label>
-							<div className="col-md-4">
+							<div className="col-md-6">
 								<input type="text" id="login" className="form-control"
 									value={login}
 									onChange={e => setLogin(e.target.value)}
 									autoFocus
 									required />
+								<div className="invalid-feedback">
+									The login is required
+								</div>
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="email" className="col-md-3 col-form-label">
+							<label htmlFor="email" className="col-md-6 col-form-label">
 								Email
 							</label>
-							<div className="col-md-4">
+							<div className="col-md-6">
 								<input type="text" id="email" className="form-control"
 									value={email}
 									onChange={e => setEmail(e.target.value)}
 									required />
+								<div className="invalid-feedback">
+									The email is required
+								</div>
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="password" className="col-md-3 col-form-label">
+							<label htmlFor="password" className="col-md-6 col-form-label">
 								Password
 							</label>
-							<div className="col-md-4">
+							<div className="col-md-6">
 								<input type="password" id="password" className="form-control"
 									value={password}
 									onChange={e => setPassword(e.target.value)}
 									required />
+								<div className="invalid-feedback">
+									The password is required
+								</div>
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="confirmPassword" className="col-md-3 col-form-label">
+							<label htmlFor="confirmPassword" className="col-md-6 col-form-label">
 								Confirm password
 							</label>
-							<div className="col-md-4">
+							<div className="col-md-6">
 								<input ref={node => confirmPasswordInput = node}
 									type="password" id="confirmPassword" className="form-control"
 									value={confirmPassword}
 									onChange={e => handleConfirmPasswordChange(e.target.value)}
 									required />
+								<div className="invalid-feedback">
+									{passwordsDoNotMatch ?
+										"The passwords don't match" :
+										"The password confirmation is required"}
+								</div>
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="firstName" className="col-md-3 col-form-label">
+							<label htmlFor="firstName" className="col-md-6 col-form-label">
 								First name
 							</label>
-							<div className="col-md-4">
+							<div className="col-md-6">
 								<input type="text" id="firstName" className="form-control"
 									value={firstName}
 									onChange={e => setFirstName(e.target.value)}
 									required />
+								<div className="invalid-feedback">
+									The first name is required
+								</div>
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="lastName" className="col-md-3 col-form-label">
+							<label htmlFor="lastName" className="col-md-6 col-form-label">
 								Last name
 							</label>
-							<div className="col-md-4">
+							<div className="col-md-6">
 								<input type="text" id="LastName" className="form-control"
 									value={lastName}
 									onChange={e => setLastName(e.target.value)}
 									required />
+								<div className="invalid-feedback">
+									The last name is required
+								</div>
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="avatar" className="col-md-3 col-form-label">
+							<label htmlFor="avatar" className="col-md-6 col-form-label">
 								Avatar
 							</label>
-							<div className="col-md-4">
+							<div className="col-md-6">
 								<input type="file" id="avatar" accept="image/*"
 									onChange={async e => setAvatar(await fileToBase64(e.target.files[0]))}
 								/>
 							</div>
 						</div>
-						<div className="form-group row">
-							<div className="offset-md-3 col-md-2">
-								<button type="submit" className="btn btn-primary">
-									Submit
-								</button>
-							</div>
+						<div className='text-center'>
+							<button type="submit" className="btn btn-primary">
+								Submit
+							</button>
 						</div>
 					</form>
 				</div>
