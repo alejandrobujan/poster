@@ -110,7 +110,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public List<Category> findAllCategories() {
 		
-		Iterable<Category> categories = categoryDao.findAll(Sort.by(Sort.Direction.ASC, "name"));
+		Iterable<Category> categories = categoryDao.findAll(Sort.by(Sort.Direction.ASC, "id"));
 		List<Category> categoriesAsList = new ArrayList<>();
 		
 		categories.forEach(c -> categoriesAsList.add(c));

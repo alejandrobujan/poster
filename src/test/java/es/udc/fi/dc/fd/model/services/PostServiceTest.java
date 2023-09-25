@@ -1,10 +1,11 @@
 package es.udc.fi.dc.fd.model.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.udc.fi.dc.fd.model.entities.*;
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.User;
@@ -47,8 +49,9 @@ public class PostServiceTest {
 	 *
 	 * @return the category
 	 */
-	private Category createCategory(String categoryName) {
+	private Category createCategory(long id, String categoryName) {
 		Category category = new Category();
+		category.setId(id);
 		category.setName(categoryName);;
 		return category;
 	}
@@ -69,13 +72,15 @@ public class PostServiceTest {
 	 */
 	@Test
 	public void testfindAllCategories() {
-		Category category1 = createCategory("category1");
-		Category category2 = createCategory("category2");
-		Category category3 = createCategory("category3");
+		Category c1 = createCategory(1,"Comida");
+		Category c2 = createCategory(2,"Motor");
+		Category c3 = createCategory(3,"Hogar");
+		Category c4 = createCategory(4,"Juguetes");
+		Category c5 = createCategory(5,"Tecnología");
+		Category c6 = createCategory(6,"Entretenimiento");
 		List<Category> expectedListCategory = new ArrayList<>();
-		expectedListCategory.add(category1);
-		expectedListCategory.add(category2);
-		expectedListCategory.add(category3);
+		Collections.addAll(expectedListCategory, c1, c2, c3, c4, c5, c6);
+
 		
 		List<Category> listCategory = postService.findAllCategories();
 		
