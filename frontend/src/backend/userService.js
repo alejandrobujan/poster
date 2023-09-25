@@ -55,7 +55,7 @@ export const signUp = (user, onSuccess, onErrors, reauthenticationCallback) => {
     "/users/signUp",
     fetchConfig("POST", user),
     (authenticatedUser) => {
-      processLoginSignUp(authenticatedUser, reauthenticationCallback);
+      processLoginSignUp(authenticatedUser, reauthenticationCallback, onSuccess);
     },
     onErrors
   );
