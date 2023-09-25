@@ -14,13 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import es.udc.fi.dc.fd.model.common.exceptions.*;
 
 import es.udc.fi.dc.fd.model.entities.*;
-import es.udc.fi.dc.fd.model.entities.Category;
-import es.udc.fi.dc.fd.model.entities.Post;
-import es.udc.fi.dc.fd.model.entities.User;
+import es.udc.fi.dc.fd.model.services.*;
 import jakarta.transaction.Transactional;
-import java.sql.*;
 
 /**
  * The Class PostServiceTest.
@@ -37,6 +35,16 @@ public class PostServiceTest {
 	
     @Autowired
     private CategoryDao categoryDao;
+    
+    @Autowired
+    private PostDao postDao;
+    
+    @Autowired
+    private UserDao userDao;
+    
+    @Autowired
+    private UserService userService;
+    
 
 	/**
 	 * Creates the user.
@@ -69,6 +77,20 @@ public class PostServiceTest {
 	private Post createPost(User user, Category category) {
 		return new Post("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category);
 	}
+	
+    private User signUpUser(String userName) {
+
+        User user = new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com");
+
+        try {
+            userService.signUp(user);
+        } catch (DuplicateInstanceException e) {
+            throw new RuntimeException(e);
+        }
+
+        return user;
+
+    }
 
 	/**
 	 * Test find all categories.
@@ -97,6 +119,10 @@ public class PostServiceTest {
 		
 	}
 
+	/**
+	 * Test find no categories.
+	 *
+	 */
     @Test
     public void testFindNoCategories() {
     	
@@ -106,4 +132,44 @@ public class PostServiceTest {
     	
     }
 
+	/**
+	 * Test create post.
+	 *
+	 */
+    @Test
+    public void testCreatePost() {
+    	
+    	User user1 = signUpUser("userName1");
+    	User user2 = signUpUser("userName2");
+
+    	
+		List<Category> listCategory = postService.findAllCategories();
+    	
+    	Post post1 = createPost(user1,listCategory.get(1));
+    	Post post2 = createPost(user2,listCategory.get(2));
+    	
+    	postDao.deleteAll();
+    	postDao.save(post1);
+    	postDao.save(post2);
+    	@SuppressWarnings("deprecation")
+		Post post3 = postDao.getById(post1.getId());
+    	
+        assertEquals(post1.getImages(), post3.getImages());
+        assertEquals(post1.getCategory(), post3.getCategory());
+        assertEquals(post1.getCreationDate(), post3.getCreationDate());
+        assertEquals(post1.getDescription(), post3.getDescription());
+        assertEquals(post1.getId(), post3.getId());
+        assertEquals(post1.getPrice(), post3.getPrice());
+        assertEquals(post1.getTitle(), post3.getTitle());
+        assertEquals(post1.getUrl(), post3.getUrl());
+        assertEquals(post1.getUser(), post3.getUser());
+        
+        assertNotEquals(post1.getUser(), post2.getUser());
+        assertNotEquals(post1.getCategory(), post2.getCategory());
+        
+        assertEquals(post1, post3);
+        assertNotEquals(post1, post2);
+    	
+    }
+    
 }
