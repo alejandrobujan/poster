@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 
-import {BrowserRouter} from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import store from './store';
 
 import backend from './backend';
 
-import {NetworkError} from './backend';
+import { NetworkError } from './backend';
 
 import { App } from "./modules/app";
 import app from './modules/app';
@@ -31,12 +31,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
 	<React.StrictMode>
-        <Provider store={store}>
-             <BrowserRouter>
-                 <App/>
-             </BrowserRouter>
-        </Provider>
-    </React.StrictMode>
+		<Provider store={store}>
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</Provider>
+	</React.StrictMode>
 );
 
 registerServiceWorker();
