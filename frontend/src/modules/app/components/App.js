@@ -13,7 +13,6 @@ const App = () => {
 
         dispatch(users.actions.tryLoginFromServiceToken(
             () => dispatch(users.actions.logout())));
-        dispatch(post.actions.findPosts({page: 0}));
         dispatch(post.actions.findAllCategories());
     });
     
