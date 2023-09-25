@@ -7,8 +7,6 @@ import Footer from './Footer';
 import users from '../../users';
 import post from '../../post';
 
-
-
 const App = () => {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -16,6 +14,7 @@ const App = () => {
         dispatch(users.actions.tryLoginFromServiceToken(
             () => dispatch(users.actions.logout())));
         dispatch(post.actions.findPosts({page: 0}));
+        dispatch(post.actions.findAllCategories());
     });
     
     return(

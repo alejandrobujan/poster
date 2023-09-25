@@ -45,5 +45,5 @@ INSERT INTO Category(name) VALUES ('Comida');
 INSERT INTO Category(name) VALUES ('Motor');
 INSERT INTO Category(name) VALUES ('Hogar');
 INSERT INTO Category(name) VALUES ('Juguetes');
-INSERT INTO Category(name) VALUES ('Tecnología');
+INSERT INTO Category(name) VALUES ('Tecnologia');
 INSERT INTO Category(name) VALUES ('Entretenimiento');
