@@ -238,6 +238,12 @@ public class PostServiceTest {
     	Block <Post> expectedBlock = new Block<>(List.of(post1, post2), true);
         assertEquals(expectedBlock, postService.findAllPosts(0, 2));
         
+        expectedBlock = new Block<>(List.of(post3), false);
+        assertEquals(expectedBlock, postService.findAllPosts(1, 2));
+        
+        expectedBlock = new Block<>(List.of(), false);
+        assertEquals(expectedBlock, postService.findAllPosts(2, 2));
+        
     }
     
     /**
