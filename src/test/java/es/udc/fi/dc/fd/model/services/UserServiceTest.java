@@ -64,6 +64,15 @@ public class UserServiceTest {
 	}
 	
 	/**
+	 * Test login with non existent Id.
+	 */
+	
+	@Test
+	public void testLoginFromNonExistentId() {
+		assertThrows(InstanceNotFoundException.class, () -> userService.loginFromId(NON_EXISTENT_ID));
+	}
+	
+	/**
 	 * Test login.
 	 *
 	 * @throws DuplicateInstanceException the duplicate instance exception
