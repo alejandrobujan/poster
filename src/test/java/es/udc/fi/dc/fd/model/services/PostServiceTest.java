@@ -76,13 +76,14 @@ public class PostServiceTest {
 		Category c2 = createCategory(2,"Motor");
 		Category c3 = createCategory(3,"Hogar");
 		Category c4 = createCategory(4,"Juguetes");
-		Category c5 = createCategory(5,"Tecnología");
+		Category c5 = createCategory(5,"Tecnologia");
 		Category c6 = createCategory(6,"Entretenimiento");
 		List<Category> expectedListCategory = new ArrayList<>();
 		Collections.addAll(expectedListCategory, c1, c2, c3, c4, c5, c6);
 
 		
 		List<Category> listCategory = postService.findAllCategories();
+		
 		
 		assertEquals(expectedListCategory.size(), listCategory.size());
 		
