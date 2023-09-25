@@ -48,6 +48,10 @@ public class PostServiceTest {
     @Autowired
     private UserService userService;
     
+    
+    /** Maximum size for images */
+	private final int MAX_SIZE = 1024001; 
+    
 
 	/**
 	 * Creates the user.
@@ -183,14 +187,28 @@ public class PostServiceTest {
     /**
 	 * Test create post without a category.
      * @throws MaximumImageSizeExceededException 
-	 * @throws InstanceNotFoundException  the instance not found exception
+	 * @throws InstanceNotFoundException the instance not found exception
 	 */
-	
 	@Test
 	public void testCreatePostWithNoCategory() throws MaximumImageSizeExceededException {
 		User user = signUpUser("userName");
 		List<byte[]> list = new ArrayList<byte[]>();
 		assertThrows(InstanceNotFoundException.class, () -> postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(), (long) 10, list));
+	}
+	
+	/**
+	 * Test create post without a category.
+     * @throws MaximumImageSizeExceededException 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	@Test
+	public void testCreatePostMaximumImageSize() throws MaximumImageSizeExceededException {
+		User user = signUpUser("userName");
+		Category category = createCategory(1,"Comida");
+
+		byte[] maxSizeImageBytes = new byte[MAX_SIZE];
+		
+		assertThrows(MaximumImageSizeExceededException.class, () -> postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(), category.getId(), List.of(maxSizeImageBytes)));
 	}
     
 	/**
@@ -219,7 +237,7 @@ public class PostServiceTest {
     	
     	Block <Post> expectedBlock = new Block<>(List.of(post1, post2), true);
         assertEquals(expectedBlock, postService.findAllPosts(0, 2));
-
+        
     }
     
 }

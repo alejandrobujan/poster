@@ -29,6 +29,8 @@ public class UserServiceTest {
 	
 	/** A non existent id */
 	private final Long NON_EXISTENT_ID = (long) -1; 
+    /** Maximum size for images */
+	private final int MAX_SIZE = 1024001; 
 	
 	/** The user service. */
 	@Autowired
@@ -81,6 +83,20 @@ public class UserServiceTest {
 	}
 	
 	/**
+	 * Test sign up with an avatar that exceeds the maximum size.
+	 * @throws MaximumImageSizeExceededException 
+	 * @throws DuplicateInstanceException 
+	 */
+	@Test
+	public void testSignUpWithMaxSizeAvatar() throws DuplicateInstanceException, MaximumImageSizeExceededException {
+		User user = createUser("user");
+		byte[] maxSizeImageBytes = new byte[MAX_SIZE];
+		user.setAvatar(maxSizeImageBytes);
+		
+		assertThrows(MaximumImageSizeExceededException.class, () -> userService.signUp(user));
+	}
+	
+	/**
 	 * Test login with non existent Id.
 	 */
 	
@@ -113,6 +129,7 @@ public class UserServiceTest {
 	 * Test login with an incorrect password.
 	 *
 	 * @throws DuplicateInstanceException the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum size exception
 	 */
 	@Test
 	public void testLoginWithIncorrectPassword() throws DuplicateInstanceException, MaximumImageSizeExceededException {
