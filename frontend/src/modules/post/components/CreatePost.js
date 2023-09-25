@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
+import CategorySelector from './CategorySelector';
 
 import {Errors} from '../../common';
 
@@ -108,15 +109,13 @@ const CreatePost = () => {
                     </div>
                 </div>
                 <div>
-                    <label htmlFor="categoryId">
-                        Category id
+                    <label htmlFor="category">
+                        Category
                     </label>
-                    <div>
-                        <input type="number"
-                               value={categoryId}
-                               onChange={e => setCategoryId(Number(e.target.value))}
-                               autoFocus/>
-                    </div>
+
+                    <CategorySelector id="categoryId" className="custom-select my-1 mr-sm-2"
+                    value={categoryId} onChange={e => setCategoryId(e.target.value)}/>
+
                 </div>
                 <div>
                     <label htmlFor="images">

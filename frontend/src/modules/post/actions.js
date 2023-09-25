@@ -1,5 +1,25 @@
 import backend from '../../backend';
 import * as actionTypes from './actionTypes';
+import * as selectors from './selectors';
+
+const findAllCategoriesCompleted = categories => ({
+    type: actionTypes.FIND_ALL_CATEGORIES_COMPLETED,
+    categories
+}); 
+
+export const findAllCategories = () => (dispatch, getState) => {
+
+    const categories = selectors.getCategories(getState());
+
+    if (!categories) {
+
+        backend.postService.findAllCategories(
+            categories => dispatch(findAllCategoriesCompleted(categories))
+        );
+        
+    }
+
+}
 
 export const createPost = (title, description, url, price, categoryId, images, 
 							onSuccess, onErrors) => dispatch => 
