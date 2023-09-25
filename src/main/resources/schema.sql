@@ -24,7 +24,7 @@ CREATE TABLE Post (
 	title VARCHAR(60) NOT NULL, 
 	description VARCHAR(256) NOT NULL, 
 	url VARCHAR(2048), 
-	price DECIMAL(5,2) NOT NULL, 
+	price DECIMAL(9,2) NOT NULL, 
 	creationDate DATETIME NOT NULL,
 	userId BIGINT NOT NULL, 
 	categoryId BIGINT,
@@ -45,5 +45,5 @@ INSERT INTO Category(name) VALUES ('Comida');
 INSERT INTO Category(name) VALUES ('Motor');
 INSERT INTO Category(name) VALUES ('Hogar');
 INSERT INTO Category(name) VALUES ('Juguetes');
-INSERT INTO Category(name) VALUES ('Tecnologia');
+INSERT INTO Category(name) VALUES ('Tecnología');
 INSERT INTO Category(name) VALUES ('Entretenimiento');
