@@ -5,7 +5,7 @@ import renderer from "react-test-renderer";
 import store from "../../store";
 import {CreatePost} from "../../modules/post";
 
-describe("Logout", () => {
+describe("CreatePost", () => {
 
     it("renders correctly", () => {
 		const tree = renderer
