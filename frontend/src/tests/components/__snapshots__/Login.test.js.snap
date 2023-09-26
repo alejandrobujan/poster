@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login renders correctly 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="card bg-light border-dark m-4"
+  >
+    <h5
+      className="card-header text-center"
+    >
+      Login
+    </h5>
+    <div
+      className="card-body"
+    >
+      <form
+        className="needs-validation"
+        noValidate={true}
+        onSubmit={[Function]}
+      >
+        <div
+          className="form-group row"
+        >
+          <label
+            className="col-md-3 col-form-label"
+            htmlFor="login"
+          >
+            Login
+          </label>
+          <div
+            className="col-md-9"
+          >
+            <input
+              autoFocus={true}
+              className="form-control"
+              id="login"
+              onChange={[Function]}
+              required={true}
+              type="text"
+              value=""
+            />
+            <div
+              className="invalid-feedback"
+            >
+              The login is required
+            </div>
+          </div>
+        </div>
+        <div
+          className="form-group row"
+        >
+          <label
+            className="col-md-3 col-form-label"
+            htmlFor="password"
+          >
+            Password
+          </label>
+          <div
+            className="col-md-9"
+          >
+            <input
+              className="form-control"
+              id="password"
+              onChange={[Function]}
+              required={true}
+              type="password"
+              value=""
+            />
+            <div
+              className="invalid-feedback"
+            >
+              The password is required
+            </div>
+          </div>
+        </div>
+        <div
+          className="text-center"
+        >
+          <button
+            className="btn btn-primary"
+            id="loginButton"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <p
+    className="text-center"
+  >
+    Not registered yet?
+    <br />
+    <a
+      href="/poster/users/signup"
+      onClick={[Function]}
+    >
+      Sign up
+    </a>
+  </p>
+</div>
+`;
