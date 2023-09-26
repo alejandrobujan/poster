@@ -6,7 +6,7 @@
 
 ## Logic Design (Relational Model)
 
-User(**id**, login, password, name, avatar)
+User(**id**, userName, password, firstName, lastName, email, avatar, role)
 
 Category(**id**, name)
 
