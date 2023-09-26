@@ -172,7 +172,7 @@ const SignUp = () => {
 								Last name
 							</label>
 							<div className="col-md-6">
-								<input type="text" id="LastName" className="form-control"
+								<input type="text" id="lastName" className="form-control"
 									value={lastName}
 									onChange={e => setLastName(e.target.value)}
 									required />
