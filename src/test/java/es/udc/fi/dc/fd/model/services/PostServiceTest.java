@@ -235,14 +235,17 @@ public class PostServiceTest {
     	postDao.save(post2);
     	postDao.save(post3);
     	
-    	Block <Post> expectedBlock = new Block<>(List.of(post1, post2), true);
+        Block <Post> expectedBlock = new Block<>(List.of(post1, post2), true);
         assertEquals(expectedBlock, postService.findAllPosts(0, 2));
         
-        expectedBlock = new Block<>(List.of(post3), false);
+    	expectedBlock = new Block<>(List.of(post1, post2, post3), false);
+        assertEquals(expectedBlock, postService.findAllPosts(0, 3));
+        
+        expectedBlock = new Block<>(List.of(post1), false);
         assertEquals(expectedBlock, postService.findAllPosts(1, 2));
         
         expectedBlock = new Block<>(List.of(), false);
-        assertEquals(expectedBlock, postService.findAllPosts(2, 2));
+        assertEquals(expectedBlock, postService.findAllPosts(3, 1));
         
     }
     
