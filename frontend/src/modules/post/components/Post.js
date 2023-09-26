@@ -9,7 +9,7 @@ const Post = ({ title, description, url, price, categoryDto, images }) => {
 				<div className="card-body p-4">
 					<div className="text-center">
 						<div className="fw-bolder pb-2">
-							{categoryDto.name}
+							{categoryDto.name ? categoryDto.name : 'Uncategorized'}
 						</div>
 						<div className="border-top pt-4">
 							{images.length === 0 ?

@@ -17,7 +17,7 @@ const CreatePost = () => {
 	const [description, setDescription] = useState('');
 	const [url, setUrl] = useState('');
 	const [price, setPrice] = useState(0);
-	const [categoryId, setCategoryId] = useState("1");
+	const [categoryId, setCategoryId] = useState('');
 	const [images, setImages] = useState([]);
 	const [backendErrors, setBackendErrors] = useState(null);
 
@@ -30,7 +30,7 @@ const CreatePost = () => {
 		if (form.checkValidity()) {
 			dispatch(actions.createPost(
 				title, description, url,
-				price, categoryId, images, () => navigate('/poster')
+				price, categoryId !== '' ? categoryId : null, images, () => navigate('/poster')
 			));
 		} else {
 			setBackendErrors(null);
