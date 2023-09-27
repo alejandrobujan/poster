@@ -3,6 +3,7 @@
 ## Documentation
 
 - [Model Documentation](doc/model.md)
+- [REST Documentation](doc/rest.md)
 
 ## Starting 🚀
 
