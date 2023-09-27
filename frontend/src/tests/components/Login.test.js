@@ -23,4 +23,26 @@ describe("Login", () => {
 		expect(tree).toMatchSnapshot();
 	});
 
+	it("login incorrectly fields required", async () => {
+
+
+		const history = createMemoryHistory();
+
+		render(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Login/>
+				</MemoryRouter>
+			</Provider>
+		);
+
+        const submit = screen.getByRole('button', {name: /submit/i});
+
+        fireEvent.click(submit);
+
+		expect(screen.getByText(/the login is required/i));
+		expect(screen.getByText(/the password is required/i));
+
+	});
+
 });
