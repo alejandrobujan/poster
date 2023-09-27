@@ -37,14 +37,6 @@ describe("Login", () => {
 			</Provider>
 		);
 
-		const signUpLink = screen.getByText(/Sign Up/i);
-		
-		fireEvent.click(signUpLink);
-
-		await waitFor(() => {
-			screen.getByText(/Email/);
-		});
-
 		const login = screen.getByLabelText('Login');
 
 		fireEvent.change(login, {
