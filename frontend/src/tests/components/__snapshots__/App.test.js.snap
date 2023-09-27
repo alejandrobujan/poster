@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App renders correctly 1`] = `
+<div>
+  <nav
+    className="navbar navbar-expand-lg navbar-light bg-light border"
+  >
+    <a
+      className="navbar-brand"
+      href="/poster"
+      onClick={[Function]}
+    >
+      <img
+        height="50px"
+        src="/poster/assets/logo.png"
+      />
+    </a>
+    <button
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      className="navbar-toggler"
+      data-target="#navbarSupportedContent"
+      data-toggle="collapse"
+      type="button"
+    >
+      <span
+        className="navbar-toggler-icon"
+      />
+    </button>
+    <div
+      className="collapse navbar-collapse"
+      id="navbarSupportedContent"
+    >
+      <ul
+        className="navbar-nav mr-auto"
+      />
+      <ul
+        className="navbar-nav"
+      >
+        <li
+          className="nav-item"
+        >
+          <a
+            className="nav-link"
+            href="/poster/users/login"
+            id="loginLink"
+            onClick={[Function]}
+          >
+            Login
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div
+    style={
+      Object {
+        "marginBottom": "100px",
+      }
+    }
+  />
+  <div
+    className="fixed-bottom bg-light border-top pt-3"
+  >
+    <footer>
+      <p
+        className="text-center"
+      >
+        © 2023 Poster Group - Development Tools - University of A Coruña
+      </p>
+    </footer>
+  </div>
+</div>
+`;
