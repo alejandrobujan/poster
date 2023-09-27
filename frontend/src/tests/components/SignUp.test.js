@@ -78,4 +78,29 @@ describe("SignUp", () => {
 
 	});
 
+	it("registers incorrectly fields required", async () => {
+
+
+		const history = createMemoryHistory();
+
+		render(
+			<Provider store={store}>
+				<MemoryRouter>
+					<SignUp/>
+				</MemoryRouter>
+			</Provider>
+		);
+
+        const submit = screen.getByRole('button', {name: /submit/i});
+
+        fireEvent.click(submit);
+
+		expect(screen.getByText(/the login is required/i));
+		expect(screen.getByText(/the email is required/i));
+		expect(screen.getByText(/the password is required/i));
+		expect(screen.getByText(/the first name is required/i));
+		expect(screen.getByText(/the last name is required/i));
+
+	});
+
 });
