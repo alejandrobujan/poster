@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import {Provider} from 'react-redux';
 import renderer from "react-test-renderer";
 import store from "../../store";
-import { Login, Logout, SignUp } from "../../modules/users";
+import { Login } from "../../modules/users";
 
 import {createMemoryHistory} from 'history';
 
