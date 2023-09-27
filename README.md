@@ -1,4 +1,4 @@
-# Poster
+# ![Poster](doc/img/logo.png)
 
 ## Documentation
 
