@@ -2,7 +2,7 @@
 
 ## Documentation
 
-- [Backend Documentation](doc/backend.md)
+- [Model Documentation](doc/model.md)
 
 ## Starting 🚀
 
