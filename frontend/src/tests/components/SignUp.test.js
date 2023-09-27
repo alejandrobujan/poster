@@ -103,4 +103,67 @@ describe("SignUp", () => {
 
 	});
 
+	it("registers incorrectly password confirmation", async () => {
+
+
+		const history = createMemoryHistory();
+
+		render(
+			<Provider store={store}>
+				<MemoryRouter>
+					<SignUp/>
+				</MemoryRouter>
+			</Provider>
+		);
+
+
+		const login = screen.getByLabelText('Login');
+
+        fireEvent.change(login, {
+			target: { value: "Pepe" },
+		});
+
+        const email = screen.getByLabelText('Email');
+
+        fireEvent.change(email, {
+			target: { value: "Pepe@pepe.com" },
+		});
+
+        const password = screen.getByLabelText('Password');
+
+        fireEvent.change(password, {
+			target: { value: "Pepe" },
+		});
+
+        const firstName = screen.getByLabelText('First name');
+
+        fireEvent.change(firstName, {
+			target: { value: "Pepe" },
+		});
+
+        const lastName = screen.getByLabelText('Last name');
+
+        fireEvent.change(lastName, {
+			target: { value: "Pepe" },
+		});
+
+        const submit = screen.getByRole('button', {name: /submit/i});
+
+        fireEvent.click(submit);
+
+		expect(screen.getByText(/the password confirmation is required/i));
+		
+
+		const confirmPassword = screen.getByLabelText('Confirm password');
+
+        fireEvent.change(confirmPassword, {
+			target: { value: "Pepa" },
+		});
+
+		fireEvent.click(submit);
+
+		expect(screen.getByText("The passwords don't match"));
+
+	});
+
 });
