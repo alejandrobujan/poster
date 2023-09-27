@@ -1,0 +1,197 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreatePost renders correctly 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="card bg-light border-dark m-4"
+  >
+    <h5
+      className="card-header text-center"
+    >
+      Create post
+    </h5>
+    <div
+      className="card-body"
+    >
+      <form
+        className="needs-validation"
+        noValidate={true}
+        onSubmit={[Function]}
+      >
+        <div
+          className="form-group row"
+        >
+          <label
+            className="col-md-3 col-form-label"
+            htmlFor="title"
+          >
+            Title
+          </label>
+          <div
+            className="col-md-9"
+          >
+            <input
+              autoFocus={true}
+              className="form-control"
+              maxLength={60}
+              minLength={1}
+              onChange={[Function]}
+              required={true}
+              type="text"
+              value=""
+            />
+            <div
+              className="invalid-feedback"
+            >
+              The title size must be between 1 and 60
+            </div>
+          </div>
+        </div>
+        <div
+          className="form-group row"
+        >
+          <label
+            className="col-md-3 col-form-label"
+            htmlFor="description"
+          >
+            Description
+          </label>
+          <div
+            className="col-md-9"
+          >
+            <textarea
+              className="form-control"
+              maxLength={256}
+              minLength={1}
+              onChange={[Function]}
+              required={true}
+              value=""
+            />
+            <div
+              className="invalid-feedback"
+            >
+              The description size must be between 1 and 256
+            </div>
+          </div>
+        </div>
+        <div
+          className="form-group row"
+        >
+          <label
+            className="col-md-3 col-form-label"
+            htmlFor="url"
+          >
+            Url
+          </label>
+          <div
+            className="col-md-9"
+          >
+            <input
+              className="form-control"
+              maxLength={2048}
+              minLength={0}
+              onChange={[Function]}
+              type="text"
+              value=""
+            />
+            <div
+              className="invalid-feedback"
+            >
+              The url size must be between 0 and 2048
+            </div>
+          </div>
+        </div>
+        <div
+          className="form-group row"
+        >
+          <label
+            className="col-md-3 col-form-label"
+            htmlFor="price"
+          >
+            Price
+          </label>
+          <div
+            className="col-md-3"
+          >
+            <input
+              className="form-control"
+              max="9999999.99"
+              min="0.00"
+              onChange={[Function]}
+              required={true}
+              step="0.01"
+              type="number"
+              value={0}
+            />
+            <div
+              className="invalid-feedback"
+            >
+              Price must be between 0 and 9999999.99
+            </div>
+          </div>
+          <label
+            className="col-md-3 col-form-label"
+            htmlFor="category"
+          >
+            Category
+          </label>
+          <div
+            className="col-md-3"
+          >
+            <select
+              className="form-control"
+              id="categoryId"
+              onChange={[Function]}
+              value=""
+            >
+              <option
+                style={
+                  Object {
+                    "color": "gray",
+                    "fontStyle": "italic",
+                  }
+                }
+                value=""
+              >
+                Select
+              </option>
+            </select>
+          </div>
+        </div>
+        <div
+          className="form-group row"
+        >
+          <label
+            className="col-md-3 col-form-label"
+            htmlFor="images"
+          >
+            Images
+          </label>
+          <div
+            className="col-md-9"
+          >
+            <input
+              accept="image/*"
+              multiple={true}
+              onChange={[Function]}
+              type="file"
+            />
+          </div>
+        </div>
+        <div
+          className="text-center"
+        >
+          <button
+            className="btn btn-primary"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;

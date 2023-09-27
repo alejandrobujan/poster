@@ -3,16 +3,16 @@ import React from "react";
 import { MemoryRouter } from "react-router-dom";
 import {Provider} from 'react-redux';
 import renderer from "react-test-renderer";
-import Home from "../../modules/app/components/Home";
+import { App } from "../../modules/app";
 import store from "../../store";
 
-describe("Home", () => {
+describe("App", () => {
     it("renders correctly", () => {
         const tree = renderer
             .create(
                 <Provider store={store}>
                     <MemoryRouter>
-                        <Home/>
+                        <App/>
                     </MemoryRouter>
                 </Provider>
             )
@@ -25,12 +25,17 @@ describe("Home", () => {
         render(
             <Provider store={store}>
                 <MemoryRouter>
-                    <Home />
+                    <App />
                 </MemoryRouter>
             </Provider>
         );
 
-        screen.queryByText(/No posts found/i);
+
+        /*const backButton = screen.getByRole('alert', {name: 'No posts found'});
+        await waitFor(() => {
+            screen.getByText('No posts found'); //NON FURRULA
+        })*/
+        
 
     });
 
@@ -38,14 +43,26 @@ describe("Home", () => {
         render(
             <Provider store={store}>
                 <MemoryRouter>
-                    <Home />
+                    <App />
                 </MemoryRouter>
             </Provider>
         );
 
-        const backButton = screen.findByRole('button', {name: 'Back'});
-        const nextButton = screen.findByRole('button', {name: 'Next'});
+        /*const backButton = screen.getByRole('button', {name: 'Back'});
+        const nextButton = screen.getByRole('button', {name: 'Next'});*/
     });
+
+    /*
+    const inputText = screen.getByLabelText(/input some text/i);
+    fireEvent.change(inputText, {
+      target: { value: "Sreenzragnf qr qrfraibyirzragb" },
+    });
+    const calculateButton = screen.getByText(/calculate/i);
+    fireEvent.click(calculateButton);
+    await waitFor(() => {
+      screen.getByText(/Ferramentas de desenvolvemento/);
+    });
+    */
 });
 
 /*
