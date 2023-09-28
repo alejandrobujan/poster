@@ -112,7 +112,7 @@ public class PostControllerTest {
 	}
 	
 	/**
-	 * Test post login ok.
+	 * Test post Create Post ok.
 	 *
 	 * @throws Exception the exception
 	 */
@@ -136,6 +136,32 @@ public class PostControllerTest {
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
 				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(PostParams)))
 				.andExpect(status().isNoContent());
+
+	}
+	
+	/**
+	 * Test post Create Post ok.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPostCreatePost_NotOk() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+		
+		PostParamsDto PostParams = new PostParamsDto();
+		PostParams.setCategoryId(1L);
+		PostParams.setDescription("Tarta de Santiago");
+		PostParams.setImages(null);
+		PostParams.setPrice(new BigDecimal(10));
+		PostParams.setTitle("Tarta de Santiago");
+		PostParams.setUrl("http://poster.com");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(PostParams)))
+				.andExpect(status().isBadRequest());
 
 	}
 }
