@@ -7,8 +7,6 @@ import store from "../../store";
 import {CreatePost} from "../../modules/post";
 import '@testing-library/jest-dom'
 
-import {createMemoryHistory} from 'history';
-
 describe("CreatePost", () => {
 
     it("renders correctly", () => {
@@ -25,9 +23,6 @@ describe("CreatePost", () => {
 	});
 
 	it("try to post correctly", async () => {
-
-
-		const history = createMemoryHistory();
 
 		render(
 			<Provider store={store}>
@@ -68,9 +63,6 @@ describe("CreatePost", () => {
 	});
 
 	it("try to post incorrect quantity", async () => {
-
-
-		const history = createMemoryHistory();
 
 		render(
 			<Provider store={store}>
@@ -117,8 +109,6 @@ describe("CreatePost", () => {
 	});
 
 	it("try to post incorrect title and description", async () => {
-
-		const history = createMemoryHistory();
 
 		render(
 			<Provider store={store}>
