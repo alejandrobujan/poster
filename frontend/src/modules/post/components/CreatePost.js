@@ -32,7 +32,7 @@ const CreatePost = () => {
 		if (form.checkValidity()) {
 			dispatch(actions.createPost(
 				title, description, url,
-				price, categoryId !== '' ? categoryId : null, images, () => navigate('/poster')
+				price, categoryId !== '' ? categoryId : null, images, () => navigate('/')
 			));
 		} else {
 			setBackendErrors(null);

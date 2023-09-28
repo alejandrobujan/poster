@@ -41,10 +41,10 @@ const SignUp = () => {
 					email: email.trim(),
 					avatar: avatar
 				},
-				() => navigate('/poster'),
+				() => navigate('/'),
 				errors => setBackendErrors(errors),
 				() => {
-					navigate('/poster/users/login');
+					navigate('/users/login');
 					dispatch(actions.logout());
 				}
 			));

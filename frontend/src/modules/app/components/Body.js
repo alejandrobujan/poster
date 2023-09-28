@@ -16,12 +16,12 @@ const Body = () => {
   return (
     <div style={{"marginBottom": "100px"}}>
 	    <Routes>
-	       <Route path="/poster/*" element={<Home />} />
-	       <Route path="/poster/test" element={<Test />} />
-	       {loggedIn && <Route path="/poster/users/logout" element={<Logout/>}/>}
-	       {!loggedIn && <Route path="/poster/users/login" element={<Login/>}/>}
-	       {!loggedIn && <Route path="/poster/users/signup" element={<SignUp/>}/>}
-	       {loggedIn && <Route path="/poster/post/create-post" element={<CreatePost/>}/>}
+	       <Route path="/*" element={<Home />} />
+	       <Route path="/test" element={<Test />} />
+	       {loggedIn && <Route path="/users/logout" element={<Logout/>}/>}
+	       {!loggedIn && <Route path="/users/login" element={<Login/>}/>}
+	       {!loggedIn && <Route path="/users/signup" element={<SignUp/>}/>}
+	       {loggedIn && <Route path="/post/create-post" element={<CreatePost/>}/>}
 	    </Routes>
 	</div>    
   );

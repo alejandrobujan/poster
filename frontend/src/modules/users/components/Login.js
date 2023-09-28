@@ -26,10 +26,10 @@ const Login = () => {
 			dispatch(actions.login(
 				login.trim(),
 				password,
-				() => navigate('/poster'),
+				() => navigate('/'),
 				errors => setBackendErrors(errors),
 				() => {
-					navigate('/poster/users/login');
+					navigate('/users/login');
 					dispatch(actions.logout());
 				}
 			));
@@ -92,7 +92,7 @@ const Login = () => {
 			<p className="text-center">
 				Not registered yet?
 				<br />
-				<Link to="/poster/users/signup">
+				<Link to="/users/signup">
 					Sign up
 				</Link>
 			</p>
