@@ -67,4 +67,53 @@ describe("CreatePost", () => {
 
 	});
 
+	it("try to post incorrect quantity", async () => {
+
+
+		const history = createMemoryHistory();
+
+		render(
+			<Provider store={store}>
+				<MemoryRouter>
+					<CreatePost/>
+				</MemoryRouter>
+			</Provider>
+		);
+
+		const title = screen.getByLabelText('Title');
+
+        fireEvent.change(title, {
+			target: { value: "Porsche cayenne" },
+		});
+
+		const description = screen.getByLabelText('Description');
+
+        fireEvent.change(description, {
+			target: { value: "The ideal car for you. Perfect for everything and for everyone." },
+		});
+
+		const url = screen.getByLabelText('Url');
+
+        fireEvent.change(url, {
+			target: { value: "https://www.porsche.com/international/models/cayenne/cayenne-models/cayenne/" },
+		});
+
+        const submit = screen.getByRole('button', {name: /submit/i});
+
+        fireEvent.click(submit);
+
+		expect(screen.getByText(/Price must be between 0 and 9999999.99/i));
+
+		const price = screen.getByLabelText('Price');
+
+        fireEvent.change(price, {
+			target: { value: "55000000.05" },
+		});
+
+        fireEvent.click(submit);
+
+		expect(screen.getByText(/Price must be between 0 and 9999999.99/i))
+
+	});
+
 });
