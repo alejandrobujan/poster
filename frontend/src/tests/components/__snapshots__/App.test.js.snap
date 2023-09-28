@@ -7,7 +7,7 @@ exports[`App renders correctly 1`] = `
   >
     <a
       className="navbar-brand"
-      href="/poster"
+      href="/"
       onClick={[Function]}
     >
       <img
@@ -44,7 +44,7 @@ exports[`App renders correctly 1`] = `
         >
           <a
             className="nav-link"
-            href="/poster/users/login"
+            href="/users/login"
             id="loginLink"
             onClick={[Function]}
           >
@@ -60,7 +60,11 @@ exports[`App renders correctly 1`] = `
         "marginBottom": "100px",
       }
     }
-  />
+  >
+    <div
+      className="text-center"
+    />
+  </div>
   <div
     className="fixed-bottom bg-light border-top pt-3"
   >

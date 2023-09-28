@@ -95,7 +95,7 @@ exports[`Login renders correctly 1`] = `
     Not registered yet?
     <br />
     <a
-      href="/poster/users/signup"
+      href="/users/signup"
       onClick={[Function]}
     >
       Sign up
