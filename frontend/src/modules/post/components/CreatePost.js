@@ -54,8 +54,8 @@ const CreatePost = () => {
 			setImages([]);
 			imagesInput.setCustomValidity(files.length !== 0 ? 'error' : '');
 		}
-		
-		
+
+
 
 	}
 
@@ -138,14 +138,18 @@ const CreatePost = () => {
 								Price
 							</label>
 							<div className="col-md-3">
-								<input type="number"
-									id="price"
-									className="form-control"
-									value={price}
-									onChange={e => setPrice(Number(e.target.value))}
-									step="0.01" min="0.00" max="9999999.99"
-									required
-								/>
+								<div class="input-group">
+									<input type="number"
+										id="price"
+										className="form-control"
+										value={price}
+										onChange={e => setPrice(Number(e.target.value))}
+										step="0.01" min="0.00" max="9999999.99"
+										required
+									/>
+									<span class="input-group-text">€</span>
+								</div>
+
 								<div className="invalid-feedback">
 									Price must be between 0 and 9999999.99
 								</div>

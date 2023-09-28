@@ -30,3 +30,7 @@
     transform: rotate(360deg);
   }
 }
+
+.post-price {
+	font-size : 1.5rem;
+}
