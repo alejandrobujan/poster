@@ -23,6 +23,37 @@ describe("Login", () => {
 		expect(tree).toMatchSnapshot();
 	});
 
+	it("try to login", async () => {
+
+
+		const history = createMemoryHistory();
+
+		render(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Login/>
+				</MemoryRouter>
+			</Provider>
+		);
+
+		const login = screen.getByLabelText('Login');
+
+        fireEvent.change(login, {
+			target: { value: "Pepe" },
+		});
+
+		const password = screen.getByLabelText('Password');
+
+        fireEvent.change(password, {
+			target: { value: "Pepe" },
+		});
+
+        const submit = screen.getByRole('button', {name: /submit/i});
+
+        fireEvent.click(submit);
+
+	});
+
 	it("login incorrectly fields required", async () => {
 
 
