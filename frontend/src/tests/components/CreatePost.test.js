@@ -116,4 +116,43 @@ describe("CreatePost", () => {
 
 	});
 
+	it("try to post incorrect title", async () => {
+
+
+		const history = createMemoryHistory();
+
+		render(
+			<Provider store={store}>
+				<MemoryRouter>
+					<CreatePost/>
+				</MemoryRouter>
+			</Provider>
+		);
+
+		const description = screen.getByLabelText('Description');
+
+        fireEvent.change(description, {
+			target: { value: "The ideal car for you. Perfect for everything and for everyone." },
+		});
+
+		const url = screen.getByLabelText('Url');
+
+        fireEvent.change(url, {
+			target: { value: "https://www.porsche.com/international/models/cayenne/cayenne-models/cayenne/" },
+		});
+
+		const price = screen.getByLabelText('Price');
+
+        fireEvent.change(price, {
+			target: { value: "55000.05" },
+		});
+
+        const submit = screen.getByRole('button', {name: /submit/i});
+
+        fireEvent.click(submit);
+
+		expect(screen.getByText(/The title size must be between 1 and 60/i));
+	});
+
+
 });
