@@ -101,4 +101,26 @@ public class UserControllerTest {
 				.andExpect(status().isOk());
 
 	}
+	
+	/**
+	 * Test post login ok.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPostLogin_NotOk() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+
+		LoginParamsDto loginParams = new LoginParamsDto();
+		loginParams.setUserName("Dani");
+		loginParams.setPassword(PASSWORD);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/users/login").header("Authorization", "Bearer " + user.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(loginParams)))
+				.andExpect(status().isNotFound());
+
+	}
 }

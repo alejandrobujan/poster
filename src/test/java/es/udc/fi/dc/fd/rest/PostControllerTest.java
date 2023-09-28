@@ -140,7 +140,7 @@ public class PostControllerTest {
 	}
 	
 	/**
-	 * Test post Create Post ok.
+	 * Test post Create Post Not ok.
 	 *
 	 * @throws Exception the exception
 	 */
