@@ -24,7 +24,7 @@ describe("CreatePost", () => {
 		expect(tree).toMatchSnapshot();
 	});
 
-	/*it("try to post correctly", async () => {
+	it("try to post correctly", async () => {
 
 
 		const history = createMemoryHistory();
@@ -65,6 +65,6 @@ describe("CreatePost", () => {
 
         fireEvent.click(submit);
 
-	});*/
+	});
 
 });
