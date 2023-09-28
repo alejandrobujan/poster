@@ -3,6 +3,8 @@ package es.udc.fi.dc.fd.rest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
+import es.udc.fi.dc.fd.rest.dtos.UserDto;
 
 /**
  * The Class UserControllerTest.
@@ -121,6 +124,55 @@ public class UserControllerTest {
 		mockMvc.perform(post("/api/users/login").header("Authorization", "Bearer " + user.getServiceToken())
 				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(loginParams)))
 				.andExpect(status().isNotFound());
+
+	}
+	
+	/**
+	 * Test post sign up ok.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPostSignUp_Ok() throws Exception {
+		
+		byte avatar[] = new byte[] {50};
+		UserDto userParams = new UserDto();
+		userParams.setAvatar(avatar);
+		userParams.setEmail("d.jueguen@udc.es");
+		userParams.setFirstName("Dani");
+		userParams.setLastName("Jueguen");
+		userParams.setPassword("passwd");
+		userParams.setUserName("DaniJueguen");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/users/signUp")
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(userParams)))
+				.andExpect(status().isCreated());
+
+	}
+	
+	/**
+	 * Test post sign up ok.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPostSignUp_NotOk() throws Exception {
+		
+		byte avatar[] = new byte[] {50};
+		UserDto userParams = new UserDto();
+		userParams.setAvatar(avatar);
+		userParams.setEmail("d.jueguen@udc.es");
+		userParams.setFirstName("Dani");
+		userParams.setLastName("Jueguen");
+		userParams.setUserName("DaniJueguen");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/users/signUp")
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(userParams)))
+				.andExpect(status().isBadRequest());
 
 	}
 }
