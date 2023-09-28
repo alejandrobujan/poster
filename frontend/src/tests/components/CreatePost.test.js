@@ -116,8 +116,7 @@ describe("CreatePost", () => {
 
 	});
 
-	it("try to post incorrect title", async () => {
-
+	it("try to post incorrect title and description", async () => {
 
 		const history = createMemoryHistory();
 
@@ -128,12 +127,6 @@ describe("CreatePost", () => {
 				</MemoryRouter>
 			</Provider>
 		);
-
-		const description = screen.getByLabelText('Description');
-
-        fireEvent.change(description, {
-			target: { value: "The ideal car for you. Perfect for everything and for everyone." },
-		});
 
 		const url = screen.getByLabelText('Url');
 
@@ -152,6 +145,7 @@ describe("CreatePost", () => {
         fireEvent.click(submit);
 
 		expect(screen.getByText(/The title size must be between 1 and 60/i));
+		expect(screen.getByText(/The description size must be between 1 and 256/i));
 	});
 
 
