@@ -35,6 +35,7 @@ exports[`CreatePost renders correctly 1`] = `
             <input
               autoFocus={true}
               className="form-control"
+              id="title"
               maxLength={60}
               minLength={1}
               onChange={[Function]}
@@ -63,6 +64,7 @@ exports[`CreatePost renders correctly 1`] = `
           >
             <textarea
               className="form-control"
+              id="description"
               maxLength={256}
               minLength={1}
               onChange={[Function]}
@@ -90,6 +92,7 @@ exports[`CreatePost renders correctly 1`] = `
           >
             <input
               className="form-control"
+              id="url"
               maxLength={2048}
               minLength={0}
               onChange={[Function]}
@@ -117,6 +120,7 @@ exports[`CreatePost renders correctly 1`] = `
           >
             <input
               className="form-control"
+              id="price"
               max="9999999.99"
               min="0.00"
               onChange={[Function]}
@@ -133,7 +137,7 @@ exports[`CreatePost renders correctly 1`] = `
           </div>
           <label
             className="col-md-3 col-form-label"
-            htmlFor="category"
+            htmlFor="categoryId"
           >
             Category
           </label>
@@ -174,6 +178,7 @@ exports[`CreatePost renders correctly 1`] = `
           >
             <input
               accept="image/*"
+              id="images"
               multiple={true}
               onChange={[Function]}
               type="file"
