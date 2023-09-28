@@ -36,7 +36,7 @@ const Header = () => {
                     <li className="nav-item dropdown">
 
                         <a id="userNameLink" className="dropdown-toggle nav-link"
-                            data-toggle="dropdown">
+                            data-toggle="dropdown" href='#'>
                             <img src={avatar ? `data:image/*;base64,${avatar}` : "/poster/assets/profile.png"} alt="Avatar" height="30px" width="30px"/>&nbsp;
                             {userName}
                         </a>
