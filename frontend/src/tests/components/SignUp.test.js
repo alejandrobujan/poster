@@ -7,8 +7,6 @@ import store from "../../store";
 import { SignUp } from "../../modules/users";
 import '@testing-library/jest-dom'
 
-import {createMemoryHistory} from 'history';
-
 describe("SignUp", () => {
 	it("renders correctly", () => {
 		const tree = renderer
@@ -24,9 +22,6 @@ describe("SignUp", () => {
 	});
 
 	it("registers correctly", async () => {
-
-
-		const history = createMemoryHistory();
 
 		render(
 			<Provider store={store}>
@@ -80,9 +75,6 @@ describe("SignUp", () => {
 
 	it("registers incorrectly fields required", async () => {
 
-
-		const history = createMemoryHistory();
-
 		render(
 			<Provider store={store}>
 				<MemoryRouter>
@@ -104,9 +96,6 @@ describe("SignUp", () => {
 	});
 
 	it("registers incorrectly password confirmation", async () => {
-
-
-		const history = createMemoryHistory();
 
 		render(
 			<Provider store={store}>
