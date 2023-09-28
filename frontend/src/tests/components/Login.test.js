@@ -6,8 +6,6 @@ import renderer from "react-test-renderer";
 import store from "../../store";
 import { Login } from "../../modules/users";
 
-import {createMemoryHistory} from 'history';
-
 describe("Login", () => {
 
     it("renders correctly", () => {
@@ -24,9 +22,6 @@ describe("Login", () => {
 	});
 
 	it("try to login", async () => {
-
-
-		const history = createMemoryHistory();
 
 		render(
 			<Provider store={store}>
@@ -55,9 +50,6 @@ describe("Login", () => {
 	});
 
 	it("login incorrectly fields required", async () => {
-
-
-		const history = createMemoryHistory();
 
 		render(
 			<Provider store={store}>
