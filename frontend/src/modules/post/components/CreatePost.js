@@ -84,6 +84,7 @@ const CreatePost = () => {
 							</label>
 							<div className="col-md-9">
 								<input type="text"
+									id="title"
 									className="form-control"
 									value={title}
 									onChange={e => setTitle(e.target.value)}
@@ -102,6 +103,7 @@ const CreatePost = () => {
 							</label>
 							<div className="col-md-9">
 								<textarea
+									id="description"
 									className="form-control"
 									value={description}
 									onChange={e => setDescription(e.target.value)}
@@ -119,6 +121,7 @@ const CreatePost = () => {
 							</label>
 							<div className="col-md-9">
 								<input type="text"
+									id="url"
 									className="form-control"
 									value={url}
 									onChange={e => setUrl(e.target.value)}
@@ -136,6 +139,7 @@ const CreatePost = () => {
 							</label>
 							<div className="col-md-3">
 								<input type="number"
+									id="price"
 									className="form-control"
 									value={price}
 									onChange={e => setPrice(Number(e.target.value))}
@@ -146,7 +150,7 @@ const CreatePost = () => {
 									Price must be between 0 and 9999999.99
 								</div>
 							</div>
-							<label htmlFor="category" className="col-md-3 col-form-label">
+							<label htmlFor="categoryId" className="col-md-3 col-form-label">
 								Category
 							</label>
 							<div className="col-md-3">
@@ -160,6 +164,7 @@ const CreatePost = () => {
 							</label>
 							<div className="col-md-9">
 								<input ref={node => imagesInput = node} type="file"
+									id="images"
 									accept="image/*"
 									onChange={handleImagesChange}
 									multiple />
