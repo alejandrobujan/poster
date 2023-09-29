@@ -114,7 +114,7 @@ public class UserController {
 	@PostMapping("/signUp")
 	public ResponseEntity<AuthenticatedUserDto> signUp(
 			@Validated({ UserDto.AllValidations.class }) @RequestBody UserDto userDto)
-			throws DuplicateInstanceException, MaximumImageSizeExceededException, HttpMessageNotReadableException {
+			throws DuplicateInstanceException, MaximumImageSizeExceededException {
 
 		User user = toUser(userDto);
 
