@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,11 +28,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.User;
+import es.udc.fi.dc.fd.model.services.UserService;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
-import es.udc.fi.dc.fd.model.services.UserService;
 import es.udc.fi.dc.fd.rest.common.ErrorsDto;
 import es.udc.fi.dc.fd.rest.common.JwtGenerator;
 import es.udc.fi.dc.fd.rest.common.JwtInfo;
@@ -113,7 +114,7 @@ public class UserController {
 	@PostMapping("/signUp")
 	public ResponseEntity<AuthenticatedUserDto> signUp(
 			@Validated({ UserDto.AllValidations.class }) @RequestBody UserDto userDto)
-			throws DuplicateInstanceException, MaximumImageSizeExceededException {
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, HttpMessageNotReadableException {
 
 		User user = toUser(userDto);
 
