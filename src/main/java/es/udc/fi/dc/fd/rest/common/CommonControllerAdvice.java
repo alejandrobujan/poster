@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,6 +38,9 @@ public class CommonControllerAdvice {
 	/** The Constant MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE. */
 	private static final String MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE = "project.exceptions.MaximumImageSizeExceededException";
 
+	/** The Constant HTTP_MESSAGE_NOT_READABLE_EXCEPTION. */
+    private static final String HTTP_MESSAGE_NOT_READABLE_EXCEPTION = "project.exceptions.HttpMessageNotReadableException";
+	
 	/** The message source. */
 	@Autowired
 	private MessageSource messageSource;
@@ -154,5 +158,20 @@ public class CommonControllerAdvice {
 
 		return new ErrorsDto(errorMessage);
 	}
+	
+	/**
+	* Handle http message not readable exception.*
+	* @param exception the exception
+	* @param locale    the locale
+	* @return the errors dto
+	*/
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorsDto handleHttpMessageNotReadableException(HttpMessageNotReadableException exception, Locale locale) {
+	    String errorMessage = messageSource.getMessage(HTTP_MESSAGE_NOT_READABLE_EXCEPTION, null, HTTP_MESSAGE_NOT_READABLE_EXCEPTION, locale);
+
+	        return new ErrorsDto(errorMessage);
+	    }
 
 }
