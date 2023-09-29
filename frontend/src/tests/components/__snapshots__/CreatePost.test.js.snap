@@ -118,17 +118,26 @@ exports[`CreatePost renders correctly 1`] = `
           <div
             className="col-md-3"
           >
-            <input
-              className="form-control"
-              id="price"
-              max="9999999.99"
-              min="0.00"
-              onChange={[Function]}
-              required={true}
-              step="0.01"
-              type="number"
-              value={0}
-            />
+            <div
+              class="input-group"
+            >
+              <input
+                className="form-control"
+                id="price"
+                max="9999999.99"
+                min="0.00"
+                onChange={[Function]}
+                required={true}
+                step="0.01"
+                type="number"
+                value={0}
+              />
+              <span
+                class="input-group-text"
+              >
+                €
+              </span>
+            </div>
             <div
               className="invalid-feedback"
             >
