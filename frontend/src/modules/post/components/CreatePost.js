@@ -64,6 +64,7 @@ const CreatePost = () => {
 		imagesInput.value = '';
 		imagesInput.setCustomValidity('');
 		clearImages.style.display = 'none';
+		setImages([]);
 
 	}
 
