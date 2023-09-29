@@ -27,11 +27,6 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class UserServiceTest {
 	
-	/** A non existent id */
-	private final Long NON_EXISTENT_ID = (long) -1; 
-    /** Maximum size for images */
-	private final int MAX_SIZE = 1024001; 
-	
 	/** The user service. */
 	@Autowired
 	private UserService userService;
@@ -90,7 +85,7 @@ public class UserServiceTest {
 	@Test
 	public void testSignUpWithMaxSizeAvatar() throws DuplicateInstanceException, MaximumImageSizeExceededException {
 		User user = createUser("user");
-		byte[] maxSizeImageBytes = new byte[MAX_SIZE];
+		byte[] maxSizeImageBytes = new byte[1024001];
 		user.setAvatar(maxSizeImageBytes);
 		
 		assertThrows(MaximumImageSizeExceededException.class, () -> userService.signUp(user));
@@ -102,7 +97,9 @@ public class UserServiceTest {
 	
 	@Test
 	public void testLoginFromNonExistentId() {
-		assertThrows(InstanceNotFoundException.class, () -> userService.loginFromId(NON_EXISTENT_ID));
+		long nonExistentId = -1L;
+		
+		assertThrows(InstanceNotFoundException.class, () -> userService.loginFromId(nonExistentId));
 	}
 	
 	/**
@@ -185,8 +182,10 @@ public class UserServiceTest {
 	 */
 	@Test
 	public void testUpdateProfileWithNonExistentId() {
+		long nonExistentId = -1L;
+
 		assertThrows(InstanceNotFoundException.class, () ->
-			userService.updateProfile(NON_EXISTENT_ID, "X", "X", "X"));
+			userService.updateProfile(nonExistentId, "X", "X", "X"));
 	}
 	
 	/**
@@ -216,8 +215,10 @@ public class UserServiceTest {
 	 */
 	@Test
 	public void testChangePasswordWithNonExistentId() {
+		long nonExistentId = -1L;
+
 		assertThrows(InstanceNotFoundException.class, () ->
-			userService.changePassword(NON_EXISTENT_ID, "X", "Y"));
+			userService.changePassword(nonExistentId, "X", "Y"));
 	}
 	
 	/**
