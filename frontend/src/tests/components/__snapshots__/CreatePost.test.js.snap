@@ -119,7 +119,7 @@ exports[`CreatePost renders correctly 1`] = `
             className="col-md-3"
           >
             <div
-              class="input-group"
+              className="input-group"
             >
               <input
                 className="form-control"
@@ -133,7 +133,7 @@ exports[`CreatePost renders correctly 1`] = `
                 value={0}
               />
               <span
-                class="input-group-text"
+                className="input-group-text"
               >
                 €
               </span>
