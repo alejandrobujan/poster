@@ -8,7 +8,7 @@ import { Errors } from '../../common';
 
 import * as actions from '../actions';
 
-import { fileToBase64 } from '../../../backend/fileToBase64';
+import { fileToBase64, isImage } from '../../../backend/utils';
 
 const CreatePost = () => {
 	const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const CreatePost = () => {
 	const [categoryId, setCategoryId] = useState('');
 	const [images, setImages] = useState([]);
 	const [backendErrors, setBackendErrors] = useState(null);
-
+	const [wrongFileType, setWrongFileType] = useState(false);
 	let form;
 	let imagesInput;
 	let clearImages;
@@ -48,11 +48,19 @@ const CreatePost = () => {
 		clearImages.style.display = files.length !== 0 ? 'inline' : 'none';
 
 		if (files.length !== 0 && files.every(file => file.size <= maxSize)) {
-			setImages(await Promise.all(files.map(async file => await fileToBase64(file))));
-			imagesInput.setCustomValidity('');
+			if (files.every(file => isImage(file))) {
+				setImages(await Promise.all(files.map(async file => await fileToBase64(file))));
+				imagesInput.setCustomValidity('');
+				setWrongFileType(false);
+			} else {
+				setImages([]);
+				imagesInput.setCustomValidity('error');
+				setWrongFileType(true);
+			}
 		} else {
 			setImages([]);
 			imagesInput.setCustomValidity(files.length !== 0 ? 'error' : '');
+			setWrongFileType(false);
 		}
 
 
@@ -139,7 +147,7 @@ const CreatePost = () => {
 								Price
 							</label>
 							<div className="col-md-3">
-								<div class="input-group">
+								<div className="input-group">
 									<input type="number"
 										id="price"
 										className="form-control"
@@ -148,7 +156,7 @@ const CreatePost = () => {
 										step="0.01" min="0.00" max="9999999.99"
 										required
 									/>
-									<span class="input-group-text">€</span>
+									<span className="input-group-text">€</span>
 								</div>
 
 								<div className="invalid-feedback">
@@ -180,7 +188,9 @@ const CreatePost = () => {
 									</svg>
 								</button>
 								<div className="invalid-feedback">
-									The maximum size allowed is 1MB.
+									{wrongFileType ?
+										"Only images are allowed" :
+										"The maximum size allowed is 1MB."}
 								</div>
 							</div>
 						</div>
