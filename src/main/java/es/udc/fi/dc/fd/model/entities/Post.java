@@ -10,6 +10,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -18,6 +20,7 @@ import jakarta.persistence.OneToMany;
  * The Class Entity.
  */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Post {
 
 	/** The id. */
@@ -32,6 +35,12 @@ public class Post {
 	private BigDecimal price;
 	/** The creation date. */
 	private LocalDateTime creationDate;
+	/** The positive rating count. */
+	private int positiveRatings;
+	/** The negative ratings count. */
+	private int negativeRatings;
+	/** If is expired or not */
+	private boolean expired;
 	/** The post author. */
 	private User user;
 	/** The post category. */
@@ -45,7 +54,6 @@ public class Post {
 	public Post() {
 	}
 
-	
 	/**
 	 * Instantiates a new post.
 	 * 
@@ -57,8 +65,8 @@ public class Post {
 	 * @param user
 	 * @param category
 	 */
-	public Post(String title, String description, String url, BigDecimal price, 
-			LocalDateTime creationDate, User user, Category category) {
+	public Post(String title, String description, String url, BigDecimal price, LocalDateTime creationDate, User user,
+			Category category) {
 		this.title = title;
 		this.description = description;
 		this.url = url;
@@ -66,8 +74,10 @@ public class Post {
 		this.creationDate = creationDate;
 		this.user = user;
 		this.category = category;
+		this.positiveRatings = 0;
+		this.negativeRatings = 0;
+		this.expired = false;
 	}
-
 
 	/**
 	 * Gets the id
@@ -237,7 +247,7 @@ public class Post {
 	public void setImages(Set<Image> images) {
 		this.images = images;
 	}
-	
+
 	/**
 	 * Add image.
 	 * 
@@ -247,12 +257,57 @@ public class Post {
 		images.add(image);
 		image.setPost(this);
 	}
-	
+
+	/**
+	 * @return the positiveRatings
+	 */
+	public int getPositiveRatings() {
+		return positiveRatings;
+	}
+
+	/**
+	 * @param positiveRatings the positiveRatings to set
+	 */
+	public void setPositiveRatings(int positiveRatings) {
+		this.positiveRatings = positiveRatings;
+	}
+
+	/**
+	 * @return the negativeRatings
+	 */
+	public int getNegativeRatings() {
+		return negativeRatings;
+	}
+
+	/**
+	 * @param negativeRatings the negativeRatings to set
+	 */
+	public void setNegativeRatings(int negativeRatings) {
+		this.negativeRatings = negativeRatings;
+	}
+
+	/**
+	 * @return if the post is expired
+	 */
+	public boolean isExpired() {
+		return expired;
+	}
+
+	/**
+	 * @param expired value to set (if it is expired or not)
+	 */
+	public void setExpired(boolean expired) {
+		this.expired = expired;
+	}
+
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", title=" + title + ", description=" + description + ", url=" + url + ", price="
-				+ price + ", creationDate=" + creationDate + ", user=" + user + ", category=" + category + ", images="
-				+ images + "]";
+				+ price + ", creationDate=" + creationDate + ", positiveRatings=" + positiveRatings
+				+ ", negativeRatings=" + negativeRatings + ", expired=" + expired + ", user=" + user + ", category="
+				+ category + ", images=" + images + "]";
 	}
+
+	
 
 }
