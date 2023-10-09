@@ -16,7 +16,7 @@ categoryId)
 + **categoryId** references Category(id) ON UPDATE CASCADE ON DELETE SET 
 NULL
 
-> **_NOTE:_**  For inheritance management, we chose the TABLE PER CLASS strategy (although it is not the most efficient option for this second iteration) as a long-term option due to its better handling of requirements evolution and future product maintenance as this project is in a continuous changing environment.
+> **_NOTE:_**  For inheritance management, we chose the JOINED strategy (although it is not the most efficient option for this second iteration) as a long-term option due to its better handling of requirements evolution and future product maintenance as this project is in a continuous changing environment.
 
 Offer(**id**)
 + **id** references Post(id) ON UPDATE CASCADE ON DELETE CASCADE
