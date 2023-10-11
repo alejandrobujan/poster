@@ -1,11 +1,11 @@
 package es.udc.fi.dc.fd.model.services;
 
+import static java.util.Map.entry;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -18,12 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.CategoryDao;
-import es.udc.fi.dc.fd.model.entities.Image;
-import es.udc.fi.dc.fd.model.entities.ImageDao;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
-import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
+import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
 
 /**
  * The Class PostServiceImpl.
@@ -31,22 +29,21 @@ import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededExcepti
 @Service
 @Transactional
 public class PostServiceImpl implements PostService {
-	
-	/** The permission checker. */
-	@Autowired
-    private PermissionChecker permissionChecker;
-	
+
+	private final Map<String, PostHandler> handlers;
+
 	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
-	
+
 	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
-	
-	/** The image dao. */
+
 	@Autowired
-	private ImageDao imageDao;
+	public PostServiceImpl(OfferHandler offerHandler, CouponHandler couponHandler) {
+		this.handlers = Map.ofEntries(entry("Offer", offerHandler), entry("Coupon", couponHandler));
+	}
 
 	/**
 	 * Create post.
@@ -54,44 +51,14 @@ public class PostServiceImpl implements PostService {
 	 * @param post
 	 */
 	@Override
-	public void createPost(String title, String description, String url, BigDecimal price, Long userId, 
-			Long categoryId, List<byte[]> imageList) throws InstanceNotFoundException, MaximumImageSizeExceededException{
-		
-		User user = permissionChecker.checkUser(userId);
-		
-		Category category = null;
-		
-		if(categoryId != null) {
-			Optional<Category> categoryOptional = categoryDao.findById(categoryId);
-			
-	        if (!categoryOptional.isPresent())
-	            throw new InstanceNotFoundException("project.entities.category", categoryId);
-	        
-	        category = categoryOptional.get();
-		}
-        
-        LocalDateTime creationDate = LocalDateTime.now();
-        
-		Post post = postDao.save(new Post(title, description, url, price, creationDate, user, category));
-		
-		int maxSize = 1024000;
-		Image image;
-		
-		for (byte[] imageBytes : imageList) {
-			
-			image = new Image(imageBytes, post);
-			
-			
-			if(image.getData().length > maxSize) {
-				throw new MaximumImageSizeExceededException(maxSize);
-			}
+	public Post createPost(String title, String description, String url, BigDecimal price, Long userId, Long categoryId,
+			List<byte[]> imageList, String type, Map<String, String> properties)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException {
 
-			
-			post.addImage(image);
-			imageDao.save(image);
-			
-		}
-		
+		PostHandler postCreator = handlers.get(type);
+
+		return postCreator.handleCreate(title, description, url, price, userId, categoryId, imageList, properties);
+
 	}
 
 	/**
@@ -103,15 +70,14 @@ public class PostServiceImpl implements PostService {
 	 */
 	@Override
 	public Block<Post> findAllPosts(int page, int size) {
-		
+
 		Pageable request = PageRequest.of(page, size);
 
-        Slice<Post> postSlice = postDao.findAllByOrderByCreationDateDesc(request);
+		Slice<Post> postSlice = postDao.findAllByOrderByCreationDateDesc(request);
 
-        return new Block<>(postSlice.getContent(), postSlice.hasNext());
+		return new Block<>(postSlice.getContent(), postSlice.hasNext());
 	}
-	
-	
+
 	/**
 	 * Find all categories.
 	 * 
@@ -119,12 +85,12 @@ public class PostServiceImpl implements PostService {
 	 */
 	@Override
 	public List<Category> findAllCategories() {
-		
+
 		Iterable<Category> categories = categoryDao.findAll(Sort.by(Sort.Direction.ASC, "id"));
 		List<Category> categoriesAsList = new ArrayList<>();
-		
+
 		categories.forEach(c -> categoriesAsList.add(c));
-		
+
 		return categoriesAsList;
 	}
 
