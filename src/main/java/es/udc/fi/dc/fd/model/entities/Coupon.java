@@ -12,6 +12,8 @@ import jakarta.persistence.Entity;
 public class Coupon extends Post {
 	private String code;
 
+	public Coupon() {}
+
 	/**
 	 * @param title
 	 * @param description

@@ -11,6 +11,8 @@ import jakarta.persistence.Entity;
 @Entity
 public class Offer extends Post {
 
+	public Offer() {}
+
 	/**
 	 * @param title
 	 * @param description
