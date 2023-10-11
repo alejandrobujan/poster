@@ -21,18 +21,25 @@ const CreatePost = () => {
 	const [images, setImages] = useState([]);
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [wrongFileType, setWrongFileType] = useState(false);
+	const [type, setType] = useState('Offer');
+	const [code, setCode] = useState('');
 	let form;
 	let imagesInput;
 	let clearImages;
+	const properties = {};
 
 	const handleSubmit = event => {
 
 		event.preventDefault();
+		
+		if(type === 'Coupon'){
+			properties.code = code;
+		}
 
 		if (form.checkValidity()) {
 			dispatch(actions.createPost(
 				title, description, url,
-				price, categoryId !== '' ? categoryId : null, images, () => navigate('/'), errors => setBackendErrors(errors)
+				price, categoryId !== '' ? categoryId : null, images, type, properties, () => navigate('/'), errors => setBackendErrors(errors)
 			));
 		} else {
 			setBackendErrors(null);
@@ -75,6 +82,16 @@ const CreatePost = () => {
 		setImages([]);
 
 	}
+	
+	const handleOfferTypeChange = () => {
+		setType('Offer');
+		setCode('');
+	}
+	
+	const handleCouponTypeChange = () => {
+		setType('Coupon');
+		setCode('');
+	}
 
 	return (
 		<div className='container'>
@@ -84,12 +101,28 @@ const CreatePost = () => {
 					Create post
 				</h5>
 				<div className="card-body">
+					<nav aria-label="page navigation">
+						<ul className="pagination justify-content-center">
+							<li className={`page-item ${type === 'Offer' ? "disabled" : ""}`}>
+								<button className="page-link"
+									onClick={handleOfferTypeChange}>
+									Offer
+								</button>
+							</li>
+							<li className={`page-item ${type === 'Coupon' ? "disabled" : ""}`}>
+								<button className="page-link"
+									onClick={handleCouponTypeChange}>
+									Coupon
+								</button>
+							</li>
+						</ul>
+					</nav>
 					<form ref={node => form = node}
 						className="needs-validation" noValidate
 						onSubmit={e => handleSubmit(e)}>
 						<div className="form-group row">
 							<label htmlFor="title" className="col-md-3 col-form-label">
-								Title
+								Title (*)
 							</label>
 							<div className="col-md-9">
 								<input type="text"
@@ -108,7 +141,7 @@ const CreatePost = () => {
 						</div>
 						<div className="form-group row">
 							<label htmlFor="description" className="col-md-3 col-form-label">
-								Description
+								Description (*)
 							</label>
 							<div className="col-md-9">
 								<textarea
@@ -144,7 +177,7 @@ const CreatePost = () => {
 						</div>
 						<div className="form-group row">
 							<label htmlFor="price" className="col-md-3 col-form-label">
-								Price
+								Price (*)
 							</label>
 							<div className="col-md-3">
 								<div className="input-group">
@@ -164,7 +197,7 @@ const CreatePost = () => {
 								</div>
 							</div>
 							<label htmlFor="categoryId" className="col-md-3 col-form-label">
-								Category
+								Category (*)
 							</label>
 							<div className="col-md-3">
 								<CategorySelector id="categoryId" className="form-control"
@@ -193,6 +226,30 @@ const CreatePost = () => {
 										"The maximum size allowed is 1MB."}
 								</div>
 							</div>
+						</div>
+						{type === 'Coupon' &&
+							<div className="form-group row">
+								<label htmlFor="code" className="col-md-3 col-form-label">
+									Code (*)
+								</label>
+								<div className="col-md-9">
+									<input type="text"
+										id="code"
+										className="form-control"
+										value={code}
+										onChange={e => setCode(e.target.value)}
+										required
+									/>
+									<div className="invalid-feedback">
+										The code is mandatory
+									</div>
+								</div>
+							</div>
+						}
+						<div>
+							<p>
+								(*) means mandatory field
+							</p>
 						</div>
 						<div className="text-center">
 							<button type="submit" className="btn btn-primary">
