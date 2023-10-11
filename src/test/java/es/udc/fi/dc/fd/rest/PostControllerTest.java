@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -123,19 +124,21 @@ public class PostControllerTest {
 
 		List <byte []> image = new ArrayList<byte []>();
 		
-		PostParamsDto PostParams = new PostParamsDto();
-		PostParams.setCategoryId(1L);
-		PostParams.setDescription("Tarta de Santiago");
-		PostParams.setImages(image);
-		PostParams.setPrice(new BigDecimal(10));
-		PostParams.setTitle("Tarta de Santiago");
-		PostParams.setUrl("http://poster.com");
+		PostParamsDto postParams = new PostParamsDto();
+		postParams.setCategoryId(1L);
+		postParams.setDescription("Tarta de Santiago");
+		postParams.setImages(image);
+		postParams.setPrice(new BigDecimal(10));
+		postParams.setTitle("Tarta de Santiago");
+		postParams.setUrl("http://poster.com");
+		postParams.setType("Coupon");
+		postParams.setProperties(Map.of("code", "APP25"));
 
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
-				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(PostParams)))
-				.andExpect(status().isNoContent());
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
+				.andExpect(status().isOk());
 
 	}
 	
@@ -149,18 +152,18 @@ public class PostControllerTest {
 
 		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
 		
-		PostParamsDto PostParams = new PostParamsDto();
-		PostParams.setCategoryId(1L);
-		PostParams.setDescription("Tarta de Santiago");
-		PostParams.setImages(null);
-		PostParams.setPrice(new BigDecimal(10));
-		PostParams.setTitle("Tarta de Santiago");
-		PostParams.setUrl("http://poster.com");
+		PostParamsDto postParams = new PostParamsDto();
+		postParams.setCategoryId(1L);
+		postParams.setDescription("Tarta de Santiago");
+		postParams.setImages(null);
+		postParams.setPrice(new BigDecimal(10));
+		postParams.setTitle("Tarta de Santiago");
+		postParams.setUrl("http://poster.com");
 
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
-				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(PostParams)))
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
 				.andExpect(status().isBadRequest());
 
 	}
