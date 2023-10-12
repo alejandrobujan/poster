@@ -14,3 +14,7 @@ export const createPost = (title, description, url, price, categoryId, images, t
 export const findPosts = ({ page }, onSuccess) => {
 	appFetch(`/posts/feed?page=${page}`, fetchConfig("GET"), onSuccess);
 };
+
+export const findPostById = (id, onSuccess) => {
+    appFetch(`/posts/postDetail/${id}`, fetchConfig("GET"), onSuccess);
+};
