@@ -1,8 +1,9 @@
 import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
 import "react-image-gallery/styles/css/image-gallery.css";
+import {PostLink} from "../../common";
 
-const Post = ({ title, description, url, price, categoryDto, images }) => {
+const Post = ({ id, title, description, url, price, categoryDto, images }) => {
 	return (
 		<div className="col mb-5">
 			<div className="card h-100">
@@ -20,7 +21,7 @@ const Post = ({ title, description, url, price, categoryDto, images }) => {
 						</div>
 						<hr className="my-4" />
 						<h5 className="fw-bolder">
-							{title} &nbsp; {url &&
+							<PostLink id={id} title={title}/> &nbsp; {url &&
 							<a className="btn btn-primary" href={url} target="_blank">
 								<div className="d-flex align-items-center">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-link" viewBox="0 0 16 16">
