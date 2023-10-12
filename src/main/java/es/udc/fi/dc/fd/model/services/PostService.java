@@ -40,4 +40,12 @@ public interface PostService {
 	 */
 	List<Category> findAllCategories();
 
+	/**
+	 * Find a post.
+	 * 
+	 * @param postId
+	 * @return the post.
+	 */
+	Post findPostById(Long postId) throws InstanceNotFoundException;
+
 }
