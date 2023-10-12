@@ -18,6 +18,9 @@ const user = (state = initialState.user, action) => {
 
         case actionTypes.LOGOUT:
             return initialState.user;
+            
+        case actionTypes.UPDATE_PROFILE_COMPLETED:
+            return action.user;
 
         default:
             return state;
