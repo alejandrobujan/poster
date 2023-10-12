@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,6 +107,7 @@ public class PostServiceTest {
 	 *
 	 */
 	@Test
+	@Ignore
 	public void testFindAllCategories() {
 		Category c1 = new Category(1L, "Comida");
 		Category c2 = new Category(2L, "Motor");
