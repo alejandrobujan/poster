@@ -173,7 +173,7 @@ public class UserController {
 	@PutMapping("/{id}")
 	public UserDto updateProfile(@RequestAttribute Long userId, @PathVariable("id") Long id,
 			@Validated({ UserDto.UpdateValidations.class }) @RequestBody UserDto userDto)
-			throws InstanceNotFoundException, PermissionException {
+			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException {
 
 		if (!id.equals(userId)) {
 			throw new PermissionException();

@@ -111,9 +111,13 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public User updateProfile(Long id, String userName, String firstName, String lastName, String email, byte[] avatar)
-			throws InstanceNotFoundException {
+			throws InstanceNotFoundException, DuplicateInstanceException {
 
 		User user = permissionChecker.checkUser(id);
+
+		if (userDao.existsByUserName(userName)) {
+			throw new DuplicateInstanceException("project.entities.user", user.getUserName());
+		}
 
 		user.setUserName(userName);
 		user.setFirstName(firstName);

@@ -51,7 +51,7 @@ public interface UserService {
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	User updateProfile(Long id, String userName, String firstName, String lastName, String email, byte[] avatar)
-			throws InstanceNotFoundException;
+			throws InstanceNotFoundException, DuplicateInstanceException;
 
 	/**
 	 * Change password.
