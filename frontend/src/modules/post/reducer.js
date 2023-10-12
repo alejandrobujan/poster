@@ -4,7 +4,8 @@ import * as actionTypes from './actionTypes';
 
 const initialState = {
     categories: null,
-    postSearch: null
+    postSearch: null,
+    post: null
 };
 
 const categories = (state = initialState.categories, action) => {
@@ -39,9 +40,24 @@ const postSearch = (state = initialState.postSearch, action) => {
 
 }
 
+const post = (state = initialState.post, action) => {
+    switch(action.type) {
+
+        case actionTypes.FIND_POST_BY_ID_COMPLETED:
+            return action.post;
+
+        case actionTypes.CLEAR_POST:
+            return initialState.post;    
+
+        default:
+            return state;
+    }
+}
+
 const reducer = combineReducers({
     categories,
-    postSearch
+    postSearch,
+    post
 });
 
 export default reducer;

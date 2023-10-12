@@ -5,3 +5,6 @@ export const getPostSearch = state =>
 
 export const getCategories = state => 
     getModuleState(state).categories;
+
+export const getPost = state =>
+    getModuleState(state).post;    

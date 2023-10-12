@@ -50,3 +50,17 @@ export const previousFindPostsResultPage = criteria =>
 
 export const nextFindPostsResultPage = criteria =>
 	findPosts({ page: criteria.page + 1 });
+
+export const findPostById = id => dispatch => {
+	backend.postService.findPostById(id,
+		post => dispatch(findPostByIdCompleted(post)));
+}
+
+const findPostByIdCompleted = post => ({
+	type: actionTypes.FIND_POST_BY_ID_COMPLETED,
+	post
+});
+
+export const clearPost = () => ({
+	type: actionTypes.CLEAR_POST
+}); 	
