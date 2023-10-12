@@ -15,6 +15,34 @@ exports[`CreatePost renders correctly 1`] = `
     <div
       className="card-body"
     >
+      <nav
+        aria-label="page navigation"
+      >
+        <ul
+          className="pagination justify-content-center"
+        >
+          <li
+            className="page-item disabled"
+          >
+            <button
+              className="page-link"
+              onClick={[Function]}
+            >
+              Offer
+            </button>
+          </li>
+          <li
+            className="page-item "
+          >
+            <button
+              className="page-link"
+              onClick={[Function]}
+            >
+              Coupon
+            </button>
+          </li>
+        </ul>
+      </nav>
       <form
         className="needs-validation"
         noValidate={true}
@@ -27,7 +55,7 @@ exports[`CreatePost renders correctly 1`] = `
             className="col-md-3 col-form-label"
             htmlFor="title"
           >
-            Title
+            Title (*)
           </label>
           <div
             className="col-md-9"
@@ -36,7 +64,7 @@ exports[`CreatePost renders correctly 1`] = `
               autoFocus={true}
               className="form-control"
               id="title"
-              maxLength={60}
+              maxLength={16}
               minLength={1}
               onChange={[Function]}
               required={true}
@@ -57,7 +85,7 @@ exports[`CreatePost renders correctly 1`] = `
             className="col-md-3 col-form-label"
             htmlFor="description"
           >
-            Description
+            Description (*)
           </label>
           <div
             className="col-md-9"
@@ -113,7 +141,7 @@ exports[`CreatePost renders correctly 1`] = `
             className="col-md-3 col-form-label"
             htmlFor="price"
           >
-            Price
+            Price (*)
           </label>
           <div
             className="col-md-3"
@@ -148,7 +176,7 @@ exports[`CreatePost renders correctly 1`] = `
             className="col-md-3 col-form-label"
             htmlFor="categoryId"
           >
-            Category
+            Category (*)
           </label>
           <div
             className="col-md-3"
@@ -224,6 +252,11 @@ exports[`CreatePost renders correctly 1`] = `
               The maximum size allowed is 1MB.
             </div>
           </div>
+        </div>
+        <div>
+          <p>
+            (*) means mandatory field
+          </p>
         </div>
         <div
           className="text-center"
