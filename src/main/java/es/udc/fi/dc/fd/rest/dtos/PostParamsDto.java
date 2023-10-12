@@ -3,6 +3,7 @@ package es.udc.fi.dc.fd.rest.dtos;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -30,6 +31,12 @@ public class PostParamsDto {
 	/** Images related to the post. */
     @NotNull
 	private List<byte[]> images = new ArrayList<>();
+	@NotNull
+	private String type;
+	
+	private Map<String, String> properties;
+	
+
 	
 	/**
 	 * Instantiates a new post dto. 
@@ -45,13 +52,15 @@ public class PostParamsDto {
 	 * @param images the images of the post
 	 */
 	public PostParamsDto(String title, String description, String url, BigDecimal price,
-			Long categoryId, List<byte[]> images) {
+			Long categoryId, List<byte[]> images, String type, Map<String, String> properties) {
 		this.title = title;
 		this.description = description;
 		this.url = url;
 		this.price = price;
 		this.categoryId = categoryId;
 		this.images = images;
+		this.type = type;
+		this.properties = properties;
 	}
 	
 	/**
@@ -149,4 +158,34 @@ public class PostParamsDto {
 	public void setImages(List<byte[]> images) {
 		this.images = images;
 	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the properties
+	 */
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+
+	/**
+	 * @param properties the properties to set
+	 */
+	public void setProperties(Map<String, String> properties) {
+		this.properties = properties;
+	}
+	
+	
 }

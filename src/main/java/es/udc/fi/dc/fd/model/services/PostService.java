@@ -2,25 +2,28 @@ package es.udc.fi.dc.fd.model.services;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
+import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
 
 /**
  * The Interface PostService.
  */
 public interface PostService {
-	
+
 	/**
 	 * Create post.
 	 * 
 	 * @param post
 	 */
-	void createPost(String title, String description, String url, BigDecimal price, Long userId, 
-			Long categoryId, List<byte[]> imageList) throws InstanceNotFoundException, MaximumImageSizeExceededException;
-	
+	Post createPost(String title, String description, String url, BigDecimal price, Long userId, Long categoryId,
+			List<byte[]> imageList, String type, Map<String, String> properties)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException;
+
 	/**
 	 * Find all posts.
 	 * 
@@ -29,13 +32,12 @@ public interface PostService {
 	 * @return the posts.
 	 */
 	Block<Post> findAllPosts(int page, int size);
-	
-	
+
 	/**
 	 * Find all categories.
 	 * 
 	 * @return the categories.
 	 */
 	List<Category> findAllCategories();
-	
+
 }
