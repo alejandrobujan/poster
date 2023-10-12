@@ -22,21 +22,21 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    
-    @Autowired
-    private JwtFilter jwtFilter;
 
-    /**
-     * Configure.
-     *
-     * @param http the http
-     * @return the security filter chain
-     * @throws Exception the exception
-     */
-    @Bean
-    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	@Autowired
+	private JwtFilter jwtFilter;
 
-        // @formatter:off
+	/**
+	 * Configure.
+	 *
+	 * @param http the http
+	 * @return the security filter chain
+	 * @throws Exception the exception
+	 */
+	@Bean
+	protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+		// @formatter:off
         http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
@@ -49,47 +49,48 @@ public class SecurityConfig {
                 .requestMatchers(antMatcher("/api/users/loginFromServiceToken")).permitAll()
                 .requestMatchers(antMatcher("/api/posts/feed")).permitAll()
                 .requestMatchers(antMatcher("/api/posts/categories")).permitAll()
+                .requestMatchers(antMatcher("/api/posts/postDetail/*")).permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         // @formatter:on
 
-        return http.build();
-    }
+		return http.build();
+	}
 
-    /**
-     * Authentication manager.
-     *
-     * @param authenticationConfiguration the authentication configuration
-     * @return the authentication manager
-     * @throws Exception the exception
-     */
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-    
-    /**
-     * Cors configuration source.
-     *
-     * @return the cors configuration source
-     */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+	/**
+	 * Authentication manager.
+	 *
+	 * @param authenticationConfiguration the authentication configuration
+	 * @return the authentication manager
+	 * @throws Exception the exception
+	 */
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
-        CorsConfiguration config = new CorsConfiguration();
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	/**
+	 * Cors configuration source.
+	 *
+	 * @return the cors configuration source
+	 */
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
 
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+		CorsConfiguration config = new CorsConfiguration();
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-        source.registerCorsConfiguration("/**", config);
+		config.setAllowCredentials(true);
+		config.addAllowedOrigin("*");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
 
-        return source;
+		source.registerCorsConfiguration("/**", config);
 
-    }
+		return source;
+
+	}
 
 }
