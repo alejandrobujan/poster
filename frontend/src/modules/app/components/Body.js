@@ -7,7 +7,7 @@ import Test from "./Test";
 import {Login, SignUp, Logout} from '../../users';
 import users from '../../users';
 
-import {CreatePost} from '../../post';
+import {CreatePost, PostDetails} from '../../post';
 
 const Body = () => {
 	
@@ -18,6 +18,7 @@ const Body = () => {
 	    <Routes>
 	       <Route path="/*" element={<Home />} />
 	       <Route path="/test" element={<Test />} />
+		   <Route path="/post/post-details/:id" element={<PostDetails/>}/>
 	       {loggedIn && <Route path="/users/logout" element={<Logout/>}/>}
 	       {!loggedIn && <Route path="/users/login" element={<Login/>}/>}
 	       {!loggedIn && <Route path="/users/signup" element={<SignUp/>}/>}
