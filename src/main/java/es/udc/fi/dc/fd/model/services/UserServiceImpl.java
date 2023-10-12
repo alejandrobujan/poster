@@ -49,10 +49,10 @@ public class UserServiceImpl implements UserService {
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRole(User.RoleType.USER);
-		
+
 		int maxSize = 1024000;
-		
-		if(user.getAvatar().length > maxSize) {
+
+		if (user.getAvatar().length > maxSize) {
 			throw new MaximumImageSizeExceededException(maxSize);
 		}
 
@@ -110,15 +110,16 @@ public class UserServiceImpl implements UserService {
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	@Override
-	public User updateProfile(Long id, String firstName, String lastName, String email)
+	public User updateProfile(Long id, String userName, String firstName, String lastName, String email, byte[] avatar)
 			throws InstanceNotFoundException {
 
 		User user = permissionChecker.checkUser(id);
 
+		user.setUserName(userName);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setEmail(email);
-
+		user.setAvatar(avatar);
 		return user;
 
 	}

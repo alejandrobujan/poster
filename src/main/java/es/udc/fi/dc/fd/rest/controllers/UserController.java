@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -180,8 +179,8 @@ public class UserController {
 			throw new PermissionException();
 		}
 
-		return toUserDto(
-				userService.updateProfile(id, userDto.getFirstName(), userDto.getLastName(), userDto.getEmail()));
+		return toUserDto(userService.updateProfile(id, userDto.getUserName(), userDto.getFirstName(),
+				userDto.getLastName(), userDto.getEmail(), userDto.getAvatar()));
 
 	}
 
@@ -208,7 +207,7 @@ public class UserController {
 		userService.changePassword(id, params.getOldPassword(), params.getNewPassword());
 
 	}
-	
+
 	/**
 	 * Generate service token.
 	 *
