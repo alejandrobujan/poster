@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./Home";
 import Test from "./Test";
 
-import {Login, SignUp, Logout} from '../../users';
+import {Login, SignUp, Logout, UpdateProfile} from '../../users';
 import users from '../../users';
 
 import {CreatePost} from '../../post';
@@ -19,6 +19,7 @@ const Body = () => {
 	       <Route path="/*" element={<Home />} />
 	       <Route path="/test" element={<Test />} />
 	       {loggedIn && <Route path="/users/logout" element={<Logout/>}/>}
+	       {loggedIn && <Route path="/users/update-profile" element={<UpdateProfile/>}/>}
 	       {!loggedIn && <Route path="/users/login" element={<Login/>}/>}
 	       {!loggedIn && <Route path="/users/signup" element={<SignUp/>}/>}
 	       {loggedIn && <Route path="/post/create-post" element={<CreatePost/>}/>}

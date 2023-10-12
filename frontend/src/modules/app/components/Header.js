@@ -42,6 +42,9 @@ const Header = () => {
                         </a>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="dropdown-divider"></div>
+                            <Link className="dropdown-item" to="/users/update-profile">
+                                Edit profile
+                            </Link>
                             <Link className="dropdown-item" to="/users/logout">
                                 Logout
                             </Link>
