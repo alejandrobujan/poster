@@ -19,12 +19,12 @@ CREATE TABLE Users (
 
 CREATE TABLE Category (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-	name VARCHAR(60) NOT NULL
+	name VARCHAR(16) NOT NULL
 );
 
 CREATE TABLE Post (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-	title VARCHAR(60) NOT NULL, 
+	title VARCHAR(16) NOT NULL, 
 	description VARCHAR(256) NOT NULL, 
 	url VARCHAR(2048), 
 	price DECIMAL(9,2) NOT NULL, 
@@ -70,9 +70,9 @@ CREATE TABLE Rating (
 	CONSTRAINT RatingFK_Post FOREIGN KEY (postId) REFERENCES Post(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-INSERT INTO Category(name) VALUES ('Comida');
+INSERT INTO Category(name) VALUES ('Meals');
 INSERT INTO Category(name) VALUES ('Motor');
-INSERT INTO Category(name) VALUES ('Hogar');
-INSERT INTO Category(name) VALUES ('Juguetes');
-INSERT INTO Category(name) VALUES ('Tecnologia');
-INSERT INTO Category(name) VALUES ('Entretenimiento');
+INSERT INTO Category(name) VALUES ('Home');
+INSERT INTO Category(name) VALUES ('Toys');
+INSERT INTO Category(name) VALUES ('Tech');
+INSERT INTO Category(name) VALUES ('Leisure');
