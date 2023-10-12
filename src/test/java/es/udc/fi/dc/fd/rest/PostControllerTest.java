@@ -24,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.udc.fi.dc.fd.model.entities.User;
-import es.udc.fi.dc.fd.model.entities.UserDao;
 import es.udc.fi.dc.fd.model.entities.User.RoleType;
+import es.udc.fi.dc.fd.model.entities.UserDao;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
@@ -45,7 +45,7 @@ public class PostControllerTest {
 	/** The mock mvc. */
 	@Autowired
 	private MockMvc mockMvc;
-		
+
 	/** The Constant PASSWORD. */
 	private final static String PASSWORD = "password";
 
@@ -87,7 +87,6 @@ public class PostControllerTest {
 
 	}
 
-	
 	/**
 	 * Test get find all posts ok.
 	 *
@@ -99,7 +98,7 @@ public class PostControllerTest {
 		mockMvc.perform(get("/api/posts/feed")).andExpect(status().isOk());
 
 	}
-	
+
 	/**
 	 * Test post find all categories ok.
 	 *
@@ -111,7 +110,7 @@ public class PostControllerTest {
 		mockMvc.perform(get("/api/posts/categories")).andExpect(status().isOk());
 
 	}
-	
+
 	/**
 	 * Test post Create Post ok.
 	 *
@@ -122,14 +121,14 @@ public class PostControllerTest {
 
 		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
 
-		List <byte []> image = new ArrayList<byte []>();
-		
+		List<byte[]> image = new ArrayList<byte[]>();
+
 		PostParamsDto postParams = new PostParamsDto();
 		postParams.setCategoryId(1L);
 		postParams.setDescription("Tarta de Santiago");
 		postParams.setImages(image);
 		postParams.setPrice(new BigDecimal(10));
-		postParams.setTitle("Tarta de Santiago");
+		postParams.setTitle("Tarta");
 		postParams.setUrl("http://poster.com");
 		postParams.setType("Coupon");
 		postParams.setProperties(Map.of("code", "APP25"));
@@ -141,7 +140,7 @@ public class PostControllerTest {
 				.andExpect(status().isOk());
 
 	}
-	
+
 	/**
 	 * Test post Create Post Not ok.
 	 *
@@ -151,7 +150,7 @@ public class PostControllerTest {
 	public void testPostCreatePost_NotOk() throws Exception {
 
 		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
-		
+
 		PostParamsDto postParams = new PostParamsDto();
 		postParams.setCategoryId(1L);
 		postParams.setDescription("Tarta de Santiago");
