@@ -13,6 +13,7 @@ import { fileToBase64, isImage } from '../../../backend/utils';
 const CreatePost = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const properties = {};
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [url, setUrl] = useState('');
@@ -26,13 +27,12 @@ const CreatePost = () => {
 	let form;
 	let imagesInput;
 	let clearImages;
-	const properties = {};
 
 	const handleSubmit = event => {
 
 		event.preventDefault();
-		
-		if(type === 'Coupon'){
+
+		if (type === 'Coupon') {
 			properties.code = code;
 		}
 
@@ -82,12 +82,12 @@ const CreatePost = () => {
 		setImages([]);
 
 	}
-	
+
 	const handleOfferTypeChange = () => {
 		setType('Offer');
 		setCode('');
 	}
-	
+
 	const handleCouponTypeChange = () => {
 		setType('Coupon');
 		setCode('');
@@ -132,7 +132,7 @@ const CreatePost = () => {
 									onChange={e => setTitle(e.target.value)}
 									autoFocus
 									minLength={1}
-									maxLength={60}
+									maxLength={16}
 									required />
 								<div className="invalid-feedback">
 									The title size must be between 1 and 60
