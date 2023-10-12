@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import es.udc.fi.dc.fd.model.entities.Category;
+import es.udc.fi.dc.fd.model.entities.CategoryDao;
+import es.udc.fi.dc.fd.model.entities.Offer;
+import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.entities.User.RoleType;
 import es.udc.fi.dc.fd.model.entities.UserDao;
@@ -57,6 +62,12 @@ public class PostControllerTest {
 	@Autowired
 	private UserDao userDao;
 
+	@Autowired
+	private PostDao postDao;
+
+	@Autowired
+	private CategoryDao categoryDao;
+
 	/** The user controller. */
 	@Autowired
 	private UserController userController;
@@ -85,6 +96,24 @@ public class PostControllerTest {
 
 		return userController.login(loginParams);
 
+	}
+
+	private Offer createOffer(User user) {
+		return postDao.save(new Offer("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
+				createCategory("Hola")));
+	}
+
+	private Category createCategory(String name) {
+		return categoryDao.save(new Category(name));
+	}
+
+	private User createUser(String userName) {
+
+		User user = new User(userName, PASSWORD, "newUser", "user", "user@test.com", null);
+
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setRole(RoleType.USER);
+		return userDao.save(user);
 	}
 
 	/**
@@ -166,4 +195,22 @@ public class PostControllerTest {
 				.andExpect(status().isBadRequest());
 
 	}
+
+	@Test
+	public void testGetFindPostById_Ok() throws Exception {
+
+		User user = createUser("admin");
+
+		Offer offer = createOffer(user);
+
+		mockMvc.perform(get("/api/posts/postDetail/" + offer.getId())).andExpect(status().isOk());
+
+	}
+
+	@Test
+	public void testGetFindPostById_NotOk() throws Exception {
+		mockMvc.perform(get("/api/posts/postDetail/-10")).andExpect(status().isNotFound());
+
+	}
+
 }
