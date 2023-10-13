@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -92,6 +93,17 @@ public class PostServiceImpl implements PostService {
 		categories.forEach(c -> categoriesAsList.add(c));
 
 		return categoriesAsList;
+	}
+
+	@Override
+	public Post findPostById(Long postId) throws InstanceNotFoundException {
+		Optional<Post> post = postDao.findById(postId);
+
+		if (!post.isPresent()) {
+			throw new InstanceNotFoundException("project.entities.post", postId);
+		}
+
+		return post.get();
 	}
 
 }

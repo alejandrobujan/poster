@@ -10,6 +10,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -77,6 +78,16 @@ public class PostController {
 
 		return toCategoryDtos(postService.findAllCategories());
 
+	}
+
+	@GetMapping("/postDetail/{id}")
+	public PostDto findPostById(@PathVariable Long id) throws InstanceNotFoundException {
+
+		Post post = postService.findPostById(id);
+
+		PostConversor postConversor = conversors.get(post.getClass().getSimpleName());
+
+		return postConversor.toPostDto(post);
 	}
 
 }
