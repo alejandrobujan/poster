@@ -115,14 +115,18 @@ public class UserServiceImpl implements UserService {
 
 		User user = permissionChecker.checkUser(id);
 
-		/*
-		 * if (userDao.existsByUserName(userName)) { throw new
-		 * DuplicateInstanceException("project.entities.user", user.getUserName()); }
-		 */
+		if (userDao.existsByUserName(userName) && !userName.equals(user.getUserName())) {
+
+			throw new DuplicateInstanceException("project.entities.user", user.getUserName());
+
+		} else {
+
+			user.setUserName(userName);
+
+		}
 
 		byte[] cero = {};
 
-		user.setUserName(userName);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setEmail(email);
