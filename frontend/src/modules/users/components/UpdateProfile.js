@@ -179,6 +179,11 @@ const UpdateProfile = () => {
                                     Save
                                 </button>
                             </div>
+                            <div className="offset-md-2 col-md-1">
+								<button type="button" className="btn btn-outline-danger">
+									Clear avatar
+								</button>
+							</div>
                         </div>
                     </form>
                 </div>
