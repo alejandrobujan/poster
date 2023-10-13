@@ -43,7 +43,7 @@ const PostDetails = () => {
 						(<ImageGallery showFullscreenButton={false} showPlayButton={false} showNav={false}
 							items={[{ original: '/poster/assets/noimage.png', originalHeight: "300px" }]} />) :
 						(<ImageGallery showPlayButton={false}
-							items={post.images.map((image) => ({ original: `data:image/*;base64,${image}`, originalHeight: "300px" }))} />)}
+							items={post.images.map((image) => ({ original: `data:image/*;base64,${image}`, thumbnailHeight: "300px" }))} />)}
 					<div className="mt-4">
 						<BackLink /> &nbsp;
 						{post.url &&
