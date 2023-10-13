@@ -23,6 +23,7 @@ import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
+import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 
 /**
  * The Class PostServiceImpl.
@@ -56,9 +57,9 @@ public class PostServiceImpl implements PostService {
 			List<byte[]> imageList, String type, Map<String, String> properties)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException {
 
-		PostHandler postCreator = handlers.get(type);
+		PostHandler postHandler = handlers.get(type);
 
-		return postCreator.handleCreate(title, description, url, price, userId, categoryId, imageList, properties);
+		return postHandler.handleCreate(title, description, url, price, userId, categoryId, imageList, properties);
 
 	}
 
@@ -104,6 +105,18 @@ public class PostServiceImpl implements PostService {
 		}
 
 		return post.get();
+	}
+
+	@Override
+	public Post updatePost(Long postId, String title, String description, String url, BigDecimal price, Long userId,
+			Long categoryId, List<byte[]> imageList, String type, Map<String, String> properties)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
+			PermissionException {
+
+		PostHandler postHandler = handlers.get(type);
+
+		return postHandler.handleUpdate(postId, title, description, url, price, userId, categoryId, imageList,
+				properties);
 	}
 
 }

@@ -9,6 +9,7 @@ import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
+import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 
 /**
  * The Interface PostService.
@@ -47,5 +48,10 @@ public interface PostService {
 	 * @return the post.
 	 */
 	Post findPostById(Long postId) throws InstanceNotFoundException;
+
+	Post updatePost(Long postId, String title, String description, String url, BigDecimal price, Long userId,
+			Long categoryId, List<byte[]> imageList, String type, Map<String, String> properties)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
+			PermissionException;
 
 }
