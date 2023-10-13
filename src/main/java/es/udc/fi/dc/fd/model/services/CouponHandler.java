@@ -21,6 +21,7 @@ import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
+import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 
 /**
  * 
@@ -89,6 +90,59 @@ public class CouponHandler implements PostHandler {
 		}
 
 		return post;
+
+	}
+
+	@Override
+	public Post handleUpdate(Long postId, String title, String description, String url, BigDecimal price, Long userId,
+			Long categoryId, List<byte[]> imageList, Map<String, String> properties) throws InstanceNotFoundException,
+			MaximumImageSizeExceededException, MissingRequiredParameterException, PermissionException {
+
+		Post post = permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
+
+		Category category = null;
+
+		if (categoryId != null) {
+			Optional<Category> categoryOptional = categoryDao.findById(categoryId);
+
+			if (!categoryOptional.isPresent())
+				throw new InstanceNotFoundException("project.entities.category", categoryId);
+
+			category = categoryOptional.get();
+		}
+
+		String code = properties.get("code");
+
+		if (code == null) {
+			throw new MissingRequiredParameterException("code", getClass().getSimpleName());
+		}
+
+		post.setTitle(title);
+		post.setDescription(description);
+		post.setUrl(url);
+		post.setPrice(price);
+		post.setCategory(category);
+		post.getImages().clear();
+
+		int maxSize = 1024000;
+		Image image;
+
+		for (byte[] imageBytes : imageList) {
+
+			image = new Image(imageBytes, post);
+
+			if (image.getData().length > maxSize) {
+				throw new MaximumImageSizeExceededException(maxSize);
+			}
+
+			post.addImage(image);
+			imageDao.save(image);
+
+		}
+
+		((Coupon) post).setCode(code);
+
+		return postDao.save(post);
 
 	}
 
