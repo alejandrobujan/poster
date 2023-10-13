@@ -2,6 +2,7 @@ package es.udc.fi.dc.fd.rest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
@@ -36,6 +37,7 @@ import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
 import es.udc.fi.dc.fd.rest.dtos.PostParamsDto;
+import es.udc.fi.dc.fd.rest.dtos.PostUpdateDto;
 
 /**
  * The Class PostControllerTest.
@@ -210,6 +212,70 @@ public class PostControllerTest {
 	@Test
 	public void testGetFindPostById_NotOk() throws Exception {
 		mockMvc.perform(get("/api/posts/postDetail/-10")).andExpect(status().isNotFound());
+
+	}
+
+	/**
+	 * Test put Update Post ok.
+	 *
+	 */
+	@Test
+	public void testPutUpdatePost_Ok() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+
+		Offer offer = createOffer(userDao.findById(user.getUserDto().getId()).get());
+
+		List<byte[]> image = new ArrayList<byte[]>();
+
+		PostUpdateDto postUpdateParams = new PostUpdateDto();
+		postUpdateParams.setAuthorId(user.getUserDto().getId());
+		postUpdateParams.setCategoryId(1L);
+		postUpdateParams.setDescription("Tarta de Santiago");
+		postUpdateParams.setImages(image);
+		postUpdateParams.setPrice(new BigDecimal(10));
+		postUpdateParams.setTitle("Tarta");
+		postUpdateParams.setUrl("http://poster.com");
+		postUpdateParams.setType("Offer");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(
+				put("/api/posts/post/" + offer.getId()).header("Authorization", "Bearer " + user.getServiceToken())
+						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
+				.andExpect(status().isOk());
+	}
+
+	/**
+	 * Test put Update Post Forbidden.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPutUpdatePost_Forbidden() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+
+		Offer offer = createOffer(userDao.findById(user.getUserDto().getId()).get());
+
+		List<byte[]> image = new ArrayList<byte[]>();
+
+		PostUpdateDto postUpdateParams = new PostUpdateDto();
+		postUpdateParams.setAuthorId(-1L);
+		postUpdateParams.setCategoryId(1L);
+		postUpdateParams.setDescription("Tarta de Santiago");
+		postUpdateParams.setImages(image);
+		postUpdateParams.setPrice(new BigDecimal(10));
+		postUpdateParams.setTitle("Tarta");
+		postUpdateParams.setUrl("http://poster.com");
+		postUpdateParams.setType("Offer");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(
+				put("/api/posts/post/" + offer.getId()).header("Authorization", "Bearer " + user.getServiceToken())
+						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
+				.andExpect(status().isForbidden());
 
 	}
 
