@@ -153,10 +153,10 @@ const UpdateProfile = () => {
                             </div>
                         </div>
                         <div className="form-group row">
-							<label htmlFor="avatar" className="col-md-6 col-form-label">
+							<label htmlFor="avatar" className="col-md-3 col-form-label">
 								Avatar
 							</label>
-							<div className="col-md-6">
+							<div className="col-md-3">
 								<input ref={node => avatarInput = node} type="file" id="avatar" accept="image/*"
 									onChange={handleAvatarChange}
 								/>

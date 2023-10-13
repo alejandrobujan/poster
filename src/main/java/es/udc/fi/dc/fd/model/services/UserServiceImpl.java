@@ -107,7 +107,8 @@ public class UserServiceImpl implements UserService {
 	 * @param lastName  the last name
 	 * @param email     the email
 	 * @return the user
-	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws InstanceNotFoundException  the instance not found exception
+	 * @throws DuplicateInstanceException the duplicate instance exception
 	 */
 	@Override
 	public User updateProfile(Long id, String userName, String firstName, String lastName, String email, byte[] avatar)

@@ -1,6 +1,7 @@
 package es.udc.fi.dc.fd.model.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.Test;
@@ -176,6 +177,37 @@ public class UserServiceTest {
 		User updatedUser = userService.loginFromId(user.getId());
 
 		assertEquals(user, updatedUser);
+
+	}
+
+	/**
+	 * Test update profile.
+	 *
+	 * @throws DuplicateInstanceException the duplicate instance exception
+	 * @throws InstanceNotFoundException  the instance not found exception
+	 */
+	@Test
+	public void testUpdateProfileDupicateLogin()
+			throws InstanceNotFoundException, DuplicateInstanceException, MaximumImageSizeExceededException {
+
+		User user1 = createUser("user1");
+
+		userService.signUp(user1);
+
+		User user2 = createUser("user2");
+
+		userService.signUp(user2);
+
+		user1.setUserName('X' + user2.getUserName());
+		user1.setFirstName('X' + user1.getFirstName());
+		user1.setLastName('X' + user1.getLastName());
+		user1.setEmail('X' + user1.getEmail());
+		user1.setAvatar(user1.getAvatar());
+
+		userService.updateProfile(user1.getId(), 'X' + user1.getUserName(), 'X' + user1.getFirstName(),
+				'X' + user1.getLastName(), 'X' + user1.getEmail(), user1.getAvatar());
+
+		assertNotEquals(user2.getUserName(), user1.getUserName());
 
 	}
 
