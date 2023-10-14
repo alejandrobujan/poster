@@ -27,7 +27,6 @@ const UpdatePostForm = () => {
 	const [images, setImages] = useState(post.images);
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [wrongFileType, setWrongFileType] = useState(false);
-	const [type, setType] = useState(post.type);
 	const [code, setCode] = useState(post.properties.code);
 	let form;
 	let imagesInput;
@@ -41,7 +40,7 @@ const UpdatePostForm = () => {
             properties.code=code;
             dispatch(actions.updatePost(
                 user.id, id, title, description, url,
-				price, categoryId !== '' ? categoryId : null, images, type, properties, () => navigate('/post/post-details/' + id), errors => setBackendErrors(errors)
+				price, categoryId !== '' ? categoryId : null, images, post.type, properties, () => navigate('/post/post-details/' + id), errors => setBackendErrors(errors)
 			));
         } else {
             setBackendErrors(null);
@@ -85,40 +84,14 @@ const UpdatePostForm = () => {
 
 	}
 
-	const handleOfferTypeChange = () => {
-		setType('Offer');
-		setCode('');
-	}
-
-	const handleCouponTypeChange = () => {
-		setType('Coupon');
-		setCode('');
-	}
-
 	return (
 		<div className='container'>
-			<Errors id="createPostErrors" errors={backendErrors} onClose={() => setBackendErrors(null)} />
+			<Errors id="updatePostErrors" errors={backendErrors} onClose={() => setBackendErrors(null)} />
 			<div className="card bg-light border-dark m-4">
 				<h5 className="card-header text-center">
 					Update post
 				</h5>
 				<div className="card-body">
-					<nav aria-label="page navigation">
-						<ul className="pagination justify-content-center">
-							<li className={`page-item ${type === 'Offer' ? "disabled" : ""}`}>
-								<button className="page-link"
-									onClick={handleOfferTypeChange}>
-									Offer
-								</button>
-							</li>
-							<li className={`page-item ${type === 'Coupon' ? "disabled" : ""}`}>
-								<button className="page-link"
-									onClick={handleCouponTypeChange}>
-									Coupon
-								</button>
-							</li>
-						</ul>
-					</nav>
 					<form ref={node => form = node}
 						className="needs-validation" noValidate
 						onSubmit={e => handleSubmit(e)}>
@@ -229,7 +202,7 @@ const UpdatePostForm = () => {
 								</div>
 							</div>
 						</div>
-						{type === 'Coupon' &&
+						{post.type === 'Coupon' &&
 							<div className="form-group row">
 								<label htmlFor="code" className="col-md-3 col-form-label">
 									Code (*)
