@@ -41,6 +41,9 @@ public class PostServiceImpl implements PostService {
 	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
+	/** The category dao. */
+	@Autowired
+	private PermissionChecker permissionChecker;
 
 	@Autowired
 	public PostServiceImpl(OfferHandler offerHandler, CouponHandler couponHandler) {
@@ -113,6 +116,7 @@ public class PostServiceImpl implements PostService {
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
 			PermissionException {
 
+		permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
 		PostHandler postHandler = handlers.get(type);
 
 		return postHandler.handleUpdate(postId, title, description, url, price, userId, categoryId, imageList,
