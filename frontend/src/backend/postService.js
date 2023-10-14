@@ -18,3 +18,7 @@ export const findPosts = ({ page }, onSuccess) => {
 export const findPostById = (id, onSuccess) => {
     appFetch(`/posts/postDetail/${id}`, fetchConfig("GET"), onSuccess);
 };
+export const updatePost = (userId, id, title, description, url, price, categoryId, images, type, properties, onSuccess, onErrors) => {
+	appFetch(`/posts/postUpdate/${id}`, fetchConfig("PUT", {userId, title, description, url, price, categoryId, images, type, properties}),
+	onSuccess, onErrors);
+};
