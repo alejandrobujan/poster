@@ -6,7 +6,7 @@ import CategorySelector from './CategorySelector';
 import * as selectors from '../selectors';
 import * as userSelectors from '../../users/selectors';
 
-import { Errors } from '../../common';
+import { BackLink, Errors } from '../../common';
 
 import * as actions from '../actions';
 
@@ -41,7 +41,7 @@ const UpdatePostForm = () => {
             properties.code=code;
             dispatch(actions.updatePost(
                 user.id, id, title, description, url,
-				price, categoryId !== '' ? categoryId : null, images, type, properties, () => navigate('/'), errors => setBackendErrors(errors)
+				price, categoryId !== '' ? categoryId : null, images, type, properties, () => navigate('/post/post-details/' + id), errors => setBackendErrors(errors)
 			));
         } else {
             setBackendErrors(null);
@@ -254,6 +254,7 @@ const UpdatePostForm = () => {
 							</p>
 						</div>
 						<div className="text-center">
+						<BackLink /> &nbsp;
 							<button type="submit" className="btn btn-primary">
 								Save changes
 							</button>
