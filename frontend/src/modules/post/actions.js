@@ -63,4 +63,9 @@ const findPostByIdCompleted = post => ({
 
 export const clearPost = () => ({
 	type: actionTypes.CLEAR_POST
-}); 	
+});
+    
+export const updatePost = (userId, postId, title, description, url, price, categoryId, images, type, properties,
+	onSuccess, onErrors) => dispatch =>
+	backend.postService.updatePost(userId, postId, title, description, url, price, categoryId, images, type, properties, onSuccess, onErrors);
+        
