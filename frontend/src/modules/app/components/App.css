@@ -54,6 +54,20 @@
     margin-right: 10px;
 }
 
+.images-card {
+    background: hsl(206,96%,90%);
+    border-radius: 4px;
+    width: 200px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    color: #555555;
+}
+
+.images-card img {
+    margin-right: 10px;
+}
+
 .copy-button {
   display: flex;
   justify-content: space-between;
