@@ -22,26 +22,3 @@ const ImagesCard = ( {images} ) => {
 };
 
 export default ImagesCard;
-
-
-
-/*
-{post.images.length === 0 ?
-						(<ImageGallery showFullscreenButton={false} showPlayButton={false} showNav={false}
-							items={[{ original: '/poster/assets/noimage.png', originalHeight: "300px" }]} />) :
-						(<ImageGallery showPlayButton={false}
-							items={post.images.map((image) => ({ original: `data:image/*;base64,${image}`, thumbnailHeight: "300px" }))} />)}
-					
-*/
-
-
-/*
-{images && images.map(postImage => 
-			<img
-				src={postImage ? `data:image/*;base64,${postImage}` : "/poster/assets/profile.png"}
-				alt="Post Image"
-				width="30px"
-				height="30px"
-			/>
-		)}
-*/
