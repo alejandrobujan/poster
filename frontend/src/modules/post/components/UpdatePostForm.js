@@ -23,7 +23,7 @@ const UpdatePostForm = () => {
 	const [description, setDescription] = useState(post.description);
 	const [url, setUrl] = useState(post.url);
 	const [price, setPrice] = useState(post.price);
-	const [categoryId, setCategoryId] = useState(post.categoryDto.id);
+	const [categoryId, setCategoryId] = useState(post.categoryDto !=null  ? post.categoryDto.id: '');
 	const [images, setImages] = useState(post.images);
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [wrongFileType, setWrongFileType] = useState(false);
@@ -42,6 +42,7 @@ const UpdatePostForm = () => {
                 {authorId: user.id, id: id, title: title, description: description, url: url,
 				price: price, categoryId: (categoryId !== '' ? categoryId : null), images: images, type: post.type, properties: properties}, () => navigate('/post/post-details/' + id), errors => setBackendErrors(errors)
 			));
+			//setImages([]);
         } else {
             setBackendErrors(null);
             form.classList.add('was-validated');
@@ -77,8 +78,8 @@ const UpdatePostForm = () => {
 
 	const handleClearImages = () => {
 
-		imagesInput.value = '';
-		imagesInput.setCustomValidity('');
+		/*imagesInput.value = '';
+		imagesInput.setCustomValidity('');*/
 		clearImages.style.display = 'none';
 		setImages([]);
 
