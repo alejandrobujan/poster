@@ -228,12 +228,12 @@ const UpdatePostForm = () => {
 							</p>
 						</div>
 						<div className="text-center">
-						<BackLink /> &nbsp;
 							<button type="submit" className="btn btn-primary">
 								Save changes
 							</button>
 						</div>
 					</form>
+					<BackLink />
 				</div>
 			</div >
 		</div >
