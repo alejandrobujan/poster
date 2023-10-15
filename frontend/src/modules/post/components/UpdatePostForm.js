@@ -6,7 +6,7 @@ import CategorySelector from './CategorySelector';
 import * as selectors from '../selectors';
 import * as userSelectors from '../../users/selectors';
 
-import { BackLink, Errors } from '../../common';
+import { BackLink, Errors, ImagesCard } from '../../common';
 
 import * as actions from '../actions';
 
@@ -202,6 +202,7 @@ const UpdatePostForm = () => {
 								</div>
 							</div>
 						</div>
+						<ImagesCard images={images} />
 						{post.type === 'Coupon' &&
 							<div className="form-group row">
 								<label htmlFor="code" className="col-md-3 col-form-label">
