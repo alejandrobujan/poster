@@ -39,8 +39,8 @@ const UpdatePostForm = () => {
         if (form.checkValidity()) {
             properties.code=code;
             dispatch(actions.updatePost(
-                user.id, id, title, description, url,
-				price, categoryId !== '' ? categoryId : null, images, post.type, properties, () => navigate('/post/post-details/' + id), errors => setBackendErrors(errors)
+                {authorId: user.id, id: id, title: title, description: description, url: url,
+				price: price, categoryId: (categoryId !== '' ? categoryId : null), images: images, type: post.type, properties: properties}, () => navigate('/post/post-details/' + id), errors => setBackendErrors(errors)
 			));
         } else {
             setBackendErrors(null);
