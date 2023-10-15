@@ -37,7 +37,7 @@ const UpdateProfile = () => {
                 email: email.trim(),
                 userName: login.trim(),
                 avatar: avatar},
-                () => navigate('/users/update-profile'),
+                () => navigate('/users/profile-detail'),
                 errors => setBackendErrors(errors)));
 
         } else {
