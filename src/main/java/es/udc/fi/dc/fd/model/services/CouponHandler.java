@@ -122,6 +122,7 @@ public class CouponHandler implements PostHandler {
 		post.setUrl(url);
 		post.setPrice(price);
 		post.setCategory(category);
+		post.getImages().forEach(i -> imageDao.delete(i));
 		post.getImages().clear();
 
 		int maxSize = 1024000;
