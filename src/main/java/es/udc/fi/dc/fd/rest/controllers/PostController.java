@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
@@ -24,6 +27,7 @@ import es.udc.fi.dc.fd.model.services.Block;
 import es.udc.fi.dc.fd.model.services.PostService;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
+import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 import es.udc.fi.dc.fd.rest.dtos.BlockDto;
 import es.udc.fi.dc.fd.rest.dtos.CategoryDto;
 import es.udc.fi.dc.fd.rest.dtos.CouponConversor;
@@ -88,6 +92,15 @@ public class PostController {
 		PostConversor postConversor = conversors.get(post.getClass().getSimpleName());
 
 		return postConversor.toPostDto(post);
+	}
+
+	@DeleteMapping("/post/{id}")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void deletePost(@RequestAttribute Long userId, @PathVariable Long id)
+			throws InstanceNotFoundException, PermissionException {
+
+		postService.deletePost(userId, id);
+
 	}
 
 }
