@@ -18,3 +18,7 @@ export const findPosts = ({ page }, onSuccess) => {
 export const findPostById = (id, onSuccess) => {
     appFetch(`/posts/postDetail/${id}`, fetchConfig("GET"), onSuccess);
 };
+
+export const deletePost = (id, onSuccess, onErrors) => {
+	appFetch(`/posts/post/${id}`, fetchConfig("DELETE"), onSuccess, onErrors);
+};
