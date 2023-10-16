@@ -154,8 +154,9 @@ public class UserServiceTest {
 	/**
 	 * Test update profile.
 	 *
-	 * @throws DuplicateInstanceException the duplicate instance exception
-	 * @throws InstanceNotFoundException  the instance not found exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exception
 	 */
 	@Test
 	public void testUpdateProfile()
@@ -183,8 +184,9 @@ public class UserServiceTest {
 	/**
 	 * Test update profile.
 	 *
-	 * @throws DuplicateInstanceException the duplicate instance exception
-	 * @throws InstanceNotFoundException  the instance not found exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exception
 	 */
 	@Test
 	public void testUpdateProfileDupicateLogin()
@@ -203,6 +205,9 @@ public class UserServiceTest {
 		user1.setLastName('X' + user1.getLastName());
 		user1.setEmail('X' + user1.getEmail());
 		user1.setAvatar(user1.getAvatar());
+
+		assertThrows(DuplicateInstanceException.class, () -> userService.updateProfile(user1.getId(),
+				user2.getUserName(), user1.getFirstName(), user1.getLastName(), user1.getEmail(), user1.getAvatar()));
 
 		userService.updateProfile(user1.getId(), 'X' + user1.getUserName(), 'X' + user1.getFirstName(),
 				'X' + user1.getLastName(), 'X' + user1.getEmail(), user1.getAvatar());
