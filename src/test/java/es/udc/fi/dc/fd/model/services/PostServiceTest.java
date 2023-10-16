@@ -33,6 +33,7 @@ import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
+import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 import jakarta.transaction.Transactional;
 
 /**
@@ -331,6 +332,72 @@ public class PostServiceTest {
 	public void testFindNoPostById() {
 		long nonExistentId = -1L;
 		assertThrows(InstanceNotFoundException.class, () -> postService.findPostById(nonExistentId));
+	}
+
+	@Test
+	public void testDeletePost() throws DuplicateInstanceException, MaximumImageSizeExceededException,
+			InstanceNotFoundException, PermissionException {
+		User u = signUpUser("Pepe");
+
+		Category c = createCategory("Car");
+
+		Post post = createPost(u, c);
+
+		Post foundPost = postService.findPostById(post.getId());
+
+		postService.deletePost(u.getId(), post.getId());
+
+		assertThrows(InstanceNotFoundException.class, () -> {
+			postService.findPostById(post.getId());
+		});
+	}
+
+	@Test
+	public void testDeletePostNotBelongingToUser()
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
+		User u = signUpUser("Pepe");
+
+		User u2 = signUpUser("Meme");
+
+		Category c = createCategory("Car");
+
+		Post post = createPost(u, c);
+
+		Post foundPost = postService.findPostById(post.getId());
+
+		assertThrows(PermissionException.class, () -> {
+			postService.deletePost(u2.getId(), post.getId());
+		});
+	}
+
+	@Test
+	public void testDeletePostNonExistentPost()
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
+		User u = signUpUser("Pepe");
+
+		long nonExistentId = -1L;
+
+		assertThrows(InstanceNotFoundException.class, () -> {
+			postService.deletePost(u.getId(), nonExistentId);
+		});
+	}
+
+	@Test
+	public void testDeletePostNonExistentUser()
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
+		User u = signUpUser("Pepe");
+
+		Category c = createCategory("Car");
+
+		Post post = createPost(u, c);
+
+		Post foundPost = postService.findPostById(post.getId());
+
+		long nonExistentId = -1L;
+
+		assertThrows(PermissionException.class, () -> {
+			postService.deletePost(nonExistentId, post.getId());
+		});
 	}
 
 }

@@ -1,11 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import * as selectors from '../selectors';
 import * as actions from '../actions';
-import { BackLink, UserCard } from '../../common';
+import { BackLink, UserCard, Errors } from '../../common';
 import { getDate } from '../../../backend/utils';
+import * as userSelectors from '../../users/selectors';
 
 import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
@@ -13,8 +14,19 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 const PostDetails = () => {
 	const post = useSelector(selectors.getPost);
+	const user = useSelector(userSelectors.getUser);
+	const isLoggedIn = useSelector(userSelectors.isLoggedIn);
 	const { id } = useParams();
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const [backendErrors, setBackendErrors] = useState(null);
+
+	const handleDeleteClick = () => {
+		if (window.confirm("Are you sure you want to delete this post? This action is irreversible.")){
+			dispatch(actions.deletePost(id, () => navigate("/"), errors => setBackendErrors(errors)));
+		}
+		
+	}
 
 	useEffect(() => {
 
@@ -34,6 +46,7 @@ const PostDetails = () => {
 
 	return (
 		<div className="container mt-5">
+		<Errors id="createPostErrors" errors={backendErrors} onClose={() => setBackendErrors(null)} />
 			{post.expired && <div class="alert alert-dark" role="alert">
 				This post is expired... but maybe it can still help you.
 			</div>}
@@ -72,6 +85,14 @@ const PostDetails = () => {
 							&nbsp;
 							{post.negativeRatings}
 						</button>
+						&nbsp;
+						{isLoggedIn && post.userSummaryDto.id === user.id &&
+							<button type="button" className="btn btn-outline-danger" onClick={handleDeleteClick}>
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
+									<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+									<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+								</svg></button>
+						}
 					</div>
 
 				</div>

@@ -23,6 +23,7 @@ import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
+import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 
 /**
  * The Class PostServiceImpl.
@@ -40,6 +41,9 @@ public class PostServiceImpl implements PostService {
 	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
+
+	@Autowired
+	private PermissionChecker permissionChecker;
 
 	@Autowired
 	public PostServiceImpl(OfferHandler offerHandler, CouponHandler couponHandler) {
@@ -104,6 +108,14 @@ public class PostServiceImpl implements PostService {
 		}
 
 		return post.get();
+	}
+
+	@Override
+	public void deletePost(Long userId, Long postId) throws InstanceNotFoundException, PermissionException {
+		Post post = permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
+
+		postDao.delete(post);
+
 	}
 
 }
