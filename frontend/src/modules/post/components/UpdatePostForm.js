@@ -19,12 +19,13 @@ const UpdatePostForm = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const properties = {};
+	const initImages = post.images;
 	const [title, setTitle] = useState(post.title);
 	const [description, setDescription] = useState(post.description);
 	const [url, setUrl] = useState(post.url);
 	const [price, setPrice] = useState(post.price);
 	const [categoryId, setCategoryId] = useState(post.categoryDto !=null  ? post.categoryDto.id: '');
-	const [images, setImages] = useState(post.images);
+	const [images, setImages] = useState([]);
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [wrongFileType, setWrongFileType] = useState(false);
 	const [code, setCode] = useState(post.properties.code);
@@ -42,7 +43,6 @@ const UpdatePostForm = () => {
                 {authorId: user.id, id: id, title: title, description: description, url: url,
 				price: price, categoryId: (categoryId !== '' ? categoryId : null), images: images, type: post.type, properties: properties}, () => navigate('/post/post-details/' + id), errors => setBackendErrors(errors)
 			));
-			//setImages([]);
         } else {
             setBackendErrors(null);
             form.classList.add('was-validated');
@@ -78,8 +78,8 @@ const UpdatePostForm = () => {
 
 	const handleClearImages = () => {
 
-		/*imagesInput.value = '';
-		imagesInput.setCustomValidity('');*/
+		imagesInput.value = '';
+		imagesInput.setCustomValidity('');
 		clearImages.style.display = 'none';
 		setImages([]);
 
@@ -203,7 +203,7 @@ const UpdatePostForm = () => {
 								</div>
 							</div>
 						</div>
-						<ImagesCard images={images} />
+						<ImagesCard images={initImages.concat(images)} />
 						{post.type === 'Coupon' &&
 							<div className="form-group row">
 								<label htmlFor="code" className="col-md-3 col-form-label">
