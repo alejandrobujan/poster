@@ -1,5 +1,6 @@
 package es.udc.fi.dc.fd.rest;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +33,8 @@ import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.entities.User.RoleType;
 import es.udc.fi.dc.fd.model.entities.UserDao;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
+import es.udc.fi.dc.fd.rest.common.JwtGenerator;
+import es.udc.fi.dc.fd.rest.common.JwtInfo;
 import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
@@ -57,6 +60,10 @@ public class PostControllerTest {
 	/** The password encoder. */
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+
+	/** The jwt generator. */
+	@Autowired
+	private JwtGenerator jwtGenerator;
 
 	/** The user dao. */
 	@Autowired
@@ -95,6 +102,20 @@ public class PostControllerTest {
 		loginParams.setPassword(PASSWORD);
 
 		return userController.login(loginParams);
+
+	}
+
+	/**
+	 * Generate service token.*
+	 * 
+	 * @param user the user
+	 * @return the string
+	 */
+	private String generateServiceToken(User user) {
+
+		JwtInfo jwtInfo = new JwtInfo(user.getId(), user.getUserName(), user.getRole().toString());
+
+		return jwtGenerator.generate(jwtInfo);
 
 	}
 
@@ -210,6 +231,40 @@ public class PostControllerTest {
 	@Test
 	public void testGetFindPostById_NotOk() throws Exception {
 		mockMvc.perform(get("/api/posts/postDetail/-10")).andExpect(status().isNotFound());
+
+	}
+
+	@Test
+	public void testDeleteDeletePost_Ok() throws Exception {
+
+		User user = createUser("admin");
+		Offer offer = createOffer(user);
+
+		mockMvc.perform(delete("/api/posts/post/" + offer.getId()).header("Authorization",
+				"Bearer " + generateServiceToken(user))).andExpect(status().isNoContent());
+
+	}
+
+	@Test
+	public void testDeleteDeletePost_NotOkForbidden() throws Exception {
+
+		User user = createUser("admin");
+		Offer offer = createOffer(user);
+
+		User user2 = createUser("pepe");
+
+		mockMvc.perform(delete("/api/posts/post/" + offer.getId()).header("Authorization",
+				"Bearer " + generateServiceToken(user2))).andExpect(status().isForbidden());
+
+	}
+
+	@Test
+	public void testDeleteDeletePost_NotOkNotFound() throws Exception {
+
+		User user = createUser("admin");
+
+		mockMvc.perform(delete("/api/posts/post/-1").header("Authorization", "Bearer " + generateServiceToken(user)))
+				.andExpect(status().isNotFound());
 
 	}
 
