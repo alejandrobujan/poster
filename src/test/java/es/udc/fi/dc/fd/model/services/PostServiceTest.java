@@ -381,7 +381,7 @@ public class PostServiceTest {
 	}
 
 	/**
-	 * Test update cupon.
+	 * Test update coupon.
 	 * 
 	 * @throws MaximumImageSizeExceededException
 	 * @throws DuplicateInstanceException
@@ -391,7 +391,7 @@ public class PostServiceTest {
 	 *
 	 */
 	@Test
-	public void testUpdatePostCupon() throws DuplicateInstanceException, MaximumImageSizeExceededException,
+	public void testUpdatePostCoupon() throws DuplicateInstanceException, MaximumImageSizeExceededException,
 			InstanceNotFoundException, MissingRequiredParameterException, PermissionException {
 		User user = signUpUser("userName1");
 		Category category = createCategory("category1");
