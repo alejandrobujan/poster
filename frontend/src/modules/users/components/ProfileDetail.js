@@ -14,14 +14,17 @@ const ProfileDetail = () => {
 
 		<div>
 			<div className="card text-center">
-				<div className="card-body">
-					<img src={user.avatar ? `data:image/*;base64,${user.avatar}` : "/poster/assets/profile.png"} alt="Avatar" height="200px" width="200px" />&nbsp;
-					<h5 className="card-title">{user.userName}</h5>
-					<ul className="list-group list-group-flush">
-						<li className="list-group-item">First Name: {user.firstName}</li>
-						<li className="list-group-item">Last Name: {user.lastName}</li>
-						<li className="list-group-item">Email: {user.email}</li>
-					</ul>
+				<div className="card-body row">
+					<div className='col'>
+						<img src={user.avatar ? `data:image/*;base64,${user.avatar}` : "/poster/assets/profile.png"} alt="Avatar" height="200px" width="200px" />&nbsp;
+						<h5 className="card-title">{user.userName}</h5></div>
+					<div className='col text-left'>
+						<ul className="list-group list-group-flush">
+							<li className="list-group-item">First Name: <b>{user.firstName}</b></li>
+							<li className="list-group-item">Last Name: <b>{user.lastName}</b></li>
+							<li className="list-group-item">Email: <b>{user.email}</b></li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
