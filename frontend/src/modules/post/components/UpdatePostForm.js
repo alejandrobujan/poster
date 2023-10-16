@@ -19,13 +19,12 @@ const UpdatePostForm = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const properties = {};
-	const initImages = post.images;
 	const [title, setTitle] = useState(post.title);
 	const [description, setDescription] = useState(post.description);
 	const [url, setUrl] = useState(post.url);
 	const [price, setPrice] = useState(post.price);
 	const [categoryId, setCategoryId] = useState(post.categoryDto !=null  ? post.categoryDto.id: '');
-	const [images, setImages] = useState([]);
+	const [images, setImages] = useState(post.images);
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [wrongFileType, setWrongFileType] = useState(false);
 	const [code, setCode] = useState(post.properties.code);
@@ -203,7 +202,7 @@ const UpdatePostForm = () => {
 								</div>
 							</div>
 						</div>
-						<ImagesCard images={initImages.concat(images)} />
+						<ImagesCard images={images} />
 						{post.type === 'Coupon' &&
 							<div className="form-group row">
 								<label htmlFor="code" className="col-md-3 col-form-label">
