@@ -64,3 +64,8 @@ const findPostByIdCompleted = post => ({
 export const clearPost = () => ({
 	type: actionTypes.CLEAR_POST
 }); 	
+
+export const deletePost = (id, onSuccess, onErrors) => dispatch => {
+	backend.postService.deletePost(id, onSuccess, onErrors);
+};
+
