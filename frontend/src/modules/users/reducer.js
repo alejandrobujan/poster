@@ -22,6 +22,12 @@ const user = (state = initialState.user, action) => {
         case actionTypes.UPDATE_PROFILE_COMPLETED:
             return action.user;
 
+            case actionTypes.CLEAR_AVATAR:
+                return {
+                    ...state,
+                    avatar: action.avatar,
+                };
+
         default:
             return state;
 

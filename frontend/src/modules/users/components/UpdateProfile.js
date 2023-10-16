@@ -16,12 +16,12 @@ const UpdateProfile = () => {
     const [lastName, setLastName] = useState(user.lastName);
     const [email, setEmail]  = useState(user.email);
     const [login, setLogin] = useState(user.userName);
-	const [avatar, setAvatar] = useState(user.setAvatar);
+	const [avatar, setAvatar] = useState(user.avatar);
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [wrongFileType, setWrongFileType] = useState(false);
+    const [avatarCleared, setAvatarCleared] = useState(false);
 	let form;
 	let avatarInput;
-	let clearAvatar;
 	
 	
     const handleSubmit = event => {
@@ -29,6 +29,8 @@ const UpdateProfile = () => {
         event.preventDefault();
 
         if (form.checkValidity()) {
+
+            const avatarSave = avatarCleared ? '' : avatar;
             
             dispatch(actions.updateProfile(
                 {id: user.id,
@@ -36,8 +38,13 @@ const UpdateProfile = () => {
                 lastName: lastName.trim(),
                 email: email.trim(),
                 userName: login.trim(),
-                avatar: avatar},
-                () => navigate('/users/profile-detail'),
+                avatar: avatarSave},
+                () => {
+					if (avatarCleared){
+						dispatch(actions.clearAvatar());
+					}
+					navigate('/users/profile-detail');
+					},
                 errors => setBackendErrors(errors)));
 
         } else {
@@ -50,39 +57,34 @@ const UpdateProfile = () => {
     }
     
     const handleAvatarChange = async e => {
-
+		
 		const maxSize = 1024000;
 		const file = e.target.files[0];
-
-		clearAvatar.style.display = file ? 'inline' : 'none';
 
 		if (file && file.size <= maxSize) {
 			if (isImage(file)) {
 				setAvatar(await fileToBase64(file));
+                setAvatarCleared(false);
 				avatarInput.setCustomValidity('');
 				setWrongFileType(false);
 			} else {
 				setAvatar('');
-				avatarInput.setCustomValidity('error');
 				setWrongFileType(true);
-
+                avatarInput.setCustomValidity('error');
 			}
-		} else {
+		} else{ 
 			setAvatar('');
-			avatarInput.setCustomValidity(file ? 'error' : '');
 			setWrongFileType(false);
+            avatarInput.setCustomValidity(file ? 'error' : '');
 		}
-
 	}
-
+	
 	const handleClearAvatar = () => {
-
-		avatarInput.value = '';
-		avatarInput.setCustomValidity('');
-		clearAvatar.style.display = 'none';
-		setAvatar('');
-
-	}
+        avatarInput.value = '';
+        avatarInput.setCustomValidity('');
+        setAvatarCleared(true);
+	    setAvatar('');
+  	};
 
     return (
         <div>
@@ -160,18 +162,16 @@ const UpdateProfile = () => {
 								<input ref={node => avatarInput = node} type="file" id="avatar" accept="image/*"
 									onChange={handleAvatarChange}
 								/>
-								<button ref={node => clearAvatar = node} type="button" className="btn btn-outline-danger" onClick={handleClearAvatar} style={{ 'display': 'none' }}>
-									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
-										<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
-										<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
-									</svg>
-								</button>
 								<div className="invalid-feedback">
 									{wrongFileType ?
 										"Only images are allowed" :
 										"The maximum size allowed is 1MB."}
 								</div>
 							</div>
+                            <label htmlFor="avatar" className="col-form-label">
+								Preview:&nbsp;&nbsp;&nbsp;
+							</label>
+                            <img src={avatar ? `data:image/*;base64,${avatar}` : '/poster/assets/profile.png'} alt="Avatar" height="30px" width="30px"/>
 						</div>
                         <div className="form-group row">
                             <div className="offset-md-3 col-md-1">
@@ -180,7 +180,7 @@ const UpdateProfile = () => {
                                 </button>
                             </div>
                             <div className="offset-md-2 col-md-1">
-								<button type="button" className="btn btn-outline-danger">
+								<button type="button" className="btn btn-outline-danger" onClick={handleClearAvatar}>
 									Clear avatar
 								</button>
 							</div>

@@ -126,19 +126,10 @@ public class UserServiceImpl implements UserService {
 
 		}
 
-		byte[] cero = {};
-
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setEmail(email);
-		if (avatar == null) {
-			avatar = cero;
-		}
-		if (avatar.length < 1) {
-			user.setAvatar(user.getAvatar());
-		} else {
-			user.setAvatar(avatar);
-		}
+		user.setAvatar(avatar);
 
 		return user;
 

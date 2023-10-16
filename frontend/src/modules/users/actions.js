@@ -51,7 +51,7 @@ export const logout = () => {
 export const updateProfileCompleted = user => ({
     type: actionTypes.UPDATE_PROFILE_COMPLETED,
     user
-})
+});
 
 export const updateProfile = (user, onSuccess, onErrors) => dispatch =>
     backend.userService.updateProfile(user, 
@@ -60,3 +60,7 @@ export const updateProfile = (user, onSuccess, onErrors) => dispatch =>
             onSuccess();
         },
         onErrors);
+
+export const clearAvatar = () => ({
+    type: actionTypes.CLEAR_AVATAR
+});
