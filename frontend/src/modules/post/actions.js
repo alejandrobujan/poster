@@ -69,6 +69,7 @@ export const deletePost = (id, onSuccess, onErrors) => dispatch => {
 	backend.postService.deletePost(id, onSuccess, onErrors);
 };
 
+
 export const updatePostCompleted = post => ({
     type: actionTypes.UPDATE_POST_COMPLETED,
     post
@@ -81,3 +82,12 @@ export const updatePost = (post, onSuccess, onErrors) => dispatch =>
 			onSuccess();
 		}, 
 		onErrors);
+
+const markPostAsExpiredCompleted = ({expired}) => ({
+	type: actionTypes.MARK_POST_AS_EXPIRED_COMPLETED,
+	expired
+});
+
+export const markPostAsExpired = (id, expired, onErrors) => dispatch => {
+	backend.postService.maskPostAsExpired(id, expired, e => dispatch(markPostAsExpiredCompleted(e)), onErrors);
+};	

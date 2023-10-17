@@ -48,11 +48,16 @@ const post = (state = initialState.post, action) => {
 
         case actionTypes.CLEAR_POST:
             return initialState.post;    
+            
+        case actionTypes.MARK_POST_AS_EXPIRED_COMPLETED:
+			return {...state, expired: action.expired };
 
         default:
             return state;
     }
 }
+
+
 
 const reducer = combineReducers({
     categories,

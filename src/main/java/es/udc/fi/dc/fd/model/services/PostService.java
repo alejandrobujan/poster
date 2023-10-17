@@ -56,6 +56,14 @@ public interface PostService {
 	 * @throws PermissionException
 	 */
 	void deletePost(Long userId, Long postId) throws InstanceNotFoundException, PermissionException;
+	
+	/**
+	 * Mark or unmark a post as expired.
+	 * 
+	 * @param postId
+	 * @return the post.
+	 */
+	boolean markAsExpired(Long userId, Long postId, boolean expired) throws InstanceNotFoundException, PermissionException;
 
 	/**
 	 * @param postId

@@ -131,5 +131,14 @@ public class PostServiceImpl implements PostService {
 		return postHandler.handleUpdate(postId, title, description, url, price, userId, categoryId, imageList,
 				properties);
 	}
+	
+	@Override
+	public boolean markAsExpired(Long userId, Long postId, boolean expired) throws InstanceNotFoundException, PermissionException {
+		Post post = permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
+		
+		post.setExpired(expired);
+
+		return postDao.save(post).isExpired();
+	}
 
 }
