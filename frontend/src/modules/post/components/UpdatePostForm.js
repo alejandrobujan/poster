@@ -40,6 +40,7 @@ const UpdatePostForm = () => {
 
 	const handleImagesGalleryChange = () => {
 		setImageGalleryImages([...imageGalleryImages.slice(0, currentIndex), ...imageGalleryImages.slice(currentIndex + 1)]);
+		setCurrentIndex(0);
 	}
 
 	const handleSlide = (currentIndex) => {
@@ -226,7 +227,7 @@ const UpdatePostForm = () => {
 									No new uploaded images.
 								</p>) : (
 									<div className='images-card'>
-										<ImageGallery showPlayButton={false} showFullscreenButton={false}
+										<ImageGallery showPlayButton={false} showFullscreenButton={false} infinite={false}
 											items={images.map((image) => ({ original: `data:image/*;base64,${image}`, thumbnailHeight: "30px" }))} />
 									</div>)
 							}
@@ -240,7 +241,7 @@ const UpdatePostForm = () => {
 									No previously uploaded images.
 								</p>) : (
 									<div className='images-card' id='images-card' value='${imageGalleryImages}'>
-										<ImageGallery showPlayButton={false} showFullscreenButton={false} showIndex={true} infinite={false} onSlide={handleSlide}
+										<ImageGallery showPlayButton={false} showFullscreenButton={false} infinite={false} onSlide={handleSlide}
 											items={imageGalleryImages.map((image) => ({ original: `data:image/*;base64,${image}`, thumbnailHeight: "30px" }))} />
 										<button type="button" className="btn btn-outline-danger" onClick={handleImagesGalleryChange}>
 											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
