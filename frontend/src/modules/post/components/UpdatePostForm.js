@@ -6,11 +6,15 @@ import CategorySelector from './CategorySelector';
 import * as selectors from '../selectors';
 import * as userSelectors from '../../users/selectors';
 
-import { BackLink, Errors, ImagesCard } from '../../common';
+import { BackLink, Errors } from '../../common';
 
 import * as actions from '../actions';
 
 import { fileToBase64, isImage } from '../../../backend/utils';
+
+import ImageGallery from "react-image-gallery";
+// import stylesheet if you're not already using CSS @import
+import "react-image-gallery/styles/css/image-gallery.css";
 
 const UpdatePostForm = () => {
 	const user = useSelector(userSelectors.getUser);
@@ -24,13 +28,23 @@ const UpdatePostForm = () => {
 	const [url, setUrl] = useState(post.url);
 	const [price, setPrice] = useState(post.price);
 	const [categoryId, setCategoryId] = useState(post.categoryDto != null ? post.categoryDto.id : '');
-	const [images, setImages] = useState(post.images);
+	const [images, setImages] = useState([]);
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [wrongFileType, setWrongFileType] = useState(false);
 	const [code, setCode] = useState(post.properties.code);
+	const [imageGalleryImages, setImageGalleryImages] = useState(post.images);
+	const [currentIndex, setCurrentIndex] = useState(0);
 	let form;
 	let imagesInput;
 	let clearImages;
+
+	const handleImagesGalleryChange = () => {
+		setImageGalleryImages([...imageGalleryImages.slice(0, currentIndex), ...imageGalleryImages.slice(currentIndex + 1)]);
+	}
+
+	const handleSlide = (currentIndex) => {
+		setCurrentIndex(currentIndex);
+	};
 
 	const handleSubmit = event => {
 
@@ -41,7 +55,7 @@ const UpdatePostForm = () => {
 			dispatch(actions.updatePost(
 				{
 					authorId: user.id, id: id, title: title, description: description, url: url,
-					price: price, categoryId: (categoryId !== '' ? categoryId : null), images: images, type: post.type, properties: properties
+					price: price, categoryId: (categoryId !== '' ? categoryId : null), images: imageGalleryImages.concat(images), type: post.type, properties: properties
 				}, () => navigate('/post/post-details/' + id), errors => setBackendErrors(errors)
 			));
 		} else {
@@ -204,7 +218,40 @@ const UpdatePostForm = () => {
 								</div>
 							</div>
 						</div>
-						<ImagesCard images={images} />
+
+						<div>
+							<p>New uploaded images:</p>
+							{images.length === 0 ?
+								(<p className='noImages'>
+									No new uploaded images.
+								</p>) : (
+									<div className='images-card'>
+										<ImageGallery showPlayButton={false} showFullscreenButton={false}
+											items={images.map((image) => ({ original: `data:image/*;base64,${image}`, thumbnailHeight: "30px" }))} />
+									</div>)
+							}
+
+						</div>
+
+						<div>
+							<p>Previously uploaded images:</p>
+							{imageGalleryImages.length === 0 ?
+								(<p className='noImages'>
+									No previously uploaded images.
+								</p>) : (
+									<div className='images-card' id='images-card' value='${imageGalleryImages}'>
+										<ImageGallery showPlayButton={false} showFullscreenButton={false} showIndex={true} infinite={false} onSlide={handleSlide}
+											items={imageGalleryImages.map((image) => ({ original: `data:image/*;base64,${image}`, thumbnailHeight: "30px" }))} />
+										<button type="button" className="btn btn-outline-danger" onClick={handleImagesGalleryChange}>
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
+												<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+												<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+											</svg>
+										</button>
+									</div>)
+							}
+
+						</div>
 						{post.type === 'Coupon' &&
 							<div className="form-group row">
 								<label htmlFor="code" className="col-md-3 col-form-label">
