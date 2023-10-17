@@ -120,12 +120,9 @@ public class UserServiceImpl implements UserService {
 
 			throw new DuplicateInstanceException("project.entities.user", user.getUserName());
 
-		} else {
-
-			user.setUserName(userName);
-
 		}
 
+		user.setUserName(userName);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setEmail(email);
