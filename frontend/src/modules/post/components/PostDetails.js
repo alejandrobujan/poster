@@ -27,7 +27,7 @@ const PostDetails = () => {
 		}
 		
 	}
-
+	
 	useEffect(() => {
 
 		const postId = Number(id);
@@ -116,6 +116,14 @@ const PostDetails = () => {
 						<div class="creation-date">Posted at {getDate(post.creationDate)}</div>
 						<UserCard user={post.userSummaryDto} />
 					</div>
+					
+					{isLoggedIn && post.userSummaryDto.id === user.id &&
+						<button className="page-link"
+							onClick={() => dispatch(actions.markPostAsExpired(id, !post.expired, errors => setBackendErrors(errors)))}>
+							{post.expired ? "Unmark as expired" : "Mark as expired"}
+                		</button>
+
+					}
 				</div>
 			</div>
 		</div>
