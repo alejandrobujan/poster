@@ -116,6 +116,7 @@ public class PostServiceImpl implements PostService {
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
 			PermissionException {
 
+		permissionChecker.checkUserExists(userId);
 		permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
 		PostHandler postHandler = handlers.get(type);
 
