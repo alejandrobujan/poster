@@ -117,5 +117,14 @@ public class PostServiceImpl implements PostService {
 		postDao.delete(post);
 
 	}
+	
+	@Override
+	public boolean markAsExpired(Long userId, Long postId, boolean expired) throws InstanceNotFoundException, PermissionException {
+		Post post = permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
+		
+		post.setExpired(expired);
+
+		return postDao.save(post).isExpired();
+	}
 
 }
