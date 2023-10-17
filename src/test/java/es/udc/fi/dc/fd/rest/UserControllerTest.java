@@ -24,6 +24,7 @@ import es.udc.fi.dc.fd.model.entities.UserDao;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
+import es.udc.fi.dc.fd.rest.dtos.ChangePasswordParamsDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
 import es.udc.fi.dc.fd.rest.dtos.UserDto;
 
@@ -249,5 +250,51 @@ public class UserControllerTest {
 		mockMvc.perform(put("/api/users/" + user.getUserDto().getId())
 				.header("Authorization", "Bearer " + user.getServiceToken()).contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsBytes(userParams))).andExpect(status().isBadRequest());
+	}
+
+	/*
+	 * /** Test Change Password ok
+	 *
+	 * @throws Exception the exception
+	 */
+
+	@Test
+	public void testChangePassword_Ok() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+
+		ChangePasswordParamsDto passwordParams = new ChangePasswordParamsDto();
+
+		passwordParams.setOldPassword(PASSWORD);
+		passwordParams.setNewPassword("contraseña");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/users/" + user.getUserDto().getId() + "/changePassword")
+				.header("Authorization", "Bearer " + user.getServiceToken()).contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsBytes(passwordParams))).andExpect(status().isNoContent());
+	}
+
+	/*
+	 * /** Test Change Password not ok
+	 *
+	 * @throws Exception the exception
+	 */
+
+	@Test
+	public void testChangePassword_NotOk() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+
+		ChangePasswordParamsDto passwordParams = new ChangePasswordParamsDto();
+
+		passwordParams.setOldPassword("pass");
+		passwordParams.setNewPassword("contraseña");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/users/" + user.getUserDto().getId() + "/changePassword")
+				.header("Authorization", "Bearer " + user.getServiceToken()).contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsBytes(passwordParams))).andExpect(status().isNotFound());
 	}
 }
