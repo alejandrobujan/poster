@@ -91,3 +91,17 @@ const markPostAsExpiredCompleted = ({expired}) => ({
 export const markPostAsExpired = (id, expired, onErrors) => dispatch => {
 	backend.postService.maskPostAsExpired(id, expired, e => dispatch(markPostAsExpiredCompleted(e)), onErrors);
 };	
+
+const ratePostCompleted = ratingCount => ({
+	type: actionTypes.RATE_POST_COMPLETED,
+	ratingCount
+});
+
+export const ratePostPositive = (id, onErrors) => dispatch => {
+	backend.ratingService.ratePostPositive(id, ratingCount => dispatch(ratePostCompleted(ratingCount)), onErrors);
+};
+
+
+export const ratePostNegative = (id, onErrors) => dispatch => {
+	backend.ratingService.ratePostNegative(id, ratingCount => dispatch(ratePostCompleted(ratingCount)), onErrors);
+};
