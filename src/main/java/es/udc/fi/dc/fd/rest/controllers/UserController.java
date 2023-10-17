@@ -173,14 +173,14 @@ public class UserController {
 	@PutMapping("/{id}")
 	public UserDto updateProfile(@RequestAttribute Long userId, @PathVariable("id") Long id,
 			@Validated({ UserDto.UpdateValidations.class }) @RequestBody UserDto userDto)
-			throws InstanceNotFoundException, PermissionException {
+			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException {
 
 		if (!id.equals(userId)) {
 			throw new PermissionException();
 		}
 
-		return toUserDto(
-				userService.updateProfile(id, userDto.getFirstName(), userDto.getLastName(), userDto.getEmail()));
+		return toUserDto(userService.updateProfile(id, userDto.getUserName(), userDto.getFirstName(),
+				userDto.getLastName(), userDto.getEmail(), userDto.getAvatar()));
 
 	}
 
@@ -207,7 +207,7 @@ public class UserController {
 		userService.changePassword(id, params.getOldPassword(), params.getNewPassword());
 
 	}
-	
+
 	/**
 	 * Generate service token.
 	 *

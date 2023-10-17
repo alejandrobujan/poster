@@ -1,8 +1,12 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import * as selectors from '../selectors';
 
 const ProfileDetail = () => {
+
+	const navigate = useNavigate();
 	const user = useSelector(selectors.getUser);
 
 	if (!user) {
@@ -26,9 +30,13 @@ const ProfileDetail = () => {
 						</ul>
 					</div>
 				</div>
+				<div className="text-center mb-4">
+					<button type="button" className="btn btn-primary" onClick={() => navigate("/users/update-profile")}>
+						Edit Profile
+					</button>
+				</div>
 			</div>
 		</div>
-
 	);
 
 }

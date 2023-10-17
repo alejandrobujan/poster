@@ -47,3 +47,23 @@ export const logout = () => {
     return {type: actionTypes.LOGOUT};
 
 };       
+
+export const updateProfileCompleted = user => ({
+    type: actionTypes.UPDATE_PROFILE_COMPLETED,
+    user
+});
+
+export const updateProfile = (user, onSuccess, onErrors) => dispatch =>
+    backend.userService.updateProfile(user, 
+        user => {
+            dispatch(updateProfileCompleted(user));
+            onSuccess();
+        },
+        onErrors);
+
+export const clearAvatar = () => ({
+    type: actionTypes.CLEAR_AVATAR
+});
+
+export const changePassword = (id, oldPassword, newPassword, onSuccess, onErrors) => dispatch =>
+    backend.userService.changePassword(id, oldPassword, newPassword, onSuccess, onErrors);
