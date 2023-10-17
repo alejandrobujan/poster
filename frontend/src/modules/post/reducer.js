@@ -51,6 +51,9 @@ const post = (state = initialState.post, action) => {
             
         case actionTypes.MARK_POST_AS_EXPIRED_COMPLETED:
 			return {...state, expired: action.expired };
+			
+		case actionTypes.RATE_POST_COMPLETED:
+			return { ...state, positiveRatings: action.ratingCount.positiveCount, negativeRatings: action.ratingCount.negativeCount };	
 
         default:
             return state;
