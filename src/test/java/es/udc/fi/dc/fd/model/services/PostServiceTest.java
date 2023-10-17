@@ -399,5 +399,73 @@ public class PostServiceTest {
 			postService.deletePost(nonExistentId, post.getId());
 		});
 	}
+	
+	@Test
+	public void testMarkAsExpired() throws DuplicateInstanceException, MaximumImageSizeExceededException,
+			InstanceNotFoundException, PermissionException {
+		User u = signUpUser("Pepe");
+
+		Category c = createCategory("Car");
+
+		Post post = createPost(u, c);
+
+		Post foundPost = postService.findPostById(post.getId());
+
+		assertFalse(foundPost.isExpired());
+
+		postService.markAsExpired(u.getId(), foundPost.getId(), true);
+
+		foundPost = postService.findPostById(post.getId());
+
+		assertTrue(foundPost.isExpired());
+		
+		postService.markAsExpired(u.getId(), foundPost.getId(), false);
+
+		foundPost = postService.findPostById(post.getId());
+
+		assertFalse(foundPost.isExpired());
+
+	}
+
+	@Test
+	public void testMarkAsExpiredNoPost()
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
+		User u = signUpUser("Pepe");
+		long nonExistentId = -1L;
+		assertThrows(InstanceNotFoundException.class, () -> postService.markAsExpired(u.getId(), nonExistentId, true));
+	}
+
+	@Test
+	public void testMarkAsExpiredNoUser()
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
+		User u = signUpUser("Pepe");
+
+		User u2 = signUpUser("Meme");
+
+		Category c = createCategory("Car");
+
+		Post post = createPost(u, c);
+
+		postService.findPostById(post.getId());
+
+		assertThrows(PermissionException.class, () -> {
+			postService.markAsExpired(u2.getId(), post.getId(), true);
+		});
+	}
+
+	@Test
+	public void testMarkAsExpiredNonExistentUser()
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
+		User u = signUpUser("Pepe");
+
+		Category c = createCategory("Car");
+
+		Post post = createPost(u, c);
+
+		long nonExistentId = -1L;
+
+		assertThrows(PermissionException.class, () -> postService.markAsExpired(nonExistentId, post.getId(), true));
+	}
+	
 
 }
