@@ -34,6 +34,7 @@ import es.udc.fi.dc.fd.rest.dtos.CouponConversor;
 import es.udc.fi.dc.fd.rest.dtos.OfferConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostDto;
+import es.udc.fi.dc.fd.rest.dtos.PostExpiredDto;
 import es.udc.fi.dc.fd.rest.dtos.PostParamsDto;
 import es.udc.fi.dc.fd.rest.dtos.PostSummaryDto;
 
@@ -102,5 +103,14 @@ public class PostController {
 		postService.deletePost(userId, id);
 
 	}
+	
+	@PostMapping("/post/{id}/markAsExpired")
+	public PostExpiredDto markPostAsExpired(@RequestAttribute Long userId, @PathVariable Long id, @RequestBody PostExpiredDto postExpiredDto)
+			throws InstanceNotFoundException, PermissionException {
+
+		return new PostExpiredDto(postService.markAsExpired(userId, id, postExpiredDto.isExpired()));
+
+	}
+
 
 }
