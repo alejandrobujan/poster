@@ -69,3 +69,15 @@ export const deletePost = (id, onSuccess, onErrors) => dispatch => {
 	backend.postService.deletePost(id, onSuccess, onErrors);
 };
 
+export const updatePostCompleted = post => ({
+    type: actionTypes.UPDATE_POST_COMPLETED,
+    post
+})
+    
+export const updatePost = (post, onSuccess, onErrors) => dispatch =>
+	backend.postService.updatePost(post,
+		post => {
+			dispatch(updatePostCompleted(post));
+			onSuccess();
+		}, 
+		onErrors);

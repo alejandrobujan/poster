@@ -343,7 +343,7 @@ public class PostServiceTest {
 
 		Post post = createPost(u, c);
 
-		Post foundPost = postService.findPostById(post.getId());
+		postService.findPostById(post.getId());
 
 		postService.deletePost(u.getId(), post.getId());
 
@@ -363,7 +363,7 @@ public class PostServiceTest {
 
 		Post post = createPost(u, c);
 
-		Post foundPost = postService.findPostById(post.getId());
+		postService.findPostById(post.getId());
 
 		assertThrows(PermissionException.class, () -> {
 			postService.deletePost(u2.getId(), post.getId());
@@ -391,13 +391,198 @@ public class PostServiceTest {
 
 		Post post = createPost(u, c);
 
-		Post foundPost = postService.findPostById(post.getId());
+		postService.findPostById(post.getId());
 
 		long nonExistentId = -1L;
 
 		assertThrows(PermissionException.class, () -> {
 			postService.deletePost(nonExistentId, post.getId());
 		});
+	}
+
+	/**
+	 * Test update offer.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 * @throws DuplicateInstanceException
+	 * @throws MissingRequiredParameterException
+	 * @throws InstanceNotFoundException
+	 * @throws PermissionException
+	 *
+	 */
+	@Test
+	public void testUpdatePostOffer() throws DuplicateInstanceException, MaximumImageSizeExceededException,
+			InstanceNotFoundException, MissingRequiredParameterException, PermissionException {
+		User user = signUpUser("userName1");
+		Category category = createCategory("category1");
+		String title = "title";
+		String description = "description";
+		String url = "http//www.google.es";
+		BigDecimal price = new BigDecimal(10);
+
+		Post post = postService.createPost(title, description, url, price, user.getId(), category.getId(),
+				new ArrayList<byte[]>(), "Offer", Map.ofEntries());
+
+		Category newCategory = createCategory("category2");
+		String newTitle = "new title";
+		String newDescription = "new description";
+		String newUrl = "https://www.bing.com";
+		BigDecimal newPrice = new BigDecimal(12);
+
+		Post updatedPost = postService.updatePost(post.getId(), newTitle, newDescription, newUrl, newPrice,
+				user.getId(), newCategory.getId(), new ArrayList<byte[]>(), "Offer", Map.ofEntries());
+
+		Post actualPost = postDao.findById(post.getId()).get();
+
+		assertNotNull(actualPost);
+		assertEquals(updatedPost, actualPost);
+		assertEquals(newCategory.getId(), actualPost.getCategory().getId());
+		assertEquals(newDescription, actualPost.getDescription());
+		assertEquals(newPrice, actualPost.getPrice());
+		assertEquals(newTitle, actualPost.getTitle());
+		assertEquals(newUrl, actualPost.getUrl());
+		assertEquals(user.getId(), actualPost.getUser().getId());
+		assertTrue(actualPost.getImages().isEmpty());
+
+	}
+
+	/**
+	 * Test update coupon.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 * @throws DuplicateInstanceException
+	 * @throws MissingRequiredParameterException
+	 * @throws InstanceNotFoundException
+	 * @throws PermissionException
+	 *
+	 */
+	@Test
+	public void testUpdatePostCoupon() throws DuplicateInstanceException, MaximumImageSizeExceededException,
+			InstanceNotFoundException, MissingRequiredParameterException, PermissionException {
+		User user = signUpUser("userName1");
+		Category category = createCategory("category1");
+		String title = "title";
+		String description = "description";
+		String url = "http//www.google.es";
+		BigDecimal price = new BigDecimal(10);
+
+		String code = "EXTRA25";
+		Post post = postService.createPost(title, description, url, price, user.getId(), category.getId(),
+				new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", code)));
+
+		Category newCategory = createCategory("category2");
+		String newTitle = "new title";
+		String newDescription = "new description";
+		String newUrl = "https://www.bing.com";
+		BigDecimal newPrice = new BigDecimal(12);
+
+		String newCode = "EXTRANEW25";
+
+		Post updatedPost = postService.updatePost(post.getId(), newTitle, newDescription, newUrl, newPrice,
+				user.getId(), newCategory.getId(), new ArrayList<byte[]>(), "Coupon",
+				Map.ofEntries(entry("code", newCode)));
+
+		Post actualPost = postDao.findById(post.getId()).get();
+
+		assertNotNull(actualPost);
+		assertEquals(updatedPost, actualPost);
+		assertEquals(newCategory.getId(), actualPost.getCategory().getId());
+		assertEquals(newDescription, actualPost.getDescription());
+		assertEquals(newPrice, actualPost.getPrice());
+		assertEquals(newTitle, actualPost.getTitle());
+		assertEquals(newUrl, actualPost.getUrl());
+		assertEquals(user.getId(), actualPost.getUser().getId());
+		assertTrue(actualPost.getImages().isEmpty());
+		assertEquals(newCode, ((Coupon) actualPost).getCode());
+
+	}
+
+	/**
+	 * Test update inexistent post.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 * @throws DuplicateInstanceException
+	 *
+	 */
+	@Test
+	public void testUpdateInexistentPost() throws DuplicateInstanceException, MaximumImageSizeExceededException {
+		long inexistentPostId = -1L;
+		User user = signUpUser("userName1");
+		Category category = createCategory("category1");
+		assertThrows(InstanceNotFoundException.class,
+				() -> postService.updatePost(inexistentPostId, "title", "description", "url", new BigDecimal(10),
+						user.getId(), category.getId(), new ArrayList<byte[]>(), "Coupon",
+						Map.ofEntries(entry("code", "EXTRA25"))));
+	}
+
+	/**
+	 * Test update with inexistent category.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 * @throws DuplicateInstanceException
+	 * @throws MissingRequiredParameterException
+	 * @throws InstanceNotFoundException
+	 *
+	 */
+	@Test
+	public void testUpdateWithInexistentCategory() throws DuplicateInstanceException, MaximumImageSizeExceededException,
+			InstanceNotFoundException, MissingRequiredParameterException {
+		long inexistentCategoryId = -1L;
+		User user = signUpUser("userName1");
+		Category category = createCategory("category1");
+		Post post = postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(),
+				category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")));
+		assertThrows(InstanceNotFoundException.class,
+				() -> postService.updatePost(post.getId(), "title", "description", "url", new BigDecimal(10),
+						user.getId(), inexistentCategoryId, new ArrayList<byte[]>(), "Coupon",
+						Map.ofEntries(entry("code", "EXTRA25"))));
+	}
+
+	/**
+	 * Test update post with maximum file size exceeded.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 * @throws DuplicateInstanceException
+	 * @throws MissingRequiredParameterException
+	 * @throws InstanceNotFoundException
+	 */
+	@Test
+	public void testUpdatePostWithMaximumImageSize() throws MaximumImageSizeExceededException,
+			DuplicateInstanceException, MissingRequiredParameterException, InstanceNotFoundException {
+		User user = signUpUser("userName1");
+		Category category = createCategory("category1");
+		Post post = postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(),
+				category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")));
+
+		byte[] maxSizeImageBytes = new byte[1024001];
+
+		assertThrows(MaximumImageSizeExceededException.class,
+				() -> postService.updatePost(post.getId(), "title", "description", "url", new BigDecimal(10),
+						user.getId(), category.getId(), List.of(maxSizeImageBytes), "Coupon",
+						Map.ofEntries(entry("code", "EXTRA25"))));
+	}
+
+	/**
+	 * Test update post with missing required parameter.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 * @throws DuplicateInstanceException
+	 * @throws MissingRequiredParameterException
+	 * @throws InstanceNotFoundException
+	 */
+	@Test
+	public void testUpdatePostWithMissingRequiredParameter() throws MaximumImageSizeExceededException,
+			DuplicateInstanceException, MissingRequiredParameterException, InstanceNotFoundException {
+		User user = signUpUser("userName1");
+		Category category = createCategory("category1");
+		Post post = postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(),
+				category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")));
+
+		byte[] maxSizeImageBytes = new byte[1024001];
+
+		assertThrows(MissingRequiredParameterException.class,
+				() -> postService.updatePost(post.getId(), "title", "description", "url", new BigDecimal(10),
+						user.getId(), category.getId(), List.of(maxSizeImageBytes), "Coupon", Map.ofEntries()));
 	}
 
 }

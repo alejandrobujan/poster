@@ -20,13 +20,6 @@ import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 @Transactional(readOnly = true)
 public class PermissionCheckerImpl implements PermissionChecker {
 
-	/**
-	 * The user dao.
-	 *
-	 * @param userId the user id
-	 * @return the user
-	 * @throws InstanceNotFoundException the instance not found exception
-	 */
 	@Autowired
 	private UserDao userDao;
 

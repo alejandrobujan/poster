@@ -27,7 +27,15 @@ public interface PermissionChecker {
 	 */
 	public User checkUser(Long userId) throws InstanceNotFoundException;
 
+	/**
+	 * Check post exists and belongs to user.
+	 * 
+	 * @param postId the post id
+	 * @param userId the user id
+	 * @return the post
+	 * @throws PermissionException       the permission exception
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
 	public Post checkPostExistsAndBelongsTo(Long postId, Long userId)
 			throws PermissionException, InstanceNotFoundException;
-
 }

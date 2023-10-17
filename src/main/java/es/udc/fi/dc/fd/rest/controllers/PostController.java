@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,8 @@ import es.udc.fi.dc.fd.rest.dtos.PostConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostDto;
 import es.udc.fi.dc.fd.rest.dtos.PostParamsDto;
 import es.udc.fi.dc.fd.rest.dtos.PostSummaryDto;
+import es.udc.fi.dc.fd.rest.dtos.PostUpdateDto;
+import es.udc.fi.dc.fd.rest.dtos.UserDto;
 
 /**
  * The Class PostController.
@@ -100,6 +103,26 @@ public class PostController {
 			throws InstanceNotFoundException, PermissionException {
 
 		postService.deletePost(userId, id);
+
+	}
+
+	@PutMapping("/post/{postId}")
+	public PostDto updatePost(@RequestAttribute Long userId, @PathVariable Long postId,
+			@Validated({ UserDto.UpdateValidations.class }) @RequestBody PostUpdateDto params)
+			throws InstanceNotFoundException, PermissionException, MaximumImageSizeExceededException,
+			MissingRequiredParameterException {
+
+		if (!(params.getAuthorId()).equals(userId)) {
+			throw new PermissionException();
+		}
+
+		PostConversor postConversor = conversors.get(params.getType());
+
+		Post post = postService.updatePost(postId, params.getTitle(), params.getDescription(), params.getUrl(),
+				params.getPrice(), userId, params.getCategoryId(), params.getImages(), params.getType(),
+				params.getProperties());
+
+		return postConversor.toPostDto(post);
 
 	}
 

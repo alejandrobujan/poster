@@ -42,6 +42,7 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private CategoryDao categoryDao;
 
+	/** The permission checker. */
 	@Autowired
 	private PermissionChecker permissionChecker;
 
@@ -60,9 +61,9 @@ public class PostServiceImpl implements PostService {
 			List<byte[]> imageList, String type, Map<String, String> properties)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException {
 
-		PostHandler postCreator = handlers.get(type);
+		PostHandler postHandler = handlers.get(type);
 
-		return postCreator.handleCreate(title, description, url, price, userId, categoryId, imageList, properties);
+		return postHandler.handleCreate(title, description, url, price, userId, categoryId, imageList, properties);
 
 	}
 
@@ -115,7 +116,20 @@ public class PostServiceImpl implements PostService {
 		Post post = permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
 
 		postDao.delete(post);
+	}
 
+	@Override
+	public Post updatePost(Long postId, String title, String description, String url, BigDecimal price, Long userId,
+			Long categoryId, List<byte[]> imageList, String type, Map<String, String> properties)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
+			PermissionException {
+
+		permissionChecker.checkUserExists(userId);
+		permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
+		PostHandler postHandler = handlers.get(type);
+
+		return postHandler.handleUpdate(postId, title, description, url, price, userId, categoryId, imageList,
+				properties);
 	}
 
 }

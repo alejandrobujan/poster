@@ -57,4 +57,26 @@ public interface PostService {
 	 */
 	void deletePost(Long userId, Long postId) throws InstanceNotFoundException, PermissionException;
 
+	/**
+	 * @param postId
+	 * @param title
+	 * @param description
+	 * @param url
+	 * @param price
+	 * @param userId
+	 * @param categoryId
+	 * @param imageList
+	 * @param type
+	 * @param properties
+	 * @return
+	 * @throws InstanceNotFoundException
+	 * @throws MaximumImageSizeExceededException
+	 * @throws MissingRequiredParameterException
+	 * @throws PermissionException
+	 */
+	Post updatePost(Long postId, String title, String description, String url, BigDecimal price, Long userId,
+			Long categoryId, List<byte[]> imageList, String type, Map<String, String> properties)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
+			PermissionException;
+
 }

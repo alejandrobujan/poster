@@ -7,7 +7,7 @@ import Test from "./Test";
 import { Login, SignUp, Logout, UpdateProfile, ProfileDetail, ChangePassword } from '../../users';
 import users from '../../users';
 
-import {CreatePost, PostDetails} from '../../post';
+import {CreatePost, PostDetails, UpdatePost} from '../../post';
 
 const Body = () => {
 	
@@ -26,6 +26,7 @@ const Body = () => {
 	       {loggedIn && <Route path="/users/profile-detail" element={<ProfileDetail/>}/>}
 	       {loggedIn && <Route path="/users/update-profile" element={<UpdateProfile />} />}
 	       {loggedIn && <Route path="/users/change-password" element={<ChangePassword/>}/>}
+	       {loggedIn && <Route path="/post/post-update/:id" element={<UpdatePost/>}/>}
 	    </Routes>
 	</div>    
   );
