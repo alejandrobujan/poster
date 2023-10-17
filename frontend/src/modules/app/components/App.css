@@ -1,91 +1,92 @@
 .App {
-  text-align: center;
+	text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+	animation: App-logo-spin infinite 20s linear;
+	height: 80px;
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+	background-color: #222;
+	height: 150px;
+	padding: 20px;
+	color: white;
 }
 
 .App-title {
-  font-size: 1.5em;
+	font-size: 1.5em;
 }
 
 .App-intro {
-  font-size: large;
+	font-size: large;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 .post-price {
-	font-size : 1.5rem;
+	font-size: 1.5rem;
 }
 
 .post-signature {
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif;
-  font-size: 11px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Adjusted", "Segoe UI", "Liberation Sans", sans-serif;
+	font-size: 11px;
 }
 
 .user-card {
-    background: hsl(206,96%,90%);
-    border-radius: 4px;
-    width: 200px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    color: #555555;
+	background: hsl(206, 96%, 90%);
+	border-radius: 4px;
+	width: 200px;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	color: #555555;
 }
 
 .user-card img {
-    margin-right: 10px;
+	margin-right: 10px;
 }
 
 .images-card {
-    background: hsl(206,96%,90%);
-    border-radius: 4px;
-    width: 300px;
-    margin-left: 265px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    color: #555555;
+	background: hsl(206, 96%, 90%);
+	border-radius: 4px;
+	width: 300px;
+	margin-left: 265px;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	color: #555555;
 }
 
 .images-card img {
-    margin-right: 10px;
+	margin-right: 10px;
 }
 
 .copy-button {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 10px;
-  align-items: center;
-  margin: 12px 0 12px 0;
-  height: 45px;
-  border-radius: 4px;
-  padding: 0 5px;
-  border: 1px solid #eeeeee;
+	display: flex;
+	justify-content: space-between;
+	padding: 0 10px;
+	align-items: center;
+	margin: 12px 0 12px 0;
+	height: 45px;
+	border-radius: 4px;
+	padding: 0 5px;
+	border: 1px solid #eeeeee;
 }
 
 .copy-button input {
-  height: 100%;
-  border: none;
-  outline: none;
-  font-size: 15px;
+	height: 100%;
+	border: none;
+	outline: none;
+	font-size: 15px;
 }
 
 .noImages {
