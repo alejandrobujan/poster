@@ -64,3 +64,6 @@ export const updateProfile = (user, onSuccess, onErrors) => dispatch =>
 export const clearAvatar = () => ({
     type: actionTypes.CLEAR_AVATAR
 });
+
+export const changePassword = (id, oldPassword, newPassword, onSuccess, onErrors) => dispatch =>
+    backend.userService.changePassword(id, oldPassword, newPassword, onSuccess, onErrors);
