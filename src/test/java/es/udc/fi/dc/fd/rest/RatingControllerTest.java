@@ -7,9 +7,15 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.CategoryDao;
@@ -21,6 +27,14 @@ import es.udc.fi.dc.fd.model.entities.UserDao;
 import es.udc.fi.dc.fd.rest.common.JwtGenerator;
 import es.udc.fi.dc.fd.rest.common.JwtInfo;
 
+/**
+ * The Class RatingControllerTest.
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Transactional
 public class RatingControllerTest {
 
 	/** The mock mvc. */

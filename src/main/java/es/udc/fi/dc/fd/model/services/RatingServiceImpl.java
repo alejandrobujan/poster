@@ -3,6 +3,8 @@ package es.udc.fi.dc.fd.model.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Post;
@@ -11,6 +13,11 @@ import es.udc.fi.dc.fd.model.entities.Rating;
 import es.udc.fi.dc.fd.model.entities.RatingDao;
 import es.udc.fi.dc.fd.model.entities.User;
 
+/**
+ * The Class RatingServiceImpl.
+ */
+@Service
+@Transactional
 public class RatingServiceImpl implements RatingService {
 
 	@Autowired
