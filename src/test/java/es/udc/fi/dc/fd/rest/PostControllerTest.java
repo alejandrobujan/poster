@@ -33,6 +33,8 @@ import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.entities.User.RoleType;
 import es.udc.fi.dc.fd.model.entities.UserDao;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
+import es.udc.fi.dc.fd.rest.common.JwtGenerator;
+import es.udc.fi.dc.fd.rest.common.JwtInfo;
 import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
@@ -74,6 +76,9 @@ public class PostControllerTest {
 	@Autowired
 	private UserController userController;
 
+	@Autowired
+	private JwtGenerator jwtGenerator;
+
 	/**
 	 * Creates the authenticated user.
 	 *
@@ -98,6 +103,13 @@ public class PostControllerTest {
 
 		return userController.login(loginParams);
 
+	}
+
+	private String generateServiceToken(User user) {
+
+		JwtInfo jwtInfo = new JwtInfo(user.getId(), user.getUserName(), user.getRole().toString());
+
+		return jwtGenerator.generate(jwtInfo);
 	}
 
 	private Offer createOffer(User user) {
@@ -276,6 +288,38 @@ public class PostControllerTest {
 				put("/api/posts/post/" + offer.getId()).header("Authorization", "Bearer " + user.getServiceToken())
 						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
 				.andExpect(status().isForbidden());
+
+	}
+
+	/**
+	 * Test put Update Post NotFound Post.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPutUpdatePost_isNotFoundPost() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+
+		createOffer(userDao.findById(user.getUserDto().getId()).get());
+
+		List<byte[]> image = new ArrayList<byte[]>();
+
+		PostUpdateDto postUpdateParams = new PostUpdateDto();
+		postUpdateParams.setAuthorId(user.getUserDto().getId());
+		postUpdateParams.setCategoryId(1L);
+		postUpdateParams.setDescription("Tarta de Santiago");
+		postUpdateParams.setImages(image);
+		postUpdateParams.setPrice(new BigDecimal(10));
+		postUpdateParams.setTitle("Tarta");
+		postUpdateParams.setUrl("http://poster.com");
+		postUpdateParams.setType("Offer");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(put("/api/posts/post/-1").header("Authorization", "Bearer " + user.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
+				.andExpect(status().isNotFound());
 
 	}
 
