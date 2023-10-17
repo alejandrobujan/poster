@@ -38,6 +38,7 @@ import es.udc.fi.dc.fd.rest.common.JwtInfo;
 import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
+import es.udc.fi.dc.fd.rest.dtos.PostExpiredDto;
 import es.udc.fi.dc.fd.rest.dtos.PostParamsDto;
 
 /**
@@ -265,6 +266,55 @@ public class PostControllerTest {
 
 		mockMvc.perform(delete("/api/posts/post/-1").header("Authorization", "Bearer " + generateServiceToken(user)))
 				.andExpect(status().isNotFound());
+
+	}
+
+	@Test
+	public void testPostMarkPostAsExpired_Ok() throws Exception {
+
+		User user = createUser("admin");
+		Offer offer = createOffer(user);
+
+		PostExpiredDto postExpiredDto = new PostExpiredDto(true);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/posts/post/" + offer.getId() + "/markAsExpired")
+				.header("Authorization", "Bearer " + generateServiceToken(user)).contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsBytes(postExpiredDto))).andExpect(status().isOk());
+
+	}
+
+	@Test
+	public void testPostMarkPostAsExpired_NotOkForbidden() throws Exception {
+
+		User user = createUser("admin");
+		Offer offer = createOffer(user);
+
+		User user2 = createUser("pepe");
+		
+		PostExpiredDto postExpiredDto = new PostExpiredDto(true);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/posts/post/" + offer.getId() + "/markAsExpired").header("Authorization",
+				"Bearer " + generateServiceToken(user2)).contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsBytes(postExpiredDto))).andExpect(status().isForbidden());
+
+	}
+
+	@Test
+	public void testPostMarkPostAsExpired_NotOkNotFound() throws Exception {
+
+		User user = createUser("admin");
+		
+		PostExpiredDto postExpiredDto = new PostExpiredDto(true);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/posts/post/-1/markAsExpired").header("Authorization",
+				"Bearer " + generateServiceToken(user)).contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsBytes(postExpiredDto))).andExpect(status().isNotFound());
 
 	}
 
