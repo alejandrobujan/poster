@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -176,6 +177,7 @@ public class Post {
 	 * 
 	 * @return the creationDate
 	 */
+	@Column(columnDefinition = "TIMESTAMP")
 	public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
@@ -307,7 +309,5 @@ public class Post {
 				+ ", negativeRatings=" + negativeRatings + ", expired=" + expired + ", user=" + user + ", category="
 				+ category + ", images=" + images + "]";
 	}
-
-	
 
 }
