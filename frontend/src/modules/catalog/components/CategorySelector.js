@@ -9,7 +9,7 @@ const CategorySelector = (selectProps) => {
 
     return (
 
-        <select {...selectProps} value={selectProps.value}>
+        <select {...selectProps}>
             <option value={''} style={{"color" : "gray", "fontStyle" : "italic"}}>Select</option>
             {categories && categories.map(category => 
                 <option key={category.id} value={category.id}>{category.name}</option>

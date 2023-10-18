@@ -32,7 +32,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class RatingServiceTest {
 	@Autowired
-	private PostService postService;
+	private CatalogService catalogService;
 
 	@Autowired
 	private RatingService ratingService;
@@ -88,7 +88,7 @@ public class RatingServiceTest {
 
 		Post post = createPost(u, c);
 
-		Post foundPost = postService.findPostById(post.getId());
+		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 
@@ -96,7 +96,7 @@ public class RatingServiceTest {
 
 		ratingService.ratePostPositive(u.getId(), post.getId());
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(1, foundPost.getPositiveRatings());
 
@@ -113,7 +113,7 @@ public class RatingServiceTest {
 
 		Post post = createPost(u, c);
 
-		Post foundPost = postService.findPostById(post.getId());
+		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 
@@ -121,7 +121,7 @@ public class RatingServiceTest {
 
 		ratingService.ratePostNegative(u.getId(), post.getId());
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 
@@ -138,7 +138,7 @@ public class RatingServiceTest {
 
 		Post post = createPost(u, c);
 
-		Post foundPost = postService.findPostById(post.getId());
+		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 
@@ -146,7 +146,7 @@ public class RatingServiceTest {
 
 		ratingService.ratePostPositive(u.getId(), post.getId());
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(1, foundPost.getPositiveRatings());
 
@@ -154,7 +154,7 @@ public class RatingServiceTest {
 
 		ratingService.ratePostPositive(u.getId(), post.getId());
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 
@@ -171,7 +171,7 @@ public class RatingServiceTest {
 
 		Post post = createPost(u, c);
 
-		Post foundPost = postService.findPostById(post.getId());
+		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 
@@ -179,7 +179,7 @@ public class RatingServiceTest {
 
 		ratingService.ratePostNegative(u.getId(), post.getId());
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 
@@ -187,7 +187,7 @@ public class RatingServiceTest {
 
 		ratingService.ratePostNegative(u.getId(), post.getId());
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 
@@ -204,7 +204,7 @@ public class RatingServiceTest {
 
 		Post post = createPost(u, c);
 
-		Post foundPost = postService.findPostById(post.getId());
+		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 
@@ -212,7 +212,7 @@ public class RatingServiceTest {
 
 		ratingService.ratePostNegative(u.getId(), post.getId());
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 
@@ -220,7 +220,7 @@ public class RatingServiceTest {
 
 		ratingService.ratePostPositive(u.getId(), post.getId());
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(1, foundPost.getPositiveRatings());
 
@@ -237,7 +237,7 @@ public class RatingServiceTest {
 
 		Post post = createPost(u, c);
 
-		Post foundPost = postService.findPostById(post.getId());
+		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 
@@ -245,7 +245,7 @@ public class RatingServiceTest {
 
 		ratingService.ratePostPositive(u.getId(), post.getId());
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(1, foundPost.getPositiveRatings());
 
@@ -253,7 +253,7 @@ public class RatingServiceTest {
 
 		ratingService.ratePostNegative(u.getId(), post.getId());
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
 

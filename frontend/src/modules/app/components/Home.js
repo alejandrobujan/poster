@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Feed } from '../../post';
-import post from '../../post';
+import { Feed } from '../../catalog';
+import catalog from '../../catalog';
 
 
 const Home = () => {
 
 	const dispatch = useDispatch();
 	useEffect(() => {
-		dispatch(post.actions.findPosts({ page: 0 }));
+		dispatch(catalog.actions.findPosts({ keywords: '', filters: {}, page: 0 }));
 	});
 
 	return (

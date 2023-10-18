@@ -10,12 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +25,7 @@ import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.CategoryDao;
 import es.udc.fi.dc.fd.model.entities.Coupon;
+import es.udc.fi.dc.fd.model.entities.Offer;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
@@ -50,6 +48,9 @@ public class PostServiceTest {
 	private PostService postService;
 
 	@Autowired
+	private CatalogService catalogService;
+
+	@Autowired
 	private CategoryDao categoryDao;
 
 	@Autowired
@@ -66,8 +67,8 @@ public class PostServiceTest {
 	 * @return the post
 	 */
 	private Post createPost(User user, Category category) {
-		return postDao
-				.save(new Post("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
+		return postDao.save(
+				new Offer("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
 	}
 
 	private Category createCategory(String name) {
@@ -89,87 +90,6 @@ public class PostServiceTest {
 
 		return user;
 
-	}
-
-	/**
-	 * @param actualBlock
-	 * @param expectedPosts
-	 * @param expectedExistMoreItems
-	 */
-	private void assertPostBlockEquals(Block<Post> actualBlock, List<Post> expectedPosts,
-			boolean expectedExistMoreItems) {
-		assertTrue(expectedPosts.containsAll(actualBlock.getItems()));
-		assertTrue(actualBlock.getItems().containsAll(expectedPosts));
-		assertEquals(expectedExistMoreItems, actualBlock.getExistMoreItems());
-	}
-
-	/**
-	 * Test find all categories.
-	 *
-	 */
-	@Test
-	@Ignore
-	public void testFindAllCategories() {
-		Category c1 = new Category(1L, "Comida");
-		Category c2 = new Category(2L, "Motor");
-		Category c3 = new Category(3L, "Hogar");
-		Category c4 = new Category(4L, "Juguetes");
-		Category c5 = new Category(5L, "Tecnologia");
-		Category c6 = new Category(6L, "Entretenimiento");
-
-		List<Category> expectedListCategory = Arrays.asList(c1, c2, c3, c4, c5, c6);
-		List<Category> listCategory = postService.findAllCategories();
-
-		IntStream.range(0, expectedListCategory.size()).forEach(i -> {
-			assertEquals(expectedListCategory.get(i).getId(), listCategory.get(i).getId());
-			assertEquals(expectedListCategory.get(i).getName(), listCategory.get(i).getName());
-		});
-
-	}
-
-	/**
-	 * Test find no categories.
-	 *
-	 */
-	@Test
-	public void testFindNoCategories() {
-		categoryDao.deleteAll();
-		assertTrue(postService.findAllCategories().isEmpty());
-	}
-
-	/**
-	 * Test find all posts.
-	 * 
-	 * @throws MaximumImageSizeExceededException
-	 *
-	 */
-	@Test
-	public void testFindAllPosts() throws MaximumImageSizeExceededException, DuplicateInstanceException {
-		User user1 = signUpUser("userName1");
-		User user2 = signUpUser("userName2");
-		List<Category> listCategory = postService.findAllCategories();
-
-		Post post1 = createPost(user1, listCategory.get(1));
-		Post post2 = createPost(user2, listCategory.get(2));
-		Post post3 = createPost(user1, listCategory.get(3));
-
-		postDao.save(post1);
-		postDao.save(post2);
-		postDao.save(post3);
-
-		assertPostBlockEquals(postService.findAllPosts(0, 2), List.of(post3, post2), true);
-		assertPostBlockEquals(postService.findAllPosts(0, 3), List.of(post3, post2, post1), false);
-		assertPostBlockEquals(postService.findAllPosts(1, 2), List.of(post1), false);
-	}
-
-	/**
-	 * Test find no posts.
-	 *
-	 */
-	@Test
-	public void testFindNoPosts() {
-		assertTrue(postService.findAllPosts(0, 1).getItems().isEmpty());
-		assertFalse(postService.findAllPosts(0, 1).getExistMoreItems());
 	}
 
 	/**
@@ -257,7 +177,7 @@ public class PostServiceTest {
 	public void testCreatePostWithMaximumImageSize()
 			throws MaximumImageSizeExceededException, DuplicateInstanceException, MissingRequiredParameterException {
 		User user = signUpUser("userName");
-		Category category = new Category(1L, "Comida");
+		Category category = categoryDao.save(new Category("Comida"));
 
 		byte[] maxSizeImageBytes = new byte[1024001];
 
@@ -278,60 +198,13 @@ public class PostServiceTest {
 	public void testCreatePostWithMissingRequiredParameter()
 			throws MaximumImageSizeExceededException, DuplicateInstanceException, MissingRequiredParameterException {
 		User user = signUpUser("userName");
-		Category category = new Category(1L, "Comida");
+		Category category = categoryDao.save(new Category("Comida"));
 
 		byte[] maxSizeImageBytes = new byte[1024001];
 
 		assertThrows(MissingRequiredParameterException.class,
 				() -> postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(),
 						category.getId(), List.of(maxSizeImageBytes), "Coupon", Map.ofEntries()));
-	}
-
-	@Test
-	@Ignore
-	public void testFindPostById()
-			throws InstanceNotFoundException, DuplicateInstanceException, MaximumImageSizeExceededException {
-
-		User u = signUpUser("Pepe");
-
-		Category c = createCategory("Car");
-
-		Post post = createPost(u, c);
-
-		Post foundPost = postService.findPostById(post.getId());
-
-		assertEquals(post.getTitle(), foundPost.getTitle());
-
-		assertEquals(post.getDescription(), foundPost.getDescription());
-
-		assertEquals(post.getUrl(), foundPost.getUrl());
-
-		assertEquals(post.getPrice(), foundPost.getPrice());
-
-		assertEquals(post.getCreationDate(), foundPost.getCreationDate());
-
-		assertEquals(post.getPositiveRatings(), foundPost.getPositiveRatings());
-
-		assertEquals(post.getNegativeRatings(), foundPost.getNegativeRatings());
-
-		assertEquals(post.isExpired(), foundPost.isExpired());
-
-		assertEquals(post.getUser(), foundPost.getUser());
-
-		assertEquals(post.getCategory(), foundPost.getCategory());
-
-		assertEquals(post.getImages(), foundPost.getImages());
-
-	}
-
-	/**
-	 * Test find no categories.
-	 *
-	 */
-	@Test
-	public void testFindNoPostById() {
-		long nonExistentId = -1L;
-		assertThrows(InstanceNotFoundException.class, () -> postService.findPostById(nonExistentId));
 	}
 
 	@Test
@@ -343,12 +216,12 @@ public class PostServiceTest {
 
 		Post post = createPost(u, c);
 
-		postService.findPostById(post.getId());
+		catalogService.findPostById(post.getId());
 
 		postService.deletePost(u.getId(), post.getId());
 
 		assertThrows(InstanceNotFoundException.class, () -> {
-			postService.findPostById(post.getId());
+			catalogService.findPostById(post.getId());
 		});
 	}
 
@@ -363,7 +236,7 @@ public class PostServiceTest {
 
 		Post post = createPost(u, c);
 
-		postService.findPostById(post.getId());
+		catalogService.findPostById(post.getId());
 
 		assertThrows(PermissionException.class, () -> {
 			postService.deletePost(u2.getId(), post.getId());
@@ -391,7 +264,7 @@ public class PostServiceTest {
 
 		Post post = createPost(u, c);
 
-		postService.findPostById(post.getId());
+		catalogService.findPostById(post.getId());
 
 		long nonExistentId = -1L;
 
@@ -399,7 +272,7 @@ public class PostServiceTest {
 			postService.deletePost(nonExistentId, post.getId());
 		});
 	}
-	
+
 	@Test
 	public void testMarkAsExpired() throws DuplicateInstanceException, MaximumImageSizeExceededException,
 			InstanceNotFoundException, PermissionException {
@@ -409,19 +282,19 @@ public class PostServiceTest {
 
 		Post post = createPost(u, c);
 
-		Post foundPost = postService.findPostById(post.getId());
+		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertFalse(foundPost.isExpired());
 
 		postService.markAsExpired(u.getId(), foundPost.getId(), true);
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertTrue(foundPost.isExpired());
-		
+
 		postService.markAsExpired(u.getId(), foundPost.getId(), false);
 
-		foundPost = postService.findPostById(post.getId());
+		foundPost = catalogService.findPostById(post.getId());
 
 		assertFalse(foundPost.isExpired());
 
@@ -446,7 +319,7 @@ public class PostServiceTest {
 
 		Post post = createPost(u, c);
 
-		postService.findPostById(post.getId());
+		catalogService.findPostById(post.getId());
 
 		assertThrows(PermissionException.class, () -> {
 			postService.markAsExpired(u2.getId(), post.getId(), true);
@@ -466,7 +339,6 @@ public class PostServiceTest {
 
 		assertThrows(PermissionException.class, () -> postService.markAsExpired(nonExistentId, post.getId(), true));
 	}
-	
 
 	/**
 	 * Test update offer.

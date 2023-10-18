@@ -70,7 +70,8 @@ const PostDetails = () => {
 									<span className="ml-2">Go to site</span>
 								</div>
 							</a>
-						}						&nbsp;
+						}
+						&nbsp;
 						<button type="button" class="btn btn-secondary" onClick={() => isLoggedIn ?
 							dispatch(actions.ratePostPositive(id, errors => setBackendErrors(errors)))
 							:
