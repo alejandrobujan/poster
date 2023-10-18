@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import CategorySelector from './CategorySelector';
+import { CategorySelector } from '../../catalog';
 
 import { Errors } from '../../common';
 
