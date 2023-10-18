@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
-import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
@@ -26,44 +25,21 @@ public interface PostService {
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException;
 
 	/**
-	 * Find all posts.
-	 * 
-	 * @param page
-	 * @param size
-	 * @return the posts.
-	 */
-	Block<Post> findAllPosts(int page, int size);
-
-	/**
-	 * Find all categories.
-	 * 
-	 * @return the categories.
-	 */
-	List<Category> findAllCategories();
-
-	/**
-	 * Find a post.
-	 * 
-	 * @param postId
-	 * @return the post.
-	 */
-	Post findPostById(Long postId) throws InstanceNotFoundException;
-
-	/**
 	 * @param userId
 	 * @param postId
 	 * @throws InstanceNotFoundException
 	 * @throws PermissionException
 	 */
 	void deletePost(Long userId, Long postId) throws InstanceNotFoundException, PermissionException;
-	
+
 	/**
 	 * Mark or unmark a post as expired.
 	 * 
 	 * @param postId
 	 * @return the post.
 	 */
-	boolean markAsExpired(Long userId, Long postId, boolean expired) throws InstanceNotFoundException, PermissionException;
+	boolean markAsExpired(Long userId, Long postId, boolean expired)
+			throws InstanceNotFoundException, PermissionException;
 
 	/**
 	 * @param postId

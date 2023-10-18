@@ -3,21 +3,14 @@ package es.udc.fi.dc.fd.model.services;
 import static java.util.Map.entry;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
-import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.CategoryDao;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
@@ -67,50 +60,6 @@ public class PostServiceImpl implements PostService {
 
 	}
 
-	/**
-	 * Find all posts.
-	 * 
-	 * @param page
-	 * @param size
-	 * @return the posts.
-	 */
-	@Override
-	public Block<Post> findAllPosts(int page, int size) {
-
-		Pageable request = PageRequest.of(page, size);
-
-		Slice<Post> postSlice = postDao.findAllByOrderByCreationDateDesc(request);
-
-		return new Block<>(postSlice.getContent(), postSlice.hasNext());
-	}
-
-	/**
-	 * Find all categories.
-	 * 
-	 * @return the categories.
-	 */
-	@Override
-	public List<Category> findAllCategories() {
-
-		Iterable<Category> categories = categoryDao.findAll(Sort.by(Sort.Direction.ASC, "id"));
-		List<Category> categoriesAsList = new ArrayList<>();
-
-		categories.forEach(c -> categoriesAsList.add(c));
-
-		return categoriesAsList;
-	}
-
-	@Override
-	public Post findPostById(Long postId) throws InstanceNotFoundException {
-		Optional<Post> post = postDao.findById(postId);
-
-		if (!post.isPresent()) {
-			throw new InstanceNotFoundException("project.entities.post", postId);
-		}
-
-		return post.get();
-	}
-
 	@Override
 	public void deletePost(Long userId, Long postId) throws InstanceNotFoundException, PermissionException {
 		Post post = permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
@@ -131,11 +80,12 @@ public class PostServiceImpl implements PostService {
 		return postHandler.handleUpdate(postId, title, description, url, price, userId, categoryId, imageList,
 				properties);
 	}
-	
+
 	@Override
-	public boolean markAsExpired(Long userId, Long postId, boolean expired) throws InstanceNotFoundException, PermissionException {
+	public boolean markAsExpired(Long userId, Long postId, boolean expired)
+			throws InstanceNotFoundException, PermissionException {
 		Post post = permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
-		
+
 		post.setExpired(expired);
 
 		return postDao.save(post).isExpired();
