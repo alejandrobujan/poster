@@ -5,7 +5,7 @@ import Header from './Header';
 import Body from './Body';
 import Footer from './Footer';
 import users from '../../users';
-import post from '../../post';
+import catalog from '../../catalog';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const App = () => {
 
         dispatch(users.actions.tryLoginFromServiceToken(
             () => dispatch(users.actions.logout())));
-        dispatch(post.actions.findAllCategories());
+        dispatch(catalog.actions.findAllCategories());
     });
     
     return(
