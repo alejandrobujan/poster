@@ -69,21 +69,3 @@ CREATE TABLE Rating (
 	CONSTRAINT RatingFK_Users FOREIGN KEY (userId) REFERENCES Users(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT RatingFK_Post FOREIGN KEY (postId) REFERENCES Post(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
-INSERT INTO Category(name) VALUES ('Meals');
-INSERT INTO Category(name) VALUES ('Motor');
-INSERT INTO Category(name) VALUES ('Home');
-INSERT INTO Category(name) VALUES ('Toys');
-INSERT INTO Category(name) VALUES ('Tech');
-INSERT INTO Category(name) VALUES ('Leisure');
-
-INSERT INTO Users(userName, password, firstName, lastName, email, role) VALUES ('alejandrobujan', '$2a$10$8o34vbwlRURkBGETvQzr8OCuPrk52E.j2ilm4KGKPrwNR89eNV/YG', 'Alejandro', 'Bujan', 'alejandro.bujan.pampin@udc.es', 0);
-
-INSERT INTO Post(title, description, url, price, creationDate, expired, userId, categoryId) VALUES ('Windows XP', 'Free windows XP license key', 'https://g2a.com', 0, '2004-05-12 00:00:00', true, 1, 5);
-INSERT INTO Coupon(id, code) VALUES (1, 'XPFREE');
-
-INSERT INTO Post(title, description, url, price, creationDate, expired, userId, categoryId) VALUES ('Windows 11', 'Free windows 11 license key', 'https://g2a.com' , 0, '2023-05-12 00:00:00', false, 1, 5);
-INSERT INTO Offer(id) VALUES (2);
-
-INSERT INTO Post(title, description, url, price, creationDate, expired, userId, categoryId) VALUES ('MG4 Brighton', 'Discover the future of mobility', 'https://www.mgmotor.eu/es-ES/configurator/mg4', 30480, '2023-10-09 00:00:00', false, 1, 2);
-INSERT INTO Coupon(id, code) VALUES (3, 'EXTRAMG4');
