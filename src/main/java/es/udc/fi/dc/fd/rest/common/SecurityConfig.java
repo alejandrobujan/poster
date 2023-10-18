@@ -48,9 +48,9 @@ public class SecurityConfig {
                 .requestMatchers(antMatcher("/api/users/signUp")).permitAll()
                 .requestMatchers(antMatcher("/api/users/login")).permitAll()
                 .requestMatchers(antMatcher("/api/users/loginFromServiceToken")).permitAll()
-                .requestMatchers(antMatcher("/api/posts/feed")).permitAll()
-                .requestMatchers(antMatcher("/api/posts/categories")).permitAll()
-                .requestMatchers(antMatcher("/api/posts/postDetail/*")).permitAll()
+                .requestMatchers(antMatcher("/api/catalog/feed")).permitAll()
+                .requestMatchers(antMatcher("/api/catalog/categories")).permitAll()
+                .requestMatchers(antMatcher("/api/catalog/postDetail/*")).permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

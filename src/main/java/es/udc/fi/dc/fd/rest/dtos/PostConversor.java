@@ -28,9 +28,14 @@ public abstract class PostConversor {
 		return images.stream().map(i -> toImageDto(i)).collect(Collectors.toList());
 	}
 
+	public final static String reduceDescription(String description) {
+		return (description.length() > 50 ? description.substring(0, 50) + "..." : description);
+	}
+
 	public final static PostSummaryDto toPostSummaryDto(Post post) {
-		return new PostSummaryDto(post.getId(), post.getTitle(), post.getDescription(), post.getUrl(), post.getPrice(),
-				toCategoryDto(post.getCategory()), toImageDtos(post.getImages()));
+		return new PostSummaryDto(post.getId(), post.getTitle(), reduceDescription(post.getDescription()),
+				post.getUrl(), post.getPrice(), toCategoryDto(post.getCategory()), toImageDtos(post.getImages()),
+				post.getClass().getSimpleName());
 	}
 
 	public final static List<PostSummaryDto> toPostSummaryDtos(List<Post> posts) {
