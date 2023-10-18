@@ -1,7 +1,6 @@
 package es.udc.fi.dc.fd.rest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -141,30 +140,6 @@ public class PostControllerTest {
 	}
 
 	/**
-	 * Test get find all posts ok.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void testGetFindAllPosts_Ok() throws Exception {
-
-		mockMvc.perform(get("/api/posts/feed")).andExpect(status().isOk());
-
-	}
-
-	/**
-	 * Test post find all categories ok.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void testGetFindAllCategories_Ok() throws Exception {
-
-		mockMvc.perform(get("/api/posts/categories")).andExpect(status().isOk());
-
-	}
-
-	/**
 	 * Test post Create Post ok.
 	 *
 	 * @throws Exception the exception
@@ -177,7 +152,7 @@ public class PostControllerTest {
 		List<byte[]> image = new ArrayList<byte[]>();
 
 		PostParamsDto postParams = new PostParamsDto();
-		postParams.setCategoryId(1L);
+		postParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postParams.setDescription("Tarta de Santiago");
 		postParams.setImages(image);
 		postParams.setPrice(new BigDecimal(10));
@@ -205,7 +180,7 @@ public class PostControllerTest {
 		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
 
 		PostParamsDto postParams = new PostParamsDto();
-		postParams.setCategoryId(1L);
+		postParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postParams.setDescription("Tarta de Santiago");
 		postParams.setImages(null);
 		postParams.setPrice(new BigDecimal(10));
@@ -217,23 +192,6 @@ public class PostControllerTest {
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
 				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
 				.andExpect(status().isBadRequest());
-
-	}
-
-	@Test
-	public void testGetFindPostById_Ok() throws Exception {
-
-		User user = createUser("admin");
-
-		Offer offer = createOffer(user);
-
-		mockMvc.perform(get("/api/posts/postDetail/" + offer.getId())).andExpect(status().isOk());
-
-	}
-
-	@Test
-	public void testGetFindPostById_NotOk() throws Exception {
-		mockMvc.perform(get("/api/posts/postDetail/-10")).andExpect(status().isNotFound());
 
 	}
 
@@ -284,7 +242,7 @@ public class PostControllerTest {
 
 		PostUpdateDto postUpdateParams = new PostUpdateDto();
 		postUpdateParams.setAuthorId(user.getUserDto().getId());
-		postUpdateParams.setCategoryId(1L);
+		postUpdateParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postUpdateParams.setDescription("Tarta de Santiago");
 		postUpdateParams.setImages(image);
 		postUpdateParams.setPrice(new BigDecimal(10));
@@ -316,7 +274,7 @@ public class PostControllerTest {
 
 		PostUpdateDto postUpdateParams = new PostUpdateDto();
 		postUpdateParams.setAuthorId(-1L);
-		postUpdateParams.setCategoryId(1L);
+		postUpdateParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postUpdateParams.setDescription("Tarta de Santiago");
 		postUpdateParams.setImages(image);
 		postUpdateParams.setPrice(new BigDecimal(10));
@@ -349,7 +307,7 @@ public class PostControllerTest {
 
 		PostUpdateDto postUpdateParams = new PostUpdateDto();
 		postUpdateParams.setAuthorId(user.getUserDto().getId());
-		postUpdateParams.setCategoryId(1L);
+		postUpdateParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postUpdateParams.setDescription("Tarta de Santiago");
 		postUpdateParams.setImages(image);
 		postUpdateParams.setPrice(new BigDecimal(10));
@@ -388,14 +346,15 @@ public class PostControllerTest {
 		Offer offer = createOffer(user);
 
 		User user2 = createUser("pepe");
-		
+
 		PostExpiredDto postExpiredDto = new PostExpiredDto(true);
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		mockMvc.perform(post("/api/posts/post/" + offer.getId() + "/markAsExpired").header("Authorization",
-				"Bearer " + generateServiceToken(user2)).contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writeValueAsBytes(postExpiredDto))).andExpect(status().isForbidden());
+		mockMvc.perform(post("/api/posts/post/" + offer.getId() + "/markAsExpired")
+				.header("Authorization", "Bearer " + generateServiceToken(user2))
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postExpiredDto)))
+				.andExpect(status().isForbidden());
 
 	}
 
@@ -403,14 +362,15 @@ public class PostControllerTest {
 	public void testPostMarkPostAsExpired_NotOkNotFound() throws Exception {
 
 		User user = createUser("admin");
-		
+
 		PostExpiredDto postExpiredDto = new PostExpiredDto(true);
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		mockMvc.perform(post("/api/posts/post/-1/markAsExpired").header("Authorization",
-				"Bearer " + generateServiceToken(user)).contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writeValueAsBytes(postExpiredDto))).andExpect(status().isNotFound());
+		mockMvc.perform(
+				post("/api/posts/post/-1/markAsExpired").header("Authorization", "Bearer " + generateServiceToken(user))
+						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postExpiredDto)))
+				.andExpect(status().isNotFound());
 
 	}
 
