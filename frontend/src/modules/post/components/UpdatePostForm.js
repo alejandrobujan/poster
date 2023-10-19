@@ -154,14 +154,17 @@ const UpdatePostForm = () => {
 								Url
 							</label>
 							<div className="col-md-9">
-								<input type="text"
-									id="url"
-									className="form-control"
-									value={url}
-									onChange={e => setUrl(e.target.value)}
-									minLength={0}
-									maxLength={2048}
-								/>
+								<div className="input-group">
+									<span className="input-group-text">http(s)://</span>
+									<input type="text"
+										id="url"
+										className="form-control"
+										value={url}
+										onChange={e => setUrl(e.target.value)}
+										minLength={0}
+										maxLength={2048}
+									/>
+								</div>
 								<div className="invalid-feedback">
 									The url size must be between 0 and 2048
 								</div>

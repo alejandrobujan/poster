@@ -118,15 +118,24 @@ exports[`CreatePost renders correctly 1`] = `
           <div
             className="col-md-9"
           >
-            <input
-              className="form-control"
-              id="url"
-              maxLength={2048}
-              minLength={0}
-              onChange={[Function]}
-              type="text"
-              value=""
-            />
+            <div
+              className="input-group"
+            >
+              <span
+                className="input-group-text"
+              >
+                http(s)://
+              </span>
+              <input
+                className="form-control"
+                id="url"
+                maxLength={2048}
+                minLength={0}
+                onChange={[Function]}
+                type="text"
+                value=""
+              />
+            </div>
             <div
               className="invalid-feedback"
             >
