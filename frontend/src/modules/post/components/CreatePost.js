@@ -197,7 +197,7 @@ const CreatePost = () => {
 								</div>
 							</div>
 							<label htmlFor="categoryId" className="col-md-3 col-form-label">
-								Category (*)
+								Category
 							</label>
 							<div className="col-md-3">
 								<CategorySelector id="categoryId" className="form-control"
