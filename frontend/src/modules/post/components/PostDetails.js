@@ -7,6 +7,7 @@ import * as userSelectors from '../../users/selectors';
 import * as actions from '../actions';
 import { BackLink, UserCard, Errors } from '../../common';
 import { getDate } from '../../../backend/utils';
+import {OfferIcon, CouponIcon} from "../../catalog";
 
 import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
@@ -21,6 +22,12 @@ const PostDetails = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [backendErrors, setBackendErrors] = useState(null);
+	
+	const components = {
+		'Offer': OfferIcon,
+		'Coupon': CouponIcon
+	};
+
 
 	const handleDeleteClick = () => {
 		if (window.confirm("Are you sure you want to delete this post? This action is irreversible.")) {
@@ -44,6 +51,8 @@ const PostDetails = () => {
 	if (!post) {
 		return null;
 	}
+	
+	const Icon = components[post.type];
 
 	return (
 		<div className="container mt-5">
@@ -119,6 +128,8 @@ const PostDetails = () => {
 
 				</div>
 				<div className="col-lg-6 text-left">
+					<Icon/>
+					<hr className="my-1" />
 					<h5 className="fw-bolder">{post.title}</h5>
 					<p className="card-text"><i>{post.description}</i></p>
 
