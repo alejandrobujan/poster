@@ -166,7 +166,7 @@ const PostDetails = () => {
 					</div>
 
 					{isLoggedIn && post.userSummaryDto.id === user.id &&
-						<button className="page-link"
+						<button className="page-link mt-2"
 							onClick={() => dispatch(actions.markPostAsExpired(id, !post.expired, errors => setBackendErrors(errors)))}>
 							{post.expired ? "Unmark as expired" : "Mark as expired"}
 						</button>
