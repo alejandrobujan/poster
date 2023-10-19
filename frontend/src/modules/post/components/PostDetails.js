@@ -7,7 +7,7 @@ import * as userSelectors from '../../users/selectors';
 import * as actions from '../actions';
 import { BackLink, UserCard, Errors } from '../../common';
 import { getDate } from '../../../backend/utils';
-import {OfferIcon, CouponIcon} from "../../catalog";
+import { OfferIcon, CouponIcon } from "../../catalog";
 
 import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
@@ -22,7 +22,8 @@ const PostDetails = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [backendErrors, setBackendErrors] = useState(null);
-	
+	const [buttonPressed, setButtonPressed] = useState(false);
+
 	const components = {
 		'Offer': OfferIcon,
 		'Coupon': CouponIcon
@@ -35,7 +36,7 @@ const PostDetails = () => {
 		}
 
 	}
-	
+
 	useEffect(() => {
 
 		const postId = Number(id);
@@ -51,7 +52,7 @@ const PostDetails = () => {
 	if (!post) {
 		return null;
 	}
-	
+
 	const Icon = components[post.type];
 
 	return (
@@ -123,12 +124,12 @@ const PostDetails = () => {
 									<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
 								</svg></button>
 						}
-						
+
 					</div>
 
 				</div>
 				<div className="col-lg-6 text-left">
-					<Icon/>
+					<Icon />
 					<hr className="my-1" />
 					<h5 className="fw-bolder">{post.title}</h5>
 					<p className="card-text"><i>{post.description}</i></p>
@@ -141,20 +142,34 @@ const PostDetails = () => {
 					{post.properties.code &&
 						<div className="copy-button">
 							<input id="copyvalue" type="text" readOnly value={post.properties.code} />
-							<button className="btn btn-primary" onClick={() => navigator.clipboard.writeText(post.properties.code)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-copy" viewBox="0 0 16 16">
-								<path fillRule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2Zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6ZM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2Z" />
-							</svg></button>
-						</div>}
+							{!buttonPressed ?
+								<button className="btn btn-primary" onClick={() => {
+									navigator.clipboard.writeText(post.properties.code);
+									setButtonPressed(true);
+								}}>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-copy" viewBox="0 0 16 16">
+										<path fillRule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2Zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6ZM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2Z" />
+									</svg>
+								</button>
+								:
+								<button type="button" className="btn btn-secondary">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check2" viewBox="0 0 16 16">
+										<path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path>
+									</svg>
+								</button>
+							}
+						</div>
+					}
 					<div className="post-signature">
 						<div className="creation-date">Posted at {getDate(post.creationDate)}</div>
 						<UserCard user={post.userSummaryDto} />
 					</div>
-					
+
 					{isLoggedIn && post.userSummaryDto.id === user.id &&
 						<button className="page-link"
 							onClick={() => dispatch(actions.markPostAsExpired(id, !post.expired, errors => setBackendErrors(errors)))}>
 							{post.expired ? "Unmark as expired" : "Mark as expired"}
-                		</button>
+						</button>
 
 					}
 				</div>
