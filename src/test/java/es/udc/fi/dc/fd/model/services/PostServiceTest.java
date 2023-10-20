@@ -30,6 +30,7 @@ import es.udc.fi.dc.fd.model.entities.Offer;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
+import es.udc.fi.dc.fd.model.services.exceptions.IncorrectFormValuesException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
@@ -129,11 +130,12 @@ public class PostServiceTest {
 	 * @throws MaximumImageSizeExceededException
 	 * @throws DuplicateInstanceException
 	 * @throws MissingRequiredParameterException
+	 * @throws IncorrectFormValuesException
 	 *
 	 */
 	@Test
 	public void testCreatePost() throws MaximumImageSizeExceededException, DuplicateInstanceException,
-			InstanceNotFoundException, MissingRequiredParameterException {
+			InstanceNotFoundException, MissingRequiredParameterException, IncorrectFormValuesException {
 		String title = "title";
 		String description = "description";
 		String url = "http://www.google.es";
@@ -216,6 +218,36 @@ public class PostServiceTest {
 						category.getId(), List.of(new byte[EXCEEDED_BYTE_SIZE]), "Coupon", Map.ofEntries()));
 	}
 
+	/**
+	 * Test create post with a whitespace as title.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 * @throws DuplicateInstanceException
+	 * @throws MissingRequiredParameterException
+	 */
+	@Test
+	public void testCreatePostWithWhitespaceTitle()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, MissingRequiredParameterException {
+		assertThrows(IncorrectFormValuesException.class,
+				() -> postService.createPost(" ", "description", "url", new BigDecimal(10), user.getId(),
+						category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25"))));
+	}
+
+	/**
+	 * Test create post with a whitespace as description.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 * @throws DuplicateInstanceException
+	 * @throws MissingRequiredParameterException
+	 */
+	@Test
+	public void testCreatePostWithWhitespaceDescription()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, MissingRequiredParameterException {
+		assertThrows(IncorrectFormValuesException.class,
+				() -> postService.createPost("title", " ", "url", new BigDecimal(10), user.getId(), category.getId(),
+						new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25"))));
+	}
+
 	@Test
 	public void testDeletePost() throws DuplicateInstanceException, MaximumImageSizeExceededException,
 			InstanceNotFoundException, PermissionException {
@@ -296,11 +328,13 @@ public class PostServiceTest {
 	 * @throws MissingRequiredParameterException
 	 * @throws InstanceNotFoundException
 	 * @throws PermissionException
+	 * @throws IncorrectFormValuesException
 	 *
 	 */
 	@Test
-	public void testUpdatePostOffer() throws DuplicateInstanceException, MaximumImageSizeExceededException,
-			InstanceNotFoundException, MissingRequiredParameterException, PermissionException {
+	public void testUpdatePostOffer()
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException,
+			MissingRequiredParameterException, PermissionException, IncorrectFormValuesException {
 		Category newCategory = createCategory("category2");
 		String newTitle = "new title";
 		String newDescription = "new description";
@@ -331,11 +365,13 @@ public class PostServiceTest {
 	 * @throws MissingRequiredParameterException
 	 * @throws InstanceNotFoundException
 	 * @throws PermissionException
+	 * @throws IncorrectFormValuesException
 	 *
 	 */
 	@Test
-	public void testUpdatePostCoupon() throws DuplicateInstanceException, MaximumImageSizeExceededException,
-			InstanceNotFoundException, MissingRequiredParameterException, PermissionException {
+	public void testUpdatePostCoupon()
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException,
+			MissingRequiredParameterException, PermissionException, IncorrectFormValuesException {
 		Category newCategory = createCategory("category2");
 		String newTitle = "new title";
 		String newDescription = "new description";
@@ -384,15 +420,63 @@ public class PostServiceTest {
 	 * @throws DuplicateInstanceException
 	 * @throws MissingRequiredParameterException
 	 * @throws InstanceNotFoundException
+	 * @throws IncorrectFormValuesException
 	 *
 	 */
 	@Test
-	public void testUpdateWithInexistentCategory() throws DuplicateInstanceException, MaximumImageSizeExceededException,
-			InstanceNotFoundException, MissingRequiredParameterException {
+	public void testUpdatePostWithInexistentCategory()
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException,
+			MissingRequiredParameterException, IncorrectFormValuesException {
 		assertThrows(InstanceNotFoundException.class,
 				() -> postService.updatePost(coupon.getId(), "title", "description", "url", new BigDecimal(10),
 						user.getId(), NON_EXISTENT_ID, new ArrayList<byte[]>(), "Coupon",
 						Map.ofEntries(entry("code", "EXTRA25"))));
+	}
+
+	/**
+	 * Test update post with a whitespace as title.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 * @throws DuplicateInstanceException
+	 * @throws MissingRequiredParameterException
+	 * @throws InstanceNotFoundException
+	 * @throws IncorrectFormValuesException
+	 *
+	 */
+	@Test
+	public void testUpdatePostWithWhitespaceTitle()
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException,
+			MissingRequiredParameterException, IncorrectFormValuesException {
+		User user = signUpUser("userName1");
+		Category category = createCategory("category1");
+		Post post = postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(),
+				category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")));
+		assertThrows(IncorrectFormValuesException.class,
+				() -> postService.updatePost(post.getId(), " ", "description", "url", new BigDecimal(10), user.getId(),
+						category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25"))));
+	}
+
+	/**
+	 * Test update post with a whitespace as description.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 * @throws DuplicateInstanceException
+	 * @throws MissingRequiredParameterException
+	 * @throws InstanceNotFoundException
+	 * @throws IncorrectFormValuesException
+	 *
+	 */
+	@Test
+	public void testUpdatePostWithWhitespaceDescription()
+			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException,
+			MissingRequiredParameterException, IncorrectFormValuesException {
+		User user = signUpUser("userName1");
+		Category category = createCategory("category1");
+		Post post = postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(),
+				category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")));
+		assertThrows(IncorrectFormValuesException.class,
+				() -> postService.updatePost(post.getId(), "title", " ", "url", new BigDecimal(10), user.getId(),
+						category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25"))));
 	}
 
 	/**
@@ -402,10 +486,12 @@ public class PostServiceTest {
 	 * @throws DuplicateInstanceException
 	 * @throws MissingRequiredParameterException
 	 * @throws InstanceNotFoundException
+	 * @throws IncorrectFormValuesException
 	 */
 	@Test
-	public void testUpdatePostWithMaximumImageSize() throws MaximumImageSizeExceededException,
-			DuplicateInstanceException, MissingRequiredParameterException, InstanceNotFoundException {
+	public void testUpdatePostWithMaximumImageSize()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, MissingRequiredParameterException,
+			InstanceNotFoundException, IncorrectFormValuesException {
 		assertThrows(MaximumImageSizeExceededException.class,
 				() -> postService.updatePost(coupon.getId(), "title", "description", "url", new BigDecimal(10),
 						user.getId(), category.getId(), List.of(new byte[EXCEEDED_BYTE_SIZE]), "Coupon",
@@ -419,10 +505,12 @@ public class PostServiceTest {
 	 * @throws DuplicateInstanceException
 	 * @throws MissingRequiredParameterException
 	 * @throws InstanceNotFoundException
+	 * @throws IncorrectFormValuesException
 	 */
 	@Test
-	public void testUpdatePostWithMissingRequiredParameter() throws MaximumImageSizeExceededException,
-			DuplicateInstanceException, MissingRequiredParameterException, InstanceNotFoundException {
+	public void testUpdatePostWithMissingRequiredParameter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, MissingRequiredParameterException,
+			InstanceNotFoundException, IncorrectFormValuesException {
 		assertThrows(MissingRequiredParameterException.class,
 				() -> postService.updatePost(coupon.getId(), "title", "description", "url", new BigDecimal(10),
 						user.getId(), category.getId(), List.of(new byte[EXCEEDED_BYTE_SIZE]), "Coupon",

@@ -4,6 +4,7 @@ import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
+import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginUpdateException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 
@@ -48,10 +49,11 @@ public interface UserService {
 	 * @param lastName  the last name
 	 * @param email     the email
 	 * @return the user
-	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws InstanceNotFoundException     the instance not found exception
+	 * @throws IncorrectLoginUpdateException
 	 */
 	User updateProfile(Long id, String userName, String firstName, String lastName, String email, byte[] avatar)
-			throws InstanceNotFoundException, DuplicateInstanceException;
+			throws InstanceNotFoundException, DuplicateInstanceException, IncorrectLoginUpdateException;
 
 	/**
 	 * Change password.

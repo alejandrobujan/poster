@@ -6,6 +6,7 @@ import java.util.Map;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Post;
+import es.udc.fi.dc.fd.model.services.exceptions.IncorrectFormValuesException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
@@ -19,10 +20,11 @@ public interface PostService {
 	 * Create post.
 	 * 
 	 * @param post
+	 * @throws IncorrectFormValuesException
 	 */
 	Post createPost(String title, String description, String url, BigDecimal price, Long userId, Long categoryId,
-			List<byte[]> imageList, String type, Map<String, String> properties)
-			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException;
+			List<byte[]> imageList, String type, Map<String, String> properties) throws InstanceNotFoundException,
+			MaximumImageSizeExceededException, MissingRequiredParameterException, IncorrectFormValuesException;
 
 	/**
 	 * @param userId
@@ -57,10 +59,11 @@ public interface PostService {
 	 * @throws MaximumImageSizeExceededException
 	 * @throws MissingRequiredParameterException
 	 * @throws PermissionException
+	 * @throws IncorrectFormValuesException
 	 */
 	Post updatePost(Long postId, String title, String description, String url, BigDecimal price, Long userId,
 			Long categoryId, List<byte[]> imageList, String type, Map<String, String> properties)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
-			PermissionException;
+			PermissionException, IncorrectFormValuesException;
 
 }

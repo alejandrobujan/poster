@@ -197,6 +197,32 @@ public class UserControllerTest {
 	}
 
 	/*
+	 * Test post Update Profile Not Ok Whitespace Login.
+	 *
+	 * @throws Exception the exception
+	 */
+
+	@Test
+	public void testPostUpdateProfile_NotOk_WhitespaceLogin() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+		byte avatar[] = new byte[] { 50 };
+		UserDto userParams = new UserDto();
+
+		userParams.setAvatar(avatar);
+		userParams.setEmail("perico@udc.es");
+		userParams.setFirstName("Perico");
+		userParams.setLastName("Perez");
+		userParams.setUserName(" ");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(put("/api/users/" + user.getUserDto().getId())
+				.header("Authorization", "Bearer " + user.getServiceToken()).contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsBytes(userParams))).andExpect(status().isBadRequest());
+	}
+
+	/*
 	 * /** Test post Update Profile Not ok.
 	 *
 	 * @throws Exception the exception

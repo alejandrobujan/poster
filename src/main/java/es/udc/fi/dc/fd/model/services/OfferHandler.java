@@ -19,6 +19,7 @@ import es.udc.fi.dc.fd.model.entities.Offer;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
+import es.udc.fi.dc.fd.model.services.exceptions.IncorrectFormValuesException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
@@ -47,9 +48,13 @@ public class OfferHandler implements PostHandler {
 
 	@Override
 	public Post handleCreate(String title, String description, String url, BigDecimal price, Long userId,
-			Long categoryId, List<byte[]> imageList, Map<String, String> properties)
-			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException {
+			Long categoryId, List<byte[]> imageList, Map<String, String> properties) throws InstanceNotFoundException,
+			MaximumImageSizeExceededException, MissingRequiredParameterException, IncorrectFormValuesException {
 		User user = permissionChecker.checkUser(userId);
+
+		if (title == null || description == null || title.trim().equals("") || description.trim().equals("")) {
+			throw new IncorrectFormValuesException();
+		}
 
 		Category category = null;
 
@@ -64,7 +69,8 @@ public class OfferHandler implements PostHandler {
 
 		LocalDateTime creationDate = LocalDateTime.now();
 
-		Post post = postDao.save(new Offer(title, description, url, price, creationDate, user, category));
+		Post post = postDao
+				.save(new Offer(title.trim(), description.trim(), url.trim(), price, creationDate, user, category));
 
 		int maxSize = 1024000;
 		Image image;
@@ -87,10 +93,15 @@ public class OfferHandler implements PostHandler {
 
 	@Override
 	public Post handleUpdate(Long postId, String title, String description, String url, BigDecimal price, Long userId,
-			Long categoryId, List<byte[]> imageList, Map<String, String> properties) throws InstanceNotFoundException,
-			MaximumImageSizeExceededException, MissingRequiredParameterException, PermissionException {
+			Long categoryId, List<byte[]> imageList, Map<String, String> properties)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
+			PermissionException, IncorrectFormValuesException {
 
 		Post post = permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
+
+		if (title == null || description == null || title.trim().equals("") || description.trim().equals("")) {
+			throw new IncorrectFormValuesException();
+		}
 
 		Category category = null;
 
@@ -103,9 +114,9 @@ public class OfferHandler implements PostHandler {
 			category = categoryOptional.get();
 		}
 
-		post.setTitle(title);
-		post.setDescription(description);
-		post.setUrl(url);
+		post.setTitle(title.trim());
+		post.setDescription(description.trim());
+		post.setUrl(url.trim());
 		post.setPrice(price);
 		post.setCategory(category);
 		post.getImages().forEach(i -> imageDao.delete(i));

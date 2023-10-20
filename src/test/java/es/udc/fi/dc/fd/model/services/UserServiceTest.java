@@ -16,6 +16,7 @@ import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
+import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginUpdateException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import jakarta.transaction.Transactional;
@@ -145,10 +146,11 @@ public class UserServiceTest {
 	 * @throws DuplicateInstanceException        the duplicate instance exception
 	 * @throws InstanceNotFoundException         the instance not found exception
 	 * @throws MaximumImageSizeExceededException the maximum image size exception
+	 * @throws IncorrectLoginUpdateException
 	 */
 	@Test
-	public void testUpdateProfile()
-			throws InstanceNotFoundException, DuplicateInstanceException, MaximumImageSizeExceededException {
+	public void testUpdateProfile() throws InstanceNotFoundException, DuplicateInstanceException,
+			MaximumImageSizeExceededException, IncorrectLoginUpdateException {
 		user.setUserName('X' + user.getUserName());
 		user.setFirstName('X' + user.getFirstName());
 		user.setLastName('X' + user.getLastName());
@@ -169,10 +171,32 @@ public class UserServiceTest {
 	 * @throws DuplicateInstanceException        the duplicate instance exception
 	 * @throws InstanceNotFoundException         the instance not found exception
 	 * @throws MaximumImageSizeExceededException the maximum image size exception
+	 * @throws IncorrectLoginUpdateException
 	 */
 	@Test
-	public void testUpdateProfileDupicateLogin()
-			throws InstanceNotFoundException, DuplicateInstanceException, MaximumImageSizeExceededException {
+	public void testUpdateProfileWithWhitespaceUser() throws InstanceNotFoundException, DuplicateInstanceException,
+			MaximumImageSizeExceededException, IncorrectLoginUpdateException {
+		user.setUserName('X' + user.getUserName());
+		user.setFirstName('X' + user.getFirstName());
+		user.setLastName('X' + user.getLastName());
+		user.setEmail('X' + user.getEmail());
+		user.setAvatar(user.getAvatar());
+
+		assertThrows(IncorrectLoginUpdateException.class, () -> userService.updateProfile(user.getId(), " ",
+				'X' + user.getFirstName(), 'X' + user.getLastName(), 'X' + user.getEmail(), user.getAvatar()));
+	}
+
+	/**
+	 * Test update profile.
+	 *
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exception
+	 * @throws IncorrectLoginUpdateException
+	 */
+	@Test
+	public void testUpdateProfileDupicateLogin() throws InstanceNotFoundException, DuplicateInstanceException,
+			MaximumImageSizeExceededException, IncorrectLoginUpdateException {
 		User user2 = createUser("user2");
 
 		userService.signUp(user2);
