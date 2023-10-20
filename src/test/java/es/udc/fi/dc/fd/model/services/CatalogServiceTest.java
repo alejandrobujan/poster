@@ -30,6 +30,7 @@ import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.SearchFilters;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
+import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 import jakarta.transaction.Transactional;
 
 /**
@@ -49,9 +50,15 @@ public class CatalogServiceTest {
 
 	private List<Post> posts;
 
-	/** The user service. */
+	private SearchFilters searchFilters;
+
+	/** The catalog service. */
 	@Autowired
 	private CatalogService catalogService;
+
+	/** The post service. */
+	@Autowired
+	private PostService postService;
 
 	@Autowired
 	private CategoryDao categoryDao;
@@ -128,6 +135,8 @@ public class CatalogServiceTest {
 		posts = List.of(createOffer("offer1", users.get(0), categories.get(0)),
 				createCoupon("coupon2", users.get(1), categories.get(1)),
 				createCoupon("coupon3", users.get(0), categories.get(2)));
+		searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false);
 	}
 
 	/**
@@ -171,6 +180,185 @@ public class CatalogServiceTest {
 		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 3),
 				List.of(posts.get(2), posts.get(1), posts.get(0)), false);
 		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 2), List.of(posts.get(0)), false);
+	}
+
+	/**
+	 * Test find all posts with keyword.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithKeyword() throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		posts.get(1).setTitle("pepe");
+		postDao.save(posts.get(1));
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, "pepe", 0, 2), List.of(posts.get(1)), false);
+	}
+
+	/**
+	 * Test find all posts with a specific category.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithCategoryFilter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		searchFilters.setCategoryId(categories.get(0).getId());
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(0)), false);
+	}
+
+	/**
+	 * Test find all posts with a specific type.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithTypeFilter() throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		searchFilters.setType("Coupon");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
+				false);
+	}
+
+	/**
+	 * Test find all posts with a specific min and max price.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithMinAndMaxPriceFilter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		posts.get(0).setPrice(new BigDecimal(100));
+
+		postDao.save(posts.get(0));
+
+		searchFilters.setPrice(Map.of("gte", new BigDecimal("50"), "lte", new BigDecimal("200")));
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(0)), false);
+	}
+
+	/**
+	 * Test find all posts with a specific date.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithDateHourFilter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		posts.get(0).setCreationDate(LocalDateTime.now().minusHours(2));
+		postDao.save(posts.get(0));
+		searchFilters.setDate("hour");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
+				false);
+	}
+
+	/**
+	 * Test find all posts with a specific date.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithDateDayFilter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		posts.get(0).setCreationDate(LocalDateTime.now().minusDays(2));
+		postDao.save(posts.get(0));
+		searchFilters.setDate("day");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
+				false);
+	}
+
+	/**
+	 * Test find all posts with a specific date.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithDateWeekFilter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		posts.get(0).setCreationDate(LocalDateTime.now().minusWeeks(2));
+		postDao.save(posts.get(0));
+		searchFilters.setDate("week");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
+				false);
+	}
+
+	/**
+	 * Test find all posts with a specific date.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithDateMonthFilter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		posts.get(0).setCreationDate(LocalDateTime.now().minusMonths(2));
+		postDao.save(posts.get(0));
+		searchFilters.setDate("month");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
+				false);
+	}
+
+	/**
+	 * Test find all posts with a specific date.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithDateYearFilter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		posts.get(0).setCreationDate(LocalDateTime.now().minusYears(2));
+		postDao.save(posts.get(0));
+		searchFilters.setDate("year");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
+				false);
+	}
+
+	/**
+	 * Test find all posts expired.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 * @throws PermissionException
+	 * @throws InstanceNotFoundException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsExpired() throws MaximumImageSizeExceededException, DuplicateInstanceException,
+			InstanceNotFoundException, PermissionException {
+		postService.markAsExpired(users.get(0).getId(), posts.get(0).getId(), true);
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
+				false);
+	}
+
+	/**
+	 * Test find all posts with some filters.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithSomeFilters() throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		posts.get(0).setPrice(new BigDecimal(100));
+		posts.get(0).setTitle("pepe");
+		postDao.save(posts.get(0));
+		searchFilters.setCategoryId(categories.get(0).getId());
+		searchFilters.setPrice(Map.of("gte", new BigDecimal("50"), "lte", new BigDecimal("10000")));
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, "pepe", 0, 2), List.of(posts.get(0)), false);
 	}
 
 	/**
