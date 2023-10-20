@@ -29,20 +29,37 @@ import es.udc.fi.dc.fd.rest.dtos.PostDto;
 import es.udc.fi.dc.fd.rest.dtos.PostSummaryDto;
 import es.udc.fi.dc.fd.rest.dtos.SearchParamsDto;
 
+/**
+ * The Class CatalogController.
+ */
 @RestController
 @RequestMapping("/api/catalog")
 public class CatalogController {
 
+	/** The post conversor. */
 	private final Map<String, PostConversor> conversors;
 
+	/** The catalog service. */
 	@Autowired
 	private CatalogService catalogService;
 
+	/**
+	 * The catalog controller.
+	 * 
+	 * @param offerConversor  the offer conversor
+	 * @param couponConversor the coupon conversor
+	 */
 	@Autowired
 	public CatalogController(OfferConversor offerConversor, CouponConversor couponConversor) {
 		this.conversors = Map.ofEntries(entry("Offer", offerConversor), entry("Coupon", couponConversor));
 	}
 
+	/**
+	 * Find Posts.
+	 *
+	 * @param params the params
+	 * @return the post summary dto
+	 */
 	@PostMapping("/feed")
 	public BlockDto<PostSummaryDto> findPosts(@RequestBody SearchParamsDto params) {
 
@@ -53,6 +70,11 @@ public class CatalogController {
 
 	}
 
+	/**
+	 * Find All Categories.
+	 *
+	 * @return list of category dto
+	 */
 	@GetMapping("/categories")
 	public List<CategoryDto> findAllCategories() {
 
@@ -60,6 +82,13 @@ public class CatalogController {
 
 	}
 
+	/**
+	 * Find Posts By Id.
+	 * 
+	 * @param id the post id
+	 * @return the post dto
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
 	@GetMapping("/postDetail/{id}")
 	public PostDto findPostById(@PathVariable Long id) throws InstanceNotFoundException {
 

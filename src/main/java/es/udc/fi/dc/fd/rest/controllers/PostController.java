@@ -39,16 +39,34 @@ import es.udc.fi.dc.fd.rest.dtos.UserDto;
 @RequestMapping("/api/posts")
 public class PostController {
 
+	/** The post conversor. */
 	private final Map<String, PostConversor> conversors;
 
+	/** The post service. */
 	@Autowired
 	private PostService postService;
 
+	/**
+	 * The post controller.
+	 * 
+	 * @param offerConversor  the offer conversor
+	 * @param couponConversor the coupon conversor
+	 */
 	@Autowired
 	public PostController(OfferConversor offerConversor, CouponConversor couponConversor) {
 		this.conversors = Map.ofEntries(entry("Offer", offerConversor), entry("Coupon", couponConversor));
 	}
 
+	/**
+	 * @param userId the user id
+	 * @param params the params
+	 * @return the post dto
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 * @throws MissingRequiredParameterException the missing required parameter
+	 *                                           exception
+	 */
 	@PostMapping("/post")
 	public PostDto createPost(@RequestAttribute Long userId, @Validated @RequestBody PostParamsDto params)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException {
@@ -63,6 +81,12 @@ public class PostController {
 
 	}
 
+	/**
+	 * @param userId the user id
+	 * @param id     the post id
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws PermissionException       the permission exception
+	 */
 	@DeleteMapping("/post/{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void deletePost(@RequestAttribute Long userId, @PathVariable Long id)
@@ -72,6 +96,14 @@ public class PostController {
 
 	}
 
+	/**
+	 * @param userId         the user id
+	 * @param id             the id
+	 * @param postExpiredDto the post expired dto
+	 * @return the post expired dto
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws PermissionException       the permission exception
+	 */
 	@PostMapping("/post/{id}/markAsExpired")
 	public PostExpiredDto markPostAsExpired(@RequestAttribute Long userId, @PathVariable Long id,
 			@RequestBody PostExpiredDto postExpiredDto) throws InstanceNotFoundException, PermissionException {
@@ -80,6 +112,18 @@ public class PostController {
 
 	}
 
+	/**
+	 * @param userId the user id
+	 * @param postId the post id
+	 * @param params the params
+	 * @return the post dto
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws PermissionException               the permission exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 * @throws MissingRequiredParameterException the missing required parameter
+	 *                                           exception
+	 */
 	@PutMapping("/post/{postId}")
 	public PostDto updatePost(@RequestAttribute Long userId, @PathVariable Long postId,
 			@Validated({ UserDto.UpdateValidations.class }) @RequestBody PostUpdateDto params)

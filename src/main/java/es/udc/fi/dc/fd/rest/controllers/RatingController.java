@@ -12,13 +12,23 @@ import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.services.RatingService;
 import es.udc.fi.dc.fd.rest.dtos.RatePostDto;
 
+/**
+ * The Class RatingController.
+ */
 @RestController
 @RequestMapping("/api/rating")
 public class RatingController {
 
+	/** The rating service. */
 	@Autowired
 	private RatingService ratingService;
 
+	/**
+	 * @param userId the user id
+	 * @param id     the id
+	 * @return the rate post dto
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
 	@PostMapping("/post/{id}/ratePositive")
 	public RatePostDto ratePostPositive(@RequestAttribute Long userId, @PathVariable Long id)
 			throws InstanceNotFoundException {
@@ -29,6 +39,12 @@ public class RatingController {
 
 	}
 
+	/**
+	 * @param userId the user id
+	 * @param id     the id
+	 * @return the rate post dto
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
 	@PostMapping("/post/{id}/rateNegative")
 	public RatePostDto ratePostNegative(@RequestAttribute Long userId, @PathVariable Long id)
 			throws InstanceNotFoundException {
