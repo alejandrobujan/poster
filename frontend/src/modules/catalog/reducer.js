@@ -12,7 +12,7 @@ const initialState = {
 			type: "",
 			price: {
 				gte: 0,
-				lte: 10000000
+				lte: 1000000
 			},
 			date: "",
 			expired: false

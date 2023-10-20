@@ -27,7 +27,7 @@ CREATE TABLE Post (
 	title VARCHAR(16) NOT NULL, 
 	description VARCHAR(256) NOT NULL, 
 	url VARCHAR(2048), 
-	price DECIMAL(9,2) NOT NULL, 
+	price DECIMAL(8,2) NOT NULL, 
 	creationDate TIMESTAMP NOT NULL,
 	positiveRatings INTEGER NOT NULL DEFAULT 0,
 	negativeRatings INTEGER NOT NULL DEFAULT 0,

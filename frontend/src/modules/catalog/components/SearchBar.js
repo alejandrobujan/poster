@@ -90,7 +90,7 @@ const SearchBar = () => {
 								<Range
 									step={10}
 									min={0}
-									max={10000000}
+									max={1000000}
 									values={[searchParams.filters.price.gte, searchParams.filters.price.lte]}
 									onChange={handleSliderChange}
 									renderTrack={({ props, children }) => (
@@ -106,13 +106,13 @@ const SearchBar = () => {
 							<div className='row flex-column flex-sm-row'>
 								<div className='col input-group'>
 									<input type="number" className="form-control" min={0}
-										max={10000000} value={searchParams.filters.price.gte} onChange={e => dispatch(actions.setMinPrice(Number(e.target.value)))} />
+										max={1000000} value={searchParams.filters.price.gte} onChange={e => dispatch(actions.setMinPrice(Number(e.target.value)))} />
 									<span className="input-group-text">€</span>
 								</div>
 								-
 								<div className='col input-group'>
 									<input type="number" className="form-control" min={0}
-										max={10000000} value={searchParams.filters.price.lte} onChange={e => dispatch(actions.setMaxPrice(Number(e.target.value)))} />
+										max={1000000} value={searchParams.filters.price.lte} onChange={e => dispatch(actions.setMaxPrice(Number(e.target.value)))} />
 									<span className="input-group-text">€</span>
 								</div>
 							</div>
