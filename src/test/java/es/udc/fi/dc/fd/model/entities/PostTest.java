@@ -5,7 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.Test;
 
+/**
+ * The Class PostTest.
+ */
 public class PostTest {
+	/**
+	 * Test add image to post.
+	 */
 	@Test
 	public void testAddImage() {
 		Post post = new Post();
