@@ -31,20 +31,25 @@ import jakarta.transaction.Transactional;
 @ActiveProfiles("test")
 @Transactional
 public class RatingServiceTest {
+	/** The catalog service. */
 	@Autowired
 	private CatalogService catalogService;
 
+	/** The rating service. */
 	@Autowired
 	private RatingService ratingService;
 
+	/** The user service. */
+	@Autowired
+	private UserService userService;
+
+	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
 
+	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
-
-	@Autowired
-	private UserService userService;
 
 	/**
 	 * Creates the post.
@@ -58,15 +63,25 @@ public class RatingServiceTest {
 				.save(new Post("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
 	}
 
+	/**
+	 * Creates the category.
+	 *
+	 * @param user     the user of the post
+	 * @param category the category of the post
+	 * @return the post
+	 */
 	private Category createCategory(String name) {
 		return categoryDao.save(new Category(name));
 	}
 
 	/**
+	 * Sign up user
+	 * 
 	 * @param userName the user name
 	 * @return the registered user
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
 	 */
 	private User signUpUser(String userName) throws MaximumImageSizeExceededException, DuplicateInstanceException {
 
@@ -79,6 +94,14 @@ public class RatingServiceTest {
 
 	}
 
+	/**
+	 * Test rate post positive.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testRatePostPositive()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -104,6 +127,14 @@ public class RatingServiceTest {
 
 	}
 
+	/**
+	 * Test rate post negative.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testRatePostNegative()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -129,6 +160,14 @@ public class RatingServiceTest {
 
 	}
 
+	/**
+	 * Test rate post positive twice.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testRatePostPositiveTwice()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -162,6 +201,14 @@ public class RatingServiceTest {
 
 	}
 
+	/**
+	 * Test rate post negative twice.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testRatePostNegativeTwice()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -195,6 +242,14 @@ public class RatingServiceTest {
 
 	}
 
+	/**
+	 * Test rate post negative to positive.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testRatePostNegativeToPositive()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -228,6 +283,14 @@ public class RatingServiceTest {
 
 	}
 
+	/**
+	 * Test rate post positive to negative.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testRatePostPositiveToNegative()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -261,6 +324,14 @@ public class RatingServiceTest {
 
 	}
 
+	/**
+	 * Test rate post no post.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testRatePostNoPost()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -269,6 +340,14 @@ public class RatingServiceTest {
 		assertThrows(InstanceNotFoundException.class, () -> ratingService.ratePostNegative(u.getId(), nonExistentId));
 	}
 
+	/**
+	 * Test rate post no existent user.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testRatePostNonExistentUser()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {

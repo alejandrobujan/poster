@@ -47,17 +47,21 @@ public class PostServiceTest {
 	@Autowired
 	private PostService postService;
 
+	/** The catalog service. */
 	@Autowired
 	private CatalogService catalogService;
 
+	/** The user service. */
+	@Autowired
+	private UserService userService;
+
+	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
 
+	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
-
-	@Autowired
-	private UserService userService;
 
 	/**
 	 * Creates the post.
@@ -71,15 +75,24 @@ public class PostServiceTest {
 				new Offer("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
 	}
 
+	/**
+	 * Creates the category category.
+	 *
+	 * @param name the name of the category
+	 * @return the category
+	 */
 	private Category createCategory(String name) {
 		return categoryDao.save(new Category(name));
 	}
 
 	/**
+	 * Sign up user
+	 * 
 	 * @param userName the user name
 	 * @return the registered user
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
 	 */
 	private User signUpUser(String userName) throws MaximumImageSizeExceededException, DuplicateInstanceException {
 
@@ -95,9 +108,12 @@ public class PostServiceTest {
 	/**
 	 * Test create post.
 	 * 
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
-	 * @throws MissingRequiredParameterException
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MissingRequiredParameterException the missing required parameters
+	 *                                           exception
 	 *
 	 */
 	@Test
@@ -149,11 +165,13 @@ public class PostServiceTest {
 	}
 
 	/**
-	 * Test create post with maximum file size exceeded.
+	 * Test create post with user not found.
 	 * 
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
-	 * @throws MissingRequiredParameterException
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MissingRequiredParameterException the missing required parameters
+	 *                                           exception
 	 */
 	@Test
 	public void testCreatePostWithInstanceNotFound()
@@ -169,9 +187,11 @@ public class PostServiceTest {
 	/**
 	 * Test create post with maximum file size exceeded.
 	 * 
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
-	 * @throws MissingRequiredParameterException
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MissingRequiredParameterException the missing required parameters
+	 *                                           exception
 	 */
 	@Test
 	public void testCreatePostWithMaximumImageSize()
@@ -190,9 +210,11 @@ public class PostServiceTest {
 	/**
 	 * Test create post with missing required parameter.
 	 * 
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
-	 * @throws MissingRequiredParameterException
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MissingRequiredParameterException the missing required parameters
+	 *                                           exception
 	 */
 	@Test
 	public void testCreatePostWithMissingRequiredParameter()
@@ -207,6 +229,15 @@ public class PostServiceTest {
 						category.getId(), List.of(maxSizeImageBytes), "Coupon", Map.ofEntries()));
 	}
 
+	/**
+	 * Test delete post.
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws PermissionException               the permission exception
+	 */
 	@Test
 	public void testDeletePost() throws DuplicateInstanceException, MaximumImageSizeExceededException,
 			InstanceNotFoundException, PermissionException {
@@ -225,6 +256,14 @@ public class PostServiceTest {
 		});
 	}
 
+	/**
+	 * Test delete post not belonging to user.
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testDeletePostNotBelongingToUser()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -243,6 +282,14 @@ public class PostServiceTest {
 		});
 	}
 
+	/**
+	 * Test delete non existent post.
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testDeletePostNonExistentPost()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -255,6 +302,14 @@ public class PostServiceTest {
 		});
 	}
 
+	/**
+	 * Test delete post with non existent user.
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testDeletePostNonExistentUser()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -273,6 +328,15 @@ public class PostServiceTest {
 		});
 	}
 
+	/**
+	 * Test mark as expired.
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws PermissionException               the permission exception
+	 */
 	@Test
 	public void testMarkAsExpired() throws DuplicateInstanceException, MaximumImageSizeExceededException,
 			InstanceNotFoundException, PermissionException {
@@ -300,6 +364,14 @@ public class PostServiceTest {
 
 	}
 
+	/**
+	 * Test mark as expired no post.
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testMarkAsExpiredNoPost()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -308,6 +380,14 @@ public class PostServiceTest {
 		assertThrows(InstanceNotFoundException.class, () -> postService.markAsExpired(u.getId(), nonExistentId, true));
 	}
 
+	/**
+	 * Test mark as expired no user.
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testMarkAsExpiredNoUser()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -326,6 +406,14 @@ public class PostServiceTest {
 		});
 	}
 
+	/**
+	 * Test mark as expired non existent user.
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Test
 	public void testMarkAsExpiredNonExistentUser()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
@@ -343,11 +431,13 @@ public class PostServiceTest {
 	/**
 	 * Test update offer.
 	 * 
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
-	 * @throws MissingRequiredParameterException
-	 * @throws InstanceNotFoundException
-	 * @throws PermissionException
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MissingRequiredParameterException the missing required parameters
+	 *                                           exception
+	 * @throws PermissionException               the permission exception
 	 *
 	 */
 	@Test
@@ -389,11 +479,13 @@ public class PostServiceTest {
 	/**
 	 * Test update coupon.
 	 * 
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
-	 * @throws MissingRequiredParameterException
-	 * @throws InstanceNotFoundException
-	 * @throws PermissionException
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MissingRequiredParameterException the missing required parameters
+	 *                                           exception
+	 * @throws PermissionException               the permission exception
 	 *
 	 */
 	@Test
@@ -440,9 +532,9 @@ public class PostServiceTest {
 	/**
 	 * Test update inexistent post.
 	 * 
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
-	 *
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
 	 */
 	@Test
 	public void testUpdateInexistentPost() throws DuplicateInstanceException, MaximumImageSizeExceededException {
@@ -458,11 +550,12 @@ public class PostServiceTest {
 	/**
 	 * Test update with inexistent category.
 	 * 
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
-	 * @throws MissingRequiredParameterException
-	 * @throws InstanceNotFoundException
-	 *
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MissingRequiredParameterException the missing required parameters
+	 *                                           exception
 	 */
 	@Test
 	public void testUpdateWithInexistentCategory() throws DuplicateInstanceException, MaximumImageSizeExceededException,
@@ -481,10 +574,12 @@ public class PostServiceTest {
 	/**
 	 * Test update post with maximum file size exceeded.
 	 * 
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
-	 * @throws MissingRequiredParameterException
-	 * @throws InstanceNotFoundException
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MissingRequiredParameterException the missing required parameters
+	 *                                           exception
 	 */
 	@Test
 	public void testUpdatePostWithMaximumImageSize() throws MaximumImageSizeExceededException,
@@ -505,10 +600,12 @@ public class PostServiceTest {
 	/**
 	 * Test update post with missing required parameter.
 	 * 
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
-	 * @throws MissingRequiredParameterException
-	 * @throws InstanceNotFoundException
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MissingRequiredParameterException the missing required parameters
+	 *                                           exception
 	 */
 	@Test
 	public void testUpdatePostWithMissingRequiredParameter() throws MaximumImageSizeExceededException,

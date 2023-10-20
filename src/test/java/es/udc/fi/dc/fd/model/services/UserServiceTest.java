@@ -97,7 +97,6 @@ public class UserServiceTest {
 	/**
 	 * Test login with non existent Id.
 	 */
-
 	@Test
 	public void testLoginFromNonExistentId() {
 		long nonExistentId = -1L;

@@ -40,16 +40,19 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class CatalogServiceTest {
 
-	/** The user service. */
+	/** The catalog service. */
 	@Autowired
 	private CatalogService catalogService;
 
+	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
 
+	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
 
+	/** The user service. */
 	@Autowired
 	private UserService userService;
 
@@ -65,15 +68,24 @@ public class CatalogServiceTest {
 				new Offer("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
 	}
 
+	/**
+	 * Creates the category.
+	 *
+	 * @param name the name of the category
+	 * @return the category
+	 */
 	private Category createCategory(String name) {
 		return categoryDao.save(new Category(name));
 	}
 
 	/**
+	 * Sign up user
+	 * 
 	 * @param userName the user name
 	 * @return the registered user
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
 	 */
 	private User signUpUser(String userName) throws MaximumImageSizeExceededException, DuplicateInstanceException {
 
@@ -87,9 +99,11 @@ public class CatalogServiceTest {
 	}
 
 	/**
-	 * @param actualBlock
-	 * @param expectedPosts
-	 * @param expectedExistMoreItems
+	 * Assert Post Block Equals
+	 * 
+	 * @param actualBlock            the actual block
+	 * @param expectedPosts          the expected block
+	 * @param expectedExistMoreItems if there are expected to exist more items
 	 */
 	private void assertPostBlockEquals(Block<Post> actualBlock, List<Post> expectedPosts,
 			boolean expectedExistMoreItems) {
@@ -100,7 +114,6 @@ public class CatalogServiceTest {
 
 	/**
 	 * Test find all categories.
-	 *
 	 */
 	@Test
 	public void testFindAllCategories() {
@@ -125,7 +138,6 @@ public class CatalogServiceTest {
 
 	/**
 	 * Test find no categories.
-	 *
 	 */
 	@Test
 	public void testFindNoCategories() {
@@ -135,7 +147,9 @@ public class CatalogServiceTest {
 	/**
 	 * Test find all posts.
 	 * 
-	 * @throws MaximumImageSizeExceededException
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
 	 *
 	 */
 	@Test
@@ -164,7 +178,6 @@ public class CatalogServiceTest {
 
 	/**
 	 * Test find no posts.
-	 *
 	 */
 	@Test
 	public void testFindNoPosts() {
@@ -175,6 +188,9 @@ public class CatalogServiceTest {
 		assertFalse(catalogService.findPosts(searchFilters, null, 0, 1).getExistMoreItems());
 	}
 
+	/**
+	 * Test find posts by id.
+	 */
 	@Test
 	public void testFindPostById()
 			throws InstanceNotFoundException, DuplicateInstanceException, MaximumImageSizeExceededException {
@@ -212,7 +228,7 @@ public class CatalogServiceTest {
 	}
 
 	/**
-	 * Test find no categories.
+	 * Test find no post by id.
 	 *
 	 */
 	@Test
