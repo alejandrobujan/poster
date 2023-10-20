@@ -94,7 +94,7 @@ describe("CreatePost", () => {
 
         fireEvent.click(submit);
 
-		expect(screen.getByText(/Price must be between 0 and 9999999.99/i));
+		expect(screen.getByText(/Price must be between 0 and 999999.99/i));
 
 		const price = screen.getByLabelText(/Price/i);
 
@@ -104,7 +104,7 @@ describe("CreatePost", () => {
 
         fireEvent.click(submit);
 
-		expect(screen.getByText(/Price must be between 0 and 9999999.99/i))
+		expect(screen.getByText(/Price must be between 0 and 999999.99/i))
 
 	});
 

@@ -189,14 +189,14 @@ const CreatePost = () => {
 										className="form-control"
 										value={price}
 										onChange={e => setPrice(Number(e.target.value))}
-										step="0.01" min="0.00" max="9999999.99"
+										step="0.01" min="0.00" max="999999.99"
 										required
 									/>
 									<span className="input-group-text">€</span>
 								</div>
 
 								<div className="invalid-feedback">
-									Price must be between 0 and 9999999.99
+									Price must be between 0 and 999999.99
 								</div>
 							</div>
 							<label htmlFor="categoryId" className="col-md-3 col-form-label">
