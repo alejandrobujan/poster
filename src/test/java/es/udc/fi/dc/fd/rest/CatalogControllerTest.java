@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.CategoryDao;
 import es.udc.fi.dc.fd.model.entities.Offer;
+import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.entities.User.RoleType;
@@ -45,6 +46,9 @@ public class CatalogControllerTest {
 	/** The mock mvc. */
 	@Autowired
 	private MockMvc mockMvc;
+
+	/** The Constant NON_EXISTENT_ID. */
+	private final static Long NON_EXISTENT_ID = -1L;
 
 	/** The Constant PASSWORD. */
 	private final static String PASSWORD = "password";
@@ -67,13 +71,15 @@ public class CatalogControllerTest {
 
 	/**
 	 * Creates the offer.
-	 *
-	 * @param user the user of the post
+	 * 
+	 * @param title    the title of the post
+	 * @param user     the user of the post
+	 * @param category the category of the post
 	 * @return the offer
 	 */
-	private Offer createOffer(User user) {
-		return postDao.save(new Offer("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
-				createCategory("Hola")));
+	private Post createOffer(String title, User user, Category category) {
+		return postDao
+				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
 	}
 
 	/**
@@ -93,11 +99,11 @@ public class CatalogControllerTest {
 	 * @return the user
 	 */
 	private User createUser(String userName) {
-
 		User user = new User(userName, PASSWORD, "newUser", "user", "user@test.com", null);
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRole(RoleType.USER);
+
 		return userDao.save(user);
 	}
 
@@ -123,9 +129,7 @@ public class CatalogControllerTest {
 	 */
 	@Test
 	public void testGetFindAllCategories_Ok() throws Exception {
-
 		mockMvc.perform(get("/api/catalog/categories")).andExpect(status().isOk());
-
 	}
 
 	/**
@@ -135,10 +139,8 @@ public class CatalogControllerTest {
 	 */
 	@Test
 	public void testGetFindPostById_Ok() throws Exception {
-
 		User user = createUser("admin");
-
-		Offer offer = createOffer(user);
+		Post offer = createOffer("offer", user, createCategory("category"));
 
 		mockMvc.perform(get("/api/catalog/postDetail/" + offer.getId())).andExpect(status().isOk());
 
@@ -151,7 +153,6 @@ public class CatalogControllerTest {
 	 */
 	@Test
 	public void testGetFindPostById_NotOk() throws Exception {
-		mockMvc.perform(get("/api/catalog/postDetail/-10")).andExpect(status().isNotFound());
-
+		mockMvc.perform(get("/api/catalog/postDetail/" + NON_EXISTENT_ID)).andExpect(status().isNotFound());
 	}
 }

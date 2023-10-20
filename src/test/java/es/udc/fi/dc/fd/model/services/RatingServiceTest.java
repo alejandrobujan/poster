@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,19 @@ import jakarta.transaction.Transactional;
 @ActiveProfiles("test")
 @Transactional
 public class RatingServiceTest {
+
+	/** The non existent id */
+	private final static long NON_EXISTENT_ID = -1L;
+
+	/** The user */
+	private User user;
+
+	/** The category */
+	private Category category;
+
+	/** The post */
+	private Post post;
+
 	/** The catalog service. */
 	@Autowired
 	private CatalogService catalogService;
@@ -83,7 +97,7 @@ public class RatingServiceTest {
 	 *                                           exception
 	 * @throws DuplicateInstanceException        the duplicate instance exception
 	 */
-	private User signUpUser(String userName) throws MaximumImageSizeExceededException, DuplicateInstanceException {
+	private User signUpUser(String userName) throws DuplicateInstanceException, MaximumImageSizeExceededException {
 
 		byte avatar[] = new byte[] { 50 };
 		User user = new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com", avatar);
@@ -92,6 +106,20 @@ public class RatingServiceTest {
 
 		return user;
 
+	}
+
+	/**
+	 * The set up
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 */
+	@Before
+	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException {
+		user = signUpUser("user");
+		category = createCategory("category");
+		post = createPost(user, category);
 	}
 
 	/**
@@ -105,26 +133,16 @@ public class RatingServiceTest {
 	@Test
 	public void testRatePostPositive()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
-		User u = signUpUser("Pepe");
-
-		Category c = createCategory("Car");
-
-		Post post = createPost(u, c);
-
 		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
 
-		ratingService.ratePostPositive(u.getId(), post.getId());
-
+		ratingService.ratePostPositive(user.getId(), post.getId());
 		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(1, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
-
 	}
 
 	/**
@@ -138,26 +156,16 @@ public class RatingServiceTest {
 	@Test
 	public void testRatePostNegative()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
-		User u = signUpUser("Pepe");
-
-		Category c = createCategory("Car");
-
-		Post post = createPost(u, c);
-
 		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
 
-		ratingService.ratePostNegative(u.getId(), post.getId());
-
+		ratingService.ratePostNegative(user.getId(), post.getId());
 		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(1, foundPost.getNegativeRatings());
-
 	}
 
 	/**
@@ -171,34 +179,22 @@ public class RatingServiceTest {
 	@Test
 	public void testRatePostPositiveTwice()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
-		User u = signUpUser("Pepe");
-
-		Category c = createCategory("Car");
-
-		Post post = createPost(u, c);
-
 		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
 
-		ratingService.ratePostPositive(u.getId(), post.getId());
-
+		ratingService.ratePostPositive(user.getId(), post.getId());
 		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(1, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
 
-		ratingService.ratePostPositive(u.getId(), post.getId());
-
+		ratingService.ratePostPositive(user.getId(), post.getId());
 		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
-
 	}
 
 	/**
@@ -212,34 +208,22 @@ public class RatingServiceTest {
 	@Test
 	public void testRatePostNegativeTwice()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
-		User u = signUpUser("Pepe");
-
-		Category c = createCategory("Car");
-
-		Post post = createPost(u, c);
-
 		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
 
-		ratingService.ratePostNegative(u.getId(), post.getId());
-
+		ratingService.ratePostNegative(user.getId(), post.getId());
 		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(1, foundPost.getNegativeRatings());
 
-		ratingService.ratePostNegative(u.getId(), post.getId());
-
+		ratingService.ratePostNegative(user.getId(), post.getId());
 		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
-
 	}
 
 	/**
@@ -253,34 +237,22 @@ public class RatingServiceTest {
 	@Test
 	public void testRatePostNegativeToPositive()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
-		User u = signUpUser("Pepe");
-
-		Category c = createCategory("Car");
-
-		Post post = createPost(u, c);
-
 		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
 
-		ratingService.ratePostNegative(u.getId(), post.getId());
-
+		ratingService.ratePostNegative(user.getId(), post.getId());
 		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(1, foundPost.getNegativeRatings());
 
-		ratingService.ratePostPositive(u.getId(), post.getId());
-
+		ratingService.ratePostPositive(user.getId(), post.getId());
 		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(1, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
-
 	}
 
 	/**
@@ -294,34 +266,22 @@ public class RatingServiceTest {
 	@Test
 	public void testRatePostPositiveToNegative()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
-		User u = signUpUser("Pepe");
-
-		Category c = createCategory("Car");
-
-		Post post = createPost(u, c);
-
 		Post foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
 
-		ratingService.ratePostPositive(u.getId(), post.getId());
-
+		ratingService.ratePostPositive(user.getId(), post.getId());
 		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(1, foundPost.getPositiveRatings());
-
 		assertEquals(0, foundPost.getNegativeRatings());
 
-		ratingService.ratePostNegative(u.getId(), post.getId());
-
+		ratingService.ratePostNegative(user.getId(), post.getId());
 		foundPost = catalogService.findPostById(post.getId());
 
 		assertEquals(0, foundPost.getPositiveRatings());
-
 		assertEquals(1, foundPost.getNegativeRatings());
-
 	}
 
 	/**
@@ -335,9 +295,8 @@ public class RatingServiceTest {
 	@Test
 	public void testRatePostNoPost()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
-		User u = signUpUser("Pepe");
-		long nonExistentId = -1L;
-		assertThrows(InstanceNotFoundException.class, () -> ratingService.ratePostNegative(u.getId(), nonExistentId));
+		assertThrows(InstanceNotFoundException.class,
+				() -> ratingService.ratePostNegative(user.getId(), NON_EXISTENT_ID));
 	}
 
 	/**
@@ -351,16 +310,8 @@ public class RatingServiceTest {
 	@Test
 	public void testRatePostNonExistentUser()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
-		User u = signUpUser("Pepe");
-
-		Category c = createCategory("Car");
-
-		Post post = createPost(u, c);
-
-		long nonExistentId = -1L;
-
 		assertThrows(InstanceNotFoundException.class,
-				() -> ratingService.ratePostPositive(nonExistentId, post.getId()));
+				() -> ratingService.ratePostPositive(NON_EXISTENT_ID, post.getId()));
 	}
 
 }
