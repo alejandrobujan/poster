@@ -71,9 +71,11 @@ public class PostControllerTest {
 	@Autowired
 	private UserDao userDao;
 
+	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
 
+	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
 
@@ -108,7 +110,7 @@ public class PostControllerTest {
 	}
 
 	/**
-	 * Generate service token.*
+	 * Generate service token.
 	 * 
 	 * @param user the user
 	 * @return the string
@@ -121,15 +123,33 @@ public class PostControllerTest {
 
 	}
 
+	/**
+	 * Creates the offer.
+	 *
+	 * @param user the user of the post
+	 * @return the offer
+	 */
 	private Offer createOffer(User user) {
 		return postDao.save(new Offer("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
 				createCategory("Hola")));
 	}
 
+	/**
+	 * Creates the category.
+	 *
+	 * @param name the name of the category
+	 * @return the category
+	 */
 	private Category createCategory(String name) {
 		return categoryDao.save(new Category(name));
 	}
 
+	/**
+	 * Creates the user.
+	 *
+	 * @param userName the user name
+	 * @return the user
+	 */
 	private User createUser(String userName) {
 
 		User user = new User(userName, PASSWORD, "newUser", "user", "user@test.com", null);
@@ -195,6 +215,11 @@ public class PostControllerTest {
 
 	}
 
+	/**
+	 * Test post Delete Post ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testDeleteDeletePost_Ok() throws Exception {
 
@@ -206,6 +231,11 @@ public class PostControllerTest {
 
 	}
 
+	/**
+	 * Test post Delete Post not ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testDeleteDeletePost_NotOkForbidden() throws Exception {
 
@@ -219,6 +249,11 @@ public class PostControllerTest {
 
 	}
 
+	/**
+	 * Test post Delete Post is not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testDeleteDeletePost_NotOkNotFound() throws Exception {
 
@@ -230,6 +265,7 @@ public class PostControllerTest {
 	/**
 	 * Test put Update Post ok.
 	 *
+	 * @throws Exception the exception
 	 */
 	@Test
 	public void testPutUpdatePost_Ok() throws Exception {
@@ -323,6 +359,11 @@ public class PostControllerTest {
 
 	}
 
+	/**
+	 * Test post mark post as expired ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostMarkPostAsExpired_Ok() throws Exception {
 
@@ -339,6 +380,11 @@ public class PostControllerTest {
 
 	}
 
+	/**
+	 * Test post mark post as expired forbidden.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostMarkPostAsExpired_NotOkForbidden() throws Exception {
 
@@ -358,6 +404,11 @@ public class PostControllerTest {
 
 	}
 
+	/**
+	 * Test post mark post as expired not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostMarkPostAsExpired_NotOkNotFound() throws Exception {
 

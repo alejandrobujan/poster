@@ -106,7 +106,7 @@ public class UserControllerTest {
 	}
 
 	/**
-	 * Test post login ok.
+	 * Test post login not ok.
 	 *
 	 * @throws Exception the exception
 	 */
@@ -152,7 +152,7 @@ public class UserControllerTest {
 	}
 
 	/**
-	 * Test post sign up ok.
+	 * Test post sign up not ok.
 	 *
 	 * @throws Exception the exception
 	 */
@@ -173,12 +173,12 @@ public class UserControllerTest {
 				.content(mapper.writeValueAsBytes(userParams))).andExpect(status().isBadRequest());
 
 	}
-	/*
-	 * /** Test post Update Profile ok.
+
+	/**
+	 * Test post Update Profile ok.
 	 *
 	 * @throws Exception the exception
 	 */
-
 	@Test
 	public void testPostUpdateProfile_Ok() throws Exception {
 
@@ -199,12 +199,11 @@ public class UserControllerTest {
 				.content(mapper.writeValueAsBytes(userParams))).andExpect(status().isOk());
 	}
 
-	/*
-	 * /** Test post Update Profile Not ok.
+	/**
+	 * Test post Update Profile Not ok.
 	 *
 	 * @throws Exception the exception
 	 */
-
 	@Test
 	public void testPostUpdateProfile_NotOkForbidden() throws Exception {
 
@@ -225,12 +224,11 @@ public class UserControllerTest {
 				.andExpect(status().isForbidden());
 	}
 
-	/*
-	 * /** Test post Update Profile Not ok Duplicate Login.
+	/**
+	 * Test post Update Profile Not ok Duplicate Login.
 	 *
 	 * @throws Exception the exception
 	 */
-
 	@Test
 	public void testPostUpdateProfile_NotOkDuplicateLogin() throws Exception {
 
@@ -252,12 +250,11 @@ public class UserControllerTest {
 				.content(mapper.writeValueAsBytes(userParams))).andExpect(status().isBadRequest());
 	}
 
-	/*
-	 * /** Test Change Password ok
+	/**
+	 * Test Change Password ok
 	 *
 	 * @throws Exception the exception
 	 */
-
 	@Test
 	public void testChangePassword_Ok() throws Exception {
 
@@ -275,12 +272,11 @@ public class UserControllerTest {
 				.content(mapper.writeValueAsBytes(passwordParams))).andExpect(status().isNoContent());
 	}
 
-	/*
-	 * /** Test Change Password not ok
+	/**
+	 * Test Change Password not ok
 	 *
 	 * @throws Exception the exception
 	 */
-
 	@Test
 	public void testChangePassword_NotOk() throws Exception {
 

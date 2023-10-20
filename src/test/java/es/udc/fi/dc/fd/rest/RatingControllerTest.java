@@ -52,9 +52,11 @@ public class RatingControllerTest {
 	@Autowired
 	private UserDao userDao;
 
+	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
 
+	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
 
@@ -62,15 +64,33 @@ public class RatingControllerTest {
 	@Autowired
 	private JwtGenerator jwtGenerator;
 
+	/**
+	 * Creates the category.
+	 *
+	 * @param name the name of the category
+	 * @return the category
+	 */
 	private Category createCategory(String name) {
 		return categoryDao.save(new Category(name));
 	}
 
+	/**
+	 * Creates the offer.
+	 *
+	 * @param user the user of the post
+	 * @return the offer
+	 */
 	private Offer createOffer(User user) {
 		return postDao.save(new Offer("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
 				createCategory("Hola")));
 	}
 
+	/**
+	 * Creates the user.
+	 *
+	 * @param userName the user name
+	 * @return the user
+	 */
 	private User createUser(String userName) {
 
 		User user = new User(userName, PASSWORD, "newUser", "user", "user@test.com", null);
@@ -80,6 +100,11 @@ public class RatingControllerTest {
 		return userDao.save(user);
 	}
 
+	/**
+	 * Test post rate positive ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRatePositive_Ok() throws Exception {
 
@@ -91,6 +116,11 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Test post rate negative ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRateNegative_Ok() throws Exception {
 
@@ -102,6 +132,11 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Test post rate negative twice ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRateNegativeTwice_Ok() throws Exception {
 
@@ -115,6 +150,11 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Test post rate positive twice ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRatePositiveTwice_Ok() throws Exception {
 
@@ -128,6 +168,11 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Test post rate positive to negative ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRatePositiveToNegative_Ok() throws Exception {
 
@@ -141,6 +186,11 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Test post rate negative to positive ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRateNegativeToPositive_Ok() throws Exception {
 
@@ -154,6 +204,11 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Test post rate positive not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRatePositive_NotOkNotFound() throws Exception {
 
@@ -164,6 +219,11 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Test post rate negative not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRateNegative_NotOkNotFound() throws Exception {
 
@@ -174,6 +234,11 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Test post rate positive user not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRatePositive_NoUser() throws Exception {
 
@@ -186,6 +251,11 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Test post rate negative user not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRateNegative_NoUser() throws Exception {
 
