@@ -31,7 +31,7 @@ return (
 						<hr className="my-4" />
 						<h5 className="fw-bolder">
 							<PostLink id={id} title={title}/> &nbsp; {url &&
-								<ExternalLinkButton url={url} />
+								<ExternalLinkButton url={`//${url}`} />
 							}
 						</h5>
 						<p><i>{description}</i></p>

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +26,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
+import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.CategoryDao;
 import es.udc.fi.dc.fd.model.entities.Offer;
+import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.entities.User.RoleType;
 import es.udc.fi.dc.fd.model.entities.UserDao;
+import es.udc.fi.dc.fd.model.services.UserService;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
-import es.udc.fi.dc.fd.rest.common.JwtGenerator;
-import es.udc.fi.dc.fd.rest.common.JwtInfo;
+import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
@@ -52,9 +56,18 @@ import es.udc.fi.dc.fd.rest.dtos.PostUpdateDto;
 @Transactional
 public class PostControllerTest {
 
+	private AuthenticatedUserDto authenticatedUser;
+
+	private Post offer;
+
+	private Category category;
+
 	/** The mock mvc. */
 	@Autowired
 	private MockMvc mockMvc;
+
+	/** The Constant NON_EXISTENT_ID. */
+	private final static Long NON_EXISTENT_ID = -1L;
 
 	/** The Constant PASSWORD. */
 	private final static String PASSWORD = "password";
@@ -62,10 +75,6 @@ public class PostControllerTest {
 	/** The password encoder. */
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-
-	/** The jwt generator. */
-	@Autowired
-	private JwtGenerator jwtGenerator;
 
 	/** The user dao. */
 	@Autowired
@@ -76,6 +85,9 @@ public class PostControllerTest {
 
 	@Autowired
 	private CategoryDao categoryDao;
+
+	@Autowired
+	private UserService userService;
 
 	/** The user controller. */
 	@Autowired
@@ -91,7 +103,6 @@ public class PostControllerTest {
 	 */
 	private AuthenticatedUserDto createAuthenticatedUser(String userName, RoleType roleType)
 			throws IncorrectLoginException {
-
 		User user = new User(userName, PASSWORD, "newUser", "user", "user@test.com", null);
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -104,39 +115,31 @@ public class PostControllerTest {
 		loginParams.setPassword(PASSWORD);
 
 		return userController.login(loginParams);
-
 	}
 
 	/**
-	 * Generate service token.*
-	 * 
-	 * @param user the user
-	 * @return the string
+	 * Creates the offer.
+	 *
+	 * @param title    the title of the post
+	 * @param user     the user of the post
+	 * @param category the category of the post
+	 * @return the offer
 	 */
-	private String generateServiceToken(User user) {
-
-		JwtInfo jwtInfo = new JwtInfo(user.getId(), user.getUserName(), user.getRole().toString());
-
-		return jwtGenerator.generate(jwtInfo);
-
-	}
-
-	private Offer createOffer(User user) {
-		return postDao.save(new Offer("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
-				createCategory("Hola")));
+	private Post createOffer(String title, User user, Category category) {
+		return postDao
+				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
 	}
 
 	private Category createCategory(String name) {
 		return categoryDao.save(new Category(name));
 	}
 
-	private User createUser(String userName) {
-
-		User user = new User(userName, PASSWORD, "newUser", "user", "user@test.com", null);
-
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setRole(RoleType.USER);
-		return userDao.save(user);
+	@Before
+	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException, IncorrectLoginException,
+			InstanceNotFoundException {
+		authenticatedUser = createAuthenticatedUser("user", RoleType.USER);
+		category = createCategory("category");
+		offer = createOffer("offer", userService.loginFromId(authenticatedUser.getUserDto().getId()), category);
 	}
 
 	/**
@@ -146,15 +149,10 @@ public class PostControllerTest {
 	 */
 	@Test
 	public void testPostCreatePost_Ok() throws Exception {
-
-		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
-
-		List<byte[]> image = new ArrayList<byte[]>();
-
 		PostParamsDto postParams = new PostParamsDto();
 		postParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postParams.setDescription("Tarta de Santiago");
-		postParams.setImages(image);
+		postParams.setImages(new ArrayList<byte[]>());
 		postParams.setPrice(new BigDecimal(10));
 		postParams.setTitle("Tarta");
 		postParams.setUrl("http://poster.com");
@@ -163,10 +161,9 @@ public class PostControllerTest {
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
+		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
 				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
 				.andExpect(status().isOk());
-
 	}
 
 	/**
@@ -176,9 +173,6 @@ public class PostControllerTest {
 	 */
 	@Test
 	public void testPostCreatePost_NotOk() throws Exception {
-
-		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
-
 		PostParamsDto postParams = new PostParamsDto();
 		postParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postParams.setDescription("Tarta de Santiago");
@@ -189,10 +183,9 @@ public class PostControllerTest {
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
+		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
 				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
 				.andExpect(status().isBadRequest());
-
 	}
 
 	/**
@@ -257,34 +250,22 @@ public class PostControllerTest {
 
 	@Test
 	public void testDeleteDeletePost_Ok() throws Exception {
-
-		User user = createUser("admin");
-		Offer offer = createOffer(user);
-
 		mockMvc.perform(delete("/api/posts/post/" + offer.getId()).header("Authorization",
-				"Bearer " + generateServiceToken(user))).andExpect(status().isNoContent());
-
+				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isNoContent());
 	}
 
 	@Test
 	public void testDeleteDeletePost_NotOkForbidden() throws Exception {
-
-		User user = createUser("admin");
-		Offer offer = createOffer(user);
-
-		User user2 = createUser("pepe");
-
 		mockMvc.perform(delete("/api/posts/post/" + offer.getId()).header("Authorization",
-				"Bearer " + generateServiceToken(user2))).andExpect(status().isForbidden());
+				"Bearer " + createAuthenticatedUser("user2", RoleType.USER).getServiceToken()))
+				.andExpect(status().isForbidden());
 
 	}
 
 	@Test
 	public void testDeleteDeletePost_NotOkNotFound() throws Exception {
-
-		User user = createUser("admin");
-
-		mockMvc.perform(delete("/api/posts/post/-1").header("Authorization", "Bearer " + generateServiceToken(user)));
+		mockMvc.perform(delete("/api/posts/post/" + NON_EXISTENT_ID).header("Authorization",
+				"Bearer " + createAuthenticatedUser("user2", RoleType.USER).getServiceToken()));
 	}
 
 	/**
@@ -293,18 +274,11 @@ public class PostControllerTest {
 	 */
 	@Test
 	public void testPutUpdatePost_Ok() throws Exception {
-
-		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
-
-		Offer offer = createOffer(userDao.findById(user.getUserDto().getId()).get());
-
-		List<byte[]> image = new ArrayList<byte[]>();
-
 		PostUpdateDto postUpdateParams = new PostUpdateDto();
-		postUpdateParams.setAuthorId(user.getUserDto().getId());
+		postUpdateParams.setAuthorId(authenticatedUser.getUserDto().getId());
 		postUpdateParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postUpdateParams.setDescription("Tarta de Santiago");
-		postUpdateParams.setImages(image);
+		postUpdateParams.setImages(new ArrayList<byte[]>());
 		postUpdateParams.setPrice(new BigDecimal(10));
 		postUpdateParams.setTitle("Tarta");
 		postUpdateParams.setUrl("http://poster.com");
@@ -312,9 +286,9 @@ public class PostControllerTest {
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		mockMvc.perform(
-				put("/api/posts/post/" + offer.getId()).header("Authorization", "Bearer " + user.getServiceToken())
-						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
+		mockMvc.perform(put("/api/posts/post/" + offer.getId())
+				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
 				.andExpect(status().isOk());
 	}
 
@@ -324,18 +298,11 @@ public class PostControllerTest {
 	 */
 	@Test
 	public void testPutUpdatePost_NotOk_WhitespaceTitle() throws Exception {
-
-		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
-
-		Offer offer = createOffer(userDao.findById(user.getUserDto().getId()).get());
-
-		List<byte[]> image = new ArrayList<byte[]>();
-
 		PostUpdateDto postUpdateParams = new PostUpdateDto();
-		postUpdateParams.setAuthorId(user.getUserDto().getId());
+		postUpdateParams.setAuthorId(authenticatedUser.getUserDto().getId());
 		postUpdateParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postUpdateParams.setDescription("Tarta de Santiago");
-		postUpdateParams.setImages(image);
+		postUpdateParams.setImages(new ArrayList<byte[]>());
 		postUpdateParams.setPrice(new BigDecimal(10));
 		postUpdateParams.setTitle(" ");
 		postUpdateParams.setUrl("http://poster.com");
@@ -343,9 +310,9 @@ public class PostControllerTest {
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		mockMvc.perform(
-				put("/api/posts/post/" + offer.getId()).header("Authorization", "Bearer " + user.getServiceToken())
-						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
+		mockMvc.perform(put("/api/posts/post/" + offer.getId())
+				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
 				.andExpect(status().isBadRequest());
 	}
 
@@ -355,18 +322,11 @@ public class PostControllerTest {
 	 */
 	@Test
 	public void testPutUpdatePost_NotOk_WhitespaceDescription() throws Exception {
-
-		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
-
-		Offer offer = createOffer(userDao.findById(user.getUserDto().getId()).get());
-
-		List<byte[]> image = new ArrayList<byte[]>();
-
 		PostUpdateDto postUpdateParams = new PostUpdateDto();
-		postUpdateParams.setAuthorId(user.getUserDto().getId());
+		postUpdateParams.setAuthorId(authenticatedUser.getUserDto().getId());
 		postUpdateParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postUpdateParams.setDescription(" ");
-		postUpdateParams.setImages(image);
+		postUpdateParams.setImages(new ArrayList<byte[]>());
 		postUpdateParams.setPrice(new BigDecimal(10));
 		postUpdateParams.setTitle("Tarta de Santiago");
 		postUpdateParams.setUrl("http://poster.com");
@@ -374,9 +334,9 @@ public class PostControllerTest {
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		mockMvc.perform(
-				put("/api/posts/post/" + offer.getId()).header("Authorization", "Bearer " + user.getServiceToken())
-						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
+		mockMvc.perform(put("/api/posts/post/" + offer.getId())
+				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
 				.andExpect(status().isBadRequest());
 	}
 
@@ -387,18 +347,11 @@ public class PostControllerTest {
 	 */
 	@Test
 	public void testPutUpdatePost_Forbidden() throws Exception {
-
-		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
-
-		Offer offer = createOffer(userDao.findById(user.getUserDto().getId()).get());
-
-		List<byte[]> image = new ArrayList<byte[]>();
-
 		PostUpdateDto postUpdateParams = new PostUpdateDto();
-		postUpdateParams.setAuthorId(-1L);
+		postUpdateParams.setAuthorId(NON_EXISTENT_ID);
 		postUpdateParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postUpdateParams.setDescription("Tarta de Santiago");
-		postUpdateParams.setImages(image);
+		postUpdateParams.setImages(new ArrayList<byte[]>());
 		postUpdateParams.setPrice(new BigDecimal(10));
 		postUpdateParams.setTitle("Tarta");
 		postUpdateParams.setUrl("http://poster.com");
@@ -406,11 +359,10 @@ public class PostControllerTest {
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		mockMvc.perform(
-				put("/api/posts/post/" + offer.getId()).header("Authorization", "Bearer " + user.getServiceToken())
-						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
+		mockMvc.perform(put("/api/posts/post/" + offer.getId())
+				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
 				.andExpect(status().isForbidden());
-
 	}
 
 	/**
@@ -420,18 +372,11 @@ public class PostControllerTest {
 	 */
 	@Test
 	public void testPutUpdatePost_isNotFoundPost() throws Exception {
-
-		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
-
-		createOffer(userDao.findById(user.getUserDto().getId()).get());
-
-		List<byte[]> image = new ArrayList<byte[]>();
-
 		PostUpdateDto postUpdateParams = new PostUpdateDto();
-		postUpdateParams.setAuthorId(user.getUserDto().getId());
+		postUpdateParams.setAuthorId(authenticatedUser.getUserDto().getId());
 		postUpdateParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postUpdateParams.setDescription("Tarta de Santiago");
-		postUpdateParams.setImages(image);
+		postUpdateParams.setImages(new ArrayList<byte[]>());
 		postUpdateParams.setPrice(new BigDecimal(10));
 		postUpdateParams.setTitle("Tarta");
 		postUpdateParams.setUrl("http://poster.com");
@@ -439,61 +384,40 @@ public class PostControllerTest {
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		mockMvc.perform(put("/api/posts/post/-1").header("Authorization", "Bearer " + user.getServiceToken())
+		mockMvc.perform(put("/api/posts/post/" + NON_EXISTENT_ID)
+				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
 				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
 				.andExpect(status().isNotFound());
-
 	}
 
 	@Test
 	public void testPostMarkPostAsExpired_Ok() throws Exception {
-
-		User user = createUser("admin");
-		Offer offer = createOffer(user);
-
-		PostExpiredDto postExpiredDto = new PostExpiredDto(true);
-
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post/" + offer.getId() + "/markAsExpired")
-				.header("Authorization", "Bearer " + generateServiceToken(user)).contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writeValueAsBytes(postExpiredDto))).andExpect(status().isOk());
-
+				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(new PostExpiredDto(true))))
+				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void testPostMarkPostAsExpired_NotOkForbidden() throws Exception {
-
-		User user = createUser("admin");
-		Offer offer = createOffer(user);
-
-		User user2 = createUser("pepe");
-
-		PostExpiredDto postExpiredDto = new PostExpiredDto(true);
-
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post/" + offer.getId() + "/markAsExpired")
-				.header("Authorization", "Bearer " + generateServiceToken(user2))
-				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postExpiredDto)))
+				.header("Authorization", "Bearer " + createAuthenticatedUser("user2", RoleType.USER).getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(new PostExpiredDto(true))))
 				.andExpect(status().isForbidden());
-
 	}
 
 	@Test
 	public void testPostMarkPostAsExpired_NotOkNotFound() throws Exception {
-
-		User user = createUser("admin");
-
-		PostExpiredDto postExpiredDto = new PostExpiredDto(true);
-
 		ObjectMapper mapper = new ObjectMapper();
 
-		mockMvc.perform(
-				post("/api/posts/post/-1/markAsExpired").header("Authorization", "Bearer " + generateServiceToken(user))
-						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postExpiredDto)))
+		mockMvc.perform(post("/api/posts/post/" + NON_EXISTENT_ID + "/markAsExpired")
+				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(new PostExpiredDto(true))))
 				.andExpect(status().isNotFound());
-
 	}
 
 }

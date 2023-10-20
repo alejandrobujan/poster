@@ -1,6 +1,6 @@
 const UserCard = ({ user }) => {
 	return (
-		<div class="user-card">
+		<div className="user-card">
 			<img
 				src={user.avatar ? `data:image/*;base64,${user.avatar}` : "/poster/assets/profile.png"}
 				alt="Avatar"
