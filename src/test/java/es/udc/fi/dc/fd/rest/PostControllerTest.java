@@ -195,6 +195,66 @@ public class PostControllerTest {
 
 	}
 
+	/**
+	 * Test post Create Post Not ok Whitespace Title.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPostCreatePost_NotOk_WhitespaceTitle() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+
+		List<byte[]> image = new ArrayList<byte[]>();
+
+		PostParamsDto postParams = new PostParamsDto();
+		postParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
+		postParams.setDescription("Tarta de Santiago");
+		postParams.setImages(image);
+		postParams.setPrice(new BigDecimal(10));
+		postParams.setTitle(" ");
+		postParams.setUrl("http://poster.com");
+		postParams.setType("Coupon");
+		postParams.setProperties(Map.of("code", "APP25"));
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
+				.andExpect(status().isBadRequest());
+
+	}
+
+	/**
+	 * Test post Create Post Not ok Whitespace Description.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPostCreatePost_NotOk_WhitespaceDescription() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+
+		List<byte[]> image = new ArrayList<byte[]>();
+
+		PostParamsDto postParams = new PostParamsDto();
+		postParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
+		postParams.setDescription(" ");
+		postParams.setImages(image);
+		postParams.setPrice(new BigDecimal(10));
+		postParams.setTitle("Tarta de Santiago");
+		postParams.setUrl("http://poster.com");
+		postParams.setType("Coupon");
+		postParams.setProperties(Map.of("code", "APP25"));
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
+				.andExpect(status().isBadRequest());
+
+	}
+
 	@Test
 	public void testDeleteDeletePost_Ok() throws Exception {
 
@@ -256,6 +316,68 @@ public class PostControllerTest {
 				put("/api/posts/post/" + offer.getId()).header("Authorization", "Bearer " + user.getServiceToken())
 						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
 				.andExpect(status().isOk());
+	}
+
+	/**
+	 * Test put Update Post Not ok Whitespace Title.
+	 *
+	 */
+	@Test
+	public void testPutUpdatePost_NotOk_WhitespaceTitle() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+
+		Offer offer = createOffer(userDao.findById(user.getUserDto().getId()).get());
+
+		List<byte[]> image = new ArrayList<byte[]>();
+
+		PostUpdateDto postUpdateParams = new PostUpdateDto();
+		postUpdateParams.setAuthorId(user.getUserDto().getId());
+		postUpdateParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
+		postUpdateParams.setDescription("Tarta de Santiago");
+		postUpdateParams.setImages(image);
+		postUpdateParams.setPrice(new BigDecimal(10));
+		postUpdateParams.setTitle(" ");
+		postUpdateParams.setUrl("http://poster.com");
+		postUpdateParams.setType("Offer");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(
+				put("/api/posts/post/" + offer.getId()).header("Authorization", "Bearer " + user.getServiceToken())
+						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
+				.andExpect(status().isBadRequest());
+	}
+
+	/**
+	 * Test put Update Post Not ok Whitespace Description.
+	 *
+	 */
+	@Test
+	public void testPutUpdatePost_NotOk_WhitespaceDescription() throws Exception {
+
+		AuthenticatedUserDto user = createAuthenticatedUser("admin", RoleType.USER);
+
+		Offer offer = createOffer(userDao.findById(user.getUserDto().getId()).get());
+
+		List<byte[]> image = new ArrayList<byte[]>();
+
+		PostUpdateDto postUpdateParams = new PostUpdateDto();
+		postUpdateParams.setAuthorId(user.getUserDto().getId());
+		postUpdateParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
+		postUpdateParams.setDescription(" ");
+		postUpdateParams.setImages(image);
+		postUpdateParams.setPrice(new BigDecimal(10));
+		postUpdateParams.setTitle("Tarta de Santiago");
+		postUpdateParams.setUrl("http://poster.com");
+		postUpdateParams.setType("Offer");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(
+				put("/api/posts/post/" + offer.getId()).header("Authorization", "Bearer " + user.getServiceToken())
+						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postUpdateParams)))
+				.andExpect(status().isBadRequest());
 	}
 
 	/**
