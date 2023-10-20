@@ -25,12 +25,13 @@ import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterExcepti
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 
 /**
- * 
+ * The Class CouponHandler.
  */
 @Component
 @Transactional
 public class CouponHandler implements PostHandler {
 
+	/** The permission checker. */
 	@Autowired
 	private PermissionChecker permissionChecker;
 
@@ -46,6 +47,25 @@ public class CouponHandler implements PostHandler {
 	@Autowired
 	private ImageDao imageDao;
 
+	/**
+	 * The handle create coupon
+	 * 
+	 * @param title       the title of the coupon
+	 * @param description the description of the coupon
+	 * @param url         the url associated to the coupon
+	 * @param price       the price of the coupon
+	 * @param userId      the user id who create the coupon
+	 * @param categoryId  the category id associated to the coupon
+	 * @param imageList   the images associated to the coupon
+	 * @param properties  the properties of the coupon
+	 * @return the new coupon
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws MissingRequiredParameterException the missing required parameter
+	 *                                           exception
+	 * 
+	 */
 	@Override
 	public Post handleCreate(String title, String description, String url, BigDecimal price, Long userId,
 			Long categoryId, List<byte[]> imageList, Map<String, String> properties) throws InstanceNotFoundException,
@@ -99,6 +119,27 @@ public class CouponHandler implements PostHandler {
 
 	}
 
+	/**
+	 * The handle update coupon
+	 * 
+	 * @param postId      the coupon id
+	 * @param title       the title of the coupon
+	 * @param description the description of the coupon
+	 * @param url         the url associated to the coupon
+	 * @param price       the price of the coupon
+	 * @param userId      the user id who create the coupon
+	 * @param categoryId  the category id associated to the coupon
+	 * @param imageList   the images associated to the coupon
+	 * @param properties  the properties of the coupon
+	 * @return the updated coupon
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 * @throws MissingRequiredParameterException the missing required parameter
+	 *                                           exception
+	 * @throws PermissionException               the permission exception
+	 * 
+	 */
 	@Override
 	public Post handleUpdate(Long postId, String title, String description, String url, BigDecimal price, Long userId,
 			Long categoryId, List<byte[]> imageList, Map<String, String> properties)

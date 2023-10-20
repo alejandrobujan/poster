@@ -48,15 +48,23 @@ public class PostController {
 	/** The Constant INCORRECT_FORM_VALUES_EXCEPTION_CODE. */
 	private static final String INCORRECT_FORM_VALUES_EXCEPTION_CODE = "project.exceptions.IncorrectFormValuesException";
 
+	/** The post conversor. */
 	private final Map<String, PostConversor> conversors;
 
 	/** The message source. */
 	@Autowired
 	private MessageSource messageSource;
 
+	/** The post service */
 	@Autowired
 	private PostService postService;
 
+	/**
+	 * The post controller.
+	 * 
+	 * @param offerConversor  the offer conversor
+	 * @param couponConversor the coupon conversor
+	 */
 	@Autowired
 	public PostController(OfferConversor offerConversor, CouponConversor couponConversor) {
 		this.conversors = Map.ofEntries(entry("Offer", offerConversor), entry("Coupon", couponConversor));
@@ -64,7 +72,7 @@ public class PostController {
 
 	/**
 	 * Handle incorrect form values exception.
-	 *
+	 * 
 	 * @param exception the exception
 	 * @param locale    the locale
 	 * @return the errors dto
@@ -81,6 +89,18 @@ public class PostController {
 
 	}
 
+	/**
+	 * The create post
+	 * 
+	 * @param userId the user id
+	 * @param params the params
+	 * @return the post dto
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 * @throws MissingRequiredParameterException the missing required parameter
+	 *                                           exception
+	 */
 	@PostMapping("/post")
 	public PostDto createPost(@RequestAttribute Long userId, @Validated @RequestBody PostParamsDto params)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
@@ -96,6 +116,14 @@ public class PostController {
 
 	}
 
+	/**
+	 * The delete post
+	 * 
+	 * @param userId the user id
+	 * @param id     the post id
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws PermissionException       the permission exception
+	 */
 	@DeleteMapping("/post/{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void deletePost(@RequestAttribute Long userId, @PathVariable Long id)
@@ -105,6 +133,16 @@ public class PostController {
 
 	}
 
+	/**
+	 * Mark post as expired
+	 * 
+	 * @param userId         the user id
+	 * @param id             the id
+	 * @param postExpiredDto the post expired dto
+	 * @return the post expired dto
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws PermissionException       the permission exception
+	 */
 	@PostMapping("/post/{id}/markAsExpired")
 	public PostExpiredDto markPostAsExpired(@RequestAttribute Long userId, @PathVariable Long id,
 			@RequestBody PostExpiredDto postExpiredDto) throws InstanceNotFoundException, PermissionException {
@@ -113,6 +151,20 @@ public class PostController {
 
 	}
 
+	/**
+	 * The update post
+	 * 
+	 * @param userId the user id
+	 * @param postId the post id
+	 * @param params the params
+	 * @return the post dto
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws PermissionException               the permission exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 * @throws MissingRequiredParameterException the missing required parameter
+	 *                                           exception
+	 */
 	@PutMapping("/post/{postId}")
 	public PostDto updatePost(@RequestAttribute Long userId, @PathVariable Long postId,
 			@Validated({ UserDto.UpdateValidations.class }) @RequestBody PostUpdateDto params)

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The class PostDto
+ */
 public class PostDto {
 	/** The post id. */
 	private Long id;
@@ -36,20 +39,22 @@ public class PostDto {
 	private Map<String, String> properties;
 
 	/**
-	 * @param id
-	 * @param title
-	 * @param description
-	 * @param url
-	 * @param price
-	 * @param categoryDto
-	 * @param userCreatorDto
-	 * @param images
-	 * @param creationDate
-	 * @param positiveRatings
-	 * @param negativeRatings
-	 * @param expired
-	 * @param type
-	 * @param properties
+	 * Instantiates a new post dto.
+	 * 
+	 * @param id              the id
+	 * @param title           the title of the post
+	 * @param description     the description of the post
+	 * @param url             the url associated to the post
+	 * @param price           the price of the post
+	 * @param categoryDto     the category dto associated to the post
+	 * @param userCreatorDto  the user summary dto from the user who create the post
+	 * @param images          the images associated to the post
+	 * @param creationDate    the creation date of the post
+	 * @param positiveRatings the number of positive ratings of the post
+	 * @param negativeRatings the number of negative ratings of the post
+	 * @param expired         if the post is expired or not
+	 * @param type            the post type
+	 * @param properties      the properties of the post
 	 */
 	public PostDto(Long id, String title, String description, String url, BigDecimal price, CategoryDto categoryDto,
 			UserSummaryDto userCreatorDto, List<byte[]> images, Long creationDate, int positiveRatings,
@@ -71,6 +76,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets the id
+	 * 
 	 * @return the id
 	 */
 	public Long getId() {
@@ -78,6 +85,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the id
+	 * 
 	 * @param id the id to set
 	 */
 	public void setId(Long id) {
@@ -85,6 +94,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets the post title
+	 * 
 	 * @return the title
 	 */
 	public String getTitle() {
@@ -92,6 +103,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the post title
+	 * 
 	 * @param title the title to set
 	 */
 	public void setTitle(String title) {
@@ -99,6 +112,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets the post description.
+	 * 
 	 * @return the description
 	 */
 	public String getDescription() {
@@ -106,6 +121,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the post description.
+	 * 
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
@@ -113,6 +130,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets the post url.
+	 * 
 	 * @return the url
 	 */
 	public String getUrl() {
@@ -120,6 +139,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the post url.
+	 * 
 	 * @param url the url to set
 	 */
 	public void setUrl(String url) {
@@ -127,6 +148,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets the price.
+	 * 
 	 * @return the price
 	 */
 	public BigDecimal getPrice() {
@@ -134,6 +157,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the price.
+	 * 
 	 * @param price the price to set
 	 */
 	public void setPrice(BigDecimal price) {
@@ -141,6 +166,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets the category dto.
+	 * 
 	 * @return the categoryDto
 	 */
 	public CategoryDto getCategoryDto() {
@@ -148,6 +175,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the category dto.
+	 * 
 	 * @param categoryDto the categoryDto to set
 	 */
 	public void setCategoryDto(CategoryDto categoryDto) {
@@ -155,6 +184,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets the user summary dto.
+	 * 
 	 * @return the userSummaryDto
 	 */
 	public UserSummaryDto getUserSummaryDto() {
@@ -162,6 +193,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the user summary dto.
+	 * 
 	 * @param userSummaryDto the userSummaryDto to set
 	 */
 	public void setUserSummaryDto(UserSummaryDto userSummaryDto) {
@@ -169,6 +202,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets images related to the post.
+	 * 
 	 * @return the images
 	 */
 	public List<byte[]> getImages() {
@@ -176,6 +211,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets images related to the post.
+	 * 
 	 * @param images the images to set
 	 */
 	public void setImages(List<byte[]> images) {
@@ -183,6 +220,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets the positive ratings
+	 * 
 	 * @return the positiveRatings
 	 */
 	public int getPositiveRatings() {
@@ -190,6 +229,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the positive ratings
+	 * 
 	 * @param positiveRatings the positiveRatings to set
 	 */
 	public void setPositiveRatings(int positiveRatings) {
@@ -197,6 +238,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets the negative ratings
+	 * 
 	 * @return the negativeRatings
 	 */
 	public int getNegativeRatings() {
@@ -204,6 +247,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the negative ratings
+	 * 
 	 * @param negativeRatings the negativeRatings to set
 	 */
 	public void setNegativeRatings(int negativeRatings) {
@@ -211,20 +256,26 @@ public class PostDto {
 	}
 
 	/**
-	 * @return the expired
+	 * Gets if the post is expired or not
+	 * 
+	 * @return if the post is expired or not
 	 */
 	public boolean isExpired() {
 		return expired;
 	}
 
 	/**
-	 * @param expired the expired to set
+	 * Sets the expired attribute
+	 * 
+	 * @param expired value to set (if it is expired or not)
 	 */
 	public void setExpired(boolean expired) {
 		this.expired = expired;
 	}
 
 	/**
+	 * Gets the creation date.
+	 * 
 	 * @return the creationDate
 	 */
 	public Long getCreationDate() {
@@ -232,6 +283,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the creation date.
+	 * 
 	 * @param creationDate the creationDate to set
 	 */
 	public void setCreationDate(Long creationDate) {
@@ -239,6 +292,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets the post type
+	 * 
 	 * @return the type
 	 */
 	public String getType() {
@@ -246,6 +301,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the post type
+	 * 
 	 * @param type the type to set
 	 */
 	public void setType(String type) {
@@ -253,6 +310,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Gets the properties of the post
+	 * 
 	 * @return the properties
 	 */
 	public Map<String, String> getProperties() {
@@ -260,6 +319,8 @@ public class PostDto {
 	}
 
 	/**
+	 * Sets the properties of the post
+	 * 
 	 * @param properties the properties to set
 	 */
 	public void setProperties(Map<String, String> properties) {

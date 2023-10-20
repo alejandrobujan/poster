@@ -8,52 +8,55 @@ import jakarta.validation.constraints.Size;
  * The Class UserDto.
  */
 public class UserDto {
-	
+
 	/**
 	 * The Interface AllValidations.
 	 */
-	public interface AllValidations {}
-	
+	public interface AllValidations {
+	}
+
 	/**
 	 * The Interface UpdateValidations.
 	 */
-	public interface UpdateValidations {}
+	public interface UpdateValidations {
+	}
 
 	/** The id. */
 	private Long id;
-	
+
 	/** The user name. */
 	private String userName;
-	
+
 	/** The password. */
 	private String password;
-	
+
 	/** The first name. */
 	private String firstName;
-	
+
 	/** The last name. */
 	private String lastName;
-	
+
 	/** The email. */
 	private String email;
-	
+
 	/** The role. */
 	private byte[] avatar;
 
 	/**
 	 * Instantiates a new user dto.
 	 */
-	public UserDto() {}
+	public UserDto() {
+	}
 
 	/**
 	 * Instantiates a new user dto.
 	 *
-	 * @param id the id
-	 * @param userName the user name
+	 * @param id        the id
+	 * @param userName  the user name
 	 * @param firstName the first name
-	 * @param lastName the last name
-	 * @param email the email
-	 * @param avatar the avatar
+	 * @param lastName  the last name
+	 * @param email     the email
+	 * @param avatar    the avatar
 	 */
 	public UserDto(Long id, String userName, String firstName, String lastName, String email, byte[] avatar) {
 
@@ -63,7 +66,7 @@ public class UserDto {
 		this.lastName = lastName.trim();
 		this.email = email.trim();
 		this.avatar = avatar;
-		
+
 	}
 
 	/**
@@ -89,8 +92,8 @@ public class UserDto {
 	 *
 	 * @return the user name
 	 */
-	@NotNull(groups={AllValidations.class})
-	@Size(min=1, max=60, groups={AllValidations.class})
+	@NotNull(groups = { AllValidations.class })
+	@Size(min = 1, max = 60, groups = { AllValidations.class })
 	public String getUserName() {
 		return userName;
 	}
@@ -109,8 +112,8 @@ public class UserDto {
 	 *
 	 * @return the password
 	 */
-	@NotNull(groups={AllValidations.class})
-	@Size(min=1, max=60, groups={AllValidations.class})
+	@NotNull(groups = { AllValidations.class })
+	@Size(min = 1, max = 60, groups = { AllValidations.class })
 	public String getPassword() {
 		return password;
 	}
@@ -129,8 +132,8 @@ public class UserDto {
 	 *
 	 * @return the first name
 	 */
-	@NotNull(groups={AllValidations.class, UpdateValidations.class})
-	@Size(min=1, max=60, groups={AllValidations.class, UpdateValidations.class})
+	@NotNull(groups = { AllValidations.class, UpdateValidations.class })
+	@Size(min = 1, max = 60, groups = { AllValidations.class, UpdateValidations.class })
 	public String getFirstName() {
 		return firstName;
 	}
@@ -149,8 +152,8 @@ public class UserDto {
 	 *
 	 * @return the last name
 	 */
-	@NotNull(groups={AllValidations.class, UpdateValidations.class})
-	@Size(min=1, max=60, groups={AllValidations.class, UpdateValidations.class})
+	@NotNull(groups = { AllValidations.class, UpdateValidations.class })
+	@Size(min = 1, max = 60, groups = { AllValidations.class, UpdateValidations.class })
 	public String getLastName() {
 		return lastName;
 	}
@@ -169,9 +172,9 @@ public class UserDto {
 	 *
 	 * @return the email
 	 */
-	@NotNull(groups={AllValidations.class, UpdateValidations.class})
-	@Size(min=1, max=60, groups={AllValidations.class, UpdateValidations.class})
-	@Email(groups={AllValidations.class, UpdateValidations.class})
+	@NotNull(groups = { AllValidations.class, UpdateValidations.class })
+	@Size(min = 1, max = 60, groups = { AllValidations.class, UpdateValidations.class })
+	@Email(groups = { AllValidations.class, UpdateValidations.class })
 	public String getEmail() {
 		return email;
 	}
@@ -204,4 +207,3 @@ public class UserDto {
 	}
 
 }
-

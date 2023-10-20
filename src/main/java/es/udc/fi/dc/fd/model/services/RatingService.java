@@ -8,16 +8,20 @@ import es.udc.fi.dc.fd.model.entities.Post;
  */
 public interface RatingService {
 	/**
-	 * @param userId
-	 * @param postId
-	 * @throws InstanceNotFoundException
+	 * Rate post positive
+	 * 
+	 * @param userId the user id associated to the rating
+	 * @param postId the post id associated to the rating
+	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	Post ratePostPositive(Long userId, Long postId) throws InstanceNotFoundException;
 
 	/**
-	 * @param userId
-	 * @param postId
-	 * @throws InstanceNotFoundException
+	 * Rate post negative
+	 * 
+	 * @param userId the user id associated to the rating
+	 * @param postId the post id associated to the rating
+	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	Post ratePostNegative(Long userId, Long postId) throws InstanceNotFoundException;
 }

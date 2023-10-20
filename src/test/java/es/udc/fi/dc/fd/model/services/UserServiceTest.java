@@ -30,11 +30,16 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class UserServiceTest {
 
+	/** The non existent id */
 	private final static long NON_EXISTENT_ID = -1L;
+
+	/** The exceeded byte size */
 	private final static int EXCEEDED_BYTE_SIZE = 1024001;
 
+	/** The clear password */
 	private String clearPassword;
 
+	/** The user */
 	private User user;
 
 	/** The user service. */
@@ -52,6 +57,13 @@ public class UserServiceTest {
 		return new User(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com", avatar);
 	}
 
+	/**
+	 * Set up
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 */
 	@Before
 	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException {
 		user = createUser("user");
@@ -101,7 +113,6 @@ public class UserServiceTest {
 	/**
 	 * Test login with non existent Id.
 	 */
-
 	@Test
 	public void testLoginFromNonExistentId() {
 		assertThrows(InstanceNotFoundException.class, () -> userService.loginFromId(NON_EXISTENT_ID));

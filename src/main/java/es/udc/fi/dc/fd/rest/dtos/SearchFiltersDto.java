@@ -3,19 +3,30 @@ package es.udc.fi.dc.fd.rest.dtos;
 import java.math.BigDecimal;
 import java.util.Map;
 
+/**
+ * The Class SearchFiltersDto
+ */
 public class SearchFiltersDto {
+
+	/** the category id */
 	private Long categoryId;
+	/** the post type */
 	private String type;
+	/** the price */
 	private Map<String, BigDecimal> price;
+	/** the creation date of the post */
 	private String date;
+	/** if the post is expired or not */
 	private boolean expired;
 
 	/**
-	 * @param categoryId
-	 * @param type
-	 * @param price
-	 * @param date
-	 * @param expired
+	 * Instantiates a new search filters dto.
+	 * 
+	 * @param categoryId the category id
+	 * @param type       the type of the post (coupon or offer)
+	 * @param price      the price of the post
+	 * @param date       the creation date of the post
+	 * @param expired    if the post is expired or not
 	 */
 	public SearchFiltersDto(Long categoryId, String type, Map<String, BigDecimal> price, String date, boolean expired) {
 		this.categoryId = categoryId;
@@ -26,6 +37,8 @@ public class SearchFiltersDto {
 	}
 
 	/**
+	 * Gets the category id
+	 * 
 	 * @return the categoryId
 	 */
 	public Long getCategoryId() {
@@ -33,6 +46,8 @@ public class SearchFiltersDto {
 	}
 
 	/**
+	 * Sets the category id
+	 * 
 	 * @param categoryId the categoryId to set
 	 */
 	public void setCategoryId(Long categoryId) {
@@ -40,6 +55,8 @@ public class SearchFiltersDto {
 	}
 
 	/**
+	 * Gets the post type
+	 * 
 	 * @return the type
 	 */
 	public String getType() {
@@ -47,6 +64,8 @@ public class SearchFiltersDto {
 	}
 
 	/**
+	 * Sets the post type
+	 * 
 	 * @param type the type to set
 	 */
 	public void setType(String type) {
@@ -54,6 +73,8 @@ public class SearchFiltersDto {
 	}
 
 	/**
+	 * Gets the price
+	 * 
 	 * @return the price
 	 */
 	public Map<String, BigDecimal> getPrice() {
@@ -61,6 +82,8 @@ public class SearchFiltersDto {
 	}
 
 	/**
+	 * Sets the price
+	 * 
 	 * @param price the price to set
 	 */
 	public void setPrice(Map<String, BigDecimal> price) {
@@ -68,6 +91,8 @@ public class SearchFiltersDto {
 	}
 
 	/**
+	 * Gets the creation date
+	 * 
 	 * @return the date
 	 */
 	public String getDate() {
@@ -75,6 +100,8 @@ public class SearchFiltersDto {
 	}
 
 	/**
+	 * Sets the creation date
+	 * 
 	 * @param date the date to set
 	 */
 	public void setDate(String date) {
@@ -82,14 +109,18 @@ public class SearchFiltersDto {
 	}
 
 	/**
-	 * @return the expired
+	 * Gets if the post is expired or not
+	 * 
+	 * @return if the post is expired or not
 	 */
 	public boolean isExpired() {
 		return expired;
 	}
 
 	/**
-	 * @param expired the expired to set
+	 * Sets the expired attribute
+	 * 
+	 * @param expired value to set (if it is expired or not)
 	 */
 	public void setExpired(boolean expired) {
 		this.expired = expired;

@@ -20,15 +20,25 @@ import es.udc.fi.dc.fd.model.entities.User;
 @Transactional
 public class RatingServiceImpl implements RatingService {
 
+	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
 
+	/** The permission checker. */
 	@Autowired
 	private PermissionChecker permissionChecker;
 
+	/** The rating dao */
 	@Autowired
 	private RatingDao ratingDao;
 
+	/**
+	 * Rate post positive
+	 * 
+	 * @param userId the user id associated to the rating
+	 * @param postId the post id associated to the rating
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
 	@Override
 	public Post ratePostPositive(Long userId, Long postId) throws InstanceNotFoundException {
 
@@ -79,6 +89,13 @@ public class RatingServiceImpl implements RatingService {
 
 	}
 
+	/**
+	 * Rate post negative
+	 * 
+	 * @param userId the user id associated to the rating
+	 * @param postId the post id associated to the rating
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
 	@Override
 	public Post ratePostNegative(Long userId, Long postId) throws InstanceNotFoundException {
 

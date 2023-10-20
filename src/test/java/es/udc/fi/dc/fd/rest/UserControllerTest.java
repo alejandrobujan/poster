@@ -42,6 +42,7 @@ import es.udc.fi.dc.fd.rest.dtos.UserDto;
 @Transactional
 public class UserControllerTest {
 
+	/** The authenticated user */
 	private AuthenticatedUserDto authenticatedUser;
 
 	/** The Constant PASSWORD. */
@@ -89,6 +90,15 @@ public class UserControllerTest {
 
 	}
 
+	/**
+	 * Set up
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 * @throws IncorrectLoginException           the incorrect login exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Before
 	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException, IncorrectLoginException,
 			InstanceNotFoundException {
@@ -114,7 +124,7 @@ public class UserControllerTest {
 	}
 
 	/**
-	 * Test post login ok.
+	 * Test post login not ok.
 	 *
 	 * @throws Exception the exception
 	 */
@@ -154,7 +164,7 @@ public class UserControllerTest {
 	}
 
 	/**
-	 * Test post sign up ok.
+	 * Test post sign up not ok.
 	 *
 	 * @throws Exception the exception
 	 */
@@ -173,12 +183,12 @@ public class UserControllerTest {
 				.content(mapper.writeValueAsBytes(userParams))).andExpect(status().isBadRequest());
 
 	}
-	/*
-	 * /** Test post Update Profile ok.
+
+	/**
+	 * Test post Update Profile ok.
 	 *
 	 * @throws Exception the exception
 	 */
-
 	@Test
 	public void testPostUpdateProfile_Ok() throws Exception {
 		UserDto userParams = new UserDto();
@@ -196,12 +206,11 @@ public class UserControllerTest {
 				.andExpect(status().isOk());
 	}
 
-	/*
+	/**
 	 * Test post Update Profile Not Ok Whitespace Login.
 	 *
 	 * @throws Exception the exception
 	 */
-
 	@Test
 	public void testPostUpdateProfile_NotOk_WhitespaceLogin() throws Exception {
 
@@ -222,12 +231,11 @@ public class UserControllerTest {
 				.content(mapper.writeValueAsBytes(userParams))).andExpect(status().isBadRequest());
 	}
 
-	/*
-	 * /** Test post Update Profile Not ok.
+	/**
+	 * Test post Update Profile Not ok.
 	 *
 	 * @throws Exception the exception
 	 */
-
 	@Test
 	public void testPostUpdateProfile_NotOkForbidden() throws Exception {
 		UserDto userParams = new UserDto();
@@ -244,12 +252,11 @@ public class UserControllerTest {
 				.andExpect(status().isForbidden());
 	}
 
-	/*
-	 * /** Test post Update Profile Not ok Duplicate Login.
+	/**
+	 * Test post Update Profile Not ok Duplicate Login.
 	 *
 	 * @throws Exception the exception
 	 */
-
 	@Test
 	public void testPostUpdateProfile_NotOkDuplicateLogin() throws Exception {
 		AuthenticatedUserDto authenticatedUser2 = createAuthenticatedUser("user2", RoleType.USER);
@@ -269,12 +276,11 @@ public class UserControllerTest {
 				.andExpect(status().isBadRequest());
 	}
 
-	/*
-	 * /** Test Change Password ok
+	/**
+	 * Test Change Password ok
 	 *
 	 * @throws Exception the exception
 	 */
-
 	@Test
 	public void testChangePassword_Ok() throws Exception {
 		ChangePasswordParamsDto passwordParams = new ChangePasswordParamsDto();
@@ -290,12 +296,11 @@ public class UserControllerTest {
 				.andExpect(status().isNoContent());
 	}
 
-	/*
-	 * /** Test Change Password not ok
+	/**
+	 * Test Change Password not ok
 	 *
 	 * @throws Exception the exception
 	 */
-
 	@Test
 	public void testChangePassword_NotOk() throws Exception {
 		ChangePasswordParamsDto passwordParams = new ChangePasswordParamsDto();

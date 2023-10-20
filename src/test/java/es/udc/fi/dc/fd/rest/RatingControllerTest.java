@@ -47,10 +47,13 @@ import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
 @Transactional
 public class RatingControllerTest {
 
+	/** The authenticated user dto */
 	private AuthenticatedUserDto authenticatedUser;
 
+	/** The offer */
 	private Post offer;
 
+	/** The category */
 	private Category category;
 
 	/** The mock mvc. */
@@ -71,9 +74,11 @@ public class RatingControllerTest {
 	@Autowired
 	private UserDao userDao;
 
+	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
 
+	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
 
@@ -90,7 +95,7 @@ public class RatingControllerTest {
 
 	/**
 	 * Creates the authenticated user.
-	 *
+	 * 
 	 * @param userName the user name
 	 * @param roleType the role type
 	 * @return the authenticated user dto
@@ -125,6 +130,12 @@ public class RatingControllerTest {
 				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
 	}
 
+	/**
+	 * Creates the user.
+	 *
+	 * @param userName the user name
+	 * @return the user
+	 */
 	private User createUser(String userName) {
 		User user = new User(userName, PASSWORD, "newUser", "user", "user@test.com", null);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -133,6 +144,12 @@ public class RatingControllerTest {
 		return userDao.save(user);
 	}
 
+	/**
+	 * Creates the category.
+	 *
+	 * @param name the name of the category
+	 * @return the category
+	 */
 	private Category createCategory(String name) {
 		return categoryDao.save(new Category(name));
 	}
@@ -152,6 +169,15 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Set up
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws IncorrectLoginException           the incorrect login exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Before
 	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException, IncorrectLoginException,
 			InstanceNotFoundException {
@@ -160,6 +186,11 @@ public class RatingControllerTest {
 		offer = createOffer("offer", userService.loginFromId(authenticatedUser.getUserDto().getId()), category);
 	}
 
+	/**
+	 * Test post rate positive ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRatePositive_Ok() throws Exception {
 		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/ratePositive").header("Authorization",
@@ -167,12 +198,22 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Test post rate negative ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRateNegative_Ok() throws Exception {
 		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/rateNegative").header("Authorization",
 				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
 	}
 
+	/**
+	 * Test post rate negative twice ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRateNegativeTwice_Ok() throws Exception {
 		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/rateNegative").header("Authorization",
@@ -181,6 +222,11 @@ public class RatingControllerTest {
 				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
 	}
 
+	/**
+	 * Test post rate positive twice ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRatePositiveTwice_Ok() throws Exception {
 		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/ratePositive").header("Authorization",
@@ -189,6 +235,11 @@ public class RatingControllerTest {
 				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
 	}
 
+	/**
+	 * Test post rate positive to negative ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRatePositiveToNegative_Ok() throws Exception {
 		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/ratePositive").header("Authorization",
@@ -197,6 +248,11 @@ public class RatingControllerTest {
 				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
 	}
 
+	/**
+	 * Test post rate negative to positive ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRateNegativeToPositive_Ok() throws Exception {
 		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/rateNegative").header("Authorization",
@@ -205,18 +261,33 @@ public class RatingControllerTest {
 				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
 	}
 
+	/**
+	 * Test post rate positive not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRatePositive_NotOkNotFound() throws Exception {
 		mockMvc.perform(post("/api/rating/post/" + NON_EXISTENT_ID + "/ratePositive").header("Authorization",
 				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isNotFound());
 	}
 
+	/**
+	 * Test post rate negative not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRateNegative_NotOkNotFound() throws Exception {
 		mockMvc.perform(post("/api/rating/post/" + NON_EXISTENT_ID + "/rateNegative").header("Authorization",
 				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isNotFound());
 	}
 
+	/**
+	 * Test post rate positive user not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRatePositive_NoUser() throws Exception {
 		User nobody = createUser("nobody");
@@ -227,6 +298,11 @@ public class RatingControllerTest {
 
 	}
 
+	/**
+	 * Test post rate negative user not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostRateNegative_NoUser() throws Exception {
 		User nobody = createUser("nobody");

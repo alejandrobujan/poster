@@ -3,13 +3,13 @@ package es.udc.fi.dc.fd.rest.dtos;
 public class UserSummaryDto {
 	/** The id. */
 	private Long id;
-	
+
 	/** The user name. */
 	private String userName;
-	
+
 	/** The first name. */
 	private String firstName;
-	
+
 	/** The last name. */
 	private String lastName;
 
@@ -17,11 +17,13 @@ public class UserSummaryDto {
 	private byte[] avatar;
 
 	/**
-	 * @param id
-	 * @param userName
-	 * @param firstName
-	 * @param lastName
-	 * @param avatar
+	 * Instantiates a new user summary dto.
+	 *
+	 * @param id        the id
+	 * @param userName  the user name
+	 * @param firstName the first name
+	 * @param lastName  the last name
+	 * @param avatar    the avatar
 	 */
 	public UserSummaryDto(Long id, String userName, String firstName, String lastName, byte[] avatar) {
 		this.id = id;
@@ -100,8 +102,5 @@ public class UserSummaryDto {
 	public void setAvatar(byte[] avatar) {
 		this.avatar = avatar;
 	}
-	
-	
-	
-	
+
 }

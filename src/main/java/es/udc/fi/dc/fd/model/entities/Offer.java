@@ -6,21 +6,27 @@ import java.time.LocalDateTime;
 import jakarta.persistence.Entity;
 
 /**
- * The Class Entity.
+ * The Class Offer.
  */
 @Entity
 public class Offer extends Post {
 
-	public Offer() {}
+	/**
+	 * Instantiates a new offer.
+	 */
+	public Offer() {
+	}
 
 	/**
-	 * @param title
-	 * @param description
-	 * @param url
-	 * @param price
-	 * @param creationDate
-	 * @param user
-	 * @param category
+	 * Instantiates a new offer.
+	 * 
+	 * @param title        the coupon title
+	 * @param description  the description of the offer
+	 * @param url          the url associated to the offer
+	 * @param price        the price
+	 * @param creationDate the creation date
+	 * @param user         the user associated to the offer
+	 * @param category     the category associated to the offer
 	 */
 	public Offer(String title, String description, String url, BigDecimal price, LocalDateTime creationDate, User user,
 			Category category) {

@@ -20,12 +20,20 @@ import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 @Transactional(readOnly = true)
 public class PermissionCheckerImpl implements PermissionChecker {
 
+	/** The user dao. */
 	@Autowired
 	private UserDao userDao;
 
+	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
 
+	/**
+	 * Check user exists.
+	 *
+	 * @param userId the user id
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
 	@Override
 	public void checkUserExists(Long userId) throws InstanceNotFoundException {
 
@@ -35,6 +43,13 @@ public class PermissionCheckerImpl implements PermissionChecker {
 
 	}
 
+	/**
+	 * Check user.
+	 *
+	 * @param userId the user id
+	 * @return the user
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
 	@Override
 	public User checkUser(Long userId) throws InstanceNotFoundException {
 
@@ -48,6 +63,15 @@ public class PermissionCheckerImpl implements PermissionChecker {
 
 	}
 
+	/**
+	 * Check post exists and belongs to user.
+	 * 
+	 * @param postId the post id
+	 * @param userId the user id
+	 * @return the post
+	 * @throws PermissionException       the permission exception
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
 	@Override
 	public Post checkPostExistsAndBelongsTo(Long postId, Long userId)
 			throws PermissionException, InstanceNotFoundException {

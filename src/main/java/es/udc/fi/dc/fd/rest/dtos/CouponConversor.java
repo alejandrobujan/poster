@@ -9,13 +9,23 @@ import org.springframework.stereotype.Component;
 import es.udc.fi.dc.fd.model.entities.Coupon;
 import es.udc.fi.dc.fd.model.entities.Post;
 
+/**
+ * The Class CouponConversor.
+ */
 @Component
 public class CouponConversor extends PostConversor {
 
+	/**
+	 * To post dto.
+	 * 
+	 * @param post the post
+	 * @return the post dto
+	 */
 	@Override
 	public PostDto toPostDto(Post post) {
 		return new PostDto(post.getId(), post.getTitle(), post.getDescription(), post.getUrl(), post.getPrice(),
-				(post.getCategory() != null ? new CategoryDto(post.getCategory().getId(), post.getCategory().getName()) : null),
+				(post.getCategory() != null ? new CategoryDto(post.getCategory().getId(), post.getCategory().getName())
+						: null),
 				new UserSummaryDto(post.getUser().getId(), post.getUser().getUserName(), post.getUser().getFirstName(),
 						post.getUser().getLastName(), post.getUser().getAvatar()),
 				toImageDtos(post.getImages()), toMillis(post.getCreationDate()), post.getPositiveRatings(),

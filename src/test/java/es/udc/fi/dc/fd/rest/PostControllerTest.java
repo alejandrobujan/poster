@@ -56,10 +56,13 @@ import es.udc.fi.dc.fd.rest.dtos.PostUpdateDto;
 @Transactional
 public class PostControllerTest {
 
+	/** The authenticated user */
 	private AuthenticatedUserDto authenticatedUser;
 
+	/** The offer */
 	private Post offer;
 
+	/** The category */
 	private Category category;
 
 	/** The mock mvc. */
@@ -80,12 +83,15 @@ public class PostControllerTest {
 	@Autowired
 	private UserDao userDao;
 
+	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
 
+	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
 
+	/** The user service. */
 	@Autowired
 	private UserService userService;
 
@@ -125,15 +131,31 @@ public class PostControllerTest {
 	 * @param category the category of the post
 	 * @return the offer
 	 */
+
 	private Post createOffer(String title, User user, Category category) {
 		return postDao
 				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
 	}
 
+	/**
+	 * Creates the category.
+	 *
+	 * @param name the name of the category
+	 * @return the category
+	 */
 	private Category createCategory(String name) {
 		return categoryDao.save(new Category(name));
 	}
 
+	/**
+	 * Set up
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws IncorrectLoginException           the incorrect login exception
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 */
 	@Before
 	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException, IncorrectLoginException,
 			InstanceNotFoundException {
@@ -248,12 +270,22 @@ public class PostControllerTest {
 
 	}
 
+	/**
+	 * Test post Delete Post ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testDeleteDeletePost_Ok() throws Exception {
 		mockMvc.perform(delete("/api/posts/post/" + offer.getId()).header("Authorization",
 				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isNoContent());
 	}
 
+	/**
+	 * Test post Delete Post not ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testDeleteDeletePost_NotOkForbidden() throws Exception {
 		mockMvc.perform(delete("/api/posts/post/" + offer.getId()).header("Authorization",
@@ -262,6 +294,11 @@ public class PostControllerTest {
 
 	}
 
+	/**
+	 * Test post Delete Post is not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testDeleteDeletePost_NotOkNotFound() throws Exception {
 		mockMvc.perform(delete("/api/posts/post/" + NON_EXISTENT_ID).header("Authorization",
@@ -271,6 +308,7 @@ public class PostControllerTest {
 	/**
 	 * Test put Update Post ok.
 	 *
+	 * @throws Exception the exception
 	 */
 	@Test
 	public void testPutUpdatePost_Ok() throws Exception {
@@ -295,6 +333,7 @@ public class PostControllerTest {
 	/**
 	 * Test put Update Post Not ok Whitespace Title.
 	 *
+	 * @throws Exception the exception
 	 */
 	@Test
 	public void testPutUpdatePost_NotOk_WhitespaceTitle() throws Exception {
@@ -319,6 +358,7 @@ public class PostControllerTest {
 	/**
 	 * Test put Update Post Not ok Whitespace Description.
 	 *
+	 * @throws Exception the exception
 	 */
 	@Test
 	public void testPutUpdatePost_NotOk_WhitespaceDescription() throws Exception {
@@ -390,6 +430,11 @@ public class PostControllerTest {
 				.andExpect(status().isNotFound());
 	}
 
+	/**
+	 * Test post mark post as expired ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostMarkPostAsExpired_Ok() throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
@@ -400,6 +445,11 @@ public class PostControllerTest {
 				.andExpect(status().isOk());
 	}
 
+	/**
+	 * Test post mark post as expired forbidden.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostMarkPostAsExpired_NotOkForbidden() throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
@@ -410,6 +460,11 @@ public class PostControllerTest {
 				.andExpect(status().isForbidden());
 	}
 
+	/**
+	 * Test post mark post as expired not found.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostMarkPostAsExpired_NotOkNotFound() throws Exception {
 		ObjectMapper mapper = new ObjectMapper();

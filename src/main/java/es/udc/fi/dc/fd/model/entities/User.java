@@ -183,6 +183,8 @@ public class User {
 	}
 
 	/**
+	 * Gets the avatar image.
+	 * 
 	 * @return the avatar
 	 */
 	public byte[] getAvatar() {
@@ -190,6 +192,8 @@ public class User {
 	}
 
 	/**
+	 * Sets the avatar image
+	 * 
 	 * @param avatar the avatar to set
 	 */
 	public void setAvatar(byte[] avatar) {
@@ -197,6 +201,8 @@ public class User {
 	}
 
 	/**
+	 * Gets the user role
+	 * 
 	 * @return the role
 	 */
 	public RoleType getRole() {
@@ -204,6 +210,8 @@ public class User {
 	}
 
 	/**
+	 * Sets the user role
+	 * 
 	 * @param role the role to set
 	 */
 	public void setRole(RoleType role) {
