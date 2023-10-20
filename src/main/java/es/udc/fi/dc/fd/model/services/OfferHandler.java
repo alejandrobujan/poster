@@ -24,12 +24,13 @@ import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterExcepti
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 
 /**
- * 
+ * The Class OfferHandler.
  */
 @Component
 @Transactional
 public class OfferHandler implements PostHandler {
 
+	/** The permission checker. */
 	@Autowired
 	private PermissionChecker permissionChecker;
 
@@ -45,6 +46,25 @@ public class OfferHandler implements PostHandler {
 	@Autowired
 	private ImageDao imageDao;
 
+	/**
+	 * The handle create offer
+	 * 
+	 * @param title       the title of the offer
+	 * @param description the description of the offer
+	 * @param url         the url associated to the offer
+	 * @param price       the price of the offer
+	 * @param userId      the user id who create the offer
+	 * @param categoryId  the category id associated to the offer
+	 * @param imageList   the images associated to the offer
+	 * @param properties  the properties of the offer
+	 * @return the new offer
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws MissingRequiredParameterException the missing required parameter
+	 *                                           exception
+	 * 
+	 */
 	@Override
 	public Post handleCreate(String title, String description, String url, BigDecimal price, Long userId,
 			Long categoryId, List<byte[]> imageList, Map<String, String> properties)
@@ -85,6 +105,27 @@ public class OfferHandler implements PostHandler {
 		return post;
 	}
 
+	/**
+	 * The handle update offer
+	 * 
+	 * @param postId      the offer id
+	 * @param title       the title of the offer
+	 * @param description the description of the offer
+	 * @param url         the url associated to the offer
+	 * @param price       the price of the offer
+	 * @param userId      the user id who create the offer
+	 * @param categoryId  the category id associated to the offer
+	 * @param imageList   the images associated to the offer
+	 * @param properties  the properties of the offer
+	 * @return the updated offer
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 * @throws MissingRequiredParameterException the missing required parameter
+	 *                                           exception
+	 * @throws PermissionException               the permission exception
+	 * 
+	 */
 	@Override
 	public Post handleUpdate(Long postId, String title, String description, String url, BigDecimal price, Long userId,
 			Long categoryId, List<byte[]> imageList, Map<String, String> properties) throws InstanceNotFoundException,
