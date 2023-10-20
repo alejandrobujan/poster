@@ -27,16 +27,18 @@ public class PostSummaryDto {
 	private String type;
 
 	/**
-	 * Instantiates a new post dto.
+	 * Instantiates a new post summary dto.
 	 */
 	public PostSummaryDto() {
 	}
 
 	/**
+	 * Instantiates a new post summary dto.
+	 * 
 	 * @param id          the id of the post
 	 * @param title       the title of the post
 	 * @param description the description of the post
-	 * @param url         the url of the post
+	 * @param url         the url associated to the post
 	 * @param price       the price of the post
 	 * @param categoryDto the categoryDto of the post
 	 * @param images      the images of the post
@@ -73,7 +75,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Gets the title.
+	 * Gets the post title
 	 * 
 	 * @return the title
 	 */
@@ -82,7 +84,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Sets the title.
+	 * Sets the post title
 	 * 
 	 * @param title the title to set
 	 */
@@ -91,7 +93,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Gets the description.
+	 * Gets the post description.
 	 * 
 	 * @return the description
 	 */
@@ -100,8 +102,8 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Sets the description.
-	 *
+	 * Sets the post description.
+	 * 
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
@@ -109,7 +111,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Gets the url.
+	 * Gets the post url.
 	 * 
 	 * @return the url
 	 */
@@ -118,7 +120,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Sets the url.
+	 * Sets the post url.
 	 * 
 	 * @param url the url to set
 	 */
@@ -163,7 +165,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Gets the images.
+	 * Gets images related to the post.
 	 * 
 	 * @return the images
 	 */
@@ -172,7 +174,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Sets the images.
+	 * Sets images related to the post.
 	 * 
 	 * @param images the images to set
 	 */
@@ -181,6 +183,8 @@ public class PostSummaryDto {
 	}
 
 	/**
+	 * Gets the post type
+	 * 
 	 * @return the type
 	 */
 	public String getType() {
@@ -188,6 +192,8 @@ public class PostSummaryDto {
 	}
 
 	/**
+	 * Sets the post type
+	 * 
 	 * @param type the type to set
 	 */
 	public void setType(String type) {

@@ -39,7 +39,7 @@ public class CommonControllerAdvice {
 	/** The Constant MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE. */
 	private static final String MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE = "project.exceptions.MaximumImageSizeExceededException";
 
-	/** The Constant MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE. */
+	/** The Constant MISSING_REQUIRED_PARAMETER_EXCEPTION_CODE. */
 	private static final String MISSING_REQUIRED_PARAMETER_EXCEPTION_CODE = "project.exceptions.MissingRequiredParameterException";
 
 	/** The Constant HTTP_MESSAGE_NOT_READABLE_EXCEPTION. */
@@ -128,7 +128,7 @@ public class CommonControllerAdvice {
 	}
 
 	/**
-	 * Handle permission exception.
+	 * Handle missing required parameter exception.
 	 *
 	 * @param exception the exception
 	 * @param locale    the locale
@@ -149,7 +149,7 @@ public class CommonControllerAdvice {
 	}
 
 	/**
-	 * Handle permission exception.
+	 * Handle maximum image size exceeded exception.
 	 *
 	 * @param exception the exception
 	 * @param locale    the locale

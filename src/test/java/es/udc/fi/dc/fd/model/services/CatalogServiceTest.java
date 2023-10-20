@@ -42,14 +42,19 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class CatalogServiceTest {
 
+	/** The non existent id. */
 	private final static Long NON_EXISTENT_ID = -1L;
 
+	/** The list of users. */
 	private List<User> users;
 
+	/** The list of categories. */
 	private List<Category> categories;
 
+	/** The list of posts. */
 	private List<Post> posts;
 
+	/** The search filters. */
 	private SearchFilters searchFilters;
 
 	/** The catalog service. */
@@ -60,12 +65,15 @@ public class CatalogServiceTest {
 	@Autowired
 	private PostService postService;
 
+	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
 
+	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
 
+	/** The user service. */
 	@Autowired
 	private UserService userService;
 
@@ -95,15 +103,24 @@ public class CatalogServiceTest {
 				user, category));
 	}
 
+	/**
+	 * Creates the category.
+	 *
+	 * @param name the name of the category
+	 * @return the category
+	 */
 	private Category createCategory(String name) {
 		return categoryDao.save(new Category(name));
 	}
 
 	/**
+	 * Sign up user
+	 * 
 	 * @param userName the user name
 	 * @return the registered user
-	 * @throws MaximumImageSizeExceededException
-	 * @throws DuplicateInstanceException
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
 	 */
 	private User signUpUser(String userName) throws MaximumImageSizeExceededException, DuplicateInstanceException {
 
@@ -116,9 +133,11 @@ public class CatalogServiceTest {
 	}
 
 	/**
-	 * @param actualBlock
-	 * @param expectedPosts
-	 * @param expectedExistMoreItems
+	 * Assert Post Block Equals
+	 * 
+	 * @param actualBlock            the actual block
+	 * @param expectedPosts          the expected block
+	 * @param expectedExistMoreItems if there are expected to exist more items
 	 */
 	private void assertPostBlockEquals(Block<Post> actualBlock, List<Post> expectedPosts,
 			boolean expectedExistMoreItems) {
@@ -127,6 +146,13 @@ public class CatalogServiceTest {
 		assertEquals(expectedExistMoreItems, actualBlock.getExistMoreItems());
 	}
 
+	/**
+	 * Set up
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 */
 	@Before
 	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException {
 		users = List.of(signUpUser("user"), signUpUser("user2"));
@@ -141,7 +167,6 @@ public class CatalogServiceTest {
 
 	/**
 	 * Test find all categories.
-	 *
 	 */
 	@Test
 	public void testFindAllCategories() {
@@ -155,7 +180,6 @@ public class CatalogServiceTest {
 
 	/**
 	 * Test find no categories.
-	 *
 	 */
 	@Test
 	public void testFindNoCategories() {
@@ -167,7 +191,9 @@ public class CatalogServiceTest {
 	/**
 	 * Test find all posts.
 	 * 
-	 * @throws MaximumImageSizeExceededException
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
 	 *
 	 */
 	@Test
@@ -363,7 +389,6 @@ public class CatalogServiceTest {
 
 	/**
 	 * Test find no posts.
-	 *
 	 */
 	@Test
 	public void testFindNoPosts() {
@@ -376,6 +401,9 @@ public class CatalogServiceTest {
 		assertFalse(catalogService.findPosts(searchFilters, null, 0, 1).getExistMoreItems());
 	}
 
+	/**
+	 * Test find posts by id.
+	 */
 	@Test
 	public void testFindPostById()
 			throws InstanceNotFoundException, DuplicateInstanceException, MaximumImageSizeExceededException {
@@ -396,7 +424,7 @@ public class CatalogServiceTest {
 	}
 
 	/**
-	 * Test find no categories.
+	 * Test find no post by id.
 	 *
 	 */
 	@Test

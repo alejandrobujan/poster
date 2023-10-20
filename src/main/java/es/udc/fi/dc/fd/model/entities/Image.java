@@ -14,28 +14,28 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Image {
-	
+
 	/** The image id. */
 	private Long id;
-	
+
 	/** The image binary data. */
 	private byte[] data;
-	
+
 	/** The image post. */
 	private Post post;
-	
+
 	/**
 	 * Instantiates a new image.
 	 */
 	public Image() {
-		
+
 	}
-	
+
 	/**
 	 * Instantiates a new image.
 	 * 
-	 * @param data
-	 * @param post
+	 * @param data the data of the image
+	 * @param post the post associated to the image
 	 */
 	public Image(byte[] data, Post post) {
 		this.data = data;
@@ -63,6 +63,8 @@ public class Image {
 	}
 
 	/**
+	 * Gets the image binary data
+	 * 
 	 * @return the data
 	 */
 	public byte[] getData() {
@@ -70,6 +72,8 @@ public class Image {
 	}
 
 	/**
+	 * Sets the image binary data
+	 * 
 	 * @param data the data to set
 	 */
 	public void setData(byte[] data) {
@@ -100,5 +104,5 @@ public class Image {
 	public String toString() {
 		return "Image [id=" + id + ", post=" + post + "]";
 	}
-	
+
 }

@@ -32,18 +32,21 @@ public class PostUpdateDto {
 	/** Images related to the post. */
 	@NotNull
 	private List<byte[]> images = new ArrayList<>();
+	/** The type of the post */
 	@NotNull
 	private String type;
-
+	/** The properties of the post */
 	private Map<String, String> properties;
 
 	/**
-	 * Instantiates a new post dto.
+	 * Instantiates a new post update dto.
 	 */
 	public PostUpdateDto() {
 	}
 
 	/**
+	 * Instantiates a new post update dto.
+	 * 
 	 * @param authorId    the post's author id
 	 * @param title       the title of the post
 	 * @param description the description of the post
@@ -51,6 +54,8 @@ public class PostUpdateDto {
 	 * @param price       the price of the post
 	 * @param categoryId  the category id of the post
 	 * @param images      the images of the post
+	 * @param type        the post type
+	 * @param properties  the properties of the post
 	 */
 	public PostUpdateDto(Long authorId, String title, String description, String url, BigDecimal price, Long categoryId,
 			List<byte[]> images, String type, Map<String, String> properties) {
@@ -67,7 +72,7 @@ public class PostUpdateDto {
 	}
 
 	/**
-	 * Gets the title.
+	 * Gets the post title
 	 * 
 	 * @return the title
 	 */
@@ -76,7 +81,7 @@ public class PostUpdateDto {
 	}
 
 	/**
-	 * Sets the title.
+	 * Sets the post title
 	 * 
 	 * @param title the title to set
 	 */
@@ -85,7 +90,7 @@ public class PostUpdateDto {
 	}
 
 	/**
-	 * Gets the description.
+	 * Gets the post description.
 	 * 
 	 * @return the description
 	 */
@@ -94,8 +99,8 @@ public class PostUpdateDto {
 	}
 
 	/**
-	 * Sets the description.
-	 *
+	 * Sets the post description.
+	 * 
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
@@ -103,7 +108,7 @@ public class PostUpdateDto {
 	}
 
 	/**
-	 * Gets the url.
+	 * Gets the post url.
 	 * 
 	 * @return the url
 	 */
@@ -112,7 +117,7 @@ public class PostUpdateDto {
 	}
 
 	/**
-	 * Sets the url.
+	 * Sets the post url.
 	 * 
 	 * @param url the url to set
 	 */
@@ -157,7 +162,7 @@ public class PostUpdateDto {
 	}
 
 	/**
-	 * Gets the images.
+	 * Gets images related to the post.
 	 * 
 	 * @return the images
 	 */
@@ -166,7 +171,7 @@ public class PostUpdateDto {
 	}
 
 	/**
-	 * Sets the images.
+	 * Sets images related to the post.
 	 * 
 	 * @param images the images to set
 	 */
@@ -175,6 +180,8 @@ public class PostUpdateDto {
 	}
 
 	/**
+	 * Gets the post type
+	 * 
 	 * @return the type
 	 */
 	public String getType() {
@@ -182,6 +189,8 @@ public class PostUpdateDto {
 	}
 
 	/**
+	 * Sets the post type
+	 * 
 	 * @param type the type to set
 	 */
 	public void setType(String type) {
@@ -189,6 +198,8 @@ public class PostUpdateDto {
 	}
 
 	/**
+	 * Gets the properties of the post
+	 * 
 	 * @return the properties
 	 */
 	public Map<String, String> getProperties() {
@@ -196,6 +207,8 @@ public class PostUpdateDto {
 	}
 
 	/**
+	 * Sets the properties of the post
+	 * 
 	 * @param properties the properties to set
 	 */
 	public void setProperties(Map<String, String> properties) {
@@ -203,6 +216,8 @@ public class PostUpdateDto {
 	}
 
 	/**
+	 * Gets the post's author id
+	 * 
 	 * @return the post's author id
 	 */
 	public Long getAuthorId() {
@@ -210,6 +225,8 @@ public class PostUpdateDto {
 	}
 
 	/**
+	 * Sets the post's author id
+	 * 
 	 * @param authorId the post's author id
 	 */
 	public void setAuthorId(Long authorId) {

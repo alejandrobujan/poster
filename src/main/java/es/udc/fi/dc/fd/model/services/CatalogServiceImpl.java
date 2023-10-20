@@ -17,6 +17,9 @@ import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.SearchFilters;
 
+/**
+ * The Class CatalogServiceImpl.
+ */
 @Service
 @Transactional(readOnly = true)
 public class CatalogServiceImpl implements CatalogService {
@@ -29,6 +32,15 @@ public class CatalogServiceImpl implements CatalogService {
 	@Autowired
 	private CategoryDao categoryDao;
 
+	/**
+	 * Find posts with the possibility of applying filters.
+	 * 
+	 * @param searchFilters the search filters
+	 * @param keywords      the keywords to search
+	 * @param page          the page
+	 * @param size          the size
+	 * @return the posts.
+	 */
 	@Override
 	public Block<Post> findPosts(SearchFilters filters, String keywords, int page, int size) {
 		Slice<Post> slice = postDao.find(filters, keywords, page, size);
@@ -52,6 +64,12 @@ public class CatalogServiceImpl implements CatalogService {
 		return categoriesAsList;
 	}
 
+	/**
+	 * Find post by id.
+	 * 
+	 * @param postId the post id
+	 * @return the post.
+	 */
 	@Override
 	public Post findPostById(Long postId) throws InstanceNotFoundException {
 		Optional<Post> post = postDao.findById(postId);

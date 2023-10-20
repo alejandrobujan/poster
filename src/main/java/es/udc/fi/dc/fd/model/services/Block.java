@@ -2,25 +2,46 @@ package es.udc.fi.dc.fd.model.services;
 
 import java.util.List;
 
+/**
+ * The Class Block.
+ */
 public class Block<T> {
-	
+
+	/** the list of items */
 	private List<T> items;
-    private boolean existMoreItems;
+	/** if exist more items or not */
+	private boolean existMoreItems;
 
-    public Block(List<T> items, boolean existMoreItems) {
-        
-        this.items = items;
-        this.existMoreItems = existMoreItems;
+	/**
+	 * Instantiates a new block.
+	 *
+	 * @param items          the list of items
+	 * @param existMoreItems if exist more items or not
+	 */
+	public Block(List<T> items, boolean existMoreItems) {
 
-    }
-    
-    public List<T> getItems() {
-        return items;
-    }
-    
-    public boolean getExistMoreItems() {
-        return existMoreItems;
-    }
+		this.items = items;
+		this.existMoreItems = existMoreItems;
+
+	}
+
+	/**
+	 * Gets the list of items
+	 * 
+	 * @return items the list of items
+	 */
+	public List<T> getItems() {
+		return items;
+	}
+
+	/**
+	 * Gets if there are more items or not
+	 * 
+	 * @return if there are more items or not
+	 */
+	public boolean getExistMoreItems() {
+		return existMoreItems;
+	}
 
 	@Override
 	public int hashCode() {
@@ -50,5 +71,5 @@ public class Block<T> {
 			return false;
 		return true;
 	}
-    
+
 }

@@ -33,6 +33,9 @@ import es.udc.fi.dc.fd.model.entities.UserDao;
 import es.udc.fi.dc.fd.rest.dtos.SearchFiltersDto;
 import es.udc.fi.dc.fd.rest.dtos.SearchParamsDto;
 
+/**
+ * The Class CatalogControllerTest.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -58,15 +61,17 @@ public class CatalogControllerTest {
 	@Autowired
 	private UserDao userDao;
 
+	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
 
+	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
 
 	/**
 	 * Creates the offer.
-	 *
+	 * 
 	 * @param title    the title of the post
 	 * @param user     the user of the post
 	 * @param category the category of the post
@@ -77,10 +82,22 @@ public class CatalogControllerTest {
 				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
 	}
 
+	/**
+	 * Creates the category.
+	 *
+	 * @param name the name of the category
+	 * @return the category
+	 */
 	private Category createCategory(String name) {
 		return categoryDao.save(new Category(name));
 	}
 
+	/**
+	 * Creates the user.
+	 *
+	 * @param userName the user name
+	 * @return the user
+	 */
 	private User createUser(String userName) {
 		User user = new User(userName, PASSWORD, "newUser", "user", "user@test.com", null);
 
@@ -115,6 +132,11 @@ public class CatalogControllerTest {
 		mockMvc.perform(get("/api/catalog/categories")).andExpect(status().isOk());
 	}
 
+	/**
+	 * Test get find post by id ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testGetFindPostById_Ok() throws Exception {
 		User user = createUser("admin");
@@ -124,6 +146,11 @@ public class CatalogControllerTest {
 
 	}
 
+	/**
+	 * Test get find post by id not ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testGetFindPostById_NotOk() throws Exception {
 		mockMvc.perform(get("/api/catalog/postDetail/" + NON_EXISTENT_ID)).andExpect(status().isNotFound());

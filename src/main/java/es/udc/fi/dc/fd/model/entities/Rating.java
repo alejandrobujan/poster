@@ -9,7 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 /**
- * The Class Entity
+ * The Class Rating
  */
 @Entity
 public class Rating {
@@ -42,6 +42,8 @@ public class Rating {
 	}
 
 	/**
+	 * Gets the id
+	 * 
 	 * @return the id
 	 */
 	@Id
@@ -51,6 +53,8 @@ public class Rating {
 	}
 
 	/**
+	 * Sets the id
+	 * 
 	 * @param id the id to set
 	 */
 	public void setId(Long id) {
@@ -58,20 +62,26 @@ public class Rating {
 	}
 
 	/**
-	 * @return the positive
+	 * Gets if the rating is positive or negative
+	 * 
+	 * @return if the rating is positive or negative
 	 */
 	public boolean isPositive() {
 		return positive;
 	}
 
 	/**
-	 * @param positive the positive to set
+	 * Sets if the rating is positive or negative
+	 * 
+	 * @param positive the value of rating to set (positive or negative)
 	 */
 	public void setPositive(boolean positive) {
 		this.positive = positive;
 	}
 
 	/**
+	 * Gets the user who rated
+	 * 
 	 * @return the user
 	 */
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -81,6 +91,8 @@ public class Rating {
 	}
 
 	/**
+	 * Sets the user who rated
+	 * 
 	 * @param user the user to set
 	 */
 	public void setUser(User user) {
@@ -88,6 +100,8 @@ public class Rating {
 	}
 
 	/**
+	 * Gets the post that is rated
+	 * 
 	 * @return the post
 	 */
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -97,6 +111,8 @@ public class Rating {
 	}
 
 	/**
+	 * Sets the post that is rated
+	 * 
 	 * @param post the post to set
 	 */
 	public void setPost(Post post) {

@@ -24,13 +24,17 @@ public class Category {
 	}
 
 	/**
-	 * @param name
+	 * Instantiates a new category.
+	 * 
+	 * @param name the category name
 	 */
 	public Category(String name) {
 		this.name = name;
 	}
 
 	/**
+	 * Instantiates a new category.
+	 * 
 	 * @param id   the id
 	 * @param name the category name
 	 */
