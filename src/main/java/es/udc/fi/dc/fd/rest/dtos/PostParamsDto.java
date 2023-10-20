@@ -3,104 +3,123 @@ package es.udc.fi.dc.fd.rest.dtos;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 /**
  * The class PostParamsDto
  */
 public class PostParamsDto {
-	
+
 	/** The post title. */
-    @NotNull
-    @Size(min = 1, max = 60)
+	@NotNull
+	@Size(min = 1, max = 60)
 	private String title;
 	/** The post description. */
-    @NotNull
-    @Size(min = 1, max = 256)
+	@NotNull
+	@Size(min = 1, max = 256)
 	private String description;
 	/** The post url. */
-    @Size(min = 0, max = 2048)
+	@Size(min = 0, max = 2048)
 	private String url;
 	/** The price. */
-    @NotNull
+	@NotNull
 	private BigDecimal price;
 	/** The post category. */
 	private Long categoryId;
 	/** Images related to the post. */
-    @NotNull
+	@NotNull
 	private List<byte[]> images = new ArrayList<>();
-	
+	/** The type of the post */
+	@NotNull
+	private String type;
+	/** The properties of the post */
+	private Map<String, String> properties;
+
 	/**
-	 * Instantiates a new post dto. 
+	 * Instantiates a new post params dto.
 	 */
-	public PostParamsDto () {}
-	
+	public PostParamsDto() {
+	}
+
 	/**
-	 * @param title the title of the post
+	 * @param title       the title of the post
 	 * @param description the description of the post
-	 * @param url the url of the post
-	 * @param price the price of the post
-	 * @param categoryId the category id of the post
-	 * @param images the images of the post
+	 * @param url         the url of the post
+	 * @param price       the price of the post
+	 * @param categoryId  the category id of the post
+	 * @param images      the images of the post
+	 * @param type        the post type
+	 * @param properties  the properties of the post
 	 */
-	public PostParamsDto(String title, String description, String url, BigDecimal price,
-			Long categoryId, List<byte[]> images) {
+	public PostParamsDto(String title, String description, String url, BigDecimal price, Long categoryId,
+			List<byte[]> images, String type, Map<String, String> properties) {
 		this.title = title;
 		this.description = description;
 		this.url = url;
 		this.price = price;
 		this.categoryId = categoryId;
 		this.images = images;
+		this.type = type;
+		this.properties = properties;
 	}
-	
+
 	/**
-	 * Gets the title.
+	 * Gets the post title
 	 * 
 	 * @return the title
 	 */
 	public String getTitle() {
 		return title;
 	}
+
 	/**
-	 * Sets the title.
+	 * Sets the post title
 	 * 
 	 * @param title the title to set
 	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	/**
-	 * Gets the description.
+	 * Gets the post description.
 	 * 
 	 * @return the description
 	 */
 	public String getDescription() {
 		return description;
 	}
+
 	/**
-	 * Sets the description.
-	 *
+	 * Sets the post description.
+	 * 
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	/**
-	 * Gets the url.
+	 * Gets the post url.
 	 * 
 	 * @return the url
 	 */
 	public String getUrl() {
 		return url;
 	}
+
 	/**
-	 * Sets the url.
+	 * Sets the post url.
+	 * 
 	 * @param url the url to set
 	 */
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 	/**
 	 * Gets the price.
 	 * 
@@ -109,6 +128,7 @@ public class PostParamsDto {
 	public BigDecimal getPrice() {
 		return price;
 	}
+
 	/**
 	 * Sets the price.
 	 * 
@@ -117,36 +137,77 @@ public class PostParamsDto {
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
+
 	/**
-	 * Gets the category.
+	 * Gets the category id.
 	 *
-	 * @return the category
+	 * @return the category id
 	 */
 	public Long getCategoryId() {
 		return categoryId;
 	}
+
 	/**
-	 * Sets the category.
+	 * Sets the category id.
 	 * 
-	 * @param category the category to set
+	 * @param category the category id to set
 	 */
 	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
 	}
+
 	/**
-	 * Gets the images.
+	 * Gets images related to the post.
 	 * 
 	 * @return the images
 	 */
 	public List<byte[]> getImages() {
 		return images;
 	}
+
 	/**
-	 * Sets the images.
+	 * Sets images related to the post.
 	 * 
 	 * @param images the images to set
 	 */
 	public void setImages(List<byte[]> images) {
 		this.images = images;
 	}
+
+	/**
+	 * Gets the post type
+	 * 
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * Sets the post type
+	 * 
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * Gets the properties of the post
+	 * 
+	 * @return the properties
+	 */
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+
+	/**
+	 * Sets the properties of the post
+	 * 
+	 * @param properties the properties to set
+	 */
+	public void setProperties(Map<String, String> properties) {
+		this.properties = properties;
+	}
+
 }

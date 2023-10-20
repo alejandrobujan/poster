@@ -5,19 +5,23 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 /**
- * The Class Entity.
+ * The Class Post.
  */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Post {
 
 	/** The id. */
@@ -32,6 +36,12 @@ public class Post {
 	private BigDecimal price;
 	/** The creation date. */
 	private LocalDateTime creationDate;
+	/** The positive rating count. */
+	private int positiveRatings;
+	/** The negative ratings count. */
+	private int negativeRatings;
+	/** If is expired or not */
+	private boolean expired;
 	/** The post author. */
 	private User user;
 	/** The post category. */
@@ -45,20 +55,19 @@ public class Post {
 	public Post() {
 	}
 
-	
 	/**
 	 * Instantiates a new post.
 	 * 
-	 * @param title
-	 * @param description
-	 * @param url
-	 * @param price
-	 * @param creationDate
-	 * @param user
-	 * @param category
+	 * @param title        the title
+	 * @param description  the description of the post
+	 * @param url          the url associated to the post
+	 * @param price        the price
+	 * @param creationDate the creation date
+	 * @param user         the user associated to the post
+	 * @param category     the category associated to the post
 	 */
-	public Post(String title, String description, String url, BigDecimal price, 
-			LocalDateTime creationDate, User user, Category category) {
+	public Post(String title, String description, String url, BigDecimal price, LocalDateTime creationDate, User user,
+			Category category) {
 		this.title = title;
 		this.description = description;
 		this.url = url;
@@ -66,8 +75,10 @@ public class Post {
 		this.creationDate = creationDate;
 		this.user = user;
 		this.category = category;
+		this.positiveRatings = 0;
+		this.negativeRatings = 0;
+		this.expired = false;
 	}
-
 
 	/**
 	 * Gets the id
@@ -166,6 +177,7 @@ public class Post {
 	 * 
 	 * @return the creationDate
 	 */
+	@Column(columnDefinition = "TIMESTAMP")
 	public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
@@ -237,7 +249,7 @@ public class Post {
 	public void setImages(Set<Image> images) {
 		this.images = images;
 	}
-	
+
 	/**
 	 * Add image.
 	 * 
@@ -247,12 +259,67 @@ public class Post {
 		images.add(image);
 		image.setPost(this);
 	}
-	
+
+	/**
+	 * Gets the positive ratings
+	 * 
+	 * @return the positiveRatings
+	 */
+	public int getPositiveRatings() {
+		return positiveRatings;
+	}
+
+	/**
+	 * Sets the positive ratings
+	 * 
+	 * @param positiveRatings the positiveRatings to set
+	 */
+	public void setPositiveRatings(int positiveRatings) {
+		this.positiveRatings = positiveRatings;
+	}
+
+	/**
+	 * Gets the negative ratings
+	 * 
+	 * @return the negativeRatings
+	 */
+	public int getNegativeRatings() {
+		return negativeRatings;
+	}
+
+	/**
+	 * Sets the negative ratings
+	 * 
+	 * @param negativeRatings the negativeRatings to set
+	 */
+	public void setNegativeRatings(int negativeRatings) {
+		this.negativeRatings = negativeRatings;
+	}
+
+	/**
+	 * Gets if the post is expired or not
+	 * 
+	 * @return if the post is expired or not
+	 */
+	public boolean isExpired() {
+		return expired;
+	}
+
+	/**
+	 * Sets the expired attribute
+	 * 
+	 * @param expired value to set (if it is expired or not)
+	 */
+	public void setExpired(boolean expired) {
+		this.expired = expired;
+	}
+
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", title=" + title + ", description=" + description + ", url=" + url + ", price="
-				+ price + ", creationDate=" + creationDate + ", user=" + user + ", category=" + category + ", images="
-				+ images + "]";
+				+ price + ", creationDate=" + creationDate + ", positiveRatings=" + positiveRatings
+				+ ", negativeRatings=" + negativeRatings + ", expired=" + expired + ", user=" + user + ", category="
+				+ category + ", images=" + images + "]";
 	}
 
 }

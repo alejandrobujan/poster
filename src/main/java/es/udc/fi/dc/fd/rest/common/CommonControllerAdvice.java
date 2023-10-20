@@ -18,6 +18,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
+import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 
 /**
@@ -34,13 +35,16 @@ public class CommonControllerAdvice {
 
 	/** The Constant PERMISSION_EXCEPTION_CODE. */
 	private static final String PERMISSION_EXCEPTION_CODE = "project.exceptions.PermissionException";
-	
+
 	/** The Constant MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE. */
 	private static final String MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE = "project.exceptions.MaximumImageSizeExceededException";
 
+	/** The Constant MISSING_REQUIRED_PARAMETER_EXCEPTION_CODE. */
+	private static final String MISSING_REQUIRED_PARAMETER_EXCEPTION_CODE = "project.exceptions.MissingRequiredParameterException";
+
 	/** The Constant HTTP_MESSAGE_NOT_READABLE_EXCEPTION. */
-    private static final String HTTP_MESSAGE_NOT_READABLE_EXCEPTION = "project.exceptions.HttpMessageNotReadableException";
-	
+	private static final String HTTP_MESSAGE_NOT_READABLE_EXCEPTION = "project.exceptions.HttpMessageNotReadableException";
+
 	/** The message source. */
 	@Autowired
 	private MessageSource messageSource;
@@ -122,9 +126,30 @@ public class CommonControllerAdvice {
 		return new ErrorsDto(errorMessage);
 
 	}
-	
+
 	/**
-	 * Handle permission exception.
+	 * Handle missing required parameter exception.
+	 *
+	 * @param exception the exception
+	 * @param locale    the locale
+	 * @return the errors dto
+	 */
+	@ExceptionHandler(MissingRequiredParameterException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorsDto handleMissingRequiredParameterException(MissingRequiredParameterException exception,
+			Locale locale) {
+
+		String errorMessage = messageSource.getMessage(MISSING_REQUIRED_PARAMETER_EXCEPTION_CODE,
+				new Object[] { exception.getParameter(), exception.getType() },
+				MISSING_REQUIRED_PARAMETER_EXCEPTION_CODE, locale);
+
+		return new ErrorsDto(errorMessage);
+
+	}
+
+	/**
+	 * Handle maximum image size exceeded exception.
 	 *
 	 * @param exception the exception
 	 * @param locale    the locale
@@ -133,15 +158,16 @@ public class CommonControllerAdvice {
 	@ExceptionHandler(MaximumImageSizeExceededException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public ErrorsDto handleMaximumImageSizeExceededException(MaximumImageSizeExceededException exception, Locale locale) {
+	public ErrorsDto handleMaximumImageSizeExceededException(MaximumImageSizeExceededException exception,
+			Locale locale) {
 
-		String errorMessage = messageSource.getMessage(MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE, null, MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE,
-				locale);
+		String errorMessage = messageSource.getMessage(MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE, null,
+				MAXIMUM_IMAGE_SIZE_EXCEEDED_EXCEPTION_CODE, locale);
 
 		return new ErrorsDto(errorMessage);
 
 	}
-	
+
 	/**
 	 * Handle method argument type mismatch exception.
 	 *
@@ -152,26 +178,29 @@ public class CommonControllerAdvice {
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public ErrorsDto handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception, Locale locale) {
+	public ErrorsDto handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception,
+			Locale locale) {
 		String errorMessage = messageSource.getMessage(exception.getClass().getName(),
-				new Object[] {exception.getValue(), exception.getName()}, exception.getClass().getName(), locale);
+				new Object[] { exception.getValue(), exception.getName() }, exception.getClass().getName(), locale);
 
 		return new ErrorsDto(errorMessage);
 	}
-	
+
 	/**
-	* Handle http message not readable exception.*
-	* @param exception the exception
-	* @param locale    the locale
-	* @return the errors dto
-	*/
+	 * Handle http message not readable exception.*
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale
+	 * @return the errors dto
+	 */
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
 	public ErrorsDto handleHttpMessageNotReadableException(HttpMessageNotReadableException exception, Locale locale) {
-	    String errorMessage = messageSource.getMessage(HTTP_MESSAGE_NOT_READABLE_EXCEPTION, null, HTTP_MESSAGE_NOT_READABLE_EXCEPTION, locale);
+		String errorMessage = messageSource.getMessage(HTTP_MESSAGE_NOT_READABLE_EXCEPTION, null,
+				HTTP_MESSAGE_NOT_READABLE_EXCEPTION, locale);
 
-	        return new ErrorsDto(errorMessage);
-	    }
+		return new ErrorsDto(errorMessage);
+	}
 
 }

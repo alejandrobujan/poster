@@ -4,6 +4,7 @@ import * as actionTypes from './actionTypes';
 
 const initialState = {
     error: null,
+    firstSearch: true
 };
 
 const error = (state = initialState.error, action) => {
@@ -20,8 +21,23 @@ const error = (state = initialState.error, action) => {
 
 };    
 
+const firstSearch = (state = initialState.firstSearch, action) => {
+
+    switch (action.type) {
+
+        case actionTypes.SET_FIRST_SEARCH:
+            return action.firstSearch;
+
+        default:
+            return state;
+
+    }
+
+};    
+
 const reducer = combineReducers({
-    error
+    error,
+    firstSearch
 });
 
 export default reducer;

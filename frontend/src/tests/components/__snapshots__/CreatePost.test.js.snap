@@ -15,6 +15,34 @@ exports[`CreatePost renders correctly 1`] = `
     <div
       className="card-body"
     >
+      <nav
+        aria-label="page navigation"
+      >
+        <ul
+          className="pagination justify-content-center"
+        >
+          <li
+            className="page-item disabled"
+          >
+            <button
+              className="page-link"
+              onClick={[Function]}
+            >
+              Offer
+            </button>
+          </li>
+          <li
+            className="page-item "
+          >
+            <button
+              className="page-link"
+              onClick={[Function]}
+            >
+              Coupon
+            </button>
+          </li>
+        </ul>
+      </nav>
       <form
         className="needs-validation"
         noValidate={true}
@@ -27,7 +55,7 @@ exports[`CreatePost renders correctly 1`] = `
             className="col-md-3 col-form-label"
             htmlFor="title"
           >
-            Title
+            Title (*)
           </label>
           <div
             className="col-md-9"
@@ -36,7 +64,7 @@ exports[`CreatePost renders correctly 1`] = `
               autoFocus={true}
               className="form-control"
               id="title"
-              maxLength={60}
+              maxLength={16}
               minLength={1}
               onChange={[Function]}
               required={true}
@@ -57,7 +85,7 @@ exports[`CreatePost renders correctly 1`] = `
             className="col-md-3 col-form-label"
             htmlFor="description"
           >
-            Description
+            Description (*)
           </label>
           <div
             className="col-md-9"
@@ -90,15 +118,24 @@ exports[`CreatePost renders correctly 1`] = `
           <div
             className="col-md-9"
           >
-            <input
-              className="form-control"
-              id="url"
-              maxLength={2048}
-              minLength={0}
-              onChange={[Function]}
-              type="text"
-              value=""
-            />
+            <div
+              className="input-group"
+            >
+              <span
+                className="input-group-text"
+              >
+                http(s)://
+              </span>
+              <input
+                className="form-control"
+                id="url"
+                maxLength={2048}
+                minLength={0}
+                onChange={[Function]}
+                type="text"
+                value=""
+              />
+            </div>
             <div
               className="invalid-feedback"
             >
@@ -113,7 +150,7 @@ exports[`CreatePost renders correctly 1`] = `
             className="col-md-3 col-form-label"
             htmlFor="price"
           >
-            Price
+            Price (*)
           </label>
           <div
             className="col-md-3"
@@ -124,7 +161,7 @@ exports[`CreatePost renders correctly 1`] = `
               <input
                 className="form-control"
                 id="price"
-                max="9999999.99"
+                max="999999.99"
                 min="0.00"
                 onChange={[Function]}
                 required={true}
@@ -141,7 +178,7 @@ exports[`CreatePost renders correctly 1`] = `
             <div
               className="invalid-feedback"
             >
-              Price must be between 0 and 9999999.99
+              Price must be between 0 and 999999.99
             </div>
           </div>
           <label
@@ -224,6 +261,11 @@ exports[`CreatePost renders correctly 1`] = `
               The maximum size allowed is 1MB.
             </div>
           </div>
+        </div>
+        <div>
+          <p>
+            (*) means mandatory field
+          </p>
         </div>
         <div
           className="text-center"

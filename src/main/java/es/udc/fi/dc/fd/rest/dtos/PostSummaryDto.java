@@ -23,24 +23,29 @@ public class PostSummaryDto {
 	private CategoryDto categoryDto;
 	/** Images related to the post. */
 	private List<byte[]> images = new ArrayList<>();
+	/** The post type */
+	private String type;
 
 	/**
-	 * Instantiates a new post dto.
+	 * Instantiates a new post summary dto.
 	 */
 	public PostSummaryDto() {
 	}
 
 	/**
+	 * Instantiates a new post summary dto.
+	 * 
 	 * @param id          the id of the post
 	 * @param title       the title of the post
 	 * @param description the description of the post
-	 * @param url         the url of the post
+	 * @param url         the url associated to the post
 	 * @param price       the price of the post
-	 * @param categoryDto  the categoryDto of the post
+	 * @param categoryDto the categoryDto of the post
 	 * @param images      the images of the post
+	 * @param type        the type of the psot
 	 */
-	public PostSummaryDto(Long id, String title, String description, String url, BigDecimal price, CategoryDto categoryDto,
-			List<byte[]> images) {
+	public PostSummaryDto(Long id, String title, String description, String url, BigDecimal price,
+			CategoryDto categoryDto, List<byte[]> images, String type) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -48,8 +53,9 @@ public class PostSummaryDto {
 		this.price = price;
 		this.categoryDto = categoryDto;
 		this.images = images;
+		this.type = type;
 	}
-	
+
 	/**
 	 * Gets the id
 	 * 
@@ -61,6 +67,7 @@ public class PostSummaryDto {
 
 	/**
 	 * Sets the id
+	 * 
 	 * @param id the id to set
 	 */
 	public void setId(Long id) {
@@ -68,7 +75,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Gets the title.
+	 * Gets the post title
 	 * 
 	 * @return the title
 	 */
@@ -77,7 +84,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Sets the title.
+	 * Sets the post title
 	 * 
 	 * @param title the title to set
 	 */
@@ -86,7 +93,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Gets the description.
+	 * Gets the post description.
 	 * 
 	 * @return the description
 	 */
@@ -95,8 +102,8 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Sets the description.
-	 *
+	 * Sets the post description.
+	 * 
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
@@ -104,7 +111,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Gets the url.
+	 * Gets the post url.
 	 * 
 	 * @return the url
 	 */
@@ -113,7 +120,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Sets the url.
+	 * Sets the post url.
 	 * 
 	 * @param url the url to set
 	 */
@@ -158,7 +165,7 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Gets the images.
+	 * Gets images related to the post.
 	 * 
 	 * @return the images
 	 */
@@ -167,11 +174,30 @@ public class PostSummaryDto {
 	}
 
 	/**
-	 * Sets the images.
+	 * Sets images related to the post.
 	 * 
 	 * @param images the images to set
 	 */
 	public void setImages(List<byte[]> images) {
 		this.images = images;
 	}
+
+	/**
+	 * Gets the post type
+	 * 
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * Sets the post type
+	 * 
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
 }

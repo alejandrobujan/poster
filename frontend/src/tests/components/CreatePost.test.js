@@ -32,25 +32,25 @@ describe("CreatePost", () => {
 			</Provider>
 		);
 
-		const title = screen.getByLabelText('Title');
+		const title = screen.getByLabelText(/Title/i);
 
         fireEvent.change(title, {
 			target: { value: "Porsche cayenne" },
 		});
 
-		const description = screen.getByLabelText('Description');
+		const description = screen.getByLabelText(/Description/i);
 
         fireEvent.change(description, {
 			target: { value: "The ideal car for you. Perfect for everything and for everyone." },
 		});
 
-		const url = screen.getByLabelText('Url');
+		const url = screen.getByLabelText(/Url/i);
 
         fireEvent.change(url, {
 			target: { value: "https://www.porsche.com/international/models/cayenne/cayenne-models/cayenne/" },
 		});
 
-		const price = screen.getByLabelText('Price');
+		const price = screen.getByLabelText(/Price/i);
 
         fireEvent.change(price, {
 			target: { value: "55000.05" },
@@ -72,19 +72,19 @@ describe("CreatePost", () => {
 			</Provider>
 		);
 
-		const title = screen.getByLabelText('Title');
+		const title = screen.getByLabelText(/Title/i);
 
         fireEvent.change(title, {
 			target: { value: "Porsche cayenne" },
 		});
 
-		const description = screen.getByLabelText('Description');
+		const description = screen.getByLabelText(/Description/i);
 
         fireEvent.change(description, {
 			target: { value: "The ideal car for you. Perfect for everything and for everyone." },
 		});
 
-		const url = screen.getByLabelText('Url');
+		const url = screen.getByLabelText(/Url/i);
 
         fireEvent.change(url, {
 			target: { value: "https://www.porsche.com/international/models/cayenne/cayenne-models/cayenne/" },
@@ -94,9 +94,9 @@ describe("CreatePost", () => {
 
         fireEvent.click(submit);
 
-		expect(screen.getByText(/Price must be between 0 and 9999999.99/i));
+		expect(screen.getByText(/Price must be between 0 and 999999.99/i));
 
-		const price = screen.getByLabelText('Price');
+		const price = screen.getByLabelText(/Price/i);
 
         fireEvent.change(price, {
 			target: { value: "55000000.05" },
@@ -104,7 +104,7 @@ describe("CreatePost", () => {
 
         fireEvent.click(submit);
 
-		expect(screen.getByText(/Price must be between 0 and 9999999.99/i))
+		expect(screen.getByText(/Price must be between 0 and 999999.99/i))
 
 	});
 
@@ -118,13 +118,13 @@ describe("CreatePost", () => {
 			</Provider>
 		);
 
-		const url = screen.getByLabelText('Url');
+		const url = screen.getByLabelText(/Url/i);
 
         fireEvent.change(url, {
 			target: { value: "https://www.porsche.com/international/models/cayenne/cayenne-models/cayenne/" },
 		});
 
-		const price = screen.getByLabelText('Price');
+		const price = screen.getByLabelText(/Price/i);
 
         fireEvent.change(price, {
 			target: { value: "55000.05" },

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +29,7 @@ import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.UserService;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
+import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginUpdateException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
@@ -53,6 +53,9 @@ public class UserController {
 
 	/** The Constant INCORRECT_PASSWORD_EXCEPTION_CODE. */
 	private static final String INCORRECT_PASS_EXCEPTION_CODE = "project.exceptions.IncorrectPasswordException";
+
+	/** The Constant INCORRECT_LOGIN_UPDATE_EXCEPTION_CODE. */
+	private static final String INCORRECT_LOGIN_UPDATE_EXCEPTION_CODE = "project.exceptions.IncorrectLoginUpdateException";
 
 	/** The message source. */
 	@Autowired
@@ -99,6 +102,25 @@ public class UserController {
 
 		String errorMessage = messageSource.getMessage(INCORRECT_PASS_EXCEPTION_CODE, null,
 				INCORRECT_PASS_EXCEPTION_CODE, locale);
+
+		return new ErrorsDto(errorMessage);
+
+	}
+
+	/**
+	 * Handle incorrect login value exception.
+	 *
+	 * @param exception the exception
+	 * @param locale    the locale
+	 * @return the errors dto
+	 */
+	@ExceptionHandler(IncorrectLoginUpdateException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorsDto handleIncorrectLoginUpdateException(IncorrectLoginUpdateException exception, Locale locale) {
+
+		String errorMessage = messageSource.getMessage(INCORRECT_LOGIN_UPDATE_EXCEPTION_CODE, null,
+				INCORRECT_LOGIN_UPDATE_EXCEPTION_CODE, locale);
 
 		return new ErrorsDto(errorMessage);
 
@@ -168,20 +190,22 @@ public class UserController {
 	 * @param id      the id
 	 * @param userDto the user dto
 	 * @return the user dto
-	 * @throws InstanceNotFoundException the instance not found exception
-	 * @throws PermissionException       the permission exception
+	 * @throws InstanceNotFoundException     the instance not found exception
+	 * @throws PermissionException           the permission exception
+	 * @throws IncorrectLoginUpdateException
 	 */
 	@PutMapping("/{id}")
 	public UserDto updateProfile(@RequestAttribute Long userId, @PathVariable("id") Long id,
 			@Validated({ UserDto.UpdateValidations.class }) @RequestBody UserDto userDto)
-			throws InstanceNotFoundException, PermissionException {
+			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException,
+			IncorrectLoginUpdateException {
 
 		if (!id.equals(userId)) {
 			throw new PermissionException();
 		}
 
-		return toUserDto(
-				userService.updateProfile(id, userDto.getFirstName(), userDto.getLastName(), userDto.getEmail()));
+		return toUserDto(userService.updateProfile(id, userDto.getUserName(), userDto.getFirstName(),
+				userDto.getLastName(), userDto.getEmail(), userDto.getAvatar()));
 
 	}
 
@@ -208,7 +232,7 @@ public class UserController {
 		userService.changePassword(id, params.getOldPassword(), params.getNewPassword());
 
 	}
-	
+
 	/**
 	 * Generate service token.
 	 *

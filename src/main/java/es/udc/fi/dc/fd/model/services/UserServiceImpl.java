@@ -12,6 +12,7 @@ import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.entities.UserDao;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
+import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginUpdateException;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectPasswordException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 
@@ -49,10 +50,10 @@ public class UserServiceImpl implements UserService {
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRole(User.RoleType.USER);
-		
+
 		int maxSize = 1024000;
-		
-		if(user.getAvatar().length > maxSize) {
+
+		if (user.getAvatar().length > maxSize) {
 			throw new MaximumImageSizeExceededException(maxSize);
 		}
 
@@ -107,17 +108,31 @@ public class UserServiceImpl implements UserService {
 	 * @param lastName  the last name
 	 * @param email     the email
 	 * @return the user
-	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws InstanceNotFoundException     the instance not found exception
+	 * @throws DuplicateInstanceException    the duplicate instance exception
+	 * @throws IncorrectLoginUpdateException
 	 */
 	@Override
-	public User updateProfile(Long id, String firstName, String lastName, String email)
-			throws InstanceNotFoundException {
+	public User updateProfile(Long id, String userName, String firstName, String lastName, String email, byte[] avatar)
+			throws InstanceNotFoundException, DuplicateInstanceException, IncorrectLoginUpdateException {
 
 		User user = permissionChecker.checkUser(id);
 
+		if (userName == null || userName.trim().equals("")) {
+			throw new IncorrectLoginUpdateException();
+		}
+
+		if (userDao.existsByUserName(userName) && !userName.equals(user.getUserName())) {
+
+			throw new DuplicateInstanceException("project.entities.user", user.getUserName());
+
+		}
+
+		user.setUserName(userName.trim());
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setEmail(email);
+		user.setAvatar(avatar);
 
 		return user;
 

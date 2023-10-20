@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import CategorySelector from './CategorySelector';
+import { CategorySelector } from '../../catalog';
 
 import { Errors } from '../../common';
 
@@ -13,6 +13,7 @@ import { fileToBase64, isImage } from '../../../backend/utils';
 const CreatePost = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const properties = {};
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [url, setUrl] = useState('');
@@ -21,6 +22,8 @@ const CreatePost = () => {
 	const [images, setImages] = useState([]);
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [wrongFileType, setWrongFileType] = useState(false);
+	const [type, setType] = useState('Offer');
+	const [code, setCode] = useState('');
 	let form;
 	let imagesInput;
 	let clearImages;
@@ -29,10 +32,14 @@ const CreatePost = () => {
 
 		event.preventDefault();
 
+		if (type === 'Coupon') {
+			properties.code = code;
+		}
+
 		if (form.checkValidity()) {
 			dispatch(actions.createPost(
 				title, description, url,
-				price, categoryId !== '' ? categoryId : null, images, () => navigate('/'), errors => setBackendErrors(errors)
+				price, categoryId !== '' ? categoryId : null, images, type, properties, () => navigate('/'), errors => setBackendErrors(errors)
 			));
 		} else {
 			setBackendErrors(null);
@@ -76,6 +83,16 @@ const CreatePost = () => {
 
 	}
 
+	const handleOfferTypeChange = () => {
+		setType('Offer');
+		setCode('');
+	}
+
+	const handleCouponTypeChange = () => {
+		setType('Coupon');
+		setCode('');
+	}
+
 	return (
 		<div className='container'>
 			<Errors id="createPostErrors" errors={backendErrors} onClose={() => setBackendErrors(null)} />
@@ -84,12 +101,28 @@ const CreatePost = () => {
 					Create post
 				</h5>
 				<div className="card-body">
+					<nav aria-label="page navigation">
+						<ul className="pagination justify-content-center">
+							<li className={`page-item ${type === 'Offer' ? "disabled" : ""}`}>
+								<button className="page-link"
+									onClick={handleOfferTypeChange}>
+									Offer
+								</button>
+							</li>
+							<li className={`page-item ${type === 'Coupon' ? "disabled" : ""}`}>
+								<button className="page-link"
+									onClick={handleCouponTypeChange}>
+									Coupon
+								</button>
+							</li>
+						</ul>
+					</nav>
 					<form ref={node => form = node}
 						className="needs-validation" noValidate
 						onSubmit={e => handleSubmit(e)}>
 						<div className="form-group row">
 							<label htmlFor="title" className="col-md-3 col-form-label">
-								Title
+								Title (*)
 							</label>
 							<div className="col-md-9">
 								<input type="text"
@@ -99,7 +132,7 @@ const CreatePost = () => {
 									onChange={e => setTitle(e.target.value)}
 									autoFocus
 									minLength={1}
-									maxLength={60}
+									maxLength={16}
 									required />
 								<div className="invalid-feedback">
 									The title size must be between 1 and 60
@@ -108,7 +141,7 @@ const CreatePost = () => {
 						</div>
 						<div className="form-group row">
 							<label htmlFor="description" className="col-md-3 col-form-label">
-								Description
+								Description (*)
 							</label>
 							<div className="col-md-9">
 								<textarea
@@ -129,14 +162,17 @@ const CreatePost = () => {
 								Url
 							</label>
 							<div className="col-md-9">
-								<input type="text"
-									id="url"
-									className="form-control"
-									value={url}
-									onChange={e => setUrl(e.target.value)}
-									minLength={0}
-									maxLength={2048}
-								/>
+								<div className="input-group">
+									<span className="input-group-text">http(s)://</span>
+									<input type="text"
+										id="url"
+										className="form-control"
+										value={url}
+										onChange={e => setUrl(e.target.value)}
+										minLength={0}
+										maxLength={2048}
+									/>
+								</div>
 								<div className="invalid-feedback">
 									The url size must be between 0 and 2048
 								</div>
@@ -144,7 +180,7 @@ const CreatePost = () => {
 						</div>
 						<div className="form-group row">
 							<label htmlFor="price" className="col-md-3 col-form-label">
-								Price
+								Price (*)
 							</label>
 							<div className="col-md-3">
 								<div className="input-group">
@@ -153,14 +189,14 @@ const CreatePost = () => {
 										className="form-control"
 										value={price}
 										onChange={e => setPrice(Number(e.target.value))}
-										step="0.01" min="0.00" max="9999999.99"
+										step="0.01" min="0.00" max="999999.99"
 										required
 									/>
 									<span className="input-group-text">€</span>
 								</div>
 
 								<div className="invalid-feedback">
-									Price must be between 0 and 9999999.99
+									Price must be between 0 and 999999.99
 								</div>
 							</div>
 							<label htmlFor="categoryId" className="col-md-3 col-form-label">
@@ -193,6 +229,30 @@ const CreatePost = () => {
 										"The maximum size allowed is 1MB."}
 								</div>
 							</div>
+						</div>
+						{type === 'Coupon' &&
+							<div className="form-group row">
+								<label htmlFor="code" className="col-md-3 col-form-label">
+									Code (*)
+								</label>
+								<div className="col-md-9">
+									<input type="text"
+										id="code"
+										className="form-control"
+										value={code}
+										onChange={e => setCode(e.target.value)}
+										required
+									/>
+									<div className="invalid-feedback">
+										The code is mandatory
+									</div>
+								</div>
+							</div>
+						}
+						<div>
+							<p>
+								(*) means mandatory field
+							</p>
 						</div>
 						<div className="text-center">
 							<button type="submit" className="btn btn-primary">

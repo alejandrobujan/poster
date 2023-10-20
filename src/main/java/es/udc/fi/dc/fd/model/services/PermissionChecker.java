@@ -1,13 +1,15 @@
 package es.udc.fi.dc.fd.model.services;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
+import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.User;
+import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 
 /**
  * The Interface PermissionChecker.
  */
 public interface PermissionChecker {
-	
+
 	/**
 	 * Check user exists.
 	 *
@@ -15,7 +17,7 @@ public interface PermissionChecker {
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	public void checkUserExists(Long userId) throws InstanceNotFoundException;
-	
+
 	/**
 	 * Check user.
 	 *
@@ -24,5 +26,16 @@ public interface PermissionChecker {
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	public User checkUser(Long userId) throws InstanceNotFoundException;
-	
+
+	/**
+	 * Check post exists and belongs to user.
+	 * 
+	 * @param postId the post id
+	 * @param userId the user id
+	 * @return the post
+	 * @throws PermissionException       the permission exception
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	public Post checkPostExistsAndBelongsTo(Long postId, Long userId)
+			throws PermissionException, InstanceNotFoundException;
 }

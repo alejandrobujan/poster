@@ -1,24 +1,23 @@
-/**
- * 
- */
 package es.udc.fi.dc.fd.rest.dtos;
 
 /**
  * The class CategoryDto
  */
 public class CategoryDto {
-	/**The id.*/
+
+	/** The id. */
 	private Long id;
-	/**The category name.*/
+	/** The category name. */
 	private String name;
-	
+
 	/**
 	 * Instantiates a new category dto.
 	 */
-	public CategoryDto() {}
-	
+	public CategoryDto() {
+	}
+
 	/**
-	 * @param id the id
+	 * @param id   the id
 	 * @param name the category name
 	 */
 	public CategoryDto(Long id, String name) {
@@ -61,6 +60,5 @@ public class CategoryDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 }

@@ -10,13 +10,13 @@ import jakarta.persistence.Id;
  */
 @Entity
 public class Category {
-	
-	/**The id.*/
+
+	/** The id. */
 	private Long id;
-	
-	/**The category name.*/
+
+	/** The category name. */
 	private String name;
-	
+
 	/**
 	 * Instantiates a new category.
 	 */
@@ -24,14 +24,25 @@ public class Category {
 	}
 
 	/**
-	 * @param id the id
+	 * Instantiates a new category.
+	 * 
+	 * @param name the category name
+	 */
+	public Category(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Instantiates a new category.
+	 * 
+	 * @param id   the id
 	 * @param name the category name
 	 */
 	public Category(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	/**
 	 * Gets the id.
 	 * 
@@ -42,7 +53,7 @@ public class Category {
 	public Long getId() {
 		return id;
 	}
-	
+
 	/**
 	 * Sets the id.
 	 * 
@@ -51,7 +62,7 @@ public class Category {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * Gets the category name.
 	 * 
@@ -60,7 +71,7 @@ public class Category {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Sets the category name.
 	 * 
@@ -74,5 +85,5 @@ public class Category {
 	public String toString() {
 		return "Category [id=" + id + ", name=" + name + "]";
 	}
-	
+
 }

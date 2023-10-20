@@ -17,3 +17,8 @@ export const fileToBase64 = file => {
 export const isImage = file => {
 	return file.type.split('/')[0] === 'image';
 }
+
+export const getDate = millis => {
+    const date = new Date(millis);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+}
