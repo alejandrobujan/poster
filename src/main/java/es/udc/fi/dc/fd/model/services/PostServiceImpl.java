@@ -35,6 +35,12 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private PermissionChecker permissionChecker;
 
+	/**
+	 * Instantiates a new post service impl.
+	 * 
+	 * @param offerHandler  the offer handler
+	 * @param couponHandler the coupon handler
+	 */
 	@Autowired
 	public PostServiceImpl(OfferHandler offerHandler, CouponHandler couponHandler) {
 		this.handlers = Map.ofEntries(entry("Offer", offerHandler), entry("Coupon", couponHandler));

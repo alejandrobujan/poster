@@ -63,6 +63,8 @@ public class Image {
 	}
 
 	/**
+	 * Gets the image binary data
+	 * 
 	 * @return the data
 	 */
 	public byte[] getData() {
@@ -70,6 +72,8 @@ public class Image {
 	}
 
 	/**
+	 * Sets the image binary data
+	 * 
 	 * @param data the data to set
 	 */
 	public void setData(byte[] data) {
