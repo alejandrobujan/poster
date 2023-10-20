@@ -3,22 +3,27 @@ package es.udc.fi.dc.fd.rest.dtos;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * 
+ * The Class SearchParamsDto
  */
 public class SearchParamsDto {
 
+	/** the filters to search */
 	@NotNull
 	private SearchFiltersDto filters;
 
+	/** the keywords to search */
 	private String keywords;
 
+	/** the page */
 	@NotNull
 	private int page;
 
 	/**
-	 * @param filters
-	 * @param keywords
-	 * @param page
+	 * Instantiates a new search filters dto.
+	 * 
+	 * @param filters  the filters
+	 * @param keywords the keywords
+	 * @param page     the page
 	 */
 	public SearchParamsDto(SearchFiltersDto filters, String keywords, int page) {
 		this.filters = filters;
@@ -27,13 +32,17 @@ public class SearchParamsDto {
 	}
 
 	/**
-	 * @return the filters
+	 * Gets the filters
+	 * 
+	 * @return the filters for search
 	 */
 	public SearchFiltersDto getFilters() {
 		return filters;
 	}
 
 	/**
+	 * Sets the filters
+	 * 
 	 * @param filters the filters to set
 	 */
 	public void setFilters(SearchFiltersDto filters) {
@@ -41,6 +50,8 @@ public class SearchParamsDto {
 	}
 
 	/**
+	 * Gets the keywords
+	 * 
 	 * @return the keywords
 	 */
 	public String getKeywords() {
@@ -48,6 +59,8 @@ public class SearchParamsDto {
 	}
 
 	/**
+	 * Sets the keywords
+	 * 
 	 * @param keywords the keywords to set
 	 */
 	public void setKeywords(String keywords) {
@@ -55,6 +68,8 @@ public class SearchParamsDto {
 	}
 
 	/**
+	 * Gets the page
+	 * 
 	 * @return the page
 	 */
 	public int getPage() {
@@ -62,6 +77,8 @@ public class SearchParamsDto {
 	}
 
 	/**
+	 * Sets the page
+	 * 
 	 * @param page the page to set
 	 */
 	public void setPage(int page) {
