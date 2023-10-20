@@ -13,11 +13,21 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 
+/**
+ * The Class CustomizedPostDaoImpl.
+ */
 public class CustomizedPostDaoImpl implements CustomizedPostDao {
 
+	/** The entity manager. */
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	/**
+	 * Get tokens
+	 * 
+	 * @param keywords
+	 * @return string[]
+	 */
 	private String[] getTokens(String keywords) {
 
 		if (keywords == null || keywords.length() == 0) {
@@ -28,6 +38,15 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 
 	}
 
+	/**
+	 * Find posts with filters
+	 * 
+	 * @param filters  the filters for the post
+	 * @param keywords the keywords for search the post
+	 * @param page     the page
+	 * @param size     the size
+	 * @return slice of posts
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Slice<Post> find(SearchFilters filters, String keywords, int page, int size) {

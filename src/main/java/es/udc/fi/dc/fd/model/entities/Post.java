@@ -18,7 +18,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 /**
- * The Class Entity.
+ * The Class Post.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -58,13 +58,13 @@ public class Post {
 	/**
 	 * Instantiates a new post.
 	 * 
-	 * @param title
-	 * @param description
-	 * @param url
-	 * @param price
-	 * @param creationDate
-	 * @param user
-	 * @param category
+	 * @param title        the title
+	 * @param description  the description of the post
+	 * @param url          the url associated to the post
+	 * @param price        the price
+	 * @param creationDate the creation date
+	 * @param user         the user associated to the post
+	 * @param category     the category associated to the post
 	 */
 	public Post(String title, String description, String url, BigDecimal price, LocalDateTime creationDate, User user,
 			Category category) {
@@ -261,6 +261,8 @@ public class Post {
 	}
 
 	/**
+	 * Gets the positive ratings
+	 * 
 	 * @return the positiveRatings
 	 */
 	public int getPositiveRatings() {
@@ -268,6 +270,8 @@ public class Post {
 	}
 
 	/**
+	 * Sets the positive ratings
+	 * 
 	 * @param positiveRatings the positiveRatings to set
 	 */
 	public void setPositiveRatings(int positiveRatings) {
@@ -275,6 +279,8 @@ public class Post {
 	}
 
 	/**
+	 * Gets the negative ratings
+	 * 
 	 * @return the negativeRatings
 	 */
 	public int getNegativeRatings() {
@@ -282,6 +288,8 @@ public class Post {
 	}
 
 	/**
+	 * Sets the negative ratings
+	 * 
 	 * @param negativeRatings the negativeRatings to set
 	 */
 	public void setNegativeRatings(int negativeRatings) {
@@ -289,13 +297,17 @@ public class Post {
 	}
 
 	/**
-	 * @return if the post is expired
+	 * Gets if the post is expired or not
+	 * 
+	 * @return if the post is expired or not
 	 */
 	public boolean isExpired() {
 		return expired;
 	}
 
 	/**
+	 * Sets the expired attribute
+	 * 
 	 * @param expired value to set (if it is expired or not)
 	 */
 	public void setExpired(boolean expired) {
