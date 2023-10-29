@@ -243,7 +243,7 @@ const UpdatePostForm = () => {
 								(<p className='noImages'>
 									No previously uploaded images.
 								</p>) : (
-									<div className='images-card' id='images-card' value='${imageGalleryImages}'>
+									<div className='images-card' id='images-card'>
 										<ImageGallery showPlayButton={false} showFullscreenButton={false} infinite={false} onSlide={handleSlide}
 											items={imageGalleryImages.map((image) => ({ original: `data:image/*;base64,${image}`, thumbnailHeight: "30px" }))} />
 										<button type="button" className="btn btn-outline-danger" onClick={handleImagesGalleryChange}>

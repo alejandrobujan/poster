@@ -1,6 +1,5 @@
 import backend from '../../backend';
 import * as actionTypes from './actionTypes';
-import * as selectors from './selectors';
 
 export const createPost = (title, description, url, price, categoryId, images, type, properties,
 	onSuccess, onErrors) => dispatch =>
