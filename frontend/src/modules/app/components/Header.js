@@ -1,13 +1,25 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import users from '../../users';
+import notification from '../../notification';
+import { Notifications } from '../../notification';
 
 const Header = () => {
-
+	
+	const dispatch = useDispatch();	
+	const userNotifications = useSelector(notification.selectors.getNotifications);
+	const userId = useSelector(users.selectors.getUserId);
 	const userName = useSelector(users.selectors.getUserName);
 	const avatar = useSelector(users.selectors.getAvatar);
 
+	
+	useEffect(() => {
+		dispatch(notification.actions.findNotifications());
+	}, [dispatch, userId]);
+
+	
 	return (
 
 		<nav className="navbar navbar-expand-lg navbar-light bg-light border">
@@ -26,6 +38,8 @@ const Header = () => {
 				{userName ?
 
 					<ul className="navbar-nav">
+
+						<Notifications notifications={userNotifications}/>
 
 						<li className="nav-item">
 							<Link className="nav-link" to="/post/create-post">
