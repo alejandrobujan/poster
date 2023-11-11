@@ -104,26 +104,22 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 			}
 		}
 
-		for (String param : parameters) {
-			queryBuilder.append(param + " AND ");
+		for (int i = 0; i < parameters.size() - 1; i++) {
+			queryBuilder.append(parameters.get(i) + " AND ");
 		}
 
-		String queryString = queryBuilder.toString();
+		queryBuilder.append(parameters.get(parameters.size() - 1));
 
 		if (tokens.length != 0) {
-
-			for (int i = 0; i < tokens.length - 1; i++) {
-				queryString += "LOWER(p.title) LIKE LOWER(:token" + i + ") AND ";
+			for (int i = 0; i < tokens.length; i++) {
+				queryBuilder.append(" AND LOWER(p.title) LIKE LOWER(:token" + i + ")");
 			}
-
-			queryString += "LOWER(p.title) LIKE LOWER(:token" + (tokens.length - 1) + ")";
-		} else {
-			queryString = queryString.replaceAll(" AND $", "");
 		}
 
-		queryString += " ORDER BY p.creationDate DESC";
+		queryBuilder.append(" ORDER BY p.creationDate DESC");
 
-		Query query = entityManager.createQuery(queryString).setFirstResult(page * size).setMaxResults(size + 1);
+		Query query = entityManager.createQuery(queryBuilder.toString()).setFirstResult(page * size)
+				.setMaxResults(size + 1);
 
 		if (filters.getCategoryId() != null)
 			query.setParameter("categoryId", filters.getCategoryId());
