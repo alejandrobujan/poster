@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS Notification;
 DROP TABLE IF EXISTS Rating;
 DROP TABLE IF EXISTS Image;
 DROP TABLE IF EXISTS Coupon;
@@ -70,6 +71,20 @@ CREATE TABLE Rating (
 	CONSTRAINT RatingFK_Post FOREIGN KEY (postId) REFERENCES Post(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE Notification (
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+	text VARCHAR(128) NOT NULL,
+	viewed BOOLEAN NOT NULL,
+	creationDate TIMESTAMP NOT NULL,
+	notifierUserId BIGINT NOT NULL, 
+	notifiedUserId BIGINT NOT NULL, 
+	postId BIGINT NOT NULL,
+
+	CONSTRAINT NotificationFK_Users0 FOREIGN KEY (notifierUserId) REFERENCES Users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT NotificationFK_Users1 FOREIGN KEY (notifiedUserId) REFERENCES Users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT NotificationFK_Post FOREIGN KEY (postId) REFERENCES Post(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 INSERT INTO Category(name) VALUES ('Meals');
 INSERT INTO Category(name) VALUES ('Motor');
 INSERT INTO Category(name) VALUES ('Home');
@@ -87,3 +102,9 @@ INSERT INTO Offer(id) VALUES (2);
 
 INSERT INTO Post(title, description, url, price, creationDate, expired, userId, categoryId) VALUES ('MG4 Brighton', 'Discover the future of mobility', 'www.mgmotor.eu/es-ES/configurator/mg4', 30480, '2023-10-09 00:00:00', false, 1, 2);
 INSERT INTO Coupon(id, code) VALUES (3, 'EXTRAMG4');
+
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId) VALUES ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua asdf', false, '2004-05-12 00:00:00', 1, 1, 1);
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId) VALUES ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua asdf', false, '2004-05-12 00:00:00', 1, 1, 1);
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId) VALUES ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua asdf', false, '2004-05-12 00:00:00', 1, 1, 1);
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId) VALUES ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua asdf', false, '2004-05-12 00:00:00', 1, 1, 1);
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId) VALUES ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua asdf', false, '2004-05-12 00:00:00', 1, 1, 1);
