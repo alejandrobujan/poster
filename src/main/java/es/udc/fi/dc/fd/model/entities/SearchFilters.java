@@ -18,6 +18,10 @@ public class SearchFilters {
 	private String date;
 	/** if the post is expired or not */
 	private boolean expired;
+	/** the sort parameter for returning the posts */
+	private String sortParam;
+	/** the sort order for returning the posts */
+	private String sortOrder;
 
 	/**
 	 * Instantiates a new SearchFilters.
@@ -27,13 +31,18 @@ public class SearchFilters {
 	 * @param price      the price of the post
 	 * @param date       the creation date of the post
 	 * @param expired    if the post is expired or not
+	 * @param sortParam  the parameter for sorting posts
+	 * @param sortOrder  the order for sorting posts
 	 */
-	public SearchFilters(Long categoryId, String type, Map<String, BigDecimal> price, String date, boolean expired) {
+	public SearchFilters(Long categoryId, String type, Map<String, BigDecimal> price, String date, boolean expired,
+			String sortParam, String sortOrder) {
 		this.categoryId = categoryId;
 		this.type = type;
 		this.price = price;
 		this.date = date;
 		this.expired = expired;
+		this.sortParam = sortParam;
+		this.sortOrder = sortOrder;
 	}
 
 	/**
@@ -126,10 +135,50 @@ public class SearchFilters {
 		this.expired = expired;
 	}
 
+	/**
+	 * Gets the parameter for sorting posts
+	 * 
+	 * @return sortParam
+	 */
+	public String getSortParam() {
+		return sortParam;
+	}
+
+	/**
+	 * Sets the parameter for sorting posts
+	 * 
+	 * @param sortParam
+	 */
+	public void setSortParam(String sortParam) {
+		this.sortParam = sortParam;
+	}
+
+	/**
+	 * Gets the order for sorting posts
+	 * 
+	 * @return sortOrder the order for sorting posts
+	 */
+	public String getSortOrder() {
+		return sortOrder;
+	}
+
+	/**
+	 * Sets the order for sorting posts
+	 * 
+	 * @param sortOrder
+	 */
+	public void setSortOrder(String sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
 	@Override
 	public String toString() {
 		return "SearchFilters [categoryId=" + categoryId + ", type=" + type + ", price=" + price + ", date=" + date
-				+ ", expired=" + expired + "]";
+				+ ", expired=" + expired + ", sortParam=" + sortParam + ", sortOrder=" + sortOrder + "]";
 	}
+	
+	
+
+	
 
 }
