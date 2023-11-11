@@ -116,7 +116,39 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 			}
 		}
 
-		queryBuilder.append(" ORDER BY p.creationDate DESC");
+		if (filters.getSortParam() == null || filters.getSortParam().equals("creationDate")) {
+
+			queryBuilder.append(" ORDER BY p.creationDate");
+
+		} else if (filters.getSortParam().equals("expirationDate")) {
+
+			queryBuilder.append(" ORDER BY p.expirationDate");
+
+		} else if (filters.getSortParam().equals("title")) {
+
+			queryBuilder.append(" ORDER BY p.title");
+
+		} else if (filters.getSortParam().equals("price")) {
+
+			queryBuilder.append(" ORDER BY p.price");
+
+		} else if (filters.getSortParam().equals("positiveRatings")) {
+
+			queryBuilder.append(" ORDER BY p.positiveRatings");
+
+		} else if (filters.getSortParam().equals("negativeRatings")) {
+
+			queryBuilder.append(" ORDER BY p.negativeRatings");
+
+		} else {
+			queryBuilder.append(" ORDER BY p.creationDate");
+		}
+
+		if (filters.getSortOrder() == null || !filters.getSortOrder().equals("ASC")) {
+			queryBuilder.append(" DESC");
+		} else {
+			queryBuilder.append(" ASC");
+		}
 
 		Query query = entityManager.createQuery(queryBuilder.toString()).setFirstResult(page * size)
 				.setMaxResults(size + 1);
