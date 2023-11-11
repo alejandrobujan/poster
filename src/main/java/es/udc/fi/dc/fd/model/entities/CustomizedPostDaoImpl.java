@@ -116,27 +116,27 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 			}
 		}
 
-		if (filters.getSortParam() == null || filters.getSortParam().equals("creationDate")) {
+		if (filters.getSortingParameter() == null || filters.getSortingParameter().equals("creationDate")) {
 
 			queryBuilder.append(" ORDER BY p.creationDate");
 
-		} else if (filters.getSortParam().equals("expirationDate")) {
+		} else if (filters.getSortingParameter().equals("expirationDate")) {
 
 			queryBuilder.append(" ORDER BY p.expirationDate");
 
-		} else if (filters.getSortParam().equals("title")) {
+		} else if (filters.getSortingParameter().equals("title")) {
 
 			queryBuilder.append(" ORDER BY p.title");
 
-		} else if (filters.getSortParam().equals("price")) {
+		} else if (filters.getSortingParameter().equals("price")) {
 
 			queryBuilder.append(" ORDER BY p.price");
 
-		} else if (filters.getSortParam().equals("positiveRatings")) {
+		} else if (filters.getSortingParameter().equals("positiveRatings")) {
 
 			queryBuilder.append(" ORDER BY p.positiveRatings");
 
-		} else if (filters.getSortParam().equals("negativeRatings")) {
+		} else if (filters.getSortingParameter().equals("negativeRatings")) {
 
 			queryBuilder.append(" ORDER BY p.negativeRatings");
 
@@ -144,10 +144,10 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 			queryBuilder.append(" ORDER BY p.creationDate");
 		}
 
-		if (filters.getSortOrder() == null || !filters.getSortOrder().equals("ASC")) {
-			queryBuilder.append(" DESC");
-		} else {
+		if (filters.getSortingOrder() != null && filters.getSortingOrder().equals("ASC")) {
 			queryBuilder.append(" ASC");
+		} else {
+			queryBuilder.append(" DESC");
 		}
 
 		Query query = entityManager.createQuery(queryBuilder.toString()).setFirstResult(page * size)
