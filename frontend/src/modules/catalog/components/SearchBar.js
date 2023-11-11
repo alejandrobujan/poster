@@ -24,7 +24,9 @@ const SearchBar = () => {
 					...searchParams.filters,
 					categoryId: toNumber(searchParams.filters.categoryId),
 					type: checkNull(searchParams.filters.type),
-					date: checkNull(searchParams.filters.date)
+					date: checkNull(searchParams.filters.date),
+					sortParam: checkNull(searchParams.filters.sortParam),
+					sortOrder: checkNull(searchParams.filters.sortOrder)
 				},
 				page: 0
 			}
@@ -67,25 +69,28 @@ const SearchBar = () => {
 				<div className="advanced-search">
 					<h5 className='text-center'>Filters</h5>
 					<div className="row border flex-column flex-sm-row">
-						<div className="form-group col p-4 border-right">
-							<label htmlFor="categorySelector">Category:</label>
-							<CategorySelector id="categoryId" className="form-control"
-								value={searchParams.filters.categoryId} onChange={e => dispatch(actions.setCategoryId(e.target.value))} />
+						<div className="col p-4 border-right">
+							<div className="form-group">
+								<label htmlFor="categorySelector">Category:</label>
+								<CategorySelector id="categoryId" className="form-control"
+									value={searchParams.filters.categoryId} onChange={e => dispatch(actions.setCategoryId(e.target.value))} />
 
+							</div>
 						</div>
-						<div className="form-group col p-4 border-left">
-							<label htmlFor="typeSelect">Type:</label>
-							<select className="form-control" id='typeSelect' value={searchParams.filters.type} onChange={e => dispatch(actions.setType(e.target.value))}>
-								<option value="">Select</option>
-								<option value="Offer">Offer</option>
-								<option value="Coupon">Coupon</option>
-							</select>
+						<div className="col p-4">
+							<div className="form-group">
+								<label htmlFor="typeSelect">Type:</label>
+								<select className="form-control" id='typeSelect' value={searchParams.filters.type} onChange={e => dispatch(actions.setType(e.target.value))}>
+									<option value="">Select</option>
+									<option value="Offer">Offer</option>
+									<option value="Coupon">Coupon</option>
+								</select>
+							</div>
 						</div>
 					</div>
 					<div className="row border flex-column flex-sm-row">
-						<div className="col p-4 border-right flex-column flex-sm-row">
+						<div className="col p-4 flex-column flex-sm-row">
 							Price:
-
 							<div className='p-4'>
 								<Range
 									step={10}
@@ -118,7 +123,9 @@ const SearchBar = () => {
 							</div>
 
 						</div>
-						<div className="col p-4">
+					</div>
+					<div className="row border flex-column flex-sm-row">
+						<div className="col p-4 border-right">
 							<div className="form-group">
 								<label htmlFor="dateSelect">Creation date:</label>
 								<select className="form-control" id="dateSelect" value={searchParams.filters.date} onChange={e => dispatch(actions.setDate(e.target.value))}>
@@ -135,7 +142,30 @@ const SearchBar = () => {
 								<label className="form-check-label" htmlFor="expiredCheckbox">
 									Include expired posts
 								</label>
-							</div></div>
+							</div>
+						</div>
+						<div className="col p-4 border-right">
+							<div className="form-group">
+								<label htmlFor="dateSelect">Sort by:</label>
+								<select className="form-control" id="sortParamSelect" value={searchParams.filters.sortParam} onChange={e => dispatch(actions.setSortParam(e.target.value))}>
+									<option value="creationDate">Creation date</option>
+									<option value="expirationDate">Expiration date</option>
+									<option value="title">Title</option>
+									<option value="price">Price</option>
+									<option value="positiveRatings">Positive ratings</option>
+									<option value="negativeRatings">Negative ratings</option>
+								</select>
+							</div>
+						</div>
+						<div className="col p-4">
+							<div className="form-group">
+								<label htmlFor="dateSelect">Order:</label>
+								<select className="form-control" id="sortOrderSelect" value={searchParams.filters.sortOrder} onChange={e => dispatch(actions.setSortOrder(e.target.value))}>
+									<option value="DESC">Descendent</option>
+									<option value="ASC">Ascendent</option>
+								</select>
+							</div>
+						</div>
 					</div>
 					<div className='text-center m-4'>
 						<button className="btn btn-primary" onClick={handleApply}>Apply</button>
