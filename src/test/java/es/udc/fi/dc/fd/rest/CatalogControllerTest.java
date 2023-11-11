@@ -114,8 +114,10 @@ public class CatalogControllerTest {
 	 */
 	@Test
 	public void testPostFindAllPosts_Ok() throws Exception {
-		SearchParamsDto searchParamsDto = new SearchParamsDto(new SearchFiltersDto(null, null,
-				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false), "", 0);
+		SearchParamsDto searchParamsDto = new SearchParamsDto(
+				new SearchFiltersDto(null, null, Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")),
+						null, false, "creationDate", "DESC"),
+				"", 0);
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/catalog/feed").contentType(MediaType.APPLICATION_JSON)

@@ -162,7 +162,8 @@ public class CatalogServiceTest {
 				createCoupon("coupon2", users.get(1), categories.get(1)),
 				createCoupon("coupon3", users.get(0), categories.get(2)));
 		searchFilters = new SearchFilters(null, null,
-				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false);
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "creationDate",
+				"DESC");
 	}
 
 	/**
@@ -199,7 +200,8 @@ public class CatalogServiceTest {
 	@Test
 	public void testFindAllPosts() throws MaximumImageSizeExceededException, DuplicateInstanceException {
 		SearchFilters searchFilters = new SearchFilters(null, null,
-				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false);
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "creationDate",
+				"DESC");
 
 		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
 				true);
@@ -395,7 +397,8 @@ public class CatalogServiceTest {
 		postDao.deleteAll();
 
 		SearchFilters searchFilters = new SearchFilters(null, null,
-				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false);
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "creationDate",
+				"DESC");
 
 		assertTrue(catalogService.findPosts(searchFilters, null, 0, 1).getItems().isEmpty());
 		assertFalse(catalogService.findPosts(searchFilters, null, 0, 1).getExistMoreItems());
