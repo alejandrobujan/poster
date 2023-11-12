@@ -8,6 +8,12 @@ public class CommentDto {
 
 	private Long date;
 
+	private int answers;
+
+	private Long parentId;
+
+	private int level;
+
 	/** The post user */
 	private UserSummaryDto userSummaryDto;
 
@@ -15,12 +21,18 @@ public class CommentDto {
 	 * @param id
 	 * @param description
 	 * @param date
+	 * @param answers
+	 * @param parentId
+	 * @param level
 	 * @param userSummaryDto
 	 */
-	public CommentDto(Long id, String description, Long date, UserSummaryDto userSummaryDto) {
+	public CommentDto(Long id, String description, Long date, int answers, Long parentId, int level, UserSummaryDto userSummaryDto) {
 		this.id = id;
 		this.description = description;
 		this.date = date;
+		this.answers=answers;
+		this.parentId=parentId;
+		this.level=level;
 		this.userSummaryDto = userSummaryDto;
 	}
 
@@ -67,6 +79,20 @@ public class CommentDto {
 	}
 
 	/**
+	 * @return the answers
+	 */
+	public int getAnswers() {
+		return answers;
+	}
+
+	/**
+	 * @param answers the answerts to set
+	 */
+	public void setAnswers(int answers) {
+		this.answers = answers;
+	}
+
+	/**
 	 * @return the userSummaryDto
 	 */
 	public UserSummaryDto getUserSummaryDto() {
@@ -78,6 +104,34 @@ public class CommentDto {
 	 */
 	public void setUserSummaryDto(UserSummaryDto userSummaryDto) {
 		this.userSummaryDto = userSummaryDto;
+	}
+
+	/**
+	 * @return the parent id
+	 */
+	public Long getParentId() {
+		return parentId;
+	}
+
+	/**
+	 * @param parentId the parent id to set
+	 */
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
+	/**
+	 * @return the level
+	 */
+	public int getLevel() {
+		return level;
+	}
+
+	/**
+	 * @param parentId the level to set
+	 */
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 }

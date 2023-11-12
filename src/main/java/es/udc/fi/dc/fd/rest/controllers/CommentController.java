@@ -18,12 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Comment;
+import es.udc.fi.dc.fd.model.services.Block;
 import es.udc.fi.dc.fd.model.services.CommentService;
 import es.udc.fi.dc.fd.model.services.exceptions.InvalidCommentParameterException;
 import es.udc.fi.dc.fd.rest.common.ErrorsDto;
+import es.udc.fi.dc.fd.rest.dtos.BlockDto;
 import es.udc.fi.dc.fd.rest.dtos.CommentConversor;
 import es.udc.fi.dc.fd.rest.dtos.CommentDto;
 import es.udc.fi.dc.fd.rest.dtos.CommentParamsDto;
+import es.udc.fi.dc.fd.rest.dtos.FindCommentsParamsDto;
 
 /**
  * The Class CommentController.
@@ -64,19 +67,35 @@ public class CommentController {
 	}
 
 	@PostMapping("/post/{id}/comment")
-	public CommentDto createComment(@RequestAttribute Long userId, @PathVariable Long id,
+	public void createComment(@RequestAttribute Long userId, @PathVariable Long id,
 			@Validated @RequestBody CommentParamsDto params)
 			throws InstanceNotFoundException, InvalidCommentParameterException {
 
-		Comment comment = null;
-
 		if (params.getCommentParentId() == null) {
 
-			comment = commentService.createComment(params.getDescription(), userId, id);
+			commentService.createComment(params.getDescription(), userId, id);
 		} else
-			comment = commentService.answerComment(params.getDescription(), userId, params.getCommentParentId());
+			commentService.answerComment(params.getDescription(), userId, params.getCommentParentId());
 
-		return CommentConversor.toCommentDto(comment);
+	}
+
+	@PostMapping("/findComments")
+	public BlockDto<CommentDto> findComments(@RequestBody FindCommentsParamsDto params) {
+
+		Block<Comment> postComments = commentService.findComments(params.getId(), params.getPage(), params.getParentId(), 6);
+
+		return new BlockDto<>(CommentConversor.toCommentDtos(postComments.getItems()),
+				postComments.getExistMoreItems());
+
+	}
+
+	@PostMapping("/findCommentResponses")
+	public BlockDto<CommentDto> findCommentResponses(@RequestBody FindCommentsParamsDto params) {
+
+		Block<Comment> postComments = commentService.findCommentResponses(params.getId(), params.getPage(), 6);
+
+		return new BlockDto<>(CommentConversor.toCommentDtos(postComments.getItems()),
+				postComments.getExistMoreItems());
 
 	}
 
