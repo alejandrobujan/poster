@@ -31,4 +31,21 @@ public interface CommentService {
 	Comment answerComment(String description, Long userId, Long parentId)
 			throws InstanceNotFoundException, InvalidCommentParameterException;
 
+	/**
+	 * @param postId
+	 * @param page
+	 * @param size
+	 * @return
+	 */
+	Block<Comment> findComments(Long postId, int page, Long parentId, int size);
+
+	/**
+	 * @param postId
+	 * @param commentId
+	 * @param page
+	 * @param size
+	 * @return
+	 */
+	Block<Comment> findCommentResponses(Long commentId, int page, int size);
+
 }

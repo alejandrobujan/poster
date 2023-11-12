@@ -38,6 +38,9 @@ public class Comment {
 	/** The comment level. */
 	private int level;
 
+	/** The comment answers. */
+	private int answers;
+
 	/**
 	 * Instantiates a new comment.
 	 */
@@ -53,13 +56,14 @@ public class Comment {
 	 * @param comment
 	 * @param level
 	 */
-	public Comment(String description, LocalDateTime date, User user, Post post, Comment comment, int level) {
+	public Comment(String description, LocalDateTime date, User user, Post post, Comment comment, int level, int answers) {
 		this.description = description;
 		this.date = date;
 		this.user = user;
 		this.post = post;
 		this.comment = comment;
 		this.level = level;
+		this.answers=answers;
 	}
 
 	/**
@@ -168,10 +172,26 @@ public class Comment {
 		this.level = level;
 	}
 
+	/**
+	 * @return the answers
+	 */
+	public int getAnswers() {
+		return answers;
+	}
+
+	/**
+	 * @param answers the level to set
+	 */
+	public void setAnswers(int answers) {
+		this.answers = answers;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "Comment [id=" + id + ", description=" + description + ", date=" + date + ", user=" + user + ", post="
-				+ post + ", comment=" + comment + ", level=" + level + "]";
+				+ post + ", comment=" + comment + ", level=" + level + ", answers=" + answers + "]";
 	}
 
 }

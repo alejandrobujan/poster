@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +62,7 @@ public class CommentServiceImpl implements CommentService {
 			throw new InvalidCommentParameterException("project.entities.post", postId);
 		}
 
-		Comment comment = new Comment(description, LocalDateTime.now(), user, post, null, 1);
+		Comment comment = new Comment(description, LocalDateTime.now(), user, post, null, 1, 0);
 
 		commentDao.save(comment);
 
@@ -92,11 +94,28 @@ public class CommentServiceImpl implements CommentService {
 			throw new InvalidCommentParameterException("project.entities.comment", parentId);
 		}
 
-		Comment comment = new Comment(description, LocalDateTime.now(), user, parent.getPost(), parent, parent.getLevel() + 1);
+		parent.setAnswers(parent.getAnswers()+1);
+
+		Comment comment = new Comment(description, LocalDateTime.now(), user, parent.getPost(), parent, parent.getLevel()+1, 0);
 
 		commentDao.save(comment);
+		commentDao.save(parent);
 
 		return comment;
+	}
+
+	@Override
+	public Block<Comment> findComments(Long postId, int page, Long parentId, int size) {
+		Slice<Comment> slice = commentDao.findByPostIdAndCommentIdOrderByDateDesc(postId, parentId, PageRequest.of(page, size));
+
+		return new Block<>(slice.getContent(), slice.hasNext());
+	}
+
+	@Override
+	public Block<Comment> findCommentResponses(Long commentId, int page, int size) {
+		Slice<Comment> slice = commentDao.findByCommentIdOrderByDateDesc(commentId, PageRequest.of(page, size));
+
+		return new Block<>(slice.getContent(), slice.hasNext());
 	}
 
 }
