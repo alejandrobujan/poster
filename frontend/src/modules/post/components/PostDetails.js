@@ -5,9 +5,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import * as selectors from '../selectors';
 import * as userSelectors from '../../users/selectors';
 import * as actions from '../actions';
+
+import * as commentActions from '../../comment/actions';
+import * as commentSelectors from '../../comment/selectors';
+
 import { BackLink, UserCard, Errors } from '../../common';
+import { Pager } from '../../common';
 import { getDate } from '../../../backend/utils';
 import { OfferIcon, CouponIcon } from "../../catalog";
+import { Comments } from "../../comment";
 
 import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
@@ -15,19 +21,36 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 const PostDetails = () => {
 	const post = useSelector(selectors.getPost);
+	const comments = useSelector(commentSelectors.getComments);
 	const user = useSelector(userSelectors.getUser);
 	const isLoggedIn = useSelector(userSelectors.isLoggedIn);
 	const userName = useSelector(userSelectors.getUserName);
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const [comment, setComment] = useState('');
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [buttonPressed, setButtonPressed] = useState(false);
+	
+	let form;
 
 	const components = {
 		'Offer': OfferIcon,
 		'Coupon': CouponIcon
-	};
+	}; 
+
+	const handleSubmit = event => {
+
+		event.preventDefault();
+
+		if (form.checkValidity()) {
+			dispatch(commentActions.commentPost(comment, id, null, 0, errors => setBackendErrors(errors)))
+			setComment('');
+		} else {
+			setBackendErrors(null);
+			form.classList.add('was-validated');
+		}
+	}
 
 
 	const handleDeleteClick = () => {
@@ -43,9 +66,13 @@ const PostDetails = () => {
 
 		if (!Number.isNaN(postId)) {
 			dispatch(actions.findPostById(postId));
+			dispatch(commentActions.findComments(postId, null, 0));
 		}
 
-		return () => dispatch(actions.clearPost());
+		return () => {
+			dispatch(actions.clearPost())
+			dispatch(commentActions.clearComments());
+		};
 
 	}, [id, dispatch]);
 
@@ -173,6 +200,42 @@ const PostDetails = () => {
 
 					}
 				</div>
+			</div>
+			<div>
+				&nbsp;
+				{isLoggedIn &&
+					<form ref={node => form = node}
+						className="needs-validation container ml-1" noValidate
+						onSubmit={e => handleSubmit(e)}>
+						<input type="text"
+							id="comment"
+							className="form-control"
+							placeholder="Add a comment"
+							value={comment}
+							onChange={e => setComment(e.target.value)}
+							autoFocus
+							minLength={1}
+							maxLength={256}
+							required />
+						<div className="text-right">
+							<button type="submit" className="btn btn-primary my-3">
+								Comment
+							</button>
+						</div>
+					</form>
+				}
+					<div>
+						<Comments comments={comments.elems.items} postId={id}/>
+						<Pager
+							back={{
+								enabled: comments.page >= 1,
+								onClick: () => dispatch(commentActions.previousFindCommentsResultPage(id, null, comments.page))
+							}}
+							next={{
+								enabled: comments.elems.existMoreItems,
+								onClick: () => dispatch(commentActions.nextFindCommentsResultPage(id, null, comments.page))
+							}} />
+					</div>
 			</div>
 		</div>
 
