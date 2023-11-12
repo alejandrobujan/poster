@@ -56,14 +56,15 @@ public class Comment {
 	 * @param comment
 	 * @param level
 	 */
-	public Comment(String description, LocalDateTime date, User user, Post post, Comment comment, int level, int answers) {
+	public Comment(String description, LocalDateTime date, User user, Post post, Comment comment, int level,
+			int answers) {
 		this.description = description;
 		this.date = date;
 		this.user = user;
 		this.post = post;
 		this.comment = comment;
 		this.level = level;
-		this.answers=answers;
+		this.answers = answers;
 	}
 
 	/**
@@ -185,8 +186,6 @@ public class Comment {
 	public void setAnswers(int answers) {
 		this.answers = answers;
 	}
-
-
 
 	@Override
 	public String toString() {

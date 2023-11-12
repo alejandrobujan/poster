@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS Notification;
+DROP TABLE IF EXISTS Comment;
 DROP TABLE IF EXISTS Rating;
 DROP TABLE IF EXISTS Image;
 DROP TABLE IF EXISTS Coupon;
@@ -6,7 +7,6 @@ DROP TABLE IF EXISTS Offer;
 DROP TABLE IF EXISTS Post;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Category;
-DROP TABLE IF EXISTS Comment;
 
 CREATE TABLE Users (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -95,7 +95,7 @@ CREATE TABLE Notification (
 	notifierUserId BIGINT NOT NULL, 
 	notifiedUserId BIGINT NOT NULL, 
 	postId BIGINT NOT NULL,
-	commentId BIGINT NOT NULL
+	commentId BIGINT NOT NULL,
 
 	CONSTRAINT NotificationFK_Users0 FOREIGN KEY (notifierUserId) REFERENCES Users(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT NotificationFK_Users1 FOREIGN KEY (notifiedUserId) REFERENCES Users(id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -121,8 +121,11 @@ INSERT INTO Offer(id) VALUES (2);
 INSERT INTO Post(title, description, url, price, creationDate, expired, userId, categoryId) VALUES ('MG4 Brighton', 'Discover the future of mobility', 'www.mgmotor.eu/es-ES/configurator/mg4', 30480, '2023-10-09 00:00:00', false, 1, 2);
 INSERT INTO Coupon(id, code) VALUES (3, 'EXTRAMG4');
 
-INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId) VALUES ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua asdf', false, '2004-05-12 00:00:00', 1, 1, 1);
-INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId) VALUES ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua asdf', false, '2004-05-12 00:00:00', 1, 1, 1);
-INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId) VALUES ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua asdf', false, '2004-05-12 00:00:00', 1, 1, 1);
-INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId) VALUES ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua asdf', false, '2004-05-12 00:00:00', 1, 1, 1);
-INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId) VALUES ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua asdf', false, '2004-05-12 00:00:00', 1, 1, 1);
+INSERT INTO Comment(description, date, userId, postId) VALUES ('Amazing!!', '2004-05-12 00:00:00', 1, 2);
+INSERT INTO Comment(description, date, userId, postId) VALUES ('Great!!', '2004-05-12 00:00:00', 1, 2);
+
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('Amazing!! ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', false, '2004-05-12 00:00:00', 1, 1, 2, 1);
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('Great!! ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', false, '2004-05-12 00:00:00', 1, 1, 2, 2);
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('Amazing!! ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', false, '2004-05-12 00:00:00', 1, 1, 2, 1);
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('Great!! ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', false, '2004-05-12 00:00:00', 1, 1, 2, 2);
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('Amazing!! ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', false, '2004-05-12 00:00:00', 1, 1, 2, 1);

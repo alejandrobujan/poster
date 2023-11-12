@@ -27,12 +27,34 @@ public class Notification {
 	private User notifiedUser;
 	/** The notifier post. */
 	private Post post;
+	/** The notifier comment. */
+	private Comment comment;
 
 	/**
 	 * Instantiates a new image.
 	 */
 	public Notification() {
 
+	}
+
+	/**
+	 * @param text
+	 * @param viewed
+	 * @param creationDate
+	 * @param notifierUser
+	 * @param notifiedUser
+	 * @param post
+	 * @param comment
+	 */
+	public Notification(String text, boolean viewed, LocalDateTime creationDate, User notifierUser, User notifiedUser,
+			Post post, Comment comment) {
+		this.text = text;
+		this.viewed = viewed;
+		this.creationDate = creationDate;
+		this.notifierUser = notifierUser;
+		this.notifiedUser = notifiedUser;
+		this.post = post;
+		this.comment = comment;
 	}
 
 	/**
@@ -150,6 +172,22 @@ public class Notification {
 	 */
 	public void setPost(Post post) {
 		this.post = post;
+	}
+
+	/**
+	 * @return the comment
+	 */
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "commentId")
+	public Comment getComment() {
+		return comment;
+	}
+
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(Comment comment) {
+		this.comment = comment;
 	}
 
 }

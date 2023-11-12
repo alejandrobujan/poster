@@ -19,6 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.CategoryDao;
+import es.udc.fi.dc.fd.model.entities.Comment;
+import es.udc.fi.dc.fd.model.entities.CommentDao;
 import es.udc.fi.dc.fd.model.entities.Coupon;
 import es.udc.fi.dc.fd.model.entities.Notification;
 import es.udc.fi.dc.fd.model.entities.NotificationDao;
@@ -41,6 +43,7 @@ public class NotificationServiceTest {
 	private List<User> users;
 	private List<Post> posts;
 	private List<Category> categories;
+	private List<Comment> comments;
 
 	/** The user service. */
 	@Autowired
@@ -58,9 +61,13 @@ public class NotificationServiceTest {
 	@Autowired
 	private NotificationDao notificationDao;
 
-	/** The notification dao. */
+	/** The notification service. */
 	@Autowired
 	private NotificationService notificationService;
+
+	/** The comment dao. */
+	@Autowired
+	private CommentDao commentDao;
 
 	/**
 	 * Sign up user
@@ -117,8 +124,13 @@ public class NotificationServiceTest {
 		return categoryDao.save(new Category(name));
 	}
 
-	private Notification createNotification(String text, User notifier, User notified, Post post) {
-		return notificationDao.save(new Notification(text, notifier, notified, post));
+	private Comment createComment(String description, User user, Post post) {
+		return commentDao.save(new Comment(description, LocalDateTime.now(), user, post, null, 1, 0));
+	}
+
+	private Notification createNotification(String text, User notifier, User notified, Post post, Comment comment) {
+		return notificationDao
+				.save(new Notification(text, false, LocalDateTime.now(), notifier, notified, post, comment));
 	}
 
 	@Before
@@ -129,14 +141,19 @@ public class NotificationServiceTest {
 		posts = List.of(createOffer("offer1", users.get(0), categories.get(0)),
 				createCoupon("coupon2", users.get(1), categories.get(1)),
 				createCoupon("coupon3", users.get(0), categories.get(2)));
+		comments = List.of(createComment("Great!!", users.get(1), posts.get(0)),
+				createComment("Amazing!!", users.get(1), posts.get(0)));
+
 	}
 
 	@Test
 	public void testFindNotifications() {
-		Notification notification1 = createNotification("notification1", users.get(0), users.get(1), posts.get(0));
-		Notification notification2 = createNotification("notification1", users.get(0), users.get(1), posts.get(1));
+		Notification notification1 = createNotification("notification1", users.get(1), users.get(0), posts.get(0),
+				comments.get(0));
+		Notification notification2 = createNotification("notification1", users.get(1), users.get(0), posts.get(0),
+				comments.get(1));
 
-		List<Notification> notifications = notificationService.findUnviewedNotifications(users.get(1).getId());
+		List<Notification> notifications = notificationService.findUnviewedNotifications(users.get(0).getId());
 
 		assertTrue(notifications.contains(notification1));
 		assertTrue(notifications.contains(notification2));
@@ -145,11 +162,13 @@ public class NotificationServiceTest {
 
 	@Test
 	public void testFindNotificationsWithViewed() {
-		Notification notification1 = createNotification("notification1", users.get(0), users.get(1), posts.get(0));
-		Notification notification2 = createNotification("notification1", users.get(0), users.get(1), posts.get(1));
+		Notification notification1 = createNotification("notification1", users.get(1), users.get(0), posts.get(0),
+				comments.get(0));
+		Notification notification2 = createNotification("notification1", users.get(1), users.get(0), posts.get(0),
+				comments.get(1));
 		notification2.setViewed(true);
 
-		List<Notification> notifications = notificationService.findUnviewedNotifications(users.get(1).getId());
+		List<Notification> notifications = notificationService.findUnviewedNotifications(users.get(0).getId());
 
 		assertTrue(notifications.contains(notification1));
 		assertFalse(notifications.contains(notification2));
@@ -158,10 +177,10 @@ public class NotificationServiceTest {
 
 	@Test
 	public void testFindNotificationsEmpty() {
-		createNotification("notification1", users.get(0), users.get(1), posts.get(0));
-		createNotification("notification1", users.get(0), users.get(1), posts.get(1));
+		createNotification("notification1", users.get(1), users.get(0), posts.get(0), comments.get(0));
+		createNotification("notification1", users.get(1), users.get(0), posts.get(0), comments.get(1));
 
-		List<Notification> notifications = notificationService.findUnviewedNotifications(users.get(0).getId());
+		List<Notification> notifications = notificationService.findUnviewedNotifications(users.get(1).getId());
 
 		assertTrue(notifications.isEmpty());
 	}
