@@ -36,6 +36,10 @@
 	font-size: 1.5rem;
 }
 
+.comment-title {
+	font-size: 1.5rem;
+}
+
 .post-signature {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Adjusted", "Segoe UI", "Liberation Sans", sans-serif;
 	font-size: 11px;
@@ -126,3 +130,11 @@
 	background-color: #fb6262;
 	border-radius: 50%;
 }
+
+.color-text {
+      color: rgb(0, 0, 0); 
+      transition: color 0.3s ease; 
+}
+.color-text:hover {
+      color: rgb(154, 153, 150); 
+ }
