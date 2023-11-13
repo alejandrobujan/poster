@@ -1,6 +1,6 @@
 class NetworkError {
   constructor() {
-    this.messsage = "Network error";
+    this.message = "Network error";
   }
 }
 
