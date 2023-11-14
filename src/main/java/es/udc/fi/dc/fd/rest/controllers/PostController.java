@@ -33,7 +33,6 @@ import es.udc.fi.dc.fd.rest.dtos.CouponConversor;
 import es.udc.fi.dc.fd.rest.dtos.OfferConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostDto;
-import es.udc.fi.dc.fd.rest.dtos.PostExpiredDto;
 import es.udc.fi.dc.fd.rest.dtos.PostParamsDto;
 import es.udc.fi.dc.fd.rest.dtos.PostUpdateDto;
 import es.udc.fi.dc.fd.rest.dtos.UserDto;
@@ -110,7 +109,7 @@ public class PostController {
 
 		Post post = postService.createPost(params.getTitle(), params.getDescription(), params.getUrl(),
 				params.getPrice(), userId, params.getCategoryId(), params.getImages(), params.getType(),
-				params.getProperties());
+				params.getProperties(), PostConversor.fromMillis(params.getExpirationDate()));
 
 		return postConversor.toPostDto(post);
 
@@ -144,10 +143,10 @@ public class PostController {
 	 * @throws PermissionException       the permission exception
 	 */
 	@PostMapping("/post/{id}/markAsExpired")
-	public PostExpiredDto markPostAsExpired(@RequestAttribute Long userId, @PathVariable Long id,
-			@RequestBody PostExpiredDto postExpiredDto) throws InstanceNotFoundException, PermissionException {
+	public Long markPostAsExpired(@RequestAttribute Long userId, @PathVariable Long id)
+			throws InstanceNotFoundException, PermissionException {
 
-		return new PostExpiredDto(postService.markAsExpired(userId, id, postExpiredDto.isExpired()));
+		return PostConversor.toMillis(postService.markAsExpired(userId, id));
 
 	}
 
@@ -179,7 +178,7 @@ public class PostController {
 
 		Post post = postService.updatePost(postId, params.getTitle(), params.getDescription(), params.getUrl(),
 				params.getPrice(), userId, params.getCategoryId(), params.getImages(), params.getType(),
-				params.getProperties());
+				params.getProperties(), PostConversor.fromMillis(params.getExpirationDate()));
 
 		return postConversor.toPostDto(post);
 

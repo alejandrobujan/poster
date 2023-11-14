@@ -37,6 +37,8 @@ public class PostUpdateDto {
 	private String type;
 	/** The properties of the post */
 	private Map<String, String> properties;
+	@NotNull
+	private Long expirationDate;
 
 	/**
 	 * Instantiates a new post update dto.
@@ -58,7 +60,7 @@ public class PostUpdateDto {
 	 * @param properties  the properties of the post
 	 */
 	public PostUpdateDto(Long authorId, String title, String description, String url, BigDecimal price, Long categoryId,
-			List<byte[]> images, String type, Map<String, String> properties) {
+			List<byte[]> images, String type, Map<String, String> properties, Long expirationDate) {
 		super();
 		this.authorId = authorId;
 		this.title = title;
@@ -69,6 +71,7 @@ public class PostUpdateDto {
 		this.images = images;
 		this.type = type;
 		this.properties = properties;
+		this.expirationDate = expirationDate;
 	}
 
 	/**
@@ -231,6 +234,20 @@ public class PostUpdateDto {
 	 */
 	public void setAuthorId(Long authorId) {
 		this.authorId = authorId;
+	}
+
+	/**
+	 * @return the expirationDate
+	 */
+	public Long getExpirationDate() {
+		return expirationDate;
+	}
+
+	/**
+	 * @param expirationDate the expirationDate to set
+	 */
+	public void setExpirationDate(Long expirationDate) {
+		this.expirationDate = expirationDate;
 	}
 
 }

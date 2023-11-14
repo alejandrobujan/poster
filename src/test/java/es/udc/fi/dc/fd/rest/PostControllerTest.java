@@ -42,6 +42,7 @@ import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededExcepti
 import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
+import es.udc.fi.dc.fd.rest.dtos.PostConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostExpiredDto;
 import es.udc.fi.dc.fd.rest.dtos.PostParamsDto;
 import es.udc.fi.dc.fd.rest.dtos.PostUpdateDto;
@@ -133,8 +134,8 @@ public class PostControllerTest {
 	 */
 
 	private Post createOffer(String title, User user, Category category) {
-		return postDao
-				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
+		return postDao.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
+				category, LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -180,6 +181,7 @@ public class PostControllerTest {
 		postParams.setUrl("http://poster.com");
 		postParams.setType("Coupon");
 		postParams.setProperties(Map.of("code", "APP25"));
+		postParams.setExpirationDate(PostConversor.toMillis(LocalDateTime.of(2025, 2, 4, 0, 0, 0)));
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -321,6 +323,7 @@ public class PostControllerTest {
 		postUpdateParams.setTitle("Tarta");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setExpirationDate(PostConversor.toMillis(LocalDateTime.of(2025, 2, 4, 0, 0, 0)));
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -346,6 +349,7 @@ public class PostControllerTest {
 		postUpdateParams.setTitle(" ");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setExpirationDate(PostConversor.toMillis(LocalDateTime.of(2025, 2, 4, 0, 0, 0)));
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -371,6 +375,7 @@ public class PostControllerTest {
 		postUpdateParams.setTitle("Tarta de Santiago");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setExpirationDate(PostConversor.toMillis(LocalDateTime.of(2025, 2, 4, 0, 0, 0)));
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -421,6 +426,7 @@ public class PostControllerTest {
 		postUpdateParams.setTitle("Tarta");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setExpirationDate(PostConversor.toMillis(LocalDateTime.of(2025, 2, 4, 0, 0, 0)));
 
 		ObjectMapper mapper = new ObjectMapper();
 

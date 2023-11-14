@@ -31,12 +31,11 @@ public class PostDto {
 	private int positiveRatings;
 	/** The negative ratings count. */
 	private int negativeRatings;
-	/** If is expired or not */
-	private boolean expired;
 	/** The type of the post */
 	private String type;
 	/** The properties of the post */
 	private Map<String, String> properties;
+	private Long expirationDate;
 
 	/**
 	 * Instantiates a new post dto.
@@ -58,7 +57,7 @@ public class PostDto {
 	 */
 	public PostDto(Long id, String title, String description, String url, BigDecimal price, CategoryDto categoryDto,
 			UserSummaryDto userCreatorDto, List<byte[]> images, Long creationDate, int positiveRatings,
-			int negativeRatings, boolean expired, String type, Map<String, String> properties) {
+			int negativeRatings, String type, Map<String, String> properties, Long expirationDate) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -70,9 +69,9 @@ public class PostDto {
 		this.creationDate = creationDate;
 		this.positiveRatings = positiveRatings;
 		this.negativeRatings = negativeRatings;
-		this.expired = expired;
 		this.type = type;
 		this.properties = properties;
+		this.expirationDate = expirationDate;
 	}
 
 	/**
@@ -256,24 +255,6 @@ public class PostDto {
 	}
 
 	/**
-	 * Gets if the post is expired or not
-	 * 
-	 * @return if the post is expired or not
-	 */
-	public boolean isExpired() {
-		return expired;
-	}
-
-	/**
-	 * Sets the expired attribute
-	 * 
-	 * @param expired value to set (if it is expired or not)
-	 */
-	public void setExpired(boolean expired) {
-		this.expired = expired;
-	}
-
-	/**
 	 * Gets the creation date.
 	 * 
 	 * @return the creationDate
@@ -325,6 +306,20 @@ public class PostDto {
 	 */
 	public void setProperties(Map<String, String> properties) {
 		this.properties = properties;
+	}
+
+	/**
+	 * @return the expirationDate
+	 */
+	public Long getExpirationDate() {
+		return expirationDate;
+	}
+
+	/**
+	 * @param expirationDate the expirationDate to set
+	 */
+	public void setExpirationDate(Long expirationDate) {
+		this.expirationDate = expirationDate;
 	}
 
 }

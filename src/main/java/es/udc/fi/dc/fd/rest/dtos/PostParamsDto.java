@@ -37,6 +37,8 @@ public class PostParamsDto {
 	private String type;
 	/** The properties of the post */
 	private Map<String, String> properties;
+	@NotNull
+	private Long expirationDate;
 
 	/**
 	 * Instantiates a new post params dto.
@@ -55,7 +57,7 @@ public class PostParamsDto {
 	 * @param properties  the properties of the post
 	 */
 	public PostParamsDto(String title, String description, String url, BigDecimal price, Long categoryId,
-			List<byte[]> images, String type, Map<String, String> properties) {
+			List<byte[]> images, String type, Map<String, String> properties, Long expirationDate) {
 		this.title = title;
 		this.description = description;
 		this.url = url;
@@ -64,6 +66,7 @@ public class PostParamsDto {
 		this.images = images;
 		this.type = type;
 		this.properties = properties;
+		this.expirationDate = expirationDate;
 	}
 
 	/**
@@ -208,6 +211,20 @@ public class PostParamsDto {
 	 */
 	public void setProperties(Map<String, String> properties) {
 		this.properties = properties;
+	}
+
+	/**
+	 * @return the expirationDate
+	 */
+	public Long getExpirationDate() {
+		return expirationDate;
+	}
+
+	/**
+	 * @param expirationDate the expirationDate to set
+	 */
+	public void setExpirationDate(Long expirationDate) {
+		this.expirationDate = expirationDate;
 	}
 
 }
