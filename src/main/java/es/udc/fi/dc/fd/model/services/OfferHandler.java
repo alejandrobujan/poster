@@ -68,8 +68,9 @@ public class OfferHandler implements PostHandler {
 	 */
 	@Override
 	public Post handleCreate(String title, String description, String url, BigDecimal price, Long userId,
-			Long categoryId, List<byte[]> imageList, Map<String, String> properties) throws InstanceNotFoundException,
-			MaximumImageSizeExceededException, MissingRequiredParameterException, IncorrectFormValuesException {
+			Long categoryId, List<byte[]> imageList, Map<String, String> properties, LocalDateTime expirationDate)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
+			IncorrectFormValuesException {
 		User user = permissionChecker.checkUser(userId);
 
 		if (title == null || description == null || title.trim().equals("") || description.trim().equals("")) {
@@ -89,8 +90,8 @@ public class OfferHandler implements PostHandler {
 
 		LocalDateTime creationDate = LocalDateTime.now();
 
-		Post post = postDao
-				.save(new Offer(title.trim(), description.trim(), url.trim(), price, creationDate, user, category));
+		Post post = postDao.save(new Offer(title.trim(), description.trim(), url.trim(), price, creationDate, user,
+				category, expirationDate));
 
 		int maxSize = 1024000;
 		Image image;
@@ -134,7 +135,7 @@ public class OfferHandler implements PostHandler {
 	 */
 	@Override
 	public Post handleUpdate(Long postId, String title, String description, String url, BigDecimal price, Long userId,
-			Long categoryId, List<byte[]> imageList, Map<String, String> properties)
+			Long categoryId, List<byte[]> imageList, Map<String, String> properties, LocalDateTime expirationDate)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
 			PermissionException, IncorrectFormValuesException {
 
@@ -160,6 +161,7 @@ public class OfferHandler implements PostHandler {
 		post.setUrl(url.trim());
 		post.setPrice(price);
 		post.setCategory(category);
+		post.setExpirationDate(expirationDate);
 		post.getImages().forEach(i -> imageDao.delete(i));
 		post.getImages().clear();
 

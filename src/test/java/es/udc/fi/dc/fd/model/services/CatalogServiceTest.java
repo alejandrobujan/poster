@@ -87,7 +87,7 @@ public class CatalogServiceTest {
 	 */
 	private Post createOffer(String title, User user, Category category) {
 		return postDao
-				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
+				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category, LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class CatalogServiceTest {
 	 */
 	private Post createCoupon(String title, User user, Category category) {
 		return postDao.save(new Coupon(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), "EXTRA25",
-				user, category));
+				user, category, LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -364,7 +364,7 @@ public class CatalogServiceTest {
 	@Test
 	public void testFindAllPostsExpired() throws MaximumImageSizeExceededException, DuplicateInstanceException,
 			InstanceNotFoundException, PermissionException {
-		postService.markAsExpired(users.get(0).getId(), posts.get(0).getId(), true);
+		postService.markAsExpired(users.get(0).getId(), posts.get(0).getId());
 
 		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
 				false);
@@ -417,7 +417,7 @@ public class CatalogServiceTest {
 		assertEquals(post.getCreationDate(), foundPost.getCreationDate());
 		assertEquals(post.getPositiveRatings(), foundPost.getPositiveRatings());
 		assertEquals(post.getNegativeRatings(), foundPost.getNegativeRatings());
-		assertEquals(post.isExpired(), foundPost.isExpired());
+		assertEquals(post.getExpirationDate(), foundPost.getExpirationDate());
 		assertEquals(post.getUser(), foundPost.getUser());
 		assertEquals(post.getCategory(), foundPost.getCategory());
 		assertEquals(post.getImages(), foundPost.getImages());

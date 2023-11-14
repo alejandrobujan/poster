@@ -68,8 +68,9 @@ public class CouponHandler implements PostHandler {
 	 */
 	@Override
 	public Post handleCreate(String title, String description, String url, BigDecimal price, Long userId,
-			Long categoryId, List<byte[]> imageList, Map<String, String> properties) throws InstanceNotFoundException,
-			MaximumImageSizeExceededException, MissingRequiredParameterException, IncorrectFormValuesException {
+			Long categoryId, List<byte[]> imageList, Map<String, String> properties, LocalDateTime expirationDate)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
+			IncorrectFormValuesException {
 
 		User user = permissionChecker.checkUser(userId);
 
@@ -96,8 +97,8 @@ public class CouponHandler implements PostHandler {
 			throw new MissingRequiredParameterException("code", getClass().getSimpleName());
 		}
 
-		Post post = postDao.save(
-				new Coupon(title.trim(), description.trim(), url.trim(), price, creationDate, code, user, category));
+		Post post = postDao.save(new Coupon(title.trim(), description.trim(), url.trim(), price, creationDate, code,
+				user, category, expirationDate));
 
 		int maxSize = 1024000;
 		Image image;
@@ -142,7 +143,7 @@ public class CouponHandler implements PostHandler {
 	 */
 	@Override
 	public Post handleUpdate(Long postId, String title, String description, String url, BigDecimal price, Long userId,
-			Long categoryId, List<byte[]> imageList, Map<String, String> properties)
+			Long categoryId, List<byte[]> imageList, Map<String, String> properties, LocalDateTime expirationDate)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
 			PermissionException, IncorrectFormValuesException {
 
@@ -174,6 +175,7 @@ public class CouponHandler implements PostHandler {
 		post.setUrl(url.trim());
 		post.setPrice(price);
 		post.setCategory(category);
+		post.setExpirationDate(expirationDate);
 		post.getImages().forEach(i -> imageDao.delete(i));
 		post.getImages().clear();
 

@@ -1,6 +1,7 @@
 package es.udc.fi.dc.fd.model.services;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -36,8 +37,9 @@ public interface PostHandler {
 	 * 
 	 */
 	Post handleCreate(String title, String description, String url, BigDecimal price, Long userId, Long categoryId,
-			List<byte[]> imageList, Map<String, String> properties) throws InstanceNotFoundException,
-			MaximumImageSizeExceededException, MissingRequiredParameterException, IncorrectFormValuesException;
+			List<byte[]> imageList, Map<String, String> properties, LocalDateTime expirationDate)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
+			IncorrectFormValuesException;
 
 	/**
 	 * The handle update post
@@ -61,7 +63,7 @@ public interface PostHandler {
 	 * 
 	 */
 	Post handleUpdate(Long postId, String title, String description, String url, BigDecimal price, Long userId,
-			Long categoryId, List<byte[]> imageList, Map<String, String> properties)
+			Long categoryId, List<byte[]> imageList, Map<String, String> properties, LocalDateTime expirationDate)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
 			PermissionException, IncorrectFormValuesException;
 
