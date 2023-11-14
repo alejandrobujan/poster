@@ -8,13 +8,13 @@ import {CreatePost} from "../../modules/post";
 import '@testing-library/jest-dom'
 
 describe("CreatePost", () => {
-
+	
     it("renders correctly", () => {
 		const tree = renderer
         .create(
 				<Provider store={store}>
 					<MemoryRouter>
-						<CreatePost/>
+						<CreatePost min={10}/>
 					</MemoryRouter>
 				</Provider>
 			)

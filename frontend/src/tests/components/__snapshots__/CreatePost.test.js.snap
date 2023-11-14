@@ -262,6 +262,34 @@ exports[`CreatePost renders correctly 1`] = `
             </div>
           </div>
         </div>
+        <div
+          className="form-group row"
+        >
+          <label
+            className="col-md-3 col-form-label"
+            htmlFor="code"
+          >
+            Expiration date (*)
+          </label>
+          <div
+            className="col-md-9"
+          >
+            <input
+              className="form-control"
+              id="code"
+              min="1970-01-01T01:00"
+              onChange={[Function]}
+              required={true}
+              type="datetime-local"
+              value=""
+            />
+            <div
+              className="invalid-feedback"
+            >
+              The expiration date is mandatory
+            </div>
+          </div>
+        </div>
         <div>
           <p>
             (*) means mandatory field
