@@ -4,11 +4,13 @@ import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -622,6 +624,36 @@ public class PostServiceTest {
 				() -> postService.updatePost(coupon.getId(), "title", "description", "url", new BigDecimal(10),
 						user.getId(), category.getId(), List.of(new byte[EXCEEDED_BYTE_SIZE]), "Coupon",
 						Map.ofEntries()));
+	}
+
+	/**
+	 * Test mark as valid.
+	 * 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	@Test
+	public void testMarkAsValid() throws InstanceNotFoundException {
+
+		assertNull(offer.getValidationDate());
+
+		postService.markAsValid(offer.getId());
+		offer = catalogService.findPostById(offer.getId());
+
+		assertNotNull(offer.getValidationDate());
+
+		assertEquals(offer.getValidationDate().truncatedTo(ChronoUnit.SECONDS),
+				LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+
+	}
+
+	/**
+	 * Test mark as valid no post.
+	 * 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	@Test
+	public void testMarkAsValidNoPost() throws InstanceNotFoundException {
+		assertThrows(InstanceNotFoundException.class, () -> postService.markAsValid(NON_EXISTENT_ID));
 	}
 
 }

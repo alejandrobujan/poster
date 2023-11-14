@@ -475,4 +475,34 @@ public class PostControllerTest {
 				.andExpect(status().isNotFound());
 	}
 
+	/**
+	 * Test post mark post as expired ok.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPostMarkPostAsValid_Ok() throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/posts/post/" + offer.getId() + "/markAsValid")
+				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(new PostExpiredDto(true))))
+				.andExpect(status().isOk());
+	}
+
+	/**
+	 * Test post mark post as expired not found.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPostMarkPostAsValid_NotFound() throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/posts/post/" + NON_EXISTENT_ID + "/markAsValid")
+				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(new PostExpiredDto(true))))
+				.andExpect(status().isNotFound());
+	}
+
 }
