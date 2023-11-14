@@ -10,7 +10,7 @@ import { BackLink, Errors } from '../../common';
 
 import * as actions from '../actions';
 
-import { fileToBase64, isImage } from '../../../backend/utils';
+import { fileToBase64, isImage, formatDateForInput, parseInputDate } from '../../../backend/utils';
 
 import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
@@ -28,6 +28,7 @@ const UpdatePostForm = () => {
 	const [url, setUrl] = useState(post.url);
 	const [price, setPrice] = useState(post.price);
 	const [categoryId, setCategoryId] = useState(post.categoryDto != null ? post.categoryDto.id : '');
+	const [expirationDate, setExpirationDate] = useState(formatDateForInput(post.expirationDate));
 	const [images, setImages] = useState([]);
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [wrongFileType, setWrongFileType] = useState(false);
@@ -56,7 +57,7 @@ const UpdatePostForm = () => {
 			dispatch(actions.updatePost(
 				{
 					authorId: user.id, id: id, title: title, description: description, url: url,
-					price: price, categoryId: (categoryId !== '' ? categoryId : null), images: imageGalleryImages.concat(images), type: post.type, properties: properties
+					price: price, categoryId: (categoryId !== '' ? categoryId : null), images: imageGalleryImages.concat(images), type: post.type, properties: properties, expirationDate: parseInputDate(expirationDate),
 				}, () => navigate('/post/post-details/' + id), errors => setBackendErrors(errors)
 			));
 		} else {
@@ -275,6 +276,24 @@ const UpdatePostForm = () => {
 								</div>
 							</div>
 						}
+						<div className="form-group row">
+							<label htmlFor="code" className="col-md-3 col-form-label">
+								Expiration date (*)
+							</label>
+							<div className="col-md-9">
+								<input type="datetime-local"
+									id="code"
+									className="form-control"
+									value={expirationDate}
+									min={expirationDate !== '' && new Date().getTime() > parseInputDate(expirationDate) ? expirationDate : formatDateForInput(new Date().getTime())}
+									onChange={e => setExpirationDate(e.target.value)}
+									required
+								/>
+								<div className="invalid-feedback">
+									The expiration date is mandatory
+								</div>
+							</div>
+						</div>
 						<div>
 							<p>
 								(*) means mandatory field

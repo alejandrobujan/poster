@@ -58,7 +58,7 @@ const PostDetails = () => {
 	return (
 		<div className="container mt-5">
 			<Errors id="createPostErrors" errors={backendErrors} onClose={() => setBackendErrors(null)} />
-			{post.expired && <div className="alert alert-dark" role="alert">
+			{post.expirationDate <= (new Date().getTime()) && <div className="alert alert-dark" role="alert">
 				This post is expired... but maybe it can still help you.
 			</div>}
 			<div className="row">
@@ -139,6 +139,7 @@ const PostDetails = () => {
 					{post.categoryDto &&
 						<p className="card-text"><strong>Category:</strong> {post.categoryDto.name}</p>
 					}
+					<p className="card-text"><strong>Expiration:</strong> {getDate(post.expirationDate).substring(0, getDate(post.expirationDate).length - 3)}</p>
 					{post.properties.code &&
 						<div className="copy-button">
 							<input id="copyvalue" type="text" readOnly value={post.properties.code} />
@@ -165,10 +166,10 @@ const PostDetails = () => {
 						<UserCard user={post.userSummaryDto} />
 					</div>
 
-					{isLoggedIn && post.userSummaryDto.id === user.id &&
+					{isLoggedIn && post.userSummaryDto.id === user.id && (post.expirationDate > (new Date().getTime())) && 
 						<button className="page-link mt-2"
-							onClick={() => dispatch(actions.markPostAsExpired(id, !post.expired, errors => setBackendErrors(errors)))}>
-							{post.expired ? "Unmark as expired" : "Mark as expired"}
+							onClick={() => dispatch(actions.markPostAsExpired(id, errors => setBackendErrors(errors)))}>
+							Mark as expired
 						</button>
 
 					}

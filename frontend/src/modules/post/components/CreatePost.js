@@ -8,9 +8,9 @@ import { Errors } from '../../common';
 
 import * as actions from '../actions';
 
-import { fileToBase64, isImage } from '../../../backend/utils';
+import { fileToBase64, isImage, formatDateForInput, parseInputDate } from '../../../backend/utils';
 
-const CreatePost = () => {
+const CreatePost = ({ min }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const properties = {};
@@ -19,6 +19,7 @@ const CreatePost = () => {
 	const [url, setUrl] = useState('');
 	const [price, setPrice] = useState(0);
 	const [categoryId, setCategoryId] = useState('');
+	const [expirationDate, setExpirationDate] = useState('');
 	const [images, setImages] = useState([]);
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [wrongFileType, setWrongFileType] = useState(false);
@@ -39,7 +40,7 @@ const CreatePost = () => {
 		if (form.checkValidity()) {
 			dispatch(actions.createPost(
 				title, description, url,
-				price, categoryId !== '' ? categoryId : null, images, type, properties, () => navigate('/'), errors => setBackendErrors(errors)
+				price, categoryId !== '' ? categoryId : null, images, type, properties, parseInputDate(expirationDate), () => navigate('/'), errors => setBackendErrors(errors)
 			));
 		} else {
 			setBackendErrors(null);
@@ -249,6 +250,24 @@ const CreatePost = () => {
 								</div>
 							</div>
 						}
+						<div className="form-group row">
+							<label htmlFor="code" className="col-md-3 col-form-label">
+								Expiration date (*)
+							</label>
+							<div className="col-md-9">
+								<input type="datetime-local"
+									id="code"
+									className="form-control"
+									value={expirationDate}
+									min={min ? formatDateForInput(min) : formatDateForInput(new Date().getTime())}
+									onChange={e => setExpirationDate(e.target.value)}
+									required
+								/>
+								<div className="invalid-feedback">
+									The expiration date is mandatory
+								</div>
+							</div>
+						</div>
 						<div>
 							<p>
 								(*) means mandatory field
