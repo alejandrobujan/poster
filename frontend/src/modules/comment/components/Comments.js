@@ -1,9 +1,9 @@
 import Comment from './Comment';
 
 const Comments = ({comments, postId}) => {
-	if (comments.length === 0 && comments.level === 1) {
+	if (comments.length === 0) {
 		return (
-			<div className="alert alert-danger" role="alert">
+			<div data-testid="NoComments" className="alert alert-danger" role="alert">
 				No comments found
 			</div>
 		);
@@ -11,7 +11,7 @@ const Comments = ({comments, postId}) => {
 	
 	return (
 		<div>
-			<div className="w-100">
+			<div data-testid="ManyComments" className="w-100">
 				{comments.map(({ id, description, date, answers, parentId, level, userSummaryDto }) =>
 					<Comment key={id} id={id} description={description} date={date} answers={answers} parentId={parentId} level={level} user={userSummaryDto} postId={postId}/>
 				)}
