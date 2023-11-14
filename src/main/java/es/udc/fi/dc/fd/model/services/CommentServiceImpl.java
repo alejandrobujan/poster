@@ -111,11 +111,4 @@ public class CommentServiceImpl implements CommentService {
 		return new Block<>(slice.getContent(), slice.hasNext());
 	}
 
-	@Override
-	public Block<Comment> findCommentResponses(Long commentId, int page, int size) {
-		Slice<Comment> slice = commentDao.findByCommentIdOrderByDateDesc(commentId, PageRequest.of(page, size));
-
-		return new Block<>(slice.getContent(), slice.hasNext());
-	}
-
 }

@@ -207,16 +207,21 @@ const PostDetails = () => {
 					<form ref={node => form = node}
 						className="needs-validation container ml-1" noValidate
 						onSubmit={e => handleSubmit(e)}>
-						<input type="text"
-							id="comment"
-							className="form-control"
-							placeholder="Add a comment"
-							value={comment}
-							onChange={e => setComment(e.target.value)}
-							autoFocus
-							minLength={1}
-							maxLength={256}
-							required />
+						<div>
+							<input type="text"
+								id="comment"
+								className="form-control"
+								placeholder="Add a comment"
+								value={comment}
+								onChange={e => setComment(e.target.value)}
+								autoFocus
+								minLength={1}
+								maxLength={256}
+								required />
+							<div className="invalid-feedback">
+										The comment size must be between 1 and 256
+							</div>
+						</div>
 						<div className="text-right">
 							<button type="submit" className="btn btn-primary my-3">
 								Comment
@@ -224,18 +229,18 @@ const PostDetails = () => {
 						</div>
 					</form>
 				}
-					<div>
-						<Comments comments={comments.elems.items} postId={id}/>
-						<Pager
-							back={{
-								enabled: comments.page >= 1,
-								onClick: () => dispatch(commentActions.previousFindCommentsResultPage(id, null, comments.page))
-							}}
-							next={{
-								enabled: comments.elems.existMoreItems,
-								onClick: () => dispatch(commentActions.nextFindCommentsResultPage(id, null, comments.page))
-							}} />
-					</div>
+				<div>
+					<Comments comments={comments.elems.items} postId={id}/>
+					<Pager
+						back={{
+							enabled: comments.page >= 1,
+							onClick: () => dispatch(commentActions.previousFindCommentsResultPage(id, null, comments.page))
+						}}
+						next={{
+							enabled: comments.elems.existMoreItems,
+							onClick: () => dispatch(commentActions.nextFindCommentsResultPage(id, null, comments.page))
+						}} />
+				</div>
 			</div>
 		</div>
 

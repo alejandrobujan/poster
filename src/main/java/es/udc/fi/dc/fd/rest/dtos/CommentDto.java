@@ -14,7 +14,7 @@ public class CommentDto {
 
 	private int level;
 
-	/** The post user */
+	/** The comment user */
 	private UserSummaryDto userSummaryDto;
 
 	/**

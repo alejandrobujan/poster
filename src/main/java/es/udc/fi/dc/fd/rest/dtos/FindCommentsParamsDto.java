@@ -11,9 +11,6 @@ import jakarta.validation.constraints.NotNull;
 public class FindCommentsParamsDto {
 
 	@NotNull
-	private Long id;
-
-	@NotNull
 	private int page;
 
 	private Long parentId;
@@ -22,24 +19,9 @@ public class FindCommentsParamsDto {
 	 * @param id
 	 * @param page
 	 */
-	public FindCommentsParamsDto(@NotNull Long id, @NotNull int page, Long parentId) {
-		this.id = id;
+	public FindCommentsParamsDto(@NotNull int page, Long parentId) {
 		this.page = page;
 		this.parentId=parentId;
-	}
-
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	/**

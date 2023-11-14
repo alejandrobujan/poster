@@ -79,20 +79,10 @@ public class CommentController {
 
 	}
 
-	@PostMapping("/findComments")
-	public BlockDto<CommentDto> findComments(@RequestBody FindCommentsParamsDto params) {
+	@PostMapping("/post/{id}")
+	public BlockDto<CommentDto> findComments(@PathVariable Long id, @RequestBody FindCommentsParamsDto params) {
 
-		Block<Comment> postComments = commentService.findComments(params.getId(), params.getPage(), params.getParentId(), 6);
-
-		return new BlockDto<>(CommentConversor.toCommentDtos(postComments.getItems()),
-				postComments.getExistMoreItems());
-
-	}
-
-	@PostMapping("/findCommentResponses")
-	public BlockDto<CommentDto> findCommentResponses(@RequestBody FindCommentsParamsDto params) {
-
-		Block<Comment> postComments = commentService.findCommentResponses(params.getId(), params.getPage(), 6);
+		Block<Comment> postComments = commentService.findComments(id, params.getPage(), params.getParentId(), 6);
 
 		return new BlockDto<>(CommentConversor.toCommentDtos(postComments.getItems()),
 				postComments.getExistMoreItems());
