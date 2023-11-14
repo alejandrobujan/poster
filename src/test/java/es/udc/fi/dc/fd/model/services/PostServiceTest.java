@@ -36,6 +36,7 @@ import es.udc.fi.dc.fd.model.services.exceptions.IncorrectFormValuesException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
+import es.udc.fi.dc.fd.rest.dtos.PostValidDto;
 import jakarta.transaction.Transactional;
 
 /**
@@ -654,6 +655,26 @@ public class PostServiceTest {
 	@Test
 	public void testMarkAsValidNoPost() throws InstanceNotFoundException {
 		assertThrows(InstanceNotFoundException.class, () -> postService.markAsValid(NON_EXISTENT_ID));
+	}
+
+	/**
+	 * Test PostValidDto()
+	 */
+	@Test
+	public void testPostValidDtoConstructor() {
+		PostValidDto postValidDto = new PostValidDto();
+		assertNotNull(postValidDto);
+	}
+
+	/**
+	 * Test setValidationDate from postValidDto
+	 */
+	@Test
+	public void testSetValidationDate() {
+		PostValidDto postValidDto = new PostValidDto();
+		LocalDateTime time = LocalDateTime.now();
+		postValidDto.setValidationDate(time);
+		assertEquals(time, postValidDto.getValidationDate());
 	}
 
 }
