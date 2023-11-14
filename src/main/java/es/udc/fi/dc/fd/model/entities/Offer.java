@@ -35,9 +35,12 @@ public class Offer extends Post {
 
 	@Override
 	public String toString() {
-		return "Offer [id=" + getId() + ", title=" + getTitle() + ", description=" + getDescription() + ", url="
-				+ getUrl() + ", price=" + getPrice() + ", creationDate=" + getCreationDate() + ", user=" + getUser()
-				+ ", category=" + getCategory() + ", images=" + getImages() + ", positiveRatings="
-				+ getPositiveRatings() + ", negativeRatings=" + getNegativeRatings() + ", expired=" + isExpired() + "]";
+		return "Offer [getId()=" + getId() + ", getTitle()=" + getTitle() + ", getDescription()=" + getDescription()
+				+ ", getUrl()=" + getUrl() + ", getPrice()=" + getPrice() + ", getCreationDate()=" + getCreationDate()
+				+ ", getUser()=" + getUser() + ", getCategory()=" + getCategory() + ", getImages()=" + getImages()
+				+ ", getPositiveRatings()=" + getPositiveRatings() + ", getNegativeRatings()=" + getNegativeRatings()
+				+ ", isExpired()=" + isExpired() + ", getValidationDate()=" + getValidationDate() + ", toString()="
+				+ "]";
 	}
+
 }
