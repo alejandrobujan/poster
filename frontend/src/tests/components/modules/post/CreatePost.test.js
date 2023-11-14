@@ -3,8 +3,8 @@ import React from "react";
 import { MemoryRouter } from "react-router-dom";
 import {Provider} from 'react-redux';
 import renderer from "react-test-renderer";
-import store from "../../store";
-import {CreatePost} from "../../modules/post";
+import store from "../../../../store";
+import {CreatePost} from "../../../../modules/post";
 import '@testing-library/jest-dom'
 
 describe("CreatePost", () => {
