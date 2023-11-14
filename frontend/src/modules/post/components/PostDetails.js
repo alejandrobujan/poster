@@ -173,7 +173,7 @@ const PostDetails = () => {
 
 					}
 					{isLoggedIn &&
-						<button className="page-link mt-2"
+						<button className="page-link mt-2" data-testid="MarkAsValidButton"
 							onClick={() => dispatch(actions.markPostAsValid(id, errors => setBackendErrors(errors)))}>					
 							Mark as still valid
 						</button>
