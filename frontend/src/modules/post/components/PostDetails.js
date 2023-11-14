@@ -161,7 +161,7 @@ const PostDetails = () => {
 						</div>
 					}
 					<div className="post-signature">
-						<div className="creation-date">Posted at {getDate(post.creationDate)}</div>
+						<div>Posted at {getDate(post.creationDate)}</div>
 						<UserCard user={post.userSummaryDto} />
 					</div>
 
@@ -172,6 +172,17 @@ const PostDetails = () => {
 						</button>
 
 					}
+					{isLoggedIn &&
+						<button className="page-link mt-2"
+							onClick={() => dispatch(actions.markPostAsValid(id, errors => setBackendErrors(errors)))}>					
+							Mark as still valid
+						</button>
+					}
+					<div className="post-signature">
+					{post.validationDate &&
+        				<div className="mt-2">Marked as valid on: {getDate(post.validationDate)} </div>
+      				}
+      				</div>
 				</div>
 			</div>
 		</div>
