@@ -1,6 +1,7 @@
 package es.udc.fi.dc.fd.model.services;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -89,5 +90,14 @@ public interface PostService {
 			Long categoryId, List<byte[]> imageList, String type, Map<String, String> properties)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
 			PermissionException, IncorrectFormValuesException;
+
+	/**
+	 * Mark a post as valid.
+	 * 
+	 * @param postId the post id
+	 * @return the validation date updated
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	LocalDateTime markAsValid(Long postId) throws InstanceNotFoundException;
 
 }
