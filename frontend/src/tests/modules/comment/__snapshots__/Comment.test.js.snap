@@ -52,7 +52,7 @@ exports[`Comment renders correctly 1`] = `
                       }
                     }
                   >
-                    01/05/1970 04:59:09
+                    1/5/1970 4:59:09
                   </span>
                 </div>
               </div>
