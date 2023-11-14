@@ -204,11 +204,11 @@ const PostDetails = () => {
 			<div>
 				&nbsp;
 				{isLoggedIn &&
-					<form ref={node => form = node}
+					<form data-testid="CommentForm" ref={node => form = node}
 						className="needs-validation container ml-1" noValidate
 						onSubmit={e => handleSubmit(e)}>
 						<div>
-							<input type="text"
+							<input data-testid="CommentInput" type="text"
 								id="comment"
 								className="form-control"
 								placeholder="Add a comment"
@@ -218,18 +218,18 @@ const PostDetails = () => {
 								minLength={1}
 								maxLength={256}
 								required />
-							<div className="invalid-feedback">
+							<div data-testid="ErrorForm" className="invalid-feedback">
 										The comment size must be between 1 and 256
 							</div>
 						</div>
 						<div className="text-right">
-							<button type="submit" className="btn btn-primary my-3">
+							<button data-testid="CommentButton" type="submit" className="btn btn-primary my-3">
 								Comment
 							</button>
 						</div>
 					</form>
 				}
-				<div>
+				<div data-testid="Comments">
 					<Comments comments={comments.elems.items} postId={id}/>
 					<Pager
 						back={{
