@@ -88,6 +88,20 @@ describe("PostDetails", () => {
 		const errorInput = screen.getByTestId('ErrorForm');
 
 	});
+	
+	it("click mark post as valid", async () => {
+		render(
+			<Provider store={store}>
+				<MemoryRouter>
+                    <PostDetails />
+				</MemoryRouter>
+			</Provider>
+		);
+
+        const markAsValidButton = screen.getByTestId('MarkAsValidButton');
+
+        fireEvent.click(markAsValidButton);      
+	});
 
 
 
