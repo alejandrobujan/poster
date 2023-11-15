@@ -274,6 +274,25 @@ public class CatalogServiceTest {
 	}
 
 	/**
+	 * Test find all posts with a null min price.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithNullPriceFilter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+
+		searchFilters.setPrice(null);
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
+				true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 3),
+				List.of(posts.get(2), posts.get(1), posts.get(0)), false);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 2), List.of(posts.get(0)), false);
+	}
+
+	/**
 	 * Test find all posts with a specific date.
 	 * 
 	 * @throws MaximumImageSizeExceededException
@@ -356,6 +375,25 @@ public class CatalogServiceTest {
 
 		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
 				false);
+	}
+
+	/**
+	 * Test find all posts with a null date.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithDateNullFilter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+
+		searchFilters.setDate(null);
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
+				true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 3),
+				List.of(posts.get(2), posts.get(1), posts.get(0)), false);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 2), List.of(posts.get(0)), false);
 	}
 
 	/**
