@@ -18,22 +18,31 @@ public class SearchFilters {
 	private String date;
 	/** if the post is expired or not */
 	private boolean expired;
+	/** the sort parameter for returning the posts */
+	private String sortingParameter;
+	/** the sort order for returning the posts */
+	private String sortingOrder;
 
 	/**
 	 * Instantiates a new SearchFilters.
 	 * 
-	 * @param categoryId the category id
-	 * @param type       the type of the post (coupon or offer)
-	 * @param price      the price of the post
-	 * @param date       the creation date of the post
-	 * @param expired    if the post is expired or not
+	 * @param categoryId       the category id
+	 * @param type             the type of the post (coupon or offer)
+	 * @param price            the price of the post
+	 * @param date             the creation date of the post
+	 * @param expired          if the post is expired or not
+	 * @param sortingParameter the parameter for sorting posts
+	 * @param sortingOrder     the order for sorting posts
 	 */
-	public SearchFilters(Long categoryId, String type, Map<String, BigDecimal> price, String date, boolean expired) {
+	public SearchFilters(Long categoryId, String type, Map<String, BigDecimal> price, String date, boolean expired,
+			String sortingParameter, String sortingOrder) {
 		this.categoryId = categoryId;
 		this.type = type;
 		this.price = price;
 		this.date = date;
 		this.expired = expired;
+		this.sortingParameter = sortingParameter;
+		this.sortingOrder = sortingOrder;
 	}
 
 	/**
@@ -126,10 +135,47 @@ public class SearchFilters {
 		this.expired = expired;
 	}
 
+	/**
+	 * Gets the parameter for sorting posts
+	 * 
+	 * @return sortingParameter the parameter for sorting posts
+	 */
+	public String getSortingParameter() {
+		return sortingParameter;
+	}
+
+	/**
+	 * Sets the parameter for sorting posts
+	 * 
+	 * @param sortingParameter
+	 */
+	public void setSortingParameter(String sortingParameter) {
+		this.sortingParameter = sortingParameter;
+	}
+
+	/**
+	 * Gets the order for sorting posts
+	 * 
+	 * @return sortingOrder the order for sorting posts
+	 */
+	public String getSortingOrder() {
+		return sortingOrder;
+	}
+
+	/**
+	 * Sets the order for sorting posts
+	 * 
+	 * @param sortingOrder
+	 */
+	public void setSortingOrder(String sortingOrder) {
+		this.sortingOrder = sortingOrder;
+	}
+
 	@Override
 	public String toString() {
 		return "SearchFilters [categoryId=" + categoryId + ", type=" + type + ", price=" + price + ", date=" + date
-				+ ", expired=" + expired + "]";
+				+ ", expired=" + expired + ", sortingParameter=" + sortingParameter + ", sortingOrder=" + sortingOrder
+				+ "]";
 	}
 
 }

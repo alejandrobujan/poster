@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import renderer from "react-test-renderer";
-import { postMock } from "../state/Post.mock";
+import { postMock } from "../../state/Post.mock";
 
 import { PostDetails } from "../../../modules/post";
 

@@ -65,6 +65,10 @@ public class CatalogServiceTest {
 	@Autowired
 	private PostService postService;
 
+	/** The rating service. */
+	@Autowired
+	private RatingService ratingService;
+
 	/** The category dao. */
 	@Autowired
 	private CategoryDao categoryDao;
@@ -85,9 +89,8 @@ public class CatalogServiceTest {
 	 * @param category the category of the post
 	 * @return the offer
 	 */
-	private Post createOffer(String title, User user, Category category) {
-		return postDao
-				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
+	private Post createOffer(String title, User user, Category category, BigDecimal price) {
+		return postDao.save(new Offer(title, "description", "url", price, LocalDateTime.now(), user, category));
 	}
 
 	/**
@@ -98,9 +101,9 @@ public class CatalogServiceTest {
 	 * @param category the category of the post
 	 * @return the post
 	 */
-	private Post createCoupon(String title, User user, Category category) {
-		return postDao.save(new Coupon(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), "EXTRA25",
-				user, category));
+	private Post createCoupon(String title, User user, Category category, BigDecimal price) {
+		return postDao
+				.save(new Coupon(title, "description", "url", price, LocalDateTime.now(), "EXTRA25", user, category));
 	}
 
 	/**
@@ -158,11 +161,12 @@ public class CatalogServiceTest {
 		users = List.of(signUpUser("user"), signUpUser("user2"));
 		categories = List.of(createCategory("Meals"), createCategory("Motor"), createCategory("Home"),
 				createCategory("Toys"), createCategory("Tech"), createCategory("Leisure"));
-		posts = List.of(createOffer("offer1", users.get(0), categories.get(0)),
-				createCoupon("coupon2", users.get(1), categories.get(1)),
-				createCoupon("coupon3", users.get(0), categories.get(2)));
+		posts = List.of(createOffer("offer1", users.get(0), categories.get(0), new BigDecimal(5)),
+				createCoupon("coupon2", users.get(1), categories.get(1), new BigDecimal(15)),
+				createCoupon("coupon3", users.get(0), categories.get(2), new BigDecimal(10)));
 		searchFilters = new SearchFilters(null, null,
-				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false);
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "creationDate",
+				"DESC");
 	}
 
 	/**
@@ -199,7 +203,8 @@ public class CatalogServiceTest {
 	@Test
 	public void testFindAllPosts() throws MaximumImageSizeExceededException, DuplicateInstanceException {
 		SearchFilters searchFilters = new SearchFilters(null, null,
-				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false);
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "creationDate",
+				"DESC");
 
 		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
 				true);
@@ -266,6 +271,25 @@ public class CatalogServiceTest {
 		searchFilters.setPrice(Map.of("gte", new BigDecimal("50"), "lte", new BigDecimal("200")));
 
 		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(0)), false);
+	}
+
+	/**
+	 * Test find all posts with a null min price.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithNullPriceFilter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+
+		searchFilters.setPrice(null);
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
+				true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 3),
+				List.of(posts.get(2), posts.get(1), posts.get(0)), false);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 2), List.of(posts.get(0)), false);
 	}
 
 	/**
@@ -354,6 +378,25 @@ public class CatalogServiceTest {
 	}
 
 	/**
+	 * Test find all posts with a null date.
+	 * 
+	 * @throws MaximumImageSizeExceededException
+	 *
+	 */
+	@Test
+	public void testFindAllPostsWithDateNullFilter()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+
+		searchFilters.setDate(null);
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
+				true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 3),
+				List.of(posts.get(2), posts.get(1), posts.get(0)), false);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 2), List.of(posts.get(0)), false);
+	}
+
+	/**
 	 * Test find all posts expired.
 	 * 
 	 * @throws MaximumImageSizeExceededException
@@ -380,9 +423,11 @@ public class CatalogServiceTest {
 	public void testFindAllPostsWithSomeFilters() throws MaximumImageSizeExceededException, DuplicateInstanceException {
 		posts.get(0).setPrice(new BigDecimal(100));
 		posts.get(0).setTitle("pepe");
+		posts.get(0).setExpired(true);
 		postDao.save(posts.get(0));
 		searchFilters.setCategoryId(categories.get(0).getId());
 		searchFilters.setPrice(Map.of("gte", new BigDecimal("50"), "lte", new BigDecimal("10000")));
+		searchFilters.setExpired(true);
 
 		assertPostBlockEquals(catalogService.findPosts(searchFilters, "pepe", 0, 2), List.of(posts.get(0)), false);
 	}
@@ -395,7 +440,8 @@ public class CatalogServiceTest {
 		postDao.deleteAll();
 
 		SearchFilters searchFilters = new SearchFilters(null, null,
-				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false);
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "creationDate",
+				"DESC");
 
 		assertTrue(catalogService.findPosts(searchFilters, null, 0, 1).getItems().isEmpty());
 		assertFalse(catalogService.findPosts(searchFilters, null, 0, 1).getExistMoreItems());
@@ -430,6 +476,364 @@ public class CatalogServiceTest {
 	@Test
 	public void testFindNoPostById() {
 		assertThrows(InstanceNotFoundException.class, () -> catalogService.findPostById(NON_EXISTENT_ID));
+	}
+
+	/**
+	 * Test find all posts sorted by creationDate descendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 *
+	 */
+	@Test
+	public void testFindAndSortByCreationDateDescAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "creationDate",
+				"DESC");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(0)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by creationDate ascendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 *
+	 */
+	@Test
+	public void testFindAndSortByCreationDateAscAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "creationDate", "ASC");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(0)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(2)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by title descendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 *
+	 */
+	@Test
+	public void testFindAndSortByTitleDescAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "title", "DESC");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(0)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(1)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by title ascendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 *
+	 */
+	@Test
+	public void testFindAndSortByTitleAscAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "title", "ASC");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(0)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by price descendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 *
+	 */
+	@Test
+	public void testFindAndSortByPriceDescAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "price", "DESC");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(0)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by price ascendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 *
+	 */
+	@Test
+	public void testFindAndSortByPriceAscAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "price", "ASC");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(0)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(1)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by positiveRatings descendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException
+	 *
+	 */
+	@Test
+	public void testFindAndSortByPositiveRatingsDescAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, InstanceNotFoundException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "positiveRatings",
+				"DESC");
+
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(0).getId());
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostPositive(users.get(1).getId(), posts.get(1).getId());
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(0)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(2)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by positiveRatings ascendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException
+	 *
+	 */
+	@Test
+	public void testFindAndSortByPositiveRatingsAscAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, InstanceNotFoundException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "positiveRatings",
+				"ASC");
+
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(0).getId());
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostPositive(users.get(1).getId(), posts.get(1).getId());
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(0)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(1)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by negativeRatings descendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException
+	 *
+	 */
+	@Test
+	public void testFindAndSortByNegativeRatingsDescAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, InstanceNotFoundException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "negativeRatings",
+				"DESC");
+
+		ratingService.ratePostNegative(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostNegative(users.get(0).getId(), posts.get(0).getId());
+		ratingService.ratePostNegative(users.get(1).getId(), posts.get(0).getId());
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(0)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(2)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by negativeRatings ascendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException
+	 *
+	 */
+	@Test
+	public void testFindAndSortByNegativeRatingsAscAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, InstanceNotFoundException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "negativeRatings",
+				"ASC");
+
+		ratingService.ratePostNegative(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostNegative(users.get(0).getId(), posts.get(0).getId());
+		ratingService.ratePostNegative(users.get(1).getId(), posts.get(0).getId());
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(0)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by negativeRatings descendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException
+	 *
+	 */
+	@Test
+	public void testFindAndSortByPopularityDescAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, InstanceNotFoundException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "popularity", "DESC");
+
+		ratingService.ratePostNegative(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(0).getId());
+		ratingService.ratePostPositive(users.get(1).getId(), posts.get(0).getId());
+		ratingService.ratePostNegative(users.get(1).getId(), posts.get(2).getId());
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(0)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(2)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by negativeRatings ascendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException
+	 *
+	 */
+	@Test
+	public void testFindAndSortByPopularityAscAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, InstanceNotFoundException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "popularity", "ASC");
+
+		ratingService.ratePostNegative(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(0).getId());
+		ratingService.ratePostPositive(users.get(1).getId(), posts.get(0).getId());
+		ratingService.ratePostNegative(users.get(1).getId(), posts.get(2).getId());
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(0)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by creationDate descendent and then ascendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 *
+	 */
+	@Test
+	public void testFindAndSortByCreationDateDescAscAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "creationDate",
+				"DESC");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(0)), false);
+
+		searchFilters.setSortingOrder("ASC");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(0)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(2)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by creationDate descendent and then by price
+	 * descendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 *
+	 */
+	@Test
+	public void testFindAndSortByCreationDateAndPriceDescAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "creationDate",
+				"DESC");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(0)), false);
+
+		searchFilters.setSortingParameter("price");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(0)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by invalid parameters.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 *
+	 */
+	@Test
+	public void testFindAndSortByInvalidParametersAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "duracion", "BIG");
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(0)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by null parameters.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 *
+	 */
+	@Test
+	public void testFindAndSortByNullParametersAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, null, null);
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(0)), false);
 	}
 
 }

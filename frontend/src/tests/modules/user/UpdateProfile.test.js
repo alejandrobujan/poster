@@ -5,11 +5,11 @@ import {Provider} from 'react-redux';
 
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk';
-import { userMock } from "../mocks/User.mock";
+import { userMock } from "../../state/User.mock";
 
 import renderer from "react-test-renderer";
 
-import { UpdateProfile } from "../../modules/users";
+import { UpdateProfile } from "../../../modules/users";
 
 describe("UpdateProfile", () => {
 	const middlewares = [thunk];

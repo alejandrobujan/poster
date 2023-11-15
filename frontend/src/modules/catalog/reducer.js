@@ -15,7 +15,9 @@ const initialState = {
 				lte: 1000000
 			},
 			date: "",
-			expired: false
+			expired: false,
+			sortParam: "creationDate",
+			sortOrder: "DESC"
 		}
 	}
 };
@@ -65,16 +67,22 @@ const searchParams = (state = initialState.searchParams, action) => {
 			return { ...state, filters: { ...state.filters, type: action.postType } };
 
 		case actionTypes.SET_MIN_PRICE:
-			return { ...state, filters: { ...state.filters, price: {...state.filters.price, gte: action.minPrice} } };
+			return { ...state, filters: { ...state.filters, price: { ...state.filters.price, gte: action.minPrice } } };
 
 		case actionTypes.SET_MAX_PRICE:
-			return { ...state, filters: { ...state.filters, price: {...state.filters.price, lte: action.maxPrice} } };
+			return { ...state, filters: { ...state.filters, price: { ...state.filters.price, lte: action.maxPrice } } };
 
 		case actionTypes.SET_DATE:
 			return { ...state, filters: { ...state.filters, date: action.date } };
 
 		case actionTypes.SET_EXPIRED:
 			return { ...state, filters: { ...state.filters, expired: action.expired } };
+
+		case actionTypes.SET_SORT_PARAM:
+			return { ...state, filters: { ...state.filters, sortParam: action.sortParam } };
+
+		case actionTypes.SET_SORT_ORDER:
+			return { ...state, filters: { ...state.filters, sortOrder: action.sortOrder } };
 
 		default:
 			return state;

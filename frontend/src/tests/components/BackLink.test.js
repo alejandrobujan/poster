@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import BackLink from '../../modules/common/components/BackLink';  // Asegúrate de ajustar la ruta correcta
+import BackLink from '../../modules/common/components/BackLink';
 
 jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
