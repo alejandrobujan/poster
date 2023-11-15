@@ -4,13 +4,13 @@ import { config } from "../config/constants";
 let networkErrorCallback;
 let reauthenticationCallback;
 
-const isJson = (response) => {
+export const isJson = (response) => {
   const contentType = response.headers.get("content-type");
 
   return contentType && contentType.indexOf("application/json") !== -1;
 };
 
-const handleOkResponse = (response, onSuccess) => {
+export const handleOkResponse = (response, onSuccess) => {
   if (!response.ok) {
     return false;
   }
@@ -33,7 +33,7 @@ const handleOkResponse = (response, onSuccess) => {
   return true;
 };
 
-const handle4xxResponse = (response, onErrors) => {
+export const handle4xxResponse = (response, onErrors) => {
   if (response.status < 400 || response.status >= 500) {
     return false;
   }
@@ -58,7 +58,7 @@ const handle4xxResponse = (response, onErrors) => {
   return true;
 };
 
-const handleResponse = (response, onSuccess, onErrors) => {
+export const handleResponse = (response, onSuccess, onErrors) => {
   if (handleOkResponse(response, onSuccess)) {
     return;
   }
