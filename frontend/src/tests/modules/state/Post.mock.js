@@ -5,7 +5,6 @@ export const postMock = {
             userDto: {
                 id: 1,
                 userName: "Pepe",
-                password: "Pepe",
                 firstName: "Pepe",
                 lastName: "Pepe",
                 email: "Pepe@pepe.com",
@@ -18,7 +17,7 @@ export const postMock = {
             id: 1,
             title: "Coupon",
             description: "Buena oferta",
-            url: "http://cupon",
+            url: "https://cupon",
             price: 10,
             categoryDto: {
                 id: 1,
