@@ -4,18 +4,16 @@ import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import renderer from "react-test-renderer";
-import { SearchBar, Feed } from "../../../../modules/catalog";
+import { SearchBar, Feed } from "../../../modules/catalog";
 import { Provider } from 'react-redux';
 import { createMemoryHistory } from 'history';
 import thunk from 'redux-thunk';
-import { searchBarMock } from "../state/SearchBar.mock";
-import { appFetch } from "../../../../backend/appFetch";
-import { createRouterWrapper } from '../../utils/create-router-wrapper';
-import userEvent from "@testing-library/user-event"; 
+import { searchBarMock } from "../../state/SearchBar.mock";
+import { appFetch } from "../../../backend/appFetch";
+import { createRouterWrapper } from '../../components/utils/create-router-wrapper';
+import userEvent from "@testing-library/user-event";
 
-/*'./utils/create-router-wrapper';*/
-
-jest.mock("../../../../backend/appFetch");
+jest.mock("../../../backend/appFetch");
 
 describe("SearchBar", () => {
 

@@ -75,6 +75,9 @@ public class PostDto {
 		this.properties = properties;
 	}
 
+	public PostDto() {
+	}
+
 	/**
 	 * Gets the id
 	 * 
