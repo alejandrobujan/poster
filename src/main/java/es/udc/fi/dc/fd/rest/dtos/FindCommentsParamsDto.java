@@ -21,7 +21,7 @@ public class FindCommentsParamsDto {
 	 */
 	public FindCommentsParamsDto(@NotNull int page, Long parentId) {
 		this.page = page;
-		this.parentId=parentId;
+		this.parentId = parentId;
 	}
 
 	/**
@@ -32,24 +32,10 @@ public class FindCommentsParamsDto {
 	}
 
 	/**
-	 * @param page the page to set
-	 */
-	public void setPage(int page) {
-		this.page = page;
-	}
-
-	/**
 	 * @return the parentId
 	 */
 	public Long getParentId() {
 		return parentId;
-	}
-
-	/**
-	 * @param parentId the parentId to set
-	 */
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
 	}
 
 }
