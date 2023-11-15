@@ -102,7 +102,7 @@ public class Image {
 
 	@Override
 	public String toString() {
-		return "Image [id=" + id + ", post=" + post + "]";
+		return "Image [id=" + id + "]";
 	}
 
 }

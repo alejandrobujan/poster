@@ -26,18 +26,18 @@ export const previousFindCommentsResultPage = (postId, parentId, page) =>
 export const nextFindCommentsResultPage = (postId, parentId, page) =>
 	findComments(postId, parentId, page+1);
 
-export const findAnswersComment = (commentId, page, onSuccess) => dispatch => {
-	backend.commentService.findAnswersComment(commentId, page,
+export const findAnswersComment = (postId, commentId, page, onSuccess) => dispatch => {
+	backend.commentService.findComments(postId, page, commentId,
 		onSuccess);
 }
 
 export const commentAnswer = (comment, postId, id, page, onSuccess, onErrors) => dispatch => {
 	backend.commentService.commentPost(comment, postId, id,
-		() => dispatch(findAnswersComment(id, page, onSuccess)), onErrors);
+		() => dispatch(findAnswersComment(postId, id, page, onSuccess)), onErrors);
 }
 
-export const nextFindAnswersResultPage = (parentId, page, onSuccess) =>
-	findAnswersComment(parentId, page+1, onSuccess);
+export const nextFindAnswersResultPage = (postId, parentId, page, onSuccess) =>
+	findAnswersComment(postId, parentId, page+1, onSuccess);
 	
 
 

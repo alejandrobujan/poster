@@ -14,11 +14,4 @@ public interface CommentDao extends JpaRepository<Comment, Long> {
 	 * @return
 	 */
 	Slice<Comment> findByPostIdAndCommentIdOrderByDateDesc(Long postId, Long commentId, Pageable pageable);
-
-	/**
-	 * @param commentId
-	 * @param pageable
-	 * @return
-	 */
-	Slice<Comment> findByCommentIdOrderByDateDesc(Long commentId, Pageable pageable);
 }

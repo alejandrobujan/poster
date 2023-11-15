@@ -8,3 +8,5 @@ export const SET_MIN_PRICE = "poster/catalog/setMinPrice";
 export const SET_MAX_PRICE = "poster/catalog/setMaxPrice";
 export const SET_DATE = "poster/catalog/setDate";
 export const SET_EXPIRED = "poster/catalog/setExpired";
+export const SET_SORT_PARAM = "poster/catalog/setSortParam";
+export const SET_SORT_ORDER = "poster/catalog/setSortOrder";
