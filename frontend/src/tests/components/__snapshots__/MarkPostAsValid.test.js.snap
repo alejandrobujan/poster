@@ -92,7 +92,7 @@ exports[`PostDetails Component renders correctly 1`] = `
           
         <a
           className="btn btn-primary"
-          href="//http://cupon"
+          href="//https://cupon"
           rel="noreferrer"
           target="_blank"
         >
@@ -253,7 +253,7 @@ exports[`PostDetails Component renders correctly 1`] = `
       >
         <div>
           Posted at 
-          17/11/2013 22:30:47
+          1/1/1970 1:00:00
         </div>
         <div
           className="user-card"
@@ -288,6 +288,87 @@ exports[`PostDetails Component renders correctly 1`] = `
       <div
         className="post-signature"
       />
+    </div>
+  </div>
+  <div>
+     
+    <form
+      className="needs-validation container ml-1"
+      data-testid="CommentForm"
+      noValidate={true}
+      onSubmit={[Function]}
+    >
+      <div>
+        <input
+          autoFocus={true}
+          className="form-control"
+          data-testid="CommentInput"
+          id="comment"
+          maxLength={256}
+          minLength={1}
+          onChange={[Function]}
+          placeholder="Add a comment"
+          required={true}
+          type="text"
+          value=""
+        />
+        <div
+          className="invalid-feedback"
+          data-testid="ErrorForm"
+        >
+          The comment size must be between 1 and 256
+        </div>
+      </div>
+      <div
+        className="text-right"
+      >
+        <button
+          className="btn btn-primary my-3"
+          data-testid="CommentButton"
+          type="submit"
+        >
+          Comment
+        </button>
+      </div>
+    </form>
+    <div
+      data-testid="Comments"
+    >
+      <div
+        className="alert alert-danger"
+        data-testid="NoComments"
+        role="alert"
+      >
+        No comments found
+      </div>
+      <nav
+        aria-label="page navigation"
+      >
+        <ul
+          className="pagination justify-content-center"
+        >
+          <li
+            className="page-item disabled"
+          >
+            <button
+              className="page-link"
+              onClick={[Function]}
+            >
+              Back
+            </button>
+          </li>
+          <li
+            className="page-item disabled"
+          >
+            <button
+              className="page-link"
+              onClick={[Function]}
+            >
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </div>
