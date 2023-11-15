@@ -51,6 +51,9 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 	@Override
 	public Slice<Post> find(SearchFilters filters, String keywords, int page, int size) {
 
+		List<String> allowedFilters = List.of("creationDate", "expirationDate", "title", "price", "positiveRatings",
+				"negativeRatings", "popularity");
+
 		LocalDateTime ago = null;
 
 		StringBuilder queryBuilder = new StringBuilder();
@@ -116,36 +119,13 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 			}
 		}
 
-		if (filters.getSortingParameter() == null || filters.getSortingParameter().equals("creationDate")) {
-
+		if (filters.getSortingParameter() == null || !allowedFilters.contains(filters.getSortingParameter())) {
 			queryBuilder.append(" ORDER BY p.creationDate");
-
-		} else if (filters.getSortingParameter().equals("expirationDate")) {
-
-			queryBuilder.append(" ORDER BY p.expirationDate");
-
-		} else if (filters.getSortingParameter().equals("title")) {
-
-			queryBuilder.append(" ORDER BY p.title");
-
-		} else if (filters.getSortingParameter().equals("price")) {
-
-			queryBuilder.append(" ORDER BY p.price");
-
-		} else if (filters.getSortingParameter().equals("positiveRatings")) {
-
-			queryBuilder.append(" ORDER BY p.positiveRatings");
-
-		} else if (filters.getSortingParameter().equals("negativeRatings")) {
-
-			queryBuilder.append(" ORDER BY p.negativeRatings");
-
 		} else if (filters.getSortingParameter().equals("popularity")) {
-
 			queryBuilder.append(" ORDER BY (p.positiveRatings - p.negativeRatings)");
-
 		} else {
-			queryBuilder.append(" ORDER BY p.creationDate");
+			queryBuilder.append(" ORDER BY p.");
+			queryBuilder.append(filters.getSortingParameter());
 		}
 
 		if (filters.getSortingOrder() != null && filters.getSortingOrder().equals("ASC")) {
