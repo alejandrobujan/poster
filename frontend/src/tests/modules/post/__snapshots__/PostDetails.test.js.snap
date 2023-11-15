@@ -92,7 +92,7 @@ exports[`PostDetails renders correctly 1`] = `
           
         <a
           className="btn btn-primary"
-          href="//http://cupon"
+          href="//https://cupon"
           rel="noreferrer"
           target="_blank"
         >
