@@ -11,6 +11,7 @@ import thunk from 'redux-thunk';
 import { searchBarMock } from "../state/SearchBar.mock";
 import { appFetch } from "../../../../backend/appFetch";
 import { createRouterWrapper } from '../../utils/create-router-wrapper';
+import userEvent from "@testing-library/user-event"; 
 
 /*'./utils/create-router-wrapper';*/
 
@@ -188,7 +189,65 @@ describe("SearchBar", () => {
 
 		const advancedSearchbutton = screen.getByTestId("show-advanced-search-button");
 		await waitFor(() => fireEvent.click(advancedSearchbutton));
+
+		const applyButton = screen.getByTestId("search-apply-button");
+		await waitFor(() => fireEvent.click(applyButton));
+
+		expect(appFetch.mock.calls.length).toBe(2);
+
+		expect(history.location.pathname).toBe('/');
+
+	});
+
+	it("check search with params in SearchBar", async () => {
+		const history = createMemoryHistory();
 		
+		render(
+			<Provider store={store}>
+				<SearchBar />
+			</Provider>,
+			{ wrapper: createRouterWrapper(history) }
+		);
+		
+		/* Search keywords bar */
+		const keywordsBar = screen.getByTestId('search-keywords-bar');
+		fireEvent.change(keywordsBar, {target: {value: "Seat"}});
+		
+		const advancedSearchbutton = screen.getByTestId("show-advanced-search-button");
+		await waitFor(() => fireEvent.click(advancedSearchbutton));
+		
+		/* Category selector */
+		const categorySelector = screen.getByTestId('search-category-selector');
+		userEvent.selectOptions(categorySelector, ["Motor"]);
+		
+		/* Type selector */
+		const typeSelector = screen.getByTestId('search-type-selector');
+		userEvent.selectOptions(typeSelector, ["Offer"]);
+		
+		/* Price range selector */
+		const minPriceSelector = screen.getByTestId('search-minprice-selector');
+		fireEvent.change(minPriceSelector, {target: {value: "50"}});
+		
+		/* Price range selector */
+		const maxPriceSelector = screen.getByTestId('search-maxprice-selector');
+		fireEvent.change(maxPriceSelector, {target: {value: "300"}});
+        
+        /* Creation date selector */
+		const creationDateSelector = screen.getByTestId('search-creation-date-selector');
+		userEvent.selectOptions(creationDateSelector, ["Last week"]);
+		
+		/* Include expired input */
+		const includeExpiredInput = screen.getByTestId('search-include-expired-input');
+		await waitFor(() => fireEvent.click(includeExpiredInput));
+		
+		/* Sort by selector */
+		const sortBySelector = screen.getByTestId('search-sort-by-selector');
+		userEvent.selectOptions(sortBySelector, ["creationDate"]);
+		
+		/* Order selector */
+		const orderSelector = screen.getByTestId('search-order-selector');
+		userEvent.selectOptions(orderSelector, ["DESC"]);
+
 		const applyButton = screen.getByTestId("search-apply-button");
 		await waitFor(() => fireEvent.click(applyButton));
 

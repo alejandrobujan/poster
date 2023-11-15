@@ -49,8 +49,8 @@ const SearchBar = () => {
 
 	return (
 		<form data-testid="search-posts-form" onSubmit={e => handleSubmit(e)}>
-			<div data-testid="search-keywords-bar" className="input-group search-bar flex-nowrap mr-2">
-				<input id="keywords" type="text" className="form-control" placeholder="Search..."
+			<div className="input-group search-bar flex-nowrap mr-2">
+				<input data-testid="search-keywords-bar" id="keywords" type="text" className="form-control" placeholder="Search..."
 					value={searchParams.keywords} onChange={e => dispatch(actions.setKeywords(e.target.value))} />
 				<div className="input-group-append">
 					<button ref={node => submit = node} type="submit" className="btn btn-primary" onClick={handleSubmit}>
@@ -70,9 +70,9 @@ const SearchBar = () => {
 					<h5 className='text-center'>Filters</h5>
 					<div className="row border flex-column flex-sm-row">
 						<div className="col p-4 border-right">
-							<div data-testid="search-category-selector" className="form-group">
+							<div data-testid="advanced-search-fields" className="form-group">
 								<label htmlFor="categorySelector">Category:</label>
-								<CategorySelector data-testid="advanced-search-fields" id="categoryId" className="form-control"
+								<CategorySelector data-testid="search-category-selector" id="categoryId" className="form-control"
 									value={searchParams.filters.categoryId} onChange={e => dispatch(actions.setCategoryId(e.target.value))} />
 
 							</div>
@@ -93,6 +93,7 @@ const SearchBar = () => {
 							Price:
 							<div data-testid="search-price-range-selector" className='p-4'>
 								<Range
+									data-testid="search-price-range"
 									step={10}
 									min={0}
 									max={1000000}

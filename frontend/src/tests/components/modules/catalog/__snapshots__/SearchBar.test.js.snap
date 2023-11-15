@@ -7,10 +7,10 @@ exports[`SearchBar renders correctly 1`] = `
 >
   <div
     className="input-group search-bar flex-nowrap mr-2"
-    data-testid="search-keywords-bar"
   >
     <input
       className="form-control"
+      data-testid="search-keywords-bar"
       id="keywords"
       onChange={[Function]}
       placeholder="Search..."
