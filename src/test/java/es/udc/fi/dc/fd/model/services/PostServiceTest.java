@@ -217,12 +217,12 @@ public class PostServiceTest {
 		String url = "http://www.google.es";
 		BigDecimal price = new BigDecimal(10);
 		String code = "EXTRA25";
-		List<byte[]> images = List.of(new byte[]{1, 2, 3}, new byte[]{2, 3, 4});
+		List<byte[]> images = List.of(new byte[] { 1, 2, 3 }, new byte[] { 2, 3, 4 });
 
-		Post post1 = postService.createPost(title, description, url, price, user.getId(), category.getId(),
-				images, "Coupon", Map.ofEntries(entry("code", code)));
-		Post post2 = postService.createPost(title, description, url, price, user.getId(), category.getId(),
-				images, "Offer", Map.ofEntries());
+		Post post1 = postService.createPost(title, description, url, price, user.getId(), category.getId(), images,
+				"Coupon", Map.ofEntries(entry("code", code)));
+		Post post2 = postService.createPost(title, description, url, price, user.getId(), category.getId(), images,
+				"Offer", Map.ofEntries());
 
 		Post actualPost1 = postDao.findById(post1.getId()).get();
 		Post actualPost2 = postDao.findById(post2.getId()).get();
@@ -491,7 +491,7 @@ public class PostServiceTest {
 		String newDescription = "new description";
 		String newUrl = "https://www.bing.com";
 		BigDecimal newPrice = new BigDecimal(12);
-		List<byte[]> images = List.of(new byte[]{1, 2, 3}, new byte[]{2, 3, 4});
+		List<byte[]> images = List.of(new byte[] { 1, 2, 3 }, new byte[] { 2, 3, 4 });
 
 		Post updatedPost = postService.updatePost(offer.getId(), newTitle, newDescription, newUrl, newPrice,
 				user.getId(), newCategory.getId(), images, "Offer", Map.ofEntries());
@@ -591,7 +591,7 @@ public class PostServiceTest {
 		assertEquals(newCode, ((Coupon) actualPost).getCode());
 	}
 
-		/**
+	/**
 	 * Test update coupon.
 	 * 
 	 * @throws DuplicateInstanceException        the duplicate instance exception
@@ -613,13 +613,12 @@ public class PostServiceTest {
 		String newDescription = "new description";
 		String newUrl = "https://www.bing.com";
 		BigDecimal newPrice = new BigDecimal(12);
-		List<byte[]> images = List.of(new byte[]{1, 2, 3}, new byte[]{2, 3, 4});
+		List<byte[]> images = List.of(new byte[] { 1, 2, 3 }, new byte[] { 2, 3, 4 });
 
 		String newCode = "EXTRANEW25";
 
 		Post updatedPost = postService.updatePost(coupon.getId(), newTitle, newDescription, newUrl, newPrice,
-				user.getId(), newCategory.getId(), images, "Coupon",
-				Map.ofEntries(entry("code", newCode)));
+				user.getId(), newCategory.getId(), images, "Coupon", Map.ofEntries(entry("code", newCode)));
 
 		Post actualPost = postDao.findById(coupon.getId()).get();
 

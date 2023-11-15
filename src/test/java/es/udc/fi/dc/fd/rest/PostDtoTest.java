@@ -303,4 +303,14 @@ public class PostDtoTest {
 
 		assertEquals(properties, postDto.getProperties());
 	}
+
+	@Test
+	public void testSetValidationDate() {
+		Long validationDate = System.currentTimeMillis();
+		PostDto postDto = new PostDto();
+		postDto.setValidationDate(validationDate);
+
+		assertEquals(validationDate, postDto.getValidationDate());
+	}
+
 }
