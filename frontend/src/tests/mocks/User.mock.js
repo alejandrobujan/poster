@@ -5,7 +5,6 @@ export const userMock = {
             userDto: {
                 id: 1,
                 userName: "Pepe",
-                password: "Pepe",
                 firstName: "Pepe",
                 lastName: "Pepe",
                 email: "Pepe@pepe.com",
