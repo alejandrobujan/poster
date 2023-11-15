@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 
 public class NotificationDto {
 	/** The id. */
-	private Long id;
+	private Long notificationId;
 	/** If the notification text. */
-	private String text;
+	private String notificationText;
 	/** If the notification is viewed. */
-	private boolean viewed;
+	private boolean notificationViewed;
 	/** The creation date. */
-	private LocalDateTime creationDate;
+	private LocalDateTime notificationCreationDate;
 	/** The notifier post. */
 	private Long postId;
 	/** The notifier user. */
@@ -23,19 +23,19 @@ public class NotificationDto {
 	}
 
 	/**
-	 * @param id
-	 * @param text
-	 * @param viewed
-	 * @param creationDate
+	 * @param notificationId
+	 * @param notificationText
+	 * @param notificationViewed
+	 * @param notificationCreationDate
 	 * @param postId
 	 * @param notifierUserDto
 	 */
-	public NotificationDto(Long id, String text, boolean viewed, LocalDateTime creationDate, Long postId,
-			UserSummaryDto notifierUserDto) {
-		this.id = id;
-		this.text = text;
-		this.viewed = viewed;
-		this.creationDate = creationDate;
+	public NotificationDto(Long notificationId, String notificationText, boolean notificationViewed,
+			LocalDateTime notificationCreationDate, Long postId, UserSummaryDto notifierUserDto) {
+		this.notificationId = notificationId;
+		this.notificationText = notificationText;
+		this.notificationViewed = notificationViewed;
+		this.notificationCreationDate = notificationCreationDate;
 		this.postId = postId;
 		this.notifierUserDto = notifierUserDto;
 	}
@@ -43,57 +43,57 @@ public class NotificationDto {
 	/**
 	 * @return the id
 	 */
-	public Long getId() {
-		return id;
+	public Long getNotificationId() {
+		return notificationId;
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param notificationId the id to set
 	 */
-	public void setId(Long id) {
-		this.id = id;
+	public void setNotificationId(Long notificationId) {
+		this.notificationId = notificationId;
 	}
 
 	/**
 	 * @return the text
 	 */
-	public String getText() {
-		return text;
+	public String getNotificationText() {
+		return notificationText;
 	}
 
 	/**
-	 * @param text the text to set
+	 * @param notificationText the text to set
 	 */
-	public void setText(String text) {
-		this.text = text;
+	public void setNotificationText(String notificationText) {
+		this.notificationText = notificationText;
 	}
 
 	/**
 	 * @return the viewed
 	 */
-	public boolean isViewed() {
-		return viewed;
+	public boolean isNotificationViewed() {
+		return notificationViewed;
 	}
 
 	/**
-	 * @param viewed the viewed to set
+	 * @param notificationViewed the viewed to set
 	 */
-	public void setViewed(boolean viewed) {
-		this.viewed = viewed;
+	public void setNotificationViewed(boolean notificationViewed) {
+		this.notificationViewed = notificationViewed;
 	}
 
 	/**
 	 * @return the creationDate
 	 */
-	public LocalDateTime getCreationDate() {
-		return creationDate;
+	public LocalDateTime getNotificationCreationDate() {
+		return notificationCreationDate;
 	}
 
 	/**
-	 * @param creationDate the creationDate to set
+	 * @param notificationCreationDate the creationDate to set
 	 */
-	public void setCreationDate(LocalDateTime creationDate) {
-		this.creationDate = creationDate;
+	public void setNotificationCreationDate(LocalDateTime notificationCreationDate) {
+		this.notificationCreationDate = notificationCreationDate;
 	}
 
 	/**

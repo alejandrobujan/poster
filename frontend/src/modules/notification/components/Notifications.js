@@ -11,7 +11,7 @@ const Notifications = ({ notifications }) => {
 					</svg>
 				</a>
 				<div className="dropdown-menu dropdown-menu-right p-4 text-center">
-						<small>You have not unread notifications</small>
+					<small>You have not unread notifications</small>
 				</div>
 			</li>
 		);
@@ -26,9 +26,9 @@ const Notifications = ({ notifications }) => {
 				</svg>
 				<span className="badge bg-danger text-white ms-1 rounded-pill">{notifications.length}</span>
 			</a>
-			<div className="dropdown-menu dropdown-menu-right" style={{maxHeight: '500px', overflowY: 'auto'}}>
-				{notifications.map(({ id, text, viewed, creationDate, postId, notifierUserDto }) =>
-					<Notification key={id} id={id} text={text} viewed={viewed} creationDate={creationDate}
+			<div className="dropdown-menu dropdown-menu-right" style={{ maxHeight: '500px', overflowY: 'auto' }}>
+				{notifications.map(({ notificationId, notificationText, notificationViewed, notificationCreationDate, postId, notifierUserDto }) =>
+					<Notification key={notificationId} id={notificationId} text={notificationText} viewed={notificationViewed} creationDate={notificationCreationDate}
 						postId={postId} notifierUserDto={notifierUserDto} />
 				)}
 			</div>
