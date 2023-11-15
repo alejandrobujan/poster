@@ -115,14 +115,17 @@ public class CommentServiceImpl implements CommentService {
 		String parentNotificationText = user.getUserName() + " answered your comment: " + comment.getDescription();
 		String postNotificationText = user.getUserName() + " commented on your post: " + comment.getDescription();
 
+		if (!comment.getPost().getUser().equals(parent.getUser())) {
+			notificationService.notify(
+					postNotificationText.length() < 128 ? postNotificationText
+							: postNotificationText.substring(0, 124) + "...",
+					user, parent.getPost().getUser(), parent.getPost(), comment);
+		}
+
 		notificationService.notify(
 				parentNotificationText.length() < 128 ? parentNotificationText
 						: parentNotificationText.substring(0, 124) + "...",
 				user, parent.getUser(), parent.getPost(), comment);
-		notificationService.notify(
-				postNotificationText.length() < 128 ? postNotificationText
-						: postNotificationText.substring(0, 124) + "...",
-				user, parent.getPost().getUser(), parent.getPost(), comment);
 
 		return comment;
 	}
