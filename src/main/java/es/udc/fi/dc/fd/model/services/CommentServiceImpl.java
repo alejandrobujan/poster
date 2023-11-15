@@ -37,6 +37,10 @@ public class CommentServiceImpl implements CommentService {
 	@Autowired
 	private PermissionChecker permissionChecker;
 
+	/** The notification service. */
+	@Autowired
+	private NotificationService notificationService;
+
 	/**
 	 * @param description
 	 * @param userId
@@ -66,6 +70,12 @@ public class CommentServiceImpl implements CommentService {
 
 		commentDao.save(comment);
 
+		String notificationText = user.getUserName() + " commented on your post: " + comment.getDescription();
+
+		notificationService.notify(
+				notificationText.length() < 128 ? notificationText : notificationText.substring(0, 124) + "...", user,
+				post.getUser(), post, comment);
+
 		return comment;
 	}
 
@@ -94,19 +104,36 @@ public class CommentServiceImpl implements CommentService {
 			throw new InvalidCommentParameterException("project.entities.comment", parentId);
 		}
 
-		parent.setAnswers(parent.getAnswers()+1);
+		parent.setAnswers(parent.getAnswers() + 1);
 
-		Comment comment = new Comment(description, LocalDateTime.now(), user, parent.getPost(), parent, parent.getLevel()+1, 0);
+		Comment comment = new Comment(description, LocalDateTime.now(), user, parent.getPost(), parent,
+				parent.getLevel() + 1, 0);
 
 		commentDao.save(comment);
 		commentDao.save(parent);
+
+		String parentNotificationText = user.getUserName() + " answered your comment: " + comment.getDescription();
+		String postNotificationText = user.getUserName() + " commented on your post: " + comment.getDescription();
+
+		if (!comment.getPost().getUser().equals(parent.getUser())) {
+			notificationService.notify(
+					postNotificationText.length() < 128 ? postNotificationText
+							: postNotificationText.substring(0, 124) + "...",
+					user, parent.getPost().getUser(), parent.getPost(), comment);
+		}
+
+		notificationService.notify(
+				parentNotificationText.length() < 128 ? parentNotificationText
+						: parentNotificationText.substring(0, 124) + "...",
+				user, parent.getUser(), parent.getPost(), comment);
 
 		return comment;
 	}
 
 	@Override
 	public Block<Comment> findComments(Long postId, int page, Long parentId, int size) {
-		Slice<Comment> slice = commentDao.findByPostIdAndCommentIdOrderByDateDesc(postId, parentId, PageRequest.of(page, size));
+		Slice<Comment> slice = commentDao.findByPostIdAndCommentIdOrderByDateDesc(postId, parentId,
+				PageRequest.of(page, size));
 
 		return new Block<>(slice.getContent(), slice.hasNext());
 	}

@@ -7,6 +7,8 @@ import Footer from './Footer';
 import users from '../../users';
 import catalog from '../../catalog';
 
+import "./App.css";
+
 const App = () => {
     const dispatch = useDispatch();
     useEffect(() => {
