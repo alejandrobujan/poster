@@ -656,6 +656,58 @@ public class CatalogServiceTest {
 	}
 
 	/**
+	 * Test find all posts sorted by negativeRatings descendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException
+	 *
+	 */
+	@Test
+	public void testFindAndSortByPopularityDescAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, InstanceNotFoundException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "popularity", "DESC");
+
+		ratingService.ratePostNegative(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(0).getId());
+		ratingService.ratePostPositive(users.get(1).getId(), posts.get(0).getId());
+		ratingService.ratePostNegative(users.get(1).getId(), posts.get(2).getId());
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(0)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(2)), false);
+	}
+
+	/**
+	 * Test find all posts sorted by negativeRatings ascendent.
+	 * 
+	 * @throws MaximumImageSizeExceededException the maximum images size exceeded
+	 *                                           exception
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws InstanceNotFoundException
+	 *
+	 */
+	@Test
+	public void testFindAndSortByPopularityAscAllPosts()
+			throws MaximumImageSizeExceededException, DuplicateInstanceException, InstanceNotFoundException {
+		SearchFilters searchFilters = new SearchFilters(null, null,
+				Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")), null, false, "popularity", "ASC");
+
+		ratingService.ratePostNegative(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(1).getId());
+		ratingService.ratePostPositive(users.get(0).getId(), posts.get(0).getId());
+		ratingService.ratePostPositive(users.get(1).getId(), posts.get(0).getId());
+		ratingService.ratePostNegative(users.get(1).getId(), posts.get(2).getId());
+
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 1), List.of(posts.get(2)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 1, 1), List.of(posts.get(1)), true);
+		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 2, 1), List.of(posts.get(0)), false);
+	}
+
+	/**
 	 * Test find all posts sorted by creationDate descendent and then ascendent.
 	 * 
 	 * @throws MaximumImageSizeExceededException the maximum images size exceeded

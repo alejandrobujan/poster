@@ -140,6 +140,10 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 
 			queryBuilder.append(" ORDER BY p.negativeRatings");
 
+		} else if (filters.getSortingParameter().equals("popularity")) {
+
+			queryBuilder.append(" ORDER BY (p.positiveRatings - p.negativeRatings)");
+
 		} else {
 			queryBuilder.append(" ORDER BY p.creationDate");
 		}

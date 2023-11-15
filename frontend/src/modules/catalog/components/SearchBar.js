@@ -154,6 +154,7 @@ const SearchBar = () => {
 									<option value="price">Price</option>
 									<option value="positiveRatings">Positive ratings</option>
 									<option value="negativeRatings">Negative ratings</option>
+									<option value="popularity">Popularity</option>
 								</select>
 							</div>
 						</div>
