@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux';
 import { Route, Routes } from "react-router-dom";
 
 import Home from "./Home";
-import Test from "./Test";
 
 import { Login, SignUp, Logout, UpdateProfile, ProfileDetail, ChangePassword } from '../../users';
 import users from '../../users';
@@ -17,7 +16,6 @@ const Body = () => {
     <div style={{"marginBottom": "100px"}}>
 	    <Routes>
 	       <Route path="/*" element={<Home />} />
-	       <Route path="/test" element={<Test />} />
 		   <Route path="/post/post-details/:id" element={<PostDetails/>}/>
 	       {loggedIn && <Route path="/users/logout" element={<Logout/>}/>}
 	       {!loggedIn && <Route path="/users/login" element={<Login/>}/>}

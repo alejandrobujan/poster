@@ -19,18 +19,18 @@ const ProfileDetail = () => {
 			<div className="card text-center">
 				<div className="card-body row">
 					<div className='col'>
-						<img src={user.avatar ? `data:image/*;base64,${user.avatar}` : "/poster/assets/profile.png"} alt="Avatar" height="200px" width="200px" />&nbsp;
-						<h5 className="card-title">{user.userName}</h5></div>
+						<img data-testid="Avatar" src={user.avatar ? `data:image/*;base64,${user.avatar}` : "/poster/assets/profile.png"} alt="Avatar" height="200px" width="200px" />&nbsp;
+						<h5 className="card-title" data-testid="UserName">{user.userName}</h5></div>
 					<div className='col text-left'>
 						<ul className="list-group list-group-flush">
-							<li className="list-group-item">First Name: <b>{user.firstName}</b></li>
-							<li className="list-group-item">Last Name: <b>{user.lastName}</b></li>
-							<li className="list-group-item">Email: <b>{user.email}</b></li>
+							<li className="list-group-item" data-testid="FirstName">First Name: <b>{user.firstName}</b></li>
+							<li className="list-group-item" data-testid="LastName">Last Name: <b>{user.lastName}</b></li>
+							<li className="list-group-item" data-testid="Email">Email: <b>{user.email}</b></li>
 						</ul>
 					</div>
 				</div>
 				<div className="text-center mb-4">
-					<button type="button" className="btn btn-primary" onClick={() => navigate("/users/update-profile")}>
+					<button type="button" className="btn btn-primary" data-testid="EditButton" onClick={() => navigate("/users/update-profile")}>
 						Edit Profile
 					</button>
 				</div>
