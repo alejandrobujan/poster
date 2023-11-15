@@ -5,7 +5,14 @@ export const searchBarMock = {
 		firstSearch: false
 	},
 	catalog: {
-		categories: null,
+		categories: [
+            {id: 1, name: "Meals"},
+            {id: 2, name: "Motor"},
+            {id: 3, name: "Home"},
+            {id: 4, name: "Toys"},
+            {id: 5, name: "Tech"},
+            {id: 6, name: "Leisure"}
+        ],
 		postSearch: null,
 		searchParams: {
 			keywords: "",

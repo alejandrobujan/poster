@@ -168,7 +168,7 @@ const SearchBar = () => {
 						</div>
 					</div>
 					<div className='text-center m-4'>
-						<button className="btn btn-primary" onClick={handleApply}>Apply</button>
+						<button data-testid="search-apply-button" className="btn btn-primary" onClick={handleApply}>Apply</button>
 					</div>
 				</div>
 			)}
