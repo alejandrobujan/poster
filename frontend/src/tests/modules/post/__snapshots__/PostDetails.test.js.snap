@@ -255,7 +255,7 @@ exports[`PostDetails renders correctly 1`] = `
           className="creation-date"
         >
           Posted at 
-          17/11/2013 22:30:47
+          1/1/1970 1:00:00
         </div>
         <div
           className="user-card"

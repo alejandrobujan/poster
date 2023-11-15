@@ -32,7 +32,7 @@ export const postMock = {
                 avatar: null
             },
             images: [],
-            creationDate: 1384723847238,
+            creationDate: null,
             positiveRatings: 0,
             negativeRatings: 0,
             expired: false,

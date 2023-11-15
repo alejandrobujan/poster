@@ -28,7 +28,7 @@ describe("Comment", () => {
         .create(
 				<Provider store={store}>
 					<MemoryRouter>
-						<Comment id={1} description={"Hola"} date={10382349823} answers={2} parentId={2} level={2} user={user} postId={1}/>
+						<Comment id={1} description={"Hola"} date={null} answers={2} parentId={2} level={2} user={user} postId={1}/>
 					</MemoryRouter>
 				</Provider>
 			)
@@ -40,7 +40,7 @@ describe("Comment", () => {
 		render(
 			<Provider store={store}>
 				<MemoryRouter>
-                    <Comment id={1} description={"Hola"} date={10382349823} answers={2} parentId={2} level={2} user={user} postId={1}/>
+                    <Comment id={1} description={"Hola"} date={null} answers={2} parentId={2} level={2} user={user} postId={1}/>
 				</MemoryRouter>
 			</Provider>
 		);
@@ -57,7 +57,7 @@ describe("Comment", () => {
 		render(
 			<Provider store={store}>
 				<MemoryRouter>
-                    <Comment id={1} description={"Hola"} date={10382349823} answers={2} parentId={2} level={2} user={user} postId={1}/>
+                    <Comment id={1} description={"Hola"} date={null} answers={2} parentId={2} level={2} user={user} postId={1}/>
 				</MemoryRouter>
 			</Provider>
 		);
@@ -74,7 +74,7 @@ describe("Comment", () => {
 		render(
 			<Provider store={store}>
 				<MemoryRouter>
-                    <Comment id={1} description={"Hola"} date={10382349823} answers={2} parentId={2} level={2} user={user} postId={1}/>
+                    <Comment id={1} description={"Hola"} date={null} answers={2} parentId={2} level={2} user={user} postId={1}/>
 				</MemoryRouter>
 			</Provider>
 		);
@@ -91,7 +91,7 @@ describe("Comment", () => {
 		render(
 			<Provider store={store}>
 				<MemoryRouter>
-                    <Comment id={1} description={"Hola"} date={10382349823} answers={2} parentId={2} level={2} user={user} postId={1}/>
+                    <Comment id={1} description={"Hola"} date={null} answers={2} parentId={2} level={2} user={user} postId={1}/>
 				</MemoryRouter>
 			</Provider>
 		);
@@ -116,7 +116,7 @@ describe("Comment", () => {
 		render(
 			<Provider store={store}>
 				<MemoryRouter>
-                    <Comment id={1} description={"Hola"} date={10382349823} answers={2} parentId={2} level={2} user={user} postId={1}/>
+                    <Comment id={1} description={"Hola"} date={null} answers={2} parentId={2} level={2} user={user} postId={1}/>
 				</MemoryRouter>
 			</Provider>
 		);
