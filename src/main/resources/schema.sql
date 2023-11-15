@@ -110,7 +110,8 @@ INSERT INTO Category(name) VALUES ('Toys');
 INSERT INTO Category(name) VALUES ('Tech');
 INSERT INTO Category(name) VALUES ('Leisure');
 
-INSERT INTO Users(userName, password, firstName, lastName, email, role) VALUES ('alejandrobujan', '$2a$10$8o34vbwlRURkBGETvQzr8OCuPrk52E.j2ilm4KGKPrwNR89eNV/YG', 'Alejandro', 'Bujan', 'alejandro.bujan.pampin@udc.es', 0);
+INSERT INTO Users(userName, password, firstName, lastName, email, role) VALUES ('admin', '$2a$10$8o34vbwlRURkBGETvQzr8OCuPrk52E.j2ilm4KGKPrwNR89eNV/YG', 'Website', 'Administrator', 'admin@udc.es', 0);
+INSERT INTO Users(userName, password, firstName, lastName, email, role) VALUES ('sampleuser', '$2a$10$8o34vbwlRURkBGETvQzr8OCuPrk52E.j2ilm4KGKPrwNR89eNV/YG', 'Sample', 'User', 'sampleuser@udc.es', 0);
 
 INSERT INTO Post(title, description, url, price, creationDate, expired, userId, categoryId) VALUES ('Windows XP', 'Free windows XP license key', 'g2a.com', 0, '2004-05-12 00:00:00', true, 1, 5);
 INSERT INTO Coupon(id, code) VALUES (1, 'XPFREE');
@@ -121,11 +122,8 @@ INSERT INTO Offer(id) VALUES (2);
 INSERT INTO Post(title, description, url, price, creationDate, expired, userId, categoryId) VALUES ('MG4 Brighton', 'Discover the future of mobility', 'www.mgmotor.eu/es-ES/configurator/mg4', 30480, '2023-10-09 00:00:00', false, 1, 2);
 INSERT INTO Coupon(id, code) VALUES (3, 'EXTRAMG4');
 
-INSERT INTO Comment(description, date, userId, postId) VALUES ('Amazing!!', '2004-05-12 00:00:00', 1, 2);
-INSERT INTO Comment(description, date, userId, postId) VALUES ('Great!!', '2004-05-12 00:00:00', 1, 2);
+INSERT INTO Comment(description, date, userId, postId) VALUES ('Amazing!! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', '2004-05-11 00:00:00', 2, 2);
+INSERT INTO Comment(description, date, userId, postId) VALUES ('Great!!', '2004-05-12 00:00:00', 2, 2);
 
-INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('Amazing!! ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', false, '2004-05-12 00:00:00', 1, 1, 2, 1);
-INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('Great!! ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', false, '2004-05-12 00:00:00', 1, 1, 2, 2);
-INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('Amazing!! ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', false, '2004-05-12 00:00:00', 1, 1, 2, 1);
-INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('Great!! ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', false, '2004-05-12 00:00:00', 1, 1, 2, 2);
-INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('Amazing!! ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', false, '2004-05-12 00:00:00', 1, 1, 2, 1);
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('sampleuser has commented in your post: Amazing!! Lorem ipsum dolor sit amet, consectetur adipisci...', false, '2004-05-11 00:00:00', 2, 1, 2, 1);
+INSERT INTO Notification(text, viewed, creationDate, notifierUserId, notifiedUserId, postId, commentId) VALUES ('sampleuser has commented in your post: Great', false, '2004-05-12 00:00:00', 2, 1, 2, 2);
