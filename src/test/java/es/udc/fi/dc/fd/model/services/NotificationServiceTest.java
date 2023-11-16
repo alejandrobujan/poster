@@ -238,4 +238,16 @@ public class NotificationServiceTest {
 
 	}
 
+	@Test
+	public void testConstructor() {
+		Notification notification = new Notification("notification1", users.get(1), users.get(0), posts.get(0));
+
+		assertEquals("notification1", notification.getText());
+		assertEquals(users.get(1), notification.getNotifierUser());
+		assertEquals(users.get(0), notification.getNotifiedUser());
+		assertEquals(posts.get(0), notification.getPost());
+		assertFalse(notification.isViewed());
+
+	}
+
 }
