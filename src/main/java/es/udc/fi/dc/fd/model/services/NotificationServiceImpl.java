@@ -10,12 +10,18 @@ import es.udc.fi.dc.fd.model.entities.Notification;
 import es.udc.fi.dc.fd.model.entities.NotificationDao;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.User;
+import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
+import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
 	@Autowired
 	private NotificationDao notificationDao;
+
+	/** The post dao. */
+	@Autowired
+	private PermissionChecker permissionChecker;
 
 	@Override
 	public List<Notification> findUnviewedNotifications(Long userId) {
@@ -29,4 +35,14 @@ public class NotificationServiceImpl implements NotificationService {
 					.save(new Notification(text, false, comment.getDate(), notifierUser, notifiedUser, post, comment));
 		}
 	}
+
+	@Override
+	public void markAsViewed(Long notificationId, Long userId) throws InstanceNotFoundException, PermissionException {
+		Notification notification = permissionChecker.checkNotificationExistsAndBelongsTo(notificationId, userId);
+		notification.setViewed(true);
+
+		notificationDao.save(notification);
+
+	}
+
 }

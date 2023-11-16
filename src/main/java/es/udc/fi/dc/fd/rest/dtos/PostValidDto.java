@@ -2,9 +2,14 @@ package es.udc.fi.dc.fd.rest.dtos;
 
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * The class PostValidDto
  */
+@Getter
+@AllArgsConstructor
 public class PostValidDto {
 
 	/** The validation date */
@@ -15,28 +20,4 @@ public class PostValidDto {
 	 */
 	public PostValidDto() {
 	}
-
-	/**
-	 * Instantiates a post valid dto.
-	 * 
-	 * @param valid the validation date
-	 */
-	public PostValidDto(LocalDateTime validationDate) {
-		this.validationDate = validationDate;
-	}
-
-	/**
-	 * @return the validation date
-	 */
-	public LocalDateTime getValidationDate() {
-		return validationDate;
-	}
-
-	/**
-	 * @param valid the validation date to set
-	 */
-	public void setValidationDate(LocalDateTime validationDate) {
-		this.validationDate = validationDate;
-	}
-
 }

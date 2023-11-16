@@ -1,6 +1,7 @@
 package es.udc.fi.dc.fd.rest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
@@ -55,6 +56,8 @@ public class NotificationControllerTest {
 	private List<Post> posts;
 	private List<Category> categories;
 	private List<Comment> comments;
+
+	private static Long INEXISTENT_ID = 1L;
 
 	/** The user service. */
 	@Autowired
@@ -193,6 +196,33 @@ public class NotificationControllerTest {
 
 		mockMvc.perform(get("/api/notifications/notifications").header("Authorization",
 				"Bearer " + users.get(0).getServiceToken())).andExpect(status().isOk());
+	}
+
+	@Test
+	public void testPostMarkAsViewedNotification_Ok() throws Exception {
+		Notification notification = createNotification("notification1",
+				userDao.getReferenceById(users.get(1).getUserDto().getId()),
+				userDao.getReferenceById(users.get(0).getUserDto().getId()), posts.get(0), comments.get(0));
+
+		mockMvc.perform(post("/api/notifications/" + notification.getId() + "/view").header("Authorization",
+				"Bearer " + users.get(0).getServiceToken())).andExpect(status().isNoContent());
+	}
+
+	@Test
+	public void testPostMarkAsViewedNotification_NoNotification() throws Exception {
+
+		mockMvc.perform(post("/api/notifications/" + INEXISTENT_ID + "/view").header("Authorization",
+				"Bearer " + users.get(0).getServiceToken())).andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void testPostMarkAsViewedNotification_NoUser() throws Exception {
+		Notification notification = createNotification("notification1",
+				userDao.getReferenceById(users.get(1).getUserDto().getId()),
+				userDao.getReferenceById(users.get(0).getUserDto().getId()), posts.get(0), comments.get(0));
+
+		mockMvc.perform(post("/api/notifications/" + notification.getId() + "/view").header("Authorization",
+				"Bearer " + users.get(1).getServiceToken())).andExpect(status().isForbidden());
 	}
 
 }
