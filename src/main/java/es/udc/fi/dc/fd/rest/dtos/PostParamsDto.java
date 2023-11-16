@@ -17,20 +17,24 @@ import lombok.Setter;
 @Getter
 public class PostParamsDto {
 
+	/** The type of the post */
+	@Setter
+	@NotNull
+	private String type;
 	/** The post title. */
 	@Setter
 	@NotNull
 	@Size(min = 1, max = 60)
 	private String title;
+	/** The post url. */
+	@Setter
+	@Size(min = 0, max = 2048)
+	private String url;
 	/** The post description. */
 	@Setter
 	@NotNull
 	@Size(min = 1, max = 256)
 	private String description;
-	/** The post url. */
-	@Setter
-	@Size(min = 0, max = 2048)
-	private String url;
 	/** The price. */
 	@Setter
 	@NotNull
@@ -41,12 +45,26 @@ public class PostParamsDto {
 	/** Images related to the post. */
 	@NotNull
 	private List<byte[]> images = new ArrayList<>();
-	/** The type of the post */
-	@Setter
-	@NotNull
-	private String type;
 	/** The properties of the post */
 	private Map<String, String> properties;
+
+	/**
+	 * Sets the properties of the post
+	 * 
+	 * @param properties the properties to set
+	 */
+	public void setProperties(Map<String, String> properties) {
+		this.properties = new HashMap<>(properties);
+	}
+
+	/**
+	 * Sets images related to the post.
+	 * 
+	 * @param images the images to set
+	 */
+	public void setImages(List<byte[]> images) {
+		this.images = new ArrayList<>(images);
+	}
 
 	/**
 	 * Instantiates a new post params dto.
@@ -73,24 +91,6 @@ public class PostParamsDto {
 		this.categoryId = categoryId;
 		this.images = new ArrayList<>(images);
 		this.type = type;
-		this.properties = new HashMap<>(properties);
-	}
-
-	/**
-	 * Sets images related to the post.
-	 * 
-	 * @param images the images to set
-	 */
-	public void setImages(List<byte[]> images) {
-		this.images = new ArrayList<>(images);
-	}
-
-	/**
-	 * Sets the properties of the post
-	 * 
-	 * @param properties the properties to set
-	 */
-	public void setProperties(Map<String, String> properties) {
 		this.properties = new HashMap<>(properties);
 	}
 
