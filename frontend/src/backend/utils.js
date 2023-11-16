@@ -19,8 +19,10 @@ export const isImage = file => {
 }
 
 export const getDate = millis => {
+	const locale = 'es-ES';
+	const options = {timeZone: "Europe/Madrid"}
     const date = new Date(millis);
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+    return `${date.toLocaleDateString(locale, options)} ${date.toLocaleTimeString(locale, options)}`;
 }
 
 export const formatDateForInput = millis => {
