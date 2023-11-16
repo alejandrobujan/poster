@@ -86,7 +86,7 @@ exports[`Notifications renders correctly 1`] = `
                   }
                 }
               >
-                1/1/1970 1:00:00 
+                1/1/1970 1:00:00
               </span>
               <br />
             </small>
