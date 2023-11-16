@@ -4,13 +4,11 @@ import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * The class PostValidDto
  */
 @Getter
-@Setter
 @AllArgsConstructor
 public class PostValidDto {
 

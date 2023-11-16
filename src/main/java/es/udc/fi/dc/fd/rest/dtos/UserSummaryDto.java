@@ -2,10 +2,8 @@ package es.udc.fi.dc.fd.rest.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor
 public class UserSummaryDto {
 	/** The id. */

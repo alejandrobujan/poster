@@ -6,13 +6,11 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * The class PostSummaryDto
  */
 @Getter
-@Setter
 @AllArgsConstructor
 public class PostSummaryDto {
 
