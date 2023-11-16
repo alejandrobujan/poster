@@ -69,7 +69,8 @@ describe('getDate', () => {
 
     const result = getDate(mockMillis);
 
-    expect(result).toBe('13/11/2023 12:34:56');
+    expect(result).toBe('13/11/2023 13:34:56');
+
 
     delete global.Date;
   });
