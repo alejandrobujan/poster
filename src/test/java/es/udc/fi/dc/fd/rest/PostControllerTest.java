@@ -198,7 +198,7 @@ public class PostControllerTest {
 		PostParamsDto postParams = new PostParamsDto();
 		postParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postParams.setDescription("Tarta de Santiago");
-		postParams.setImages(null);
+		postParams.setImages(new ArrayList<>());
 		postParams.setPrice(new BigDecimal(10));
 		postParams.setTitle("Tarta de Santiago");
 		postParams.setUrl("http://poster.com");
