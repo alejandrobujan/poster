@@ -33,15 +33,15 @@ public class PostDto {
 	private int negativeRatings;
 	/** If is expired or not */
 	private boolean expired;
+	/** The validation date */
+	private Long validationDate;
 	/** The type of the post */
 	private String type;
 	/** The properties of the post */
 	private Map<String, String> properties;
 
 	/**
-	 * Instantiates a new post dto.
-	 * 
-	 * @param id              the id
+	 * @@param id the id
 	 * @param title           the title of the post
 	 * @param description     the description of the post
 	 * @param url             the url associated to the post
@@ -53,12 +53,13 @@ public class PostDto {
 	 * @param positiveRatings the number of positive ratings of the post
 	 * @param negativeRatings the number of negative ratings of the post
 	 * @param expired         if the post is expired or not
+	 * @param validationDate  the validation date
 	 * @param type            the post type
 	 * @param properties      the properties of the post
 	 */
 	public PostDto(Long id, String title, String description, String url, BigDecimal price, CategoryDto categoryDto,
 			UserSummaryDto userCreatorDto, List<byte[]> images, Long creationDate, int positiveRatings,
-			int negativeRatings, boolean expired, String type, Map<String, String> properties) {
+			int negativeRatings, boolean expired, Long validationDate, String type, Map<String, String> properties) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -71,6 +72,7 @@ public class PostDto {
 		this.positiveRatings = positiveRatings;
 		this.negativeRatings = negativeRatings;
 		this.expired = expired;
+		this.validationDate = validationDate;
 		this.type = type;
 		this.properties = properties;
 	}
@@ -274,6 +276,20 @@ public class PostDto {
 	 */
 	public void setExpired(boolean expired) {
 		this.expired = expired;
+	}
+
+	/**
+	 * @return the validation date
+	 */
+	public Long getValidationDate() {
+		return validationDate;
+	}
+
+	/**
+	 * @param valid the validation date to set
+	 */
+	public void setValidationDate(Long validationDate) {
+		this.validationDate = validationDate;
 	}
 
 	/**

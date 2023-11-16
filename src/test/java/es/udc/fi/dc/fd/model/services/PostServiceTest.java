@@ -4,11 +4,13 @@ import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,7 @@ import es.udc.fi.dc.fd.model.services.exceptions.IncorrectFormValuesException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
+import es.udc.fi.dc.fd.rest.dtos.PostValidDto;
 import jakarta.transaction.Transactional;
 
 /**
@@ -214,12 +217,12 @@ public class PostServiceTest {
 		String url = "http://www.google.es";
 		BigDecimal price = new BigDecimal(10);
 		String code = "EXTRA25";
-		List<byte[]> images = List.of(new byte[]{1, 2, 3}, new byte[]{2, 3, 4});
+		List<byte[]> images = List.of(new byte[] { 1, 2, 3 }, new byte[] { 2, 3, 4 });
 
-		Post post1 = postService.createPost(title, description, url, price, user.getId(), category.getId(),
-				images, "Coupon", Map.ofEntries(entry("code", code)));
-		Post post2 = postService.createPost(title, description, url, price, user.getId(), category.getId(),
-				images, "Offer", Map.ofEntries());
+		Post post1 = postService.createPost(title, description, url, price, user.getId(), category.getId(), images,
+				"Coupon", Map.ofEntries(entry("code", code)));
+		Post post2 = postService.createPost(title, description, url, price, user.getId(), category.getId(), images,
+				"Offer", Map.ofEntries());
 
 		Post actualPost1 = postDao.findById(post1.getId()).get();
 		Post actualPost2 = postDao.findById(post2.getId()).get();
@@ -488,7 +491,7 @@ public class PostServiceTest {
 		String newDescription = "new description";
 		String newUrl = "https://www.bing.com";
 		BigDecimal newPrice = new BigDecimal(12);
-		List<byte[]> images = List.of(new byte[]{1, 2, 3}, new byte[]{2, 3, 4});
+		List<byte[]> images = List.of(new byte[] { 1, 2, 3 }, new byte[] { 2, 3, 4 });
 
 		Post updatedPost = postService.updatePost(offer.getId(), newTitle, newDescription, newUrl, newPrice,
 				user.getId(), newCategory.getId(), images, "Offer", Map.ofEntries());
@@ -588,7 +591,7 @@ public class PostServiceTest {
 		assertEquals(newCode, ((Coupon) actualPost).getCode());
 	}
 
-		/**
+	/**
 	 * Test update coupon.
 	 * 
 	 * @throws DuplicateInstanceException        the duplicate instance exception
@@ -610,13 +613,12 @@ public class PostServiceTest {
 		String newDescription = "new description";
 		String newUrl = "https://www.bing.com";
 		BigDecimal newPrice = new BigDecimal(12);
-		List<byte[]> images = List.of(new byte[]{1, 2, 3}, new byte[]{2, 3, 4});
+		List<byte[]> images = List.of(new byte[] { 1, 2, 3 }, new byte[] { 2, 3, 4 });
 
 		String newCode = "EXTRANEW25";
 
 		Post updatedPost = postService.updatePost(coupon.getId(), newTitle, newDescription, newUrl, newPrice,
-				user.getId(), newCategory.getId(), images, "Coupon",
-				Map.ofEntries(entry("code", newCode)));
+				user.getId(), newCategory.getId(), images, "Coupon", Map.ofEntries(entry("code", newCode)));
 
 		Post actualPost = postDao.findById(coupon.getId()).get();
 
@@ -758,6 +760,56 @@ public class PostServiceTest {
 				() -> postService.updatePost(coupon.getId(), "title", "description", "url", new BigDecimal(10),
 						user.getId(), category.getId(), List.of(new byte[EXCEEDED_BYTE_SIZE]), "Coupon",
 						Map.ofEntries()));
+	}
+
+	/**
+	 * Test mark as valid.
+	 * 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	@Test
+	public void testMarkAsValid() throws InstanceNotFoundException {
+
+		assertNull(offer.getValidationDate());
+
+		postService.markAsValid(offer.getId());
+		offer = catalogService.findPostById(offer.getId());
+
+		assertNotNull(offer.getValidationDate());
+
+		assertEquals(offer.getValidationDate().truncatedTo(ChronoUnit.SECONDS),
+				LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+
+	}
+
+	/**
+	 * Test mark as valid no post.
+	 * 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	@Test
+	public void testMarkAsValidNoPost() throws InstanceNotFoundException {
+		assertThrows(InstanceNotFoundException.class, () -> postService.markAsValid(NON_EXISTENT_ID));
+	}
+
+	/**
+	 * Test PostValidDto()
+	 */
+	@Test
+	public void testPostValidDtoConstructor() {
+		PostValidDto postValidDto = new PostValidDto();
+		assertNotNull(postValidDto);
+	}
+
+	/**
+	 * Test setValidationDate from postValidDto
+	 */
+	@Test
+	public void testSetValidationDate() {
+		PostValidDto postValidDto = new PostValidDto();
+		LocalDateTime time = LocalDateTime.now();
+		postValidDto.setValidationDate(time);
+		assertEquals(time, postValidDto.getValidationDate());
 	}
 
 }

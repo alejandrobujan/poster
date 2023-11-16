@@ -39,11 +39,12 @@ public class PostDtoTest {
 		int positiveRatings = 5;
 		int negativeRatings = 2;
 		boolean expired = false;
+		Long validationDate = null;
 		String type = "Test Type";
 		Map<String, String> properties = new HashMap<>();
 
 		PostDto parametrizedDto = new PostDto(id, title, description, url, price, categoryDto, userSummaryDto, images,
-				creationDate, positiveRatings, negativeRatings, expired, type, properties);
+				creationDate, positiveRatings, negativeRatings, expired, validationDate, type, properties);
 		assertNotNull(parametrizedDto);
 	}
 
@@ -51,7 +52,7 @@ public class PostDtoTest {
 	public void testGetId() {
 		Long id = 1L;
 		PostDto postDto = new PostDto(id, "Title", "Description", "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, "Type", new HashMap<>());
+				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, null, "Type", new HashMap<>());
 
 		assertEquals(id, postDto.getId());
 	}
@@ -60,7 +61,7 @@ public class PostDtoTest {
 	public void testGetTitle() {
 		String title = "Test Title";
 		PostDto postDto = new PostDto(1L, title, "Description", "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, "Type", new HashMap<>());
+				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, null, "Type", new HashMap<>());
 
 		assertEquals(title, postDto.getTitle());
 	}
@@ -69,7 +70,7 @@ public class PostDtoTest {
 	public void testGetDescription() {
 		String description = "Test Description";
 		PostDto postDto = new PostDto(1L, "Title", description, "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, "Type", new HashMap<>());
+				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, null, "Type", new HashMap<>());
 
 		assertEquals(description, postDto.getDescription());
 	}
@@ -78,7 +79,7 @@ public class PostDtoTest {
 	public void testGetUrl() {
 		String url = "http://example.com";
 		PostDto postDto = new PostDto(1L, "Title", "Description", url, BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, "Type", new HashMap<>());
+				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, null, "Type", new HashMap<>());
 
 		assertEquals(url, postDto.getUrl());
 	}
@@ -87,7 +88,7 @@ public class PostDtoTest {
 	public void testGetPrice() {
 		BigDecimal price = new BigDecimal("99.99");
 		PostDto postDto = new PostDto(1L, "Title", "Description", "URL", price, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, "Type", new HashMap<>());
+				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, null, "Type", new HashMap<>());
 
 		assertEquals(price, postDto.getPrice());
 	}
@@ -96,7 +97,7 @@ public class PostDtoTest {
 	public void testGetCategoryDto() {
 		CategoryDto categoryDto = new CategoryDto();
 		PostDto postDto = new PostDto(1L, "Title", "Description", "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, "Type", new HashMap<>());
+				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, null, "Type", new HashMap<>());
 
 		assertEquals(categoryDto, postDto.getCategoryDto());
 	}
@@ -104,7 +105,7 @@ public class PostDtoTest {
 	@Test
 	public void testGetUserSummaryDto() {
 		PostDto postDto = new PostDto(1L, "Title", "Description", "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, "Type", new HashMap<>());
+				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, null, "Type", new HashMap<>());
 
 		assertEquals(userSummaryDto, postDto.getUserSummaryDto());
 	}
@@ -114,7 +115,7 @@ public class PostDtoTest {
 		List<byte[]> images = new ArrayList<>();
 		images.add(new byte[] { 1, 2, 3 });
 		PostDto postDto = new PostDto(1L, "Title", "Description", "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				images, System.currentTimeMillis(), 0, 0, false, "Type", new HashMap<>());
+				images, System.currentTimeMillis(), 0, 0, false, null, "Type", new HashMap<>());
 
 		assertEquals(images, postDto.getImages());
 	}
@@ -123,7 +124,8 @@ public class PostDtoTest {
 	public void testGetPositiveRatings() {
 		int positiveRatings = 5;
 		PostDto postDto = new PostDto(1L, "Title", "Description", "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), positiveRatings, 0, false, "Type", new HashMap<>());
+				new ArrayList<>(), System.currentTimeMillis(), positiveRatings, 0, false, null, "Type",
+				new HashMap<>());
 
 		assertEquals(positiveRatings, postDto.getPositiveRatings());
 	}
@@ -132,7 +134,8 @@ public class PostDtoTest {
 	public void testGetNegativeRatings() {
 		int negativeRatings = 3;
 		PostDto postDto = new PostDto(1L, "Title", "Description", "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), 0, negativeRatings, false, "Type", new HashMap<>());
+				new ArrayList<>(), System.currentTimeMillis(), 0, negativeRatings, false, null, "Type",
+				new HashMap<>());
 
 		assertEquals(negativeRatings, postDto.getNegativeRatings());
 	}
@@ -141,7 +144,7 @@ public class PostDtoTest {
 	public void testIsExpired() {
 		boolean expired = true;
 		PostDto postDto = new PostDto(1L, "Title", "Description", "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), 0, 0, expired, "Type", new HashMap<>());
+				new ArrayList<>(), System.currentTimeMillis(), 0, 0, expired, null, "Type", new HashMap<>());
 
 		assertEquals(expired, postDto.isExpired());
 	}
@@ -150,7 +153,7 @@ public class PostDtoTest {
 	public void testGetCreationDate() {
 		Long creationDate = System.currentTimeMillis();
 		PostDto postDto = new PostDto(1L, "Title", "Description", "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), creationDate, 0, 0, false, "Type", new HashMap<>());
+				new ArrayList<>(), creationDate, 0, 0, false, null, "Type", new HashMap<>());
 
 		assertEquals(creationDate, postDto.getCreationDate());
 	}
@@ -159,7 +162,7 @@ public class PostDtoTest {
 	public void testGetType() {
 		String type = "Test Type";
 		PostDto postDto = new PostDto(1L, "Title", "Description", "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, type, new HashMap<>());
+				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, null, type, new HashMap<>());
 
 		assertEquals(type, postDto.getType());
 	}
@@ -169,7 +172,7 @@ public class PostDtoTest {
 		Map<String, String> properties = new HashMap<>();
 		properties.put("key", "value");
 		PostDto postDto = new PostDto(1L, "Title", "Description", "URL", BigDecimal.ZERO, categoryDto, userSummaryDto,
-				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, "Type", properties);
+				new ArrayList<>(), System.currentTimeMillis(), 0, 0, false, null, "Type", properties);
 
 		assertEquals(properties, postDto.getProperties());
 	}
@@ -300,4 +303,14 @@ public class PostDtoTest {
 
 		assertEquals(properties, postDto.getProperties());
 	}
+
+	@Test
+	public void testSetValidationDate() {
+		Long validationDate = System.currentTimeMillis();
+		PostDto postDto = new PostDto();
+		postDto.setValidationDate(validationDate);
+
+		assertEquals(validationDate, postDto.getValidationDate());
+	}
+
 }

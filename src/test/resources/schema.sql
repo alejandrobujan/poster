@@ -35,6 +35,7 @@ CREATE TABLE Post (
 	positiveRatings INTEGER NOT NULL DEFAULT 0,
 	negativeRatings INTEGER NOT NULL DEFAULT 0,
 	expired BOOLEAN NOT NULL DEFAULT FALSE,
+	validationDate TIMESTAMP,
 	userId BIGINT NOT NULL, 
 	categoryId BIGINT,
 	
