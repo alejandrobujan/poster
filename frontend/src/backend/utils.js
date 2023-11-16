@@ -19,6 +19,7 @@ export const isImage = file => {
 }
 
 export const getDate = millis => {
+	const locale = 'es-ES';
     const date = new Date(millis);
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+    return `${date.toLocaleDateString(locale)} ${date.toLocaleTimeString(locale)}`;
 }
