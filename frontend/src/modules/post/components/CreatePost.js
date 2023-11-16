@@ -259,7 +259,7 @@ const CreatePost = ({ min }) => {
 									id="code"
 									className="form-control"
 									value={expirationDate}
-									min={min ? formatDateForInput(min) : formatDateForInput(new Date(Date.UTC()).getTime())}
+									min={min ? getDate(min) : getDate(new Date().getTime())}
 									onChange={e => setExpirationDate(e.target.value)}
 									required
 								/>
