@@ -26,15 +26,22 @@ export const getDate = millis => {
 }
 
 export const formatDateForInput = millis => {
+	const locale = 'es-ES';
+	const options = {timeZone: "Europe/Madrid"}
 	const date = new Date(millis);
-	const year = date.getFullYear();
-	const month = `${(date.getMonth() + 1).toString().padStart(2, '0')}`;
-	const day = `${date.getDate().toString().padStart(2, '0')}`;
-	const hours = `${date.getHours().toString().padStart(2, '0')}`;
-	const minutes = `${date.getMinutes().toString().padStart(2, '0')}`;
+	const dateString = `${date.toLocaleDateString(locale, options)}-${date.toLocaleTimeString(locale, options)}`
+	const [datePart, timePart] = dateString.split('-');
+	const [day, month, year] = datePart.split('/');
+  	const [hours, minutes] = timePart.split(':');
+	const monthStr = `${month.padStart(2, '0')}`;
+	const dayStr = `${day.padStart(2, '0')}`;
+	const hoursStr = `${hours.padStart(2, '0')}`;
+	const minutesStr = `${minutes.padStart(2, '0')}`;
 	
-	return `${year}-${month}-${day}T${hours}:${minutes}`;
+	return `${year}-${monthStr}-${dayStr}T${hoursStr}:${minutesStr}`;
+
 }
+
 
 export const parseInputDate = dateString => {
   const [datePart, timePart] = dateString.split('T');

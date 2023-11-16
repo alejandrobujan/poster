@@ -285,7 +285,7 @@ const UpdatePostForm = () => {
 									id="code"
 									className="form-control"
 									value={expirationDate}
-									min={expirationDate !== '' && new Date().getTime() > parseInputDate(expirationDate) ? expirationDate : formatDateForInput(new Date().getTime())}
+									min={expirationDate !== '' && new Date().getTime() > parseInputDate(expirationDate) ? formatDateForInput(new Date().getTime()) : expirationDate}
 									onChange={e => setExpirationDate(e.target.value)}
 									required
 								/>
