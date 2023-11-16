@@ -70,6 +70,25 @@ public class PermissionCheckerImpl implements PermissionChecker {
 	}
 
 	/**
+	 * Check post.
+	 * 
+	 * @param postId the post id
+	 * @return the post
+	 * @throws InstanceNotFoundExcepcion he instance not found exception
+	 */
+	public Post checkPost(Long postId) throws InstanceNotFoundException {
+
+		Optional<Post> post = postDao.findById(postId);
+
+		if (!post.isPresent()) {
+			throw new InstanceNotFoundException("project.entities.post", postId);
+		}
+
+		return post.get();
+
+	}
+
+	/**
 	 * Check post exists and belongs to user.
 	 * 
 	 * @param postId the post id

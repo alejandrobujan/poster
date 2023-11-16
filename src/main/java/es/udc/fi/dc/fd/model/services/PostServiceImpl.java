@@ -3,6 +3,7 @@ package es.udc.fi.dc.fd.model.services;
 import static java.util.Map.entry;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -146,6 +147,22 @@ public class PostServiceImpl implements PostService {
 		post.setExpired(expired);
 
 		return postDao.save(post).isExpired();
+	}
+
+	/**
+	 * Mark a post as valid.
+	 * 
+	 * @param postId the post id
+	 * @return the validation date updated
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	@Override
+	public LocalDateTime markAsValid(Long postId) throws InstanceNotFoundException {
+		Post post = permissionChecker.checkPost(postId);
+
+		post.setValidationDate(LocalDateTime.now());
+
+		return postDao.save(post).getValidationDate();
 	}
 
 }
