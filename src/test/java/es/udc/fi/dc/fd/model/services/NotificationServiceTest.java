@@ -1,5 +1,6 @@
 package es.udc.fi.dc.fd.model.services;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.udc.fi.dc.fd.model.common.exceptions.DuplicateInstanceException;
+import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.CategoryDao;
 import es.udc.fi.dc.fd.model.entities.Comment;
@@ -29,6 +31,7 @@ import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
+import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 import jakarta.transaction.Transactional;
 
 /**
@@ -44,6 +47,8 @@ public class NotificationServiceTest {
 	private List<Post> posts;
 	private List<Category> categories;
 	private List<Comment> comments;
+
+	private static Long INEXISTENT_ID = 1L;
 
 	/** The user service. */
 	@Autowired
@@ -183,6 +188,66 @@ public class NotificationServiceTest {
 		List<Notification> notifications = notificationService.findUnviewedNotifications(users.get(1).getId());
 
 		assertTrue(notifications.isEmpty());
+	}
+
+	@Test
+	public void testMarkNotificationAsViewed() throws InstanceNotFoundException, PermissionException {
+		Notification notification = createNotification("notification", users.get(1), users.get(0), posts.get(0),
+				comments.get(0));
+
+		assertFalse(notification.isViewed());
+
+		notificationService.markAsViewed(notification.getId(), users.get(0).getId());
+
+		Notification notificationFound = notificationDao.findById(notification.getId()).get();
+
+		assertEquals(notification.getId(), notificationFound.getId());
+		assertEquals(notification.getNotifiedUser(), notificationFound.getNotifiedUser());
+		assertEquals(notification.getNotifierUser(), notificationFound.getNotifierUser());
+		assertEquals(notification.getComment(), notificationFound.getComment());
+		assertEquals(notification.getCreationDate(), notificationFound.getCreationDate());
+		assertEquals(notification.getPost(), notificationFound.getPost());
+		assertEquals(notification.getText(), notificationFound.getText());
+
+		assertTrue(notificationFound.isViewed());
+
+	}
+
+	@Test
+	public void testMarkNotificationAsViewedInexistentNotification()
+			throws InstanceNotFoundException, PermissionException {
+		Notification notification = createNotification("notification", users.get(1), users.get(0), posts.get(0),
+				comments.get(0));
+
+		assertFalse(notification.isViewed());
+
+		assertThrows(InstanceNotFoundException.class,
+				() -> notificationService.markAsViewed(INEXISTENT_ID, users.get(0).getId()));
+
+	}
+
+	@Test
+	public void testMarkNotificationAsViewedNoUserNotification() throws InstanceNotFoundException, PermissionException {
+		Notification notification = createNotification("notification", users.get(1), users.get(0), posts.get(0),
+				comments.get(0));
+
+		assertFalse(notification.isViewed());
+
+		assertThrows(PermissionException.class,
+				() -> notificationService.markAsViewed(notification.getId(), users.get(1).getId()));
+
+	}
+
+	@Test
+	public void testConstructor() {
+		Notification notification = new Notification("notification1", users.get(1), users.get(0), posts.get(0));
+
+		assertEquals("notification1", notification.getText());
+		assertEquals(users.get(1), notification.getNotifierUser());
+		assertEquals(users.get(0), notification.getNotifiedUser());
+		assertEquals(posts.get(0), notification.getPost());
+		assertFalse(notification.isViewed());
+
 	}
 
 }

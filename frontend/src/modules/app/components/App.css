@@ -135,6 +135,14 @@
       color: rgb(0, 0, 0); 
       transition: color 0.3s ease; 
 }
+
 .color-text:hover {
       color: rgb(154, 153, 150); 
  }
+
+@media screen and (min-width: 992px) {
+	.notification-box {
+		max-height: 400px;
+		overflow-y: auto;
+	}
+}

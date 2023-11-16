@@ -58,6 +58,21 @@ public class Notification {
 	}
 
 	/**
+	 * @param text
+	 * @param notifierUser
+	 * @param notifiedUser
+	 * @param post
+	 */
+	public Notification(String text, User notifierUser, User notifiedUser, Post post) {
+		this.text = text;
+		this.notifierUser = notifierUser;
+		this.notifiedUser = notifiedUser;
+		this.post = post;
+		this.creationDate = LocalDateTime.now();
+		this.viewed = false;
+	}
+
+	/**
 	 * Gets the id
 	 * 
 	 * @return the id
