@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -198,7 +199,7 @@ public class PostControllerTest {
 		PostParamsDto postParams = new PostParamsDto();
 		postParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postParams.setDescription("Tarta de Santiago");
-		postParams.setImages(null);
+		postParams.setImages(new ArrayList<>());
 		postParams.setPrice(new BigDecimal(10));
 		postParams.setTitle("Tarta de Santiago");
 		postParams.setUrl("http://poster.com");
@@ -321,6 +322,7 @@ public class PostControllerTest {
 		postUpdateParams.setTitle("Tarta");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setProperties(new HashMap<>());
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -346,6 +348,7 @@ public class PostControllerTest {
 		postUpdateParams.setTitle(" ");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setProperties(new HashMap<>());
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -371,6 +374,7 @@ public class PostControllerTest {
 		postUpdateParams.setTitle("Tarta de Santiago");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setProperties(new HashMap<>());
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -396,6 +400,7 @@ public class PostControllerTest {
 		postUpdateParams.setTitle("Tarta");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setProperties(new HashMap<>());
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -421,6 +426,7 @@ public class PostControllerTest {
 		postUpdateParams.setTitle("Tarta");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setProperties(new HashMap<>());
 
 		ObjectMapper mapper = new ObjectMapper();
 

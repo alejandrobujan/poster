@@ -806,9 +806,8 @@ public class PostServiceTest {
 	 */
 	@Test
 	public void testSetValidationDate() {
-		PostValidDto postValidDto = new PostValidDto();
 		LocalDateTime time = LocalDateTime.now();
-		postValidDto.setValidationDate(time);
+		PostValidDto postValidDto = new PostValidDto(time);
 		assertEquals(time, postValidDto.getValidationDate());
 	}
 

@@ -1,5 +1,10 @@
 package es.udc.fi.dc.fd.rest.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public class UserSummaryDto {
 	/** The id. */
 	private Long id;
@@ -15,92 +20,4 @@ public class UserSummaryDto {
 
 	/** The role. */
 	private byte[] avatar;
-
-	/**
-	 * Instantiates a new user summary dto.
-	 *
-	 * @param id        the id
-	 * @param userName  the user name
-	 * @param firstName the first name
-	 * @param lastName  the last name
-	 * @param avatar    the avatar
-	 */
-	public UserSummaryDto(Long id, String userName, String firstName, String lastName, byte[] avatar) {
-		this.id = id;
-		this.userName = userName;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.avatar = avatar;
-	}
-
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the userName
-	 */
-	public String getUserName() {
-		return userName;
-	}
-
-	/**
-	 * @param userName the userName to set
-	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	/**
-	 * @return the firstName
-	 */
-	public String getFirstName() {
-		return firstName;
-	}
-
-	/**
-	 * @param firstName the firstName to set
-	 */
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	/**
-	 * @return the lastName
-	 */
-	public String getLastName() {
-		return lastName;
-	}
-
-	/**
-	 * @param lastName the lastName to set
-	 */
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	/**
-	 * @return the avatar
-	 */
-	public byte[] getAvatar() {
-		return avatar;
-	}
-
-	/**
-	 * @param avatar the avatar to set
-	 */
-	public void setAvatar(byte[] avatar) {
-		this.avatar = avatar;
-	}
-
 }
