@@ -1,10 +1,16 @@
 package es.udc.fi.dc.fd.rest.dtos;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The class PostExpiredDto
  */
+@Getter
+@Setter
+@AllArgsConstructor
 public class PostExpiredDto {
 
 	/** If is expired or not */
@@ -15,33 +21,6 @@ public class PostExpiredDto {
 	 * Instantiates a post expired dto.
 	 */
 	public PostExpiredDto() {
-	}
-
-	/**
-	 * Instantiates a post expired dto.
-	 * 
-	 * @param expired if the post is expired or not
-	 */
-	public PostExpiredDto(boolean expired) {
-		this.expired = expired;
-	}
-
-	/**
-	 * Gets if the post is expired or not
-	 * 
-	 * @return if the post is expired or not
-	 */
-	public boolean isExpired() {
-		return expired;
-	}
-
-	/**
-	 * Sets the expired attribute
-	 * 
-	 * @param expired value to set (if it is expired or not)
-	 */
-	public void setExpired(boolean expired) {
-		this.expired = expired;
 	}
 
 }
