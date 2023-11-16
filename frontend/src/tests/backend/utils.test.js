@@ -62,7 +62,7 @@ describe('isImage', () => {
 
 describe('getDate', () => {
   it('should return a formatted date string', () => {
-    const mockDate = new Date(2023, 10, 13, 12, 34, 56); 
+    const mockDate = new Date(Date.UTC(2023, 10, 13, 12, 34, 56)); 
     global.Date = jest.fn(() => mockDate);
 
     const mockMillis = 123456789;
