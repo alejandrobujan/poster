@@ -1,6 +1,7 @@
 package es.udc.fi.dc.fd.model.services;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
+import es.udc.fi.dc.fd.model.entities.Notification;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
@@ -37,5 +38,8 @@ public interface PermissionChecker {
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	public Post checkPostExistsAndBelongsTo(Long postId, Long userId)
+			throws PermissionException, InstanceNotFoundException;
+
+	public Notification checkNotificationExistsAndBelongsTo(Long notificationId, Long userId)
 			throws PermissionException, InstanceNotFoundException;
 }
