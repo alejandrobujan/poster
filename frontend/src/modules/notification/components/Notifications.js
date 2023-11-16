@@ -3,7 +3,7 @@ import Notification from './Notification';
 const Notifications = ({ notifications }) => {
 	if (!notifications || notifications.length === 0) {
 		return (
-			<li className="nav-item dropdown">
+			<li data-testid="NoNotifications" className="nav-item dropdown">
 				<a className="dropdown-toggle nav-link"
 					data-toggle="dropdown" href='#!'>
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-bell" viewBox="0 0 16 16">
@@ -20,7 +20,7 @@ const Notifications = ({ notifications }) => {
 	const unviewedCount = notifications.filter(n => !n.notificationViewed).length;
 
 	return (
-		<li className="nav-item dropdown">
+		<li data-testid="Notifications" className="nav-item dropdown">
 			<a className="dropdown-toggle nav-link"
 				data-toggle="dropdown" href='#!'>
 				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-bell" viewBox="0 0 16 16">
