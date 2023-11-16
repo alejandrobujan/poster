@@ -166,6 +166,9 @@ const PostDetails = () => {
 					{post.categoryDto &&
 						<p className="card-text"><strong>Category:</strong> {post.categoryDto.name}</p>
 					}
+					{post.validationDate &&
+        				<p className="mt-2"><strong>Marked as valid on:</strong> {getDate(post.validationDate).substring(0, getDate(post.validationDate).length - 3)} </p>
+      				}
 					{post.properties.code &&
 						<div className="copy-button">
 							<input id="copyvalue" type="text" readOnly value={post.properties.code} />
@@ -192,24 +195,22 @@ const PostDetails = () => {
 						<UserCard user={post.userSummaryDto} />
 					</div>
 
-					{isLoggedIn && post.userSummaryDto.id === user.id &&
-						<button className="page-link mt-2"
-							onClick={() => dispatch(actions.markPostAsExpired(id, !post.expired, errors => setBackendErrors(errors)))}>
-							{post.expired ? "Unmark as expired" : "Mark as expired"}
-						</button>
-
-					}
-					{isLoggedIn &&
-						<button className="page-link mt-2" data-testid="MarkAsValidButton"
-							onClick={() => dispatch(actions.markPostAsValid(id, errors => setBackendErrors(errors)))}>					
-							Mark as still valid
-						</button>
-					}
-					<div className="post-signature">
-					{post.validationDate &&
-        				<div className="mt-2">Marked as valid on: {getDate(post.validationDate)} </div>
-      				}
-      				</div>
+					<div className="row">
+						{isLoggedIn && post.userSummaryDto.id === user.id &&
+							<button className="page-link mt-2"
+								onClick={() => dispatch(actions.markPostAsExpired(id, !post.expired, errors => setBackendErrors(errors)))}>
+								{post.expired ? "Unmark as expired" : "Mark as expired"}
+							</button>
+	
+						}
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						{isLoggedIn &&
+							<button className="page-link mt-2" data-testid="MarkAsValidButton"
+								onClick={() => dispatch(actions.markPostAsValid(id, errors => setBackendErrors(errors)))}>					
+								Mark as still valid
+							</button>
+						}
+					</div>
 				</div>
 			</div>
 			<div>

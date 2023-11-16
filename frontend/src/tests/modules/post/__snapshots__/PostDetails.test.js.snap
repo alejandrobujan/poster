@@ -278,16 +278,18 @@ exports[`PostDetails renders correctly 1`] = `
           </div>
         </div>
       </div>
-      <button
-        className="page-link mt-2"
-        data-testid="MarkAsValidButton"
-        onClick={[Function]}
-      >
-        Mark as still valid
-      </button>
       <div
-        className="post-signature"
-      />
+        className="row"
+      >
+             
+        <button
+          className="page-link mt-2"
+          data-testid="MarkAsValidButton"
+          onClick={[Function]}
+        >
+          Mark as still valid
+        </button>
+      </div>
     </div>
   </div>
   <div>
