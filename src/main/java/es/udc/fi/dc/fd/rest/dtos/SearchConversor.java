@@ -16,6 +16,7 @@ public class SearchConversor {
 	public static final SearchFilters toSearchFilters(SearchFiltersDto searchFiltersDto) {
 
 		return new SearchFilters(searchFiltersDto.getCategoryId(), searchFiltersDto.getType(),
-				searchFiltersDto.getPrice(), searchFiltersDto.getDate(), searchFiltersDto.isExpired());
+				searchFiltersDto.getPrice(), searchFiltersDto.getDate(), searchFiltersDto.isExpired(),
+				searchFiltersDto.getSortParam(), searchFiltersDto.getSortOrder());
 	}
 }

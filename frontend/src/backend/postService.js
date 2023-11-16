@@ -21,3 +21,6 @@ export const maskPostAsExpired = (id, onSuccess, onErrors) => {
 	appFetch(`/posts/post/${id}/markAsExpired`, fetchConfig("POST"), onSuccess, onErrors);
 };
 
+export const markPostAsValid = (id, onSuccess, onErrors) => {
+	appFetch(`/posts/post/${id}/markAsValid`, fetchConfig("POST"), onSuccess, onErrors);
+};

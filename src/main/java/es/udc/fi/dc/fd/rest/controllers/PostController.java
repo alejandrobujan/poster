@@ -35,6 +35,7 @@ import es.udc.fi.dc.fd.rest.dtos.PostConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostDto;
 import es.udc.fi.dc.fd.rest.dtos.PostParamsDto;
 import es.udc.fi.dc.fd.rest.dtos.PostUpdateDto;
+import es.udc.fi.dc.fd.rest.dtos.PostValidDto;
 import es.udc.fi.dc.fd.rest.dtos.UserDto;
 
 /**
@@ -181,6 +182,19 @@ public class PostController {
 				params.getProperties(), PostConversor.fromMillis(params.getExpirationDate()));
 
 		return postConversor.toPostDto(post);
+
+	}
+
+	/**
+	 * Mark post as valid
+	 * 
+	 * @param id the id
+	 * @return the post valid dto
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	@PostMapping("/post/{id}/markAsValid")
+	public PostValidDto markPostAsValid(@PathVariable Long id) throws InstanceNotFoundException {
+		return new PostValidDto(postService.markAsValid(id));
 
 	}
 

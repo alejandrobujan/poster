@@ -26,8 +26,8 @@ public class OfferConversor extends PostConversor {
 				new UserSummaryDto(post.getUser().getId(), post.getUser().getUserName(), post.getUser().getFirstName(),
 						post.getUser().getLastName(), post.getUser().getAvatar()),
 				toImageDtos(post.getImages()), toMillis(post.getCreationDate()), post.getPositiveRatings(),
-				post.getNegativeRatings(), post.getClass().getSimpleName(), Map.ofEntries(),
-				toMillis(post.getExpirationDate()));
+				post.getNegativeRatings(), post.getValidationDate() != null ? toMillis(post.getValidationDate()) : null,
+				post.getClass().getSimpleName(), Map.ofEntries(), toMillis(post.getExpirationDate()));
 
 	}
 

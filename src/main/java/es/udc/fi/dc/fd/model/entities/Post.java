@@ -42,6 +42,8 @@ public class Post {
 	private int negativeRatings;
 	/** If is expired or not */
 	private LocalDateTime expirationDate;
+	/** The last validation date */
+	private LocalDateTime validationDate;
 	/** The post author. */
 	private User user;
 	/** The post category. */
@@ -310,12 +312,30 @@ public class Post {
 		this.expirationDate = expirationDate;
 	}
 
+	/**
+	 * Gets the validation date.
+	 * 
+	 * @return the validation date
+	 */
+	public LocalDateTime getValidationDate() {
+		return validationDate;
+	}
+
+	/**
+	 * Sets the validation date.
+	 * 
+	 * @param valid the validation date to set
+	 */
+	public void setValidationDate(LocalDateTime validationDate) {
+		this.validationDate = validationDate;
+	}
+
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", title=" + title + ", description=" + description + ", url=" + url + ", price="
 				+ price + ", creationDate=" + creationDate + ", positiveRatings=" + positiveRatings
-				+ ", negativeRatings=" + negativeRatings + ", expirationDate=" + expirationDate + ", user=" + user
-				+ ", category=" + category + ", images=" + images + "]";
+				+ ", negativeRatings=" + negativeRatings + ", expirationDate=" + expirationDate + ", validationDate="
+				+ validationDate + ", user=" + user + ", category=" + category + ", images=" + images + "]";
 	}
 
 }

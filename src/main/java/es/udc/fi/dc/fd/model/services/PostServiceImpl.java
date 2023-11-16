@@ -148,4 +148,20 @@ public class PostServiceImpl implements PostService {
 		return postDao.save(post).getExpirationDate();
 	}
 
+	/**
+	 * Mark a post as valid.
+	 * 
+	 * @param postId the post id
+	 * @return the validation date updated
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	@Override
+	public LocalDateTime markAsValid(Long postId) throws InstanceNotFoundException {
+		Post post = permissionChecker.checkPost(postId);
+
+		post.setValidationDate(LocalDateTime.now());
+
+		return postDao.save(post).getValidationDate();
+	}
+
 }

@@ -5,9 +5,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import * as selectors from '../selectors';
 import * as userSelectors from '../../users/selectors';
 import * as actions from '../actions';
+
+import * as commentActions from '../../comment/actions';
+import * as commentSelectors from '../../comment/selectors';
+
 import { BackLink, UserCard, Errors } from '../../common';
+import { Pager } from '../../common';
 import { getDate } from '../../../backend/utils';
 import { OfferIcon, CouponIcon } from "../../catalog";
+import { Comments } from "../../comment";
 
 import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
@@ -15,19 +21,36 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 const PostDetails = () => {
 	const post = useSelector(selectors.getPost);
+	const comments = useSelector(commentSelectors.getComments);
 	const user = useSelector(userSelectors.getUser);
 	const isLoggedIn = useSelector(userSelectors.isLoggedIn);
 	const userName = useSelector(userSelectors.getUserName);
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const [comment, setComment] = useState('');
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [buttonPressed, setButtonPressed] = useState(false);
+
+	let form;
 
 	const components = {
 		'Offer': OfferIcon,
 		'Coupon': CouponIcon
 	};
+
+	const handleSubmit = event => {
+
+		event.preventDefault();
+
+		if (form.checkValidity()) {
+			dispatch(commentActions.commentPost(comment, id, null, 0, errors => setBackendErrors(errors)))
+			setComment('');
+		} else {
+			setBackendErrors(null);
+			form.classList.add('was-validated');
+		}
+	}
 
 
 	const handleDeleteClick = () => {
@@ -43,9 +66,13 @@ const PostDetails = () => {
 
 		if (!Number.isNaN(postId)) {
 			dispatch(actions.findPostById(postId));
+			dispatch(commentActions.findComments(postId, null, 0));
 		}
 
-		return () => dispatch(actions.clearPost());
+		return () => {
+			dispatch(actions.clearPost())
+			dispatch(commentActions.clearComments());
+		};
 
 	}, [id, dispatch]);
 
@@ -139,7 +166,11 @@ const PostDetails = () => {
 					{post.categoryDto &&
 						<p className="card-text"><strong>Category:</strong> {post.categoryDto.name}</p>
 					}
+
 					<p className="card-text"><strong>Expiration:</strong> {getDate(post.expirationDate).substring(0, getDate(post.expirationDate).length - 3)}</p>
+					{post.validationDate &&
+						<p className="mt-2"><strong>Marked as valid on:</strong> {getDate(post.validationDate).substring(0, getDate(post.validationDate).length - 3)} </p>
+					}
 					{post.properties.code &&
 						<div className="copy-button">
 							<input id="copyvalue" type="text" readOnly value={post.properties.code} />
@@ -162,20 +193,70 @@ const PostDetails = () => {
 						</div>
 					}
 					<div className="post-signature">
-						<div className="creation-date">Posted at {getDate(post.creationDate)}</div>
+						<div>Posted at {getDate(post.creationDate)}</div>
 						<UserCard user={post.userSummaryDto} />
 					</div>
 
-					{isLoggedIn && post.userSummaryDto.id === user.id && (post.expirationDate > (new Date().getTime())) && 
-						<button className="page-link mt-2"
-							onClick={() => dispatch(actions.markPostAsExpired(id, errors => setBackendErrors(errors)))}>
-							Mark as expired
-						</button>
+					<div className="row">
+						{
+							isLoggedIn && post.userSummaryDto.id === user.id && (post.expirationDate > (new Date().getTime())) &&
+							<button className="page-link mt-2 mr-4"
+								onClick={() => dispatch(actions.markPostAsExpired(id, errors => setBackendErrors(errors)))}>
+								Mark as expired
+							</button>
 
-					}
+						}
+						{isLoggedIn &&
+							<button className="page-link mt-2" data-testid="MarkAsValidButton"
+								onClick={() => dispatch(actions.markPostAsValid(id, errors => setBackendErrors(errors)))}>
+								Mark as still valid
+							</button>
+						}
+					</div>
 				</div>
 			</div>
-		</div>
+			<div>
+				&nbsp;
+				{isLoggedIn &&
+					<form data-testid="CommentForm" ref={node => form = node}
+						className="needs-validation container ml-1" noValidate
+						onSubmit={e => handleSubmit(e)}>
+						<div>
+							<input data-testid="CommentInput" type="text"
+								id="comment"
+								className="form-control"
+								placeholder="Add a comment"
+								value={comment}
+								onChange={e => setComment(e.target.value)}
+								autoFocus
+								minLength={1}
+								maxLength={256}
+								required />
+							<div data-testid="ErrorForm" className="invalid-feedback">
+								The comment size must be between 1 and 256
+							</div>
+						</div>
+						<div className="text-right">
+							<button data-testid="CommentButton" type="submit" className="btn btn-primary my-3">
+								Comment
+							</button>
+						</div>
+					</form>
+				}
+				<div data-testid="Comments">
+					<Comments comments={comments.elems.items} postId={id} />
+					<Pager
+						back={{
+							enabled: comments.page >= 1,
+							onClick: () => dispatch(commentActions.previousFindCommentsResultPage(id, null, comments.page))
+						}}
+						next={{
+							enabled: comments.elems.existMoreItems,
+							onClick: () => dispatch(commentActions.nextFindCommentsResultPage(id, null, comments.page))
+						}} />
+				</div >
+			</div >
+		</div >
 
 	);
 }

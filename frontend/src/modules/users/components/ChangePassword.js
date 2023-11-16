@@ -72,7 +72,7 @@ const ChangePassword = () => {
 					<form ref={node => form = node}
 						className="needs-validation" noValidate onSubmit={e => handleSubmit(e)}>
 						<div className="form-group row">
-							<label htmlFor="oldPassword" className="col-md-6 col-form-label">
+							<label htmlFor="oldPassword" className="col-md-6 col-form-label" data-testid="OldPassword">
 								Old password
 							</label>
 							<div className="col-md-6">
@@ -87,7 +87,7 @@ const ChangePassword = () => {
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="newPassword" className="col-md-6 col-form-label">
+							<label htmlFor="newPassword" className="col-md-6 col-form-label" data-testid="NewPassword">
 								New password
 							</label>
 							<div className="col-md-6">
@@ -101,7 +101,7 @@ const ChangePassword = () => {
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="confirmNewPassword" className="col-md-6 col-form-label">
+							<label htmlFor="confirmNewPassword" className="col-md-6 col-form-label" data-testid="Confirm">
 								Confirm new password
 							</label>
 							<div className="col-md-6">
@@ -120,7 +120,7 @@ const ChangePassword = () => {
 						</div>
 						<div className="form-group">
 							<div className="text-center">
-								<button type="submit" className="btn btn-primary">
+								<button type="submit" className="btn btn-primary" data-testid="SaveButton">
 									Save
 								</button>
 							</div>

@@ -89,4 +89,13 @@ public interface PostService {
 			LocalDateTime expirationDate) throws InstanceNotFoundException, MaximumImageSizeExceededException,
 			MissingRequiredParameterException, PermissionException, IncorrectFormValuesException;
 
+	/**
+	 * Mark a post as valid.
+	 * 
+	 * @param postId the post id
+	 * @return the validation date updated
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	LocalDateTime markAsValid(Long postId) throws InstanceNotFoundException;
+
 }

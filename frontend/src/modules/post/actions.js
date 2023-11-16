@@ -46,6 +46,15 @@ export const markPostAsExpired = (id, onErrors) => dispatch => {
 	backend.postService.maskPostAsExpired(id, e => dispatch(markPostAsExpiredCompleted(e)), onErrors);
 };	
 
+const markPostAsValidCompleted = ({validationDate}) => ({
+	type: actionTypes.MARK_POST_AS_VALID_COMPLETED,
+	validationDate
+});
+
+export const markPostAsValid = (id, onErrors) => dispatch => {
+	backend.postService.markPostAsValid(id, e => dispatch(markPostAsValidCompleted(e)), onErrors);
+};
+
 const ratePostCompleted = ratingCount => ({
 	type: actionTypes.RATE_POST_COMPLETED,
 	ratingCount

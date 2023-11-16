@@ -23,6 +23,9 @@ const post = (state = initialState.post, action) => {
 		
 		case actionTypes.UPDATE_POST_COMPLETED:
 			return action.post;
+			
+		case actionTypes.MARK_POST_AS_VALID_COMPLETED:
+			return {...state, validationDate: action.validationDate };
 
         default:
             return state;

@@ -93,14 +93,14 @@ const UpdateProfile = () => {
 			<div>
 				<Errors id="updateProfileErrors" errors={backendErrors} onClose={() => setBackendErrors(null)} />
 				<div className="card bg-light border-dark m-5">
-					<h5 className="card-header text-center">
+					<h5 className="card-header text-center" data-testid="EditTitle">
 						Edit your profile
 					</h5>
 					<div className="card-body">
 						<form ref={node => form = node}
 							className="needs-validation" noValidate onSubmit={e => handleSubmit(e)}>
 							<div className="form-group row">
-								<label htmlFor="login" className="col-md-6 col-form-label">
+								<label htmlFor="login" className="col-md-6 col-form-label" data-testid="Login">
 									Login
 								</label>
 								<div className="col-md-6">
@@ -115,7 +115,7 @@ const UpdateProfile = () => {
 								</div>
 							</div>
 							<div className="form-group row">
-								<label htmlFor="firstName" className="col-md-6 col-form-label">
+								<label htmlFor="firstName" className="col-md-6 col-form-label" data-testid="FirstName">
 									First Name
 								</label>
 								<div className="col-md-6">
@@ -130,7 +130,7 @@ const UpdateProfile = () => {
 								</div>
 							</div>
 							<div className="form-group row">
-								<label htmlFor="lastName" className="col-md-6 col-form-label">
+								<label htmlFor="lastName" className="col-md-6 col-form-label" data-testid="LastName">
 									Last Name
 								</label>
 								<div className="col-md-6">
@@ -144,7 +144,7 @@ const UpdateProfile = () => {
 								</div>
 							</div>
 							<div className="form-group row">
-								<label htmlFor="email" className="col-md-6 col-form-label">
+								<label htmlFor="email" className="col-md-6 col-form-label" data-testid="Email">
 									Email
 								</label>
 								<div className="col-md-6">
@@ -158,11 +158,11 @@ const UpdateProfile = () => {
 								</div>
 							</div>
 							<div className="form-group row">
-								<label htmlFor="avatar" className="col-md-6 col-form-label">
+								<label htmlFor="avatar" className="col-md-6 col-form-label" data-testid="Avatar">
 									Avatar
 								</label>
 								<div className="col-md-3">
-									<input ref={node => avatarInput = node} type="file" id="avatar" accept="image/*"
+									<input data-testid="SelectAvatarButton" ref={node => avatarInput = node} type="file" id="avatar" accept="image/*"
 										onChange={handleAvatarChange}
 									/>
 									<div className="invalid-feedback">
@@ -172,7 +172,7 @@ const UpdateProfile = () => {
 									</div>
 								</div>
 								<div className="offset-md-1 col-md-2" >
-									<label htmlFor="avatar" className="col-form-label" style={{ marginTop: '-10px', marginRight: '10px' }}>
+									<label htmlFor="avatar" className="col-form-label" data-testid="Preview" style={{ marginTop: '-10px', marginRight: '10px' }}>
 										Preview:
 									</label>
 									<img src={avatar ? `data:image/*;base64,${avatar}` : '/poster/assets/profile.png'} alt="Avatar" height="30px" width="30px" />
@@ -180,13 +180,13 @@ const UpdateProfile = () => {
 							</div>
 							<div className="form-group">
 								<div className="text-center">
-									<button type="submit" className="btn btn-primary">
+									<button type="submit" className="btn btn-primary" data-testid="SaveButton">
 										Save
 									</button>&nbsp;&nbsp;
-									<button type="button" className="btn btn-primary" onClick={() => navigate("/users/change-password")}>
+									<button type="button" className="btn btn-primary" data-testid="ChangePasswordButton" onClick={() => navigate("/users/change-password")}>
 										Change password
 									</button>&nbsp;&nbsp;
-									<button type="button" className="btn btn-outline-danger" onClick={handleClearAvatar} style={{ width: '130px', height: '40px' }}>
+									<button type="button" className="btn btn-outline-danger" data-testid="ClearAvatarButton" onClick={handleClearAvatar} style={{ width: '130px', height: '40px' }}>
 										Clear avatar
 									</button>
 								</div>

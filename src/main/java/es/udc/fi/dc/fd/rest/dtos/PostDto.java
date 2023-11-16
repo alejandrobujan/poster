@@ -31,6 +31,8 @@ public class PostDto {
 	private int positiveRatings;
 	/** The negative ratings count. */
 	private int negativeRatings;
+	/** The validation date */
+	private Long validationDate;
 	/** The type of the post */
 	private String type;
 	/** The properties of the post */
@@ -38,9 +40,7 @@ public class PostDto {
 	private Long expirationDate;
 
 	/**
-	 * Instantiates a new post dto.
-	 * 
-	 * @param id              the id
+	 * @@param id the id
 	 * @param title           the title of the post
 	 * @param description     the description of the post
 	 * @param url             the url associated to the post
@@ -52,12 +52,15 @@ public class PostDto {
 	 * @param positiveRatings the number of positive ratings of the post
 	 * @param negativeRatings the number of negative ratings of the post
 	 * @param expired         if the post is expired or not
+	 * @param validationDate  the validation date
 	 * @param type            the post type
 	 * @param properties      the properties of the post
 	 */
 	public PostDto(Long id, String title, String description, String url, BigDecimal price, CategoryDto categoryDto,
 			UserSummaryDto userCreatorDto, List<byte[]> images, Long creationDate, int positiveRatings,
-			int negativeRatings, String type, Map<String, String> properties, Long expirationDate) {
+			int negativeRatings, Long validationDate, String type, Map<String, String> properties,
+			Long expirationDate) {
+
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -69,9 +72,13 @@ public class PostDto {
 		this.creationDate = creationDate;
 		this.positiveRatings = positiveRatings;
 		this.negativeRatings = negativeRatings;
+		this.validationDate = validationDate;
 		this.type = type;
 		this.properties = properties;
 		this.expirationDate = expirationDate;
+	}
+
+	public PostDto() {
 	}
 
 	/**
@@ -252,6 +259,20 @@ public class PostDto {
 	 */
 	public void setNegativeRatings(int negativeRatings) {
 		this.negativeRatings = negativeRatings;
+	}
+
+	/**
+	 * @return the validation date
+	 */
+	public Long getValidationDate() {
+		return validationDate;
+	}
+
+	/**
+	 * @param valid the validation date to set
+	 */
+	public void setValidationDate(Long validationDate) {
+		this.validationDate = validationDate;
 	}
 
 	/**
