@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,7 @@ import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededExcepti
 import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
+import es.udc.fi.dc.fd.rest.dtos.PostConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostExpiredDto;
 import es.udc.fi.dc.fd.rest.dtos.PostParamsDto;
 import es.udc.fi.dc.fd.rest.dtos.PostUpdateDto;
@@ -133,8 +135,8 @@ public class PostControllerTest {
 	 */
 
 	private Post createOffer(String title, User user, Category category) {
-		return postDao
-				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
+		return postDao.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
+				category, LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -180,6 +182,7 @@ public class PostControllerTest {
 		postParams.setUrl("http://poster.com");
 		postParams.setType("Coupon");
 		postParams.setProperties(Map.of("code", "APP25"));
+		postParams.setExpirationDate(PostConversor.toMillis(LocalDateTime.of(2025, 2, 4, 0, 0, 0)));
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -198,7 +201,7 @@ public class PostControllerTest {
 		PostParamsDto postParams = new PostParamsDto();
 		postParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postParams.setDescription("Tarta de Santiago");
-		postParams.setImages(null);
+		postParams.setImages(new ArrayList<>());
 		postParams.setPrice(new BigDecimal(10));
 		postParams.setTitle("Tarta de Santiago");
 		postParams.setUrl("http://poster.com");
@@ -321,6 +324,8 @@ public class PostControllerTest {
 		postUpdateParams.setTitle("Tarta");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setExpirationDate(PostConversor.toMillis(LocalDateTime.of(2025, 2, 4, 0, 0, 0)));
+		postUpdateParams.setProperties(new HashMap<>());
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -346,6 +351,8 @@ public class PostControllerTest {
 		postUpdateParams.setTitle(" ");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setExpirationDate(PostConversor.toMillis(LocalDateTime.of(2025, 2, 4, 0, 0, 0)));
+		postUpdateParams.setProperties(new HashMap<>());
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -371,6 +378,8 @@ public class PostControllerTest {
 		postUpdateParams.setTitle("Tarta de Santiago");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setExpirationDate(PostConversor.toMillis(LocalDateTime.of(2025, 2, 4, 0, 0, 0)));
+		postUpdateParams.setProperties(new HashMap<>());
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -396,6 +405,7 @@ public class PostControllerTest {
 		postUpdateParams.setTitle("Tarta");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setProperties(new HashMap<>());
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -421,6 +431,8 @@ public class PostControllerTest {
 		postUpdateParams.setTitle("Tarta");
 		postUpdateParams.setUrl("http://poster.com");
 		postUpdateParams.setType("Offer");
+		postUpdateParams.setExpirationDate(PostConversor.toMillis(LocalDateTime.of(2025, 2, 4, 0, 0, 0)));
+		postUpdateParams.setProperties(new HashMap<>());
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -470,6 +482,36 @@ public class PostControllerTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post/" + NON_EXISTENT_ID + "/markAsExpired")
+				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(new PostExpiredDto(true))))
+				.andExpect(status().isNotFound());
+	}
+
+	/**
+	 * Test post mark post as expired ok.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPostMarkPostAsValid_Ok() throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/posts/post/" + offer.getId() + "/markAsValid")
+				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(new PostExpiredDto(true))))
+				.andExpect(status().isOk());
+	}
+
+	/**
+	 * Test post mark post as expired not found.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testPostMarkPostAsValid_NotFound() throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+
+		mockMvc.perform(post("/api/posts/post/" + NON_EXISTENT_ID + "/markAsValid")
 				.header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
 				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(new PostExpiredDto(true))))
 				.andExpect(status().isNotFound());

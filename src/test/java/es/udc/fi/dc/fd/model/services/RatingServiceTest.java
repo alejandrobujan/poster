@@ -74,7 +74,7 @@ public class RatingServiceTest {
 	 */
 	private Post createPost(User user, Category category) {
 		return postDao
-				.save(new Post("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
+				.save(new Post("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category, LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**

@@ -31,8 +31,8 @@ public class Coupon extends Post {
 	 * @param category     the category associated to the coupon
 	 */
 	public Coupon(String title, String description, String url, BigDecimal price, LocalDateTime creationDate,
-			String code, User user, Category category) {
-		super(title, description, url, price, creationDate, user, category);
+			String code, User user, Category category, LocalDateTime expirationDate) {
+		super(title, description, url, price, creationDate, user, category, expirationDate);
 		this.code = code;
 	}
 
@@ -56,11 +56,12 @@ public class Coupon extends Post {
 
 	@Override
 	public String toString() {
-		return "Coupon [id=" + getId() + ", title=" + getTitle() + ", description=" + getDescription() + ", url="
-				+ getUrl() + ", price=" + getPrice() + ", creationDate=" + getCreationDate() + ", user=" + getUser()
-				+ ", category=" + getCategory() + ", images=" + getImages() + ", positiveRatings="
-				+ getPositiveRatings() + ", negativeRatings=" + getNegativeRatings() + ", expired=" + isExpired()
-				+ ", code=" + code + "]";
+		return "Coupon [code=" + code + ", getId()=" + getId() + ", getTitle()=" + getTitle() + ", getDescription()="
+				+ getDescription() + ", getUrl()=" + getUrl() + ", getPrice()=" + getPrice() + ", getCreationDate()="
+				+ getCreationDate() + ", getUser()=" + getUser() + ", getCategory()=" + getCategory() + ", getImages()="
+				+ getImages() + ", getPositiveRatings()=" + getPositiveRatings() + ", getNegativeRatings()="
+				+ getNegativeRatings() + ", expirationDate=" + getExpirationDate() + ", getValidationDate()="
+				+ getValidationDate() + "]";
 	}
 
 }

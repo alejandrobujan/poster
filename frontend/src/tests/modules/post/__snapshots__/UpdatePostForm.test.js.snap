@@ -1,0 +1,407 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdatePostForm renders correctly 1`] = `
+<div>
+  <div
+    className="container"
+  >
+    <div
+      className="card bg-light border-dark m-4"
+    >
+      <h5
+        className="card-header text-center"
+      >
+        Update post
+      </h5>
+      <div
+        className="card-body"
+      >
+        <form
+          className="needs-validation"
+          noValidate={true}
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-group row"
+          >
+            <label
+              className="col-md-3 col-form-label"
+              data-testid="UpdatePostFormTitleLabel"
+              htmlFor="title"
+            >
+              Title (*)
+            </label>
+            <div
+              className="col-md-9"
+            >
+              <input
+                autoFocus={true}
+                className="form-control"
+                data-testid="UpdatePostFormTitleInput"
+                id="title"
+                maxLength={16}
+                minLength={1}
+                onChange={[Function]}
+                required={true}
+                type="text"
+                value="Coupon"
+              />
+              <div
+                className="invalid-feedback"
+              >
+                The title size must be between 1 and 60
+              </div>
+            </div>
+          </div>
+          <div
+            className="form-group row"
+          >
+            <label
+              className="col-md-3 col-form-label"
+              data-testid="UpdatePostFormDescriptionLabel"
+              htmlFor="description"
+            >
+              Description (*)
+            </label>
+            <div
+              className="col-md-9"
+            >
+              <textarea
+                className="form-control"
+                data-testid="UpdatePostFormDescriptionInput"
+                id="description"
+                maxLength={256}
+                minLength={1}
+                onChange={[Function]}
+                required={true}
+                value="Buena oferta"
+              />
+              <div
+                className="invalid-feedback"
+              >
+                The description size must be between 1 and 256
+              </div>
+            </div>
+          </div>
+          <div
+            className="form-group row"
+          >
+            <label
+              className="col-md-3 col-form-label"
+              data-testid="UpdatePostFormUrlLabel"
+              htmlFor="url"
+            >
+              Url
+            </label>
+            <div
+              className="col-md-9"
+            >
+              <div
+                className="input-group"
+              >
+                <span
+                  className="input-group-text"
+                >
+                  http(s)://
+                </span>
+                <input
+                  className="form-control"
+                  data-testid="UpdatePostFormUrlInput"
+                  id="url"
+                  maxLength={2048}
+                  minLength={0}
+                  onChange={[Function]}
+                  type="text"
+                  value="https://cupon"
+                />
+              </div>
+              <div
+                className="invalid-feedback"
+              >
+                The url size must be between 0 and 2048
+              </div>
+            </div>
+          </div>
+          <div
+            className="form-group row"
+          >
+            <label
+              className="col-md-3 col-form-label"
+              data-testid="UpdatePostFormPriceLabel"
+              htmlFor="price"
+            >
+              Price (*)
+            </label>
+            <div
+              className="col-md-3"
+            >
+              <div
+                className="input-group"
+              >
+                <input
+                  className="form-control"
+                  data-testid="UpdatePostFormPriceInput"
+                  id="price"
+                  max="999999.99"
+                  min="0.00"
+                  onChange={[Function]}
+                  required={true}
+                  step="0.01"
+                  type="number"
+                  value={10}
+                />
+                <span
+                  className="input-group-text"
+                >
+                  €
+                </span>
+              </div>
+              <div
+                className="invalid-feedback"
+              >
+                Price must be between 0 and 999999.99
+              </div>
+            </div>
+            <label
+              className="col-md-3 col-form-label"
+              data-testid="UpdatePostFormCategoryLabel"
+              htmlFor="categoryId"
+            >
+              Category
+            </label>
+            <div
+              className="col-md-3"
+            >
+              <select
+                className="form-control"
+                data-testid="UpdatePostFormCategoryInput"
+                id="categoryId"
+                onChange={[Function]}
+                value={1}
+              >
+                <option
+                  style={
+                    Object {
+                      "color": "gray",
+                      "fontStyle": "italic",
+                    }
+                  }
+                  value=""
+                >
+                  Select
+                </option>
+                <option
+                  value={1}
+                >
+                  Meals
+                </option>
+                <option
+                  value={2}
+                >
+                  Motor
+                </option>
+                <option
+                  value={3}
+                >
+                  Home
+                </option>
+                <option
+                  value={4}
+                >
+                  Toys
+                </option>
+                <option
+                  value={5}
+                >
+                  Tech
+                </option>
+                <option
+                  value={6}
+                >
+                  Leisure
+                </option>
+              </select>
+            </div>
+          </div>
+          <div
+            className="form-group row"
+          >
+            <label
+              className="col-md-3 col-form-label"
+              data-testid="UpdatePostFormImagesLabel"
+              htmlFor="images"
+            >
+              Images
+            </label>
+            <div
+              className="col-md-9"
+            >
+              <input
+                accept="image/*"
+                data-testid="UpdatePostFormImagesInput"
+                id="images"
+                multiple={true}
+                onChange={[Function]}
+                type="file"
+              />
+              <button
+                className="btn btn-outline-danger"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "display": "none",
+                  }
+                }
+                type="button"
+              >
+                <svg
+                  className="bi bi-trash"
+                  fill="currentColor"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"
+                  />
+                  <path
+                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"
+                  />
+                </svg>
+              </button>
+              <div
+                className="invalid-feedback"
+              >
+                The maximum size allowed is 1MB.
+              </div>
+            </div>
+          </div>
+          <div>
+            <p>
+              New uploaded images:
+            </p>
+            <p
+              className="noImages"
+            >
+              No new uploaded images.
+            </p>
+          </div>
+          <div>
+            <p>
+              Previously uploaded images:
+            </p>
+            <p
+              className="noImages"
+            >
+              No previously uploaded images.
+            </p>
+          </div>
+          <div
+            className="form-group row"
+          >
+            <label
+              className="col-md-3 col-form-label"
+              data-testid="UpdatePostFormCodeLabel"
+              htmlFor="code"
+            >
+              Code (*)
+            </label>
+            <div
+              className="col-md-9"
+            >
+              <input
+                className="form-control"
+                data-testid="UpdatePostFormCodeInput"
+                id="code"
+                onChange={[Function]}
+                required={true}
+                type="text"
+                value="12345"
+              />
+              <div
+                className="invalid-feedback"
+              >
+                The code is mandatory
+              </div>
+            </div>
+          </div>
+          <div
+            className="form-group row"
+          >
+            <label
+              className="col-md-3 col-form-label"
+              data-testid="UpdatePostFormExpirationDateLabel"
+              htmlFor="code"
+            >
+              Expiration date (*)
+            </label>
+            <div
+              className="col-md-9"
+            >
+              <input
+                className="form-control"
+                data-testid="UpdatePostFormExpirationDateInput"
+                id="code"
+                min="1970-01-01T01:00"
+                onChange={[Function]}
+                required={true}
+                type="datetime-local"
+                value="2022-12-07T11:46"
+              />
+              <div
+                className="invalid-feedback"
+              >
+                The expiration date is mandatory
+              </div>
+            </div>
+          </div>
+          <div>
+            <p>
+              (*) means mandatory field
+            </p>
+          </div>
+          <div
+            className="text-center"
+          >
+            <button
+              className="btn btn-primary"
+              data-testid="UpdatePostFormSaveButton"
+              type="submit"
+            >
+              Save changes
+            </button>
+          </div>
+        </form>
+        <button
+          className="btn btn-primary"
+          onClick={[Function]}
+        >
+          <div
+            className="d-flex align-items-center"
+          >
+            <svg
+              className="bi bi-arrow-left"
+              fill="currentColor"
+              height="16"
+              viewBox="0 0 16 16"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+                fillRule="evenodd"
+              />
+            </svg>
+            <span
+              className="ml-2"
+            >
+              Back
+            </span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
+import es.udc.fi.dc.fd.model.entities.Notification;
+import es.udc.fi.dc.fd.model.entities.NotificationDao;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
@@ -27,6 +29,10 @@ public class PermissionCheckerImpl implements PermissionChecker {
 	/** The post dao. */
 	@Autowired
 	private PostDao postDao;
+
+	/** The notification dao. */
+	@Autowired
+	private NotificationDao notificationDao;
 
 	/**
 	 * Check user exists.
@@ -64,6 +70,25 @@ public class PermissionCheckerImpl implements PermissionChecker {
 	}
 
 	/**
+	 * Check post.
+	 * 
+	 * @param postId the post id
+	 * @return the post
+	 * @throws InstanceNotFoundExcepcion he instance not found exception
+	 */
+	public Post checkPost(Long postId) throws InstanceNotFoundException {
+
+		Optional<Post> post = postDao.findById(postId);
+
+		if (!post.isPresent()) {
+			throw new InstanceNotFoundException("project.entities.post", postId);
+		}
+
+		return post.get();
+
+	}
+
+	/**
 	 * Check post exists and belongs to user.
 	 * 
 	 * @param postId the post id
@@ -86,6 +111,22 @@ public class PermissionCheckerImpl implements PermissionChecker {
 		}
 
 		return post.get();
+	}
+
+	@Override
+	public Notification checkNotificationExistsAndBelongsTo(Long notificationId, Long userId)
+			throws PermissionException, InstanceNotFoundException {
+		Optional<Notification> notification = notificationDao.findById(notificationId);
+
+		if (!notification.isPresent()) {
+			throw new InstanceNotFoundException("project.entities.notification", notificationId);
+		}
+
+		if (!notification.get().getNotifiedUser().getId().equals(userId)) {
+			throw new PermissionException();
+		}
+
+		return notification.get();
 	}
 
 }

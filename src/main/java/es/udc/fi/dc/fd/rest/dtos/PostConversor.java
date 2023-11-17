@@ -2,6 +2,7 @@ package es.udc.fi.dc.fd.rest.dtos;
 
 import static es.udc.fi.dc.fd.rest.dtos.CategoryConversor.toCategoryDto;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
@@ -75,8 +76,18 @@ public abstract class PostConversor {
 	 * @param date the local date time
 	 * @return long that represent the local date time
 	 */
-	protected final static long toMillis(LocalDateTime date) {
+	public final static long toMillis(LocalDateTime date) {
 		return date.truncatedTo(ChronoUnit.MINUTES).atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli();
+	}
+
+	/**
+	 * Conversor from millis
+	 * 
+	 * @param date the local date time
+	 * @return long that represent the local date time
+	 */
+	public final static LocalDateTime fromMillis(Long date) {
+		return LocalDateTime.ofInstant(Instant.ofEpochMilli(date), ZoneOffset.systemDefault());
 	}
 
 	/**

@@ -1,9 +1,9 @@
 import backend from '../../backend';
 import * as actionTypes from './actionTypes';
 
-export const createPost = (title, description, url, price, categoryId, images, type, properties,
+export const createPost = (title, description, url, price, categoryId, images, type, properties, expirationDate,
 	onSuccess, onErrors) => dispatch =>
-		backend.postService.createPost(title, description, url, price, categoryId, images, type, properties, onSuccess, onErrors);
+		backend.postService.createPost(title, description, url, price, categoryId, images, type, properties, expirationDate, onSuccess, onErrors);
 
 export const findPostById = id => dispatch => {
 	backend.catalogService.findPostById(id,
@@ -37,14 +37,23 @@ export const updatePost = (post, onSuccess, onErrors) => dispatch =>
 		}, 
 		onErrors);
 
-const markPostAsExpiredCompleted = ({expired}) => ({
+const markPostAsExpiredCompleted = (expirationDate) => ({
 	type: actionTypes.MARK_POST_AS_EXPIRED_COMPLETED,
-	expired
+	expirationDate
 });
 
-export const markPostAsExpired = (id, expired, onErrors) => dispatch => {
-	backend.postService.maskPostAsExpired(id, expired, e => dispatch(markPostAsExpiredCompleted(e)), onErrors);
+export const markPostAsExpired = (id, onErrors) => dispatch => {
+	backend.postService.maskPostAsExpired(id, e => dispatch(markPostAsExpiredCompleted(e)), onErrors);
 };	
+
+const markPostAsValidCompleted = ({validationDate}) => ({
+	type: actionTypes.MARK_POST_AS_VALID_COMPLETED,
+	validationDate
+});
+
+export const markPostAsValid = (id, onErrors) => dispatch => {
+	backend.postService.markPostAsValid(id, e => dispatch(markPostAsValidCompleted(e)), onErrors);
+};
 
 const ratePostCompleted = ratingCount => ({
 	type: actionTypes.RATE_POST_COMPLETED,

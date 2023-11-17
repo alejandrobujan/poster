@@ -26,6 +26,7 @@ exports[`CreatePost renders correctly 1`] = `
           >
             <button
               className="page-link"
+              data-testid="CreatePostOfferSelectButton"
               onClick={[Function]}
             >
               Offer
@@ -36,6 +37,7 @@ exports[`CreatePost renders correctly 1`] = `
           >
             <button
               className="page-link"
+              data-testid="CreatePostCouponSelectButton"
               onClick={[Function]}
             >
               Coupon
@@ -53,6 +55,7 @@ exports[`CreatePost renders correctly 1`] = `
         >
           <label
             className="col-md-3 col-form-label"
+            data-testid="CreatePostTitleLabel"
             htmlFor="title"
           >
             Title (*)
@@ -63,6 +66,7 @@ exports[`CreatePost renders correctly 1`] = `
             <input
               autoFocus={true}
               className="form-control"
+              data-testid="CreatePostTitleInput"
               id="title"
               maxLength={16}
               minLength={1}
@@ -83,6 +87,7 @@ exports[`CreatePost renders correctly 1`] = `
         >
           <label
             className="col-md-3 col-form-label"
+            data-testid="CreatePostDescriptionLabel"
             htmlFor="description"
           >
             Description (*)
@@ -92,6 +97,7 @@ exports[`CreatePost renders correctly 1`] = `
           >
             <textarea
               className="form-control"
+              data-testid="CreatePostDescriptionInput"
               id="description"
               maxLength={256}
               minLength={1}
@@ -111,6 +117,7 @@ exports[`CreatePost renders correctly 1`] = `
         >
           <label
             className="col-md-3 col-form-label"
+            data-testid="CreatePostUrlLabel"
             htmlFor="url"
           >
             Url
@@ -128,6 +135,7 @@ exports[`CreatePost renders correctly 1`] = `
               </span>
               <input
                 className="form-control"
+                data-testid="CreatePostUrlInput"
                 id="url"
                 maxLength={2048}
                 minLength={0}
@@ -148,6 +156,7 @@ exports[`CreatePost renders correctly 1`] = `
         >
           <label
             className="col-md-3 col-form-label"
+            data-testid="CreatePostPriceLabel"
             htmlFor="price"
           >
             Price (*)
@@ -160,6 +169,7 @@ exports[`CreatePost renders correctly 1`] = `
             >
               <input
                 className="form-control"
+                data-testid="CreatePostPriceInput"
                 id="price"
                 max="999999.99"
                 min="0.00"
@@ -183,6 +193,7 @@ exports[`CreatePost renders correctly 1`] = `
           </div>
           <label
             className="col-md-3 col-form-label"
+            data-testid="CreatePostCategoryLabel"
             htmlFor="categoryId"
           >
             Category
@@ -192,6 +203,7 @@ exports[`CreatePost renders correctly 1`] = `
           >
             <select
               className="form-control"
+              data-testid="CreatePostCategoryInput"
               id="categoryId"
               onChange={[Function]}
               value=""
@@ -207,6 +219,36 @@ exports[`CreatePost renders correctly 1`] = `
               >
                 Select
               </option>
+              <option
+                value={1}
+              >
+                Meals
+              </option>
+              <option
+                value={2}
+              >
+                Motor
+              </option>
+              <option
+                value={3}
+              >
+                Home
+              </option>
+              <option
+                value={4}
+              >
+                Toys
+              </option>
+              <option
+                value={5}
+              >
+                Tech
+              </option>
+              <option
+                value={6}
+              >
+                Leisure
+              </option>
             </select>
           </div>
         </div>
@@ -215,6 +257,7 @@ exports[`CreatePost renders correctly 1`] = `
         >
           <label
             className="col-md-3 col-form-label"
+            data-testid="CreatePostImagesLabel"
             htmlFor="images"
           >
             Images
@@ -224,6 +267,7 @@ exports[`CreatePost renders correctly 1`] = `
           >
             <input
               accept="image/*"
+              data-testid="CreatePostImagesInput"
               id="images"
               multiple={true}
               onChange={[Function]}
@@ -262,6 +306,36 @@ exports[`CreatePost renders correctly 1`] = `
             </div>
           </div>
         </div>
+        <div
+          className="form-group row"
+        >
+          <label
+            className="col-md-3 col-form-label"
+            data-testid="CreatePostExpirationDateLabel"
+            htmlFor="code"
+          >
+            Expiration date (*)
+          </label>
+          <div
+            className="col-md-9"
+          >
+            <input
+              className="form-control"
+              data-testid="CreatePostExpirationDateInput"
+              id="code"
+              min="1970-01-01T01:00"
+              onChange={[Function]}
+              required={true}
+              type="datetime-local"
+              value=""
+            />
+            <div
+              className="invalid-feedback"
+            >
+              The expiration date is mandatory
+            </div>
+          </div>
+        </div>
         <div>
           <p>
             (*) means mandatory field
@@ -272,6 +346,7 @@ exports[`CreatePost renders correctly 1`] = `
         >
           <button
             className="btn btn-primary"
+            data-testid="CreatePostSubmitButton"
             type="submit"
           >
             Submit

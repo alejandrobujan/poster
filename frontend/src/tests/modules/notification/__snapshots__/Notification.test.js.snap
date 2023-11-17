@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Notification renders correctly 1`] = `
+<button
+  className="dropdown-item border-bottom"
+  data-testid="NotificationButton"
+  onClick={[Function]}
+  style={
+    Object {
+      "overflowX": "hidden",
+    }
+  }
+>
+  <div
+    className=""
+    style={
+      Object {
+        "minWidth": "300px",
+      }
+    }
+  >
+    <div
+      className="row text-center"
+    >
+      <div
+        className="col-2"
+      >
+        <img
+          alt="Avatar"
+          data-testid="Avatar"
+          height="30px"
+          src="/poster/assets/profile.png"
+          width="30px"
+        />
+      </div>
+      <div
+        className="col-8 text-center"
+      >
+        <small
+          style={
+            Object {
+              "display": "block",
+              "fontSize": "12px",
+              "maxWidth": "100%",
+              "whiteSpace": "normal",
+            }
+          }
+        >
+          <span
+            data-testid="Date"
+            style={
+              Object {
+                "color": "grey",
+                "display": "block",
+                "whiteSpace": "nowrap",
+              }
+            }
+          >
+            1/1/1970 1:00:00
+          </span>
+          <br />
+        </small>
+      </div>
+      <div
+        className="col-2"
+      >
+        <span
+          className="badge bg-danger text-white rounded-pill"
+          data-testid="WarningNotification"
+        >
+          <small
+            style={
+              Object {
+                "color": "#dc3545",
+              }
+            }
+          >
+             •
+          </small>
+        </span>
+      </div>
+    </div>
+    <span
+      data-testid="NotificationText"
+      style={
+        Object {
+          "display": "block",
+          "fontSize": "12px",
+          "maxWidth": "100%",
+          "textAlign": "justify",
+          "whiteSpace": "normal",
+        }
+      }
+    >
+      Hola
+    </span>
+  </div>
+</button>
+`;

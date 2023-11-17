@@ -77,3 +77,13 @@ export const setExpired = expired => ({
     type: actionTypes.SET_EXPIRED, 
     expired
 });
+
+export const setSortParam = sortParam => ({
+    type: actionTypes.SET_SORT_PARAM, 
+    sortParam
+});
+
+export const setSortOrder = sortOrder => ({
+    type: actionTypes.SET_SORT_ORDER, 
+    sortOrder
+});

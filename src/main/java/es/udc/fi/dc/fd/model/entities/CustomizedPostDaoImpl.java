@@ -51,6 +51,9 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 	@Override
 	public Slice<Post> find(SearchFilters filters, String keywords, int page, int size) {
 
+		List<String> allowedFilters = List.of("creationDate", "expirationDate", "title", "price", "positiveRatings",
+				"negativeRatings", "popularity");
+
 		LocalDateTime ago = null;
 
 		StringBuilder queryBuilder = new StringBuilder();
@@ -75,7 +78,7 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 			parameters.add("p.category.id = :categoryId");
 
 		if (!filters.isExpired())
-			parameters.add("p.expired = :expired");
+			parameters.add("p.expirationDate > :expirationDate");
 
 		if (filters.getPrice() != null && filters.getPrice().get("gte") != null)
 			parameters.add("p.price >= :gte");
@@ -104,32 +107,41 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 			}
 		}
 
-		for (String param : parameters) {
-			queryBuilder.append(param + " AND ");
+		for (int i = 0; i < parameters.size() - 1; i++) {
+			queryBuilder.append(parameters.get(i) + " AND ");
 		}
 
-		String queryString = queryBuilder.toString();
+		queryBuilder.append(parameters.get(parameters.size() - 1));
 
 		if (tokens.length != 0) {
-
-			for (int i = 0; i < tokens.length - 1; i++) {
-				queryString += "LOWER(p.title) LIKE LOWER(:token" + i + ") AND ";
+			for (int i = 0; i < tokens.length; i++) {
+				queryBuilder.append(" AND LOWER(p.title) LIKE LOWER(:token" + i + ")");
 			}
-
-			queryString += "LOWER(p.title) LIKE LOWER(:token" + (tokens.length - 1) + ")";
-		} else {
-			queryString = queryString.replaceAll(" AND $", "");
 		}
 
-		queryString += " ORDER BY p.creationDate DESC";
+		if (filters.getSortingParameter() == null || !allowedFilters.contains(filters.getSortingParameter())) {
+			queryBuilder.append(" ORDER BY p.creationDate");
+		} else if (filters.getSortingParameter().equals("popularity")) {
+			queryBuilder.append(" ORDER BY (p.positiveRatings - p.negativeRatings)");
+		} else {
+			queryBuilder.append(" ORDER BY p.");
+			queryBuilder.append(filters.getSortingParameter());
+		}
 
-		Query query = entityManager.createQuery(queryString).setFirstResult(page * size).setMaxResults(size + 1);
+		if (filters.getSortingOrder() != null && filters.getSortingOrder().equals("ASC")) {
+			queryBuilder.append(" ASC");
+		} else {
+			queryBuilder.append(" DESC");
+		}
+
+		Query query = entityManager.createQuery(queryBuilder.toString()).setFirstResult(page * size)
+				.setMaxResults(size + 1);
 
 		if (filters.getCategoryId() != null)
 			query.setParameter("categoryId", filters.getCategoryId());
 
 		if (!filters.isExpired())
-			query.setParameter("expired", filters.isExpired());
+			query.setParameter("expirationDate", LocalDateTime.now());
 
 		if (filters.getPrice() != null && filters.getPrice().get("gte") != null)
 			query.setParameter("gte", filters.getPrice().get("gte"));

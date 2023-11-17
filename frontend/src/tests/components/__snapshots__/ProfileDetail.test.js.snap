@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProfileDetails renders correctly 1`] = `
+<div>
+  <div
+    className="card text-center"
+  >
+    <div
+      className="card-body row"
+    >
+      <div
+        className="col"
+      >
+        <img
+          alt="Avatar"
+          data-testid="Avatar"
+          height="200px"
+          src="/poster/assets/profile.png"
+          width="200px"
+        />
+         
+        <h5
+          className="card-title"
+          data-testid="UserName"
+        />
+      </div>
+      <div
+        className="col text-left"
+      >
+        <ul
+          className="list-group list-group-flush"
+        >
+          <li
+            className="list-group-item"
+            data-testid="FirstName"
+          >
+            First Name: 
+            <b />
+          </li>
+          <li
+            className="list-group-item"
+            data-testid="LastName"
+          >
+            Last Name: 
+            <b />
+          </li>
+          <li
+            className="list-group-item"
+            data-testid="Email"
+          >
+            Email: 
+            <b />
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="text-center mb-4"
+    >
+      <button
+        className="btn btn-primary"
+        data-testid="EditButton"
+        onClick={[Function]}
+        type="button"
+      >
+        Edit Profile
+      </button>
+    </div>
+  </div>
+</div>
+`;

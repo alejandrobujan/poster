@@ -2,41 +2,55 @@ package es.udc.fi.dc.fd.rest.dtos;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
 public class PostUpdateDto {
 
 	/** The post's author id. */
+	@Setter
 	@NotNull
 	private Long authorId;
 	/** The post title. */
 	@NotNull
+	@Setter
 	@Size(min = 1, max = 60)
 	private String title;
 	/** The post description. */
 	@NotNull
+	@Setter
 	@Size(min = 1, max = 256)
 	private String description;
 	/** The post url. */
+	@Setter
 	@Size(min = 0, max = 2048)
 	private String url;
 	/** The price. */
+	@Setter
 	@NotNull
 	private BigDecimal price;
 	/** The post category. */
+	@Setter
 	private Long categoryId;
 	/** Images related to the post. */
 	@NotNull
 	private List<byte[]> images = new ArrayList<>();
 	/** The type of the post */
 	@NotNull
+	@Setter
 	private String type;
 	/** The properties of the post */
 	private Map<String, String> properties;
+	@Setter
+	@NotNull
+	private Long expirationDate;
 
 	/**
 	 * Instantiates a new post update dto.
@@ -58,7 +72,7 @@ public class PostUpdateDto {
 	 * @param properties  the properties of the post
 	 */
 	public PostUpdateDto(Long authorId, String title, String description, String url, BigDecimal price, Long categoryId,
-			List<byte[]> images, String type, Map<String, String> properties) {
+			List<byte[]> images, String type, Map<String, String> properties, Long expirationDate) {
 		super();
 		this.authorId = authorId;
 		this.title = title;
@@ -66,108 +80,10 @@ public class PostUpdateDto {
 		this.url = url;
 		this.price = price;
 		this.categoryId = categoryId;
-		this.images = images;
+		this.images = new ArrayList<>(images);
 		this.type = type;
-		this.properties = properties;
-	}
-
-	/**
-	 * Gets the post title
-	 * 
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
-	}
-
-	/**
-	 * Sets the post title
-	 * 
-	 * @param title the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	/**
-	 * Gets the post description.
-	 * 
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * Sets the post description.
-	 * 
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
-	 * Gets the post url.
-	 * 
-	 * @return the url
-	 */
-	public String getUrl() {
-		return url;
-	}
-
-	/**
-	 * Sets the post url.
-	 * 
-	 * @param url the url to set
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	/**
-	 * Gets the price.
-	 * 
-	 * @return the price
-	 */
-	public BigDecimal getPrice() {
-		return price;
-	}
-
-	/**
-	 * Sets the price.
-	 * 
-	 * @param price the price to set
-	 */
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
-
-	/**
-	 * Gets the category.
-	 *
-	 * @return the category
-	 */
-	public Long getCategoryId() {
-		return categoryId;
-	}
-
-	/**
-	 * Sets the category.
-	 * 
-	 * @param category the category to set
-	 */
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
-	}
-
-	/**
-	 * Gets images related to the post.
-	 * 
-	 * @return the images
-	 */
-	public List<byte[]> getImages() {
-		return images;
+		this.expirationDate = expirationDate;
+		this.properties = new HashMap<>(properties);
 	}
 
 	/**
@@ -176,34 +92,7 @@ public class PostUpdateDto {
 	 * @param images the images to set
 	 */
 	public void setImages(List<byte[]> images) {
-		this.images = images;
-	}
-
-	/**
-	 * Gets the post type
-	 * 
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-
-	/**
-	 * Sets the post type
-	 * 
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	/**
-	 * Gets the properties of the post
-	 * 
-	 * @return the properties
-	 */
-	public Map<String, String> getProperties() {
-		return properties;
+		this.images = new ArrayList<>(images);
 	}
 
 	/**
@@ -212,25 +101,7 @@ public class PostUpdateDto {
 	 * @param properties the properties to set
 	 */
 	public void setProperties(Map<String, String> properties) {
-		this.properties = properties;
-	}
-
-	/**
-	 * Gets the post's author id
-	 * 
-	 * @return the post's author id
-	 */
-	public Long getAuthorId() {
-		return authorId;
-	}
-
-	/**
-	 * Sets the post's author id
-	 * 
-	 * @param authorId the post's author id
-	 */
-	public void setAuthorId(Long authorId) {
-		this.authorId = authorId;
+		this.properties = new HashMap<>(properties);
 	}
 
 }
