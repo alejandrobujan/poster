@@ -18,7 +18,18 @@ const Home = () => {
 
 	useEffect(() => {
 		if (firstSearch) {
-			dispatch(catalog.actions.findPosts({ keywords: '', filters: {}, page: 0 }));
+			dispatch(catalog.actions.findPosts({ keywords: '', filters: {
+				categoryId: null,
+				type: null,
+				price: {
+				  gte: 0,
+				  lte: 1000000
+				},
+				date: null,
+				expired: false,
+				sortParam: "creationDate",
+				sortOrder: "DESC"
+			  }, page: 0 }));
 			dispatch(actions.setFirstSearch(false));
 		}
 	}, [dispatch, firstSearch]);
