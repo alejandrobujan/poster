@@ -6,7 +6,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +26,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.CategoryDao;
+import es.udc.fi.dc.fd.model.entities.Image;
 import es.udc.fi.dc.fd.model.entities.Offer;
+import es.udc.fi.dc.fd.model.entities.Coupon;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
@@ -118,6 +122,15 @@ public class CatalogControllerTest {
 				new SearchFiltersDto(null, null, Map.of("gte", new BigDecimal("0"), "lte", new BigDecimal("10000")),
 						null, false, "creationDate", "DESC"),
 				"", 0);
+		
+		User user = createUser("admin");
+		Post coupon = postDao.save(new Coupon("Title", "Lorem Ipsum dolor sit amet", "url", new BigDecimal(10), LocalDateTime.now(), "EXTRA", user, createCategory("Misc"), LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
+		Post offer = postDao.save(new Offer("Title", "Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. ", "url", new BigDecimal(10), LocalDateTime.now(), user, createCategory("Misc"), LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
+		Set<Image> images = new HashSet<>();
+		images.add(new Image(new byte[]{1, 2, 3}, offer));
+		images.add(new Image(new byte[]{4, 5, 6}, offer));
+		offer.setImages(images);
+
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/catalog/feed").contentType(MediaType.APPLICATION_JSON)
@@ -149,6 +162,24 @@ public class CatalogControllerTest {
 	}
 
 	/**
+	 * Test get find alternative post by id ok.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testGetFindAlternativePostById_Ok() throws Exception {
+		User user = createUser("admin");
+		Post offer = postDao.save(new Offer("Title", "Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. ", "url", new BigDecimal(10), LocalDateTime.now(), user, createCategory("Misc"), LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
+		Set<Image> images = new HashSet<>();
+		images.add(new Image(new byte[]{1, 2, 3}, offer));
+		images.add(new Image(new byte[]{4, 5, 6}, offer));
+		offer.setImages(images);
+
+		mockMvc.perform(get("/api/catalog/postDetail/" + offer.getId())).andExpect(status().isOk());
+
+	}
+
+	/**
 	 * Test get find post by id not ok.
 	 *
 	 * @throws Exception the exception
@@ -158,3 +189,4 @@ public class CatalogControllerTest {
 		mockMvc.perform(get("/api/catalog/postDetail/" + NON_EXISTENT_ID)).andExpect(status().isNotFound());
 	}
 }
+
