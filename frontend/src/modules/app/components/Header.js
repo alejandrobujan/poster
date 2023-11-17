@@ -13,11 +13,14 @@ const Header = () => {
 	const userId = useSelector(users.selectors.getUserId);
 	const userName = useSelector(users.selectors.getUserName);
 	const avatar = useSelector(users.selectors.getAvatar);
+	const isLoggedIn = useSelector(users.selectors.isLoggedIn);
 
 	
 	useEffect(() => {
-		dispatch(notification.actions.findNotifications());
-	}, [dispatch, userId]);
+		if(isLoggedIn){
+			dispatch(notification.actions.findNotifications());
+		}
+	}, [dispatch, userId, isLoggedIn]);
 
 	
 	return (
