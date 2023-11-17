@@ -235,6 +235,17 @@ exports[`PostDetails renders correctly 1`] = `
          
         7/12/2022 11:46
       </p>
+      <p
+        className="mt-2"
+        data-testid="MarkedAsValidText"
+      >
+        <strong>
+          Marked as valid on:
+        </strong>
+         
+        7/12/2022 11:46
+         
+      </p>
       <div
         className="copy-button"
       >

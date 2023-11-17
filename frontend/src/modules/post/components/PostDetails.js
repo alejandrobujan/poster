@@ -169,7 +169,7 @@ const PostDetails = () => {
 
 					<p className="card-text"><strong>Expiration:</strong> {getDate(post.expirationDate).substring(0, getDate(post.expirationDate).length - 3)}</p>
 					{post.validationDate &&
-						<p className="mt-2"><strong>Marked as valid on:</strong> {getDate(post.validationDate).substring(0, getDate(post.validationDate).length - 3)} </p>
+						<p className="mt-2" data-testid="MarkedAsValidText"><strong>Marked as valid on:</strong> {getDate(post.validationDate).substring(0, getDate(post.validationDate).length - 3)} </p>
 					}
 					{post.properties.code &&
 						<div className="copy-button">
@@ -206,7 +206,7 @@ const PostDetails = () => {
 							</button>
 
 						}
-						{isLoggedIn &&
+						{isLoggedIn && post.userSummaryDto.id !== user.id &&
 							<button className="page-link mt-2" data-testid="MarkAsValidButton"
 								onClick={() => dispatch(actions.markPostAsValid(id, errors => setBackendErrors(errors)))}>
 								Mark as still valid

@@ -100,7 +100,10 @@ describe("PostDetails", () => {
 
         const markAsValidButton = screen.getByTestId('MarkAsValidButton');
 
-        fireEvent.click(markAsValidButton);      
+        await waitFor(() => fireEvent.click(markAsValidButton));  
+        
+        const markedAsValidText = screen.getByTestId('MarkedAsValidText');        
+            
 	});
 
 
