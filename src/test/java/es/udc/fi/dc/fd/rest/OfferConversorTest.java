@@ -20,7 +20,8 @@ public class OfferConversorTest {
 	@Test
 	public void testToPostDtoValidationDateNotNull() {
 		User user = new User("user1", "password", "User", "One", "user1@udc.es", new byte[] {});
-		Offer offer = new Offer("Title1", "Description1", null, new BigDecimal(10), LocalDateTime.now(), user, null);
+		Offer offer = new Offer("Title1", "Description1", null, new BigDecimal(10), LocalDateTime.now(), user, null,
+				LocalDateTime.now());
 		OfferConversor offerConversor = new OfferConversor();
 
 		LocalDateTime validationDate = LocalDateTime.now();

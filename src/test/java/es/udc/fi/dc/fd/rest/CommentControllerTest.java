@@ -148,8 +148,8 @@ public class CommentControllerTest {
 	 * @return the offer
 	 */
 	private Post createOffer(String title, User user, Category category) {
-		return postDao
-				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
+		return postDao.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
+				category, LocalDateTime.now()));
 	}
 
 	/**

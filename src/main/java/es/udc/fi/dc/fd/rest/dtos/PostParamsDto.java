@@ -47,6 +47,9 @@ public class PostParamsDto {
 	private List<byte[]> images = new ArrayList<>();
 	/** The properties of the post */
 	private Map<String, String> properties;
+	@Setter
+	@NotNull
+	private Long expirationDate;
 
 	/**
 	 * Sets the properties of the post
@@ -83,7 +86,7 @@ public class PostParamsDto {
 	 * @param properties  the properties of the post
 	 */
 	public PostParamsDto(String title, String description, String url, BigDecimal price, Long categoryId,
-			List<byte[]> images, String type, Map<String, String> properties) {
+			List<byte[]> images, String type, Map<String, String> properties, Long expirationDate) {
 		this.title = title;
 		this.description = description;
 		this.url = url;
@@ -91,7 +94,9 @@ public class PostParamsDto {
 		this.categoryId = categoryId;
 		this.images = new ArrayList<>(images);
 		this.type = type;
+		this.expirationDate = expirationDate;
 		this.properties = new HashMap<>(properties);
+
 	}
 
 }

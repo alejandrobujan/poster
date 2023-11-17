@@ -23,7 +23,7 @@ public class CouponConversorTest {
 		Category category = new Category(1L, "Electronics");
 		User user = new User("user1", "password", "User", "One", "user1@udc.es", new byte[] {});
 		Coupon coupon = new Coupon("Coupon Title", "Coupon Description", "http://example.com", new BigDecimal("10.99"),
-				LocalDateTime.now(), "COUPONCODE", user, category);
+				LocalDateTime.now(), "COUPONCODE", user, category, LocalDateTime.now());
 		CouponConversor couponConversor = new CouponConversor();
 
 		LocalDateTime validationDate = LocalDateTime.now();

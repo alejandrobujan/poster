@@ -34,7 +34,7 @@ CREATE TABLE Post (
 	creationDate TIMESTAMP NOT NULL,
 	positiveRatings INTEGER NOT NULL DEFAULT 0,
 	negativeRatings INTEGER NOT NULL DEFAULT 0,
-	expired BOOLEAN NOT NULL DEFAULT FALSE,
+	expirationDate TIMESTAMP NOT NULL,
 	validationDate TIMESTAMP,
 	userId BIGINT NOT NULL, 
 	categoryId BIGINT,
@@ -115,13 +115,13 @@ INSERT INTO Category(name) VALUES ('Leisure');
 INSERT INTO Users(userName, password, firstName, lastName, email, role) VALUES ('admin', '$2a$10$8o34vbwlRURkBGETvQzr8OCuPrk52E.j2ilm4KGKPrwNR89eNV/YG', 'Website', 'Administrator', 'admin@udc.es', 0);
 INSERT INTO Users(userName, password, firstName, lastName, email, role) VALUES ('sampleuser', '$2a$10$8o34vbwlRURkBGETvQzr8OCuPrk52E.j2ilm4KGKPrwNR89eNV/YG', 'Sample', 'User', 'sampleuser@udc.es', 0);
 
-INSERT INTO Post(title, description, url, price, creationDate, expired, validationDate, userId, categoryId) VALUES ('Windows XP', 'Free windows XP license key', 'g2a.com', 0, '2004-05-12 00:00:00', true, null, 1, 5);
+INSERT INTO Post(title, description, url, price, creationDate, expirationDate, validationDate, userId, categoryId) VALUES ('Windows XP', 'Free windows XP license key', 'g2a.com', 0, '2004-05-12 00:00:00', '2004-05-13 00:00:00', null, 1, 5);
 INSERT INTO Coupon(id, code) VALUES (1, 'XPFREE');
 
-INSERT INTO Post(title, description, url, price, creationDate, expired, validationDate, userId, categoryId) VALUES ('Windows 11', 'Free windows 11 license key', 'g2a.com' , 0, '2023-05-12 00:00:00', false, '2023-05-16 14:32:00', 1, 5);
+INSERT INTO Post(title, description, url, price, creationDate, expirationDate, validationDate, userId, categoryId) VALUES ('Windows 11', 'Free windows 11 license key', 'g2a.com' , 0, '2023-05-12 00:00:00', '2024-05-12 00:00:00', '2023-05-16 14:32:00', 1, 5);
 INSERT INTO Offer(id) VALUES (2);
 
-INSERT INTO Post(title, description, url, price, creationDate, expired, validationDate, userId, categoryId) VALUES ('MG4 Brighton', 'Discover the future of mobility', 'www.mgmotor.eu/es-ES/configurator/mg4', 30480, '2023-10-09 00:00:00', false, null, 1, 2);
+INSERT INTO Post(title, description, url, price, creationDate, expirationDate, validationDate, userId, categoryId) VALUES ('MG4 Brighton', 'Discover the future of mobility', 'www.mgmotor.eu/es-ES/configurator/mg4', 30480, '2023-10-09 00:00:00', '2024-05-12 00:00:00', null, 1, 2);
 INSERT INTO Coupon(id, code) VALUES (3, 'EXTRAMG4');
 
 INSERT INTO Comment(description, date, userId, postId) VALUES ('Amazing!! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna', '2004-05-11 00:00:00', 2, 2);

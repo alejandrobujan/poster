@@ -38,8 +38,9 @@ public interface PostService {
 	 * @throws IncorrectFormValuesException
 	 */
 	Post createPost(String title, String description, String url, BigDecimal price, Long userId, Long categoryId,
-			List<byte[]> imageList, String type, Map<String, String> properties) throws InstanceNotFoundException,
-			MaximumImageSizeExceededException, MissingRequiredParameterException, IncorrectFormValuesException;
+			List<byte[]> imageList, String type, Map<String, String> properties, LocalDateTime expirationDate)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
+			IncorrectFormValuesException;
 
 	/**
 	 * Delete post.
@@ -52,17 +53,14 @@ public interface PostService {
 	void deletePost(Long userId, Long postId) throws InstanceNotFoundException, PermissionException;
 
 	/**
-	 * Mark or unmark a post as expired.
+	 * Mark a post as expired.
 	 * 
-	 * @param userId  the user id associated to the post
-	 * @param postId  the post id
-	 * @param expired if the post is expired or not
-	 * @return if the post is marked as expired or not
+	 * @param userId the user id associated to the post
+	 * @param postId the post id
 	 * @throws InstanceNotFoundException the instance not found exception
 	 * @throws PermissionException       the permission exception
 	 */
-	boolean markAsExpired(Long userId, Long postId, boolean expired)
-			throws InstanceNotFoundException, PermissionException;
+	LocalDateTime markAsExpired(Long userId, Long postId) throws InstanceNotFoundException, PermissionException;
 
 	/**
 	 * Update post.
@@ -87,9 +85,9 @@ public interface PostService {
 	 * @throws IncorrectFormValuesException      the incorrect form values exception
 	 */
 	Post updatePost(Long postId, String title, String description, String url, BigDecimal price, Long userId,
-			Long categoryId, List<byte[]> imageList, String type, Map<String, String> properties)
-			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
-			PermissionException, IncorrectFormValuesException;
+			Long categoryId, List<byte[]> imageList, String type, Map<String, String> properties,
+			LocalDateTime expirationDate) throws InstanceNotFoundException, MaximumImageSizeExceededException,
+			MissingRequiredParameterException, PermissionException, IncorrectFormValuesException;
 
 	/**
 	 * Mark a post as valid.

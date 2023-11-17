@@ -5,6 +5,12 @@ exports[`PostDetails renders correctly 1`] = `
   className="container mt-5"
 >
   <div
+    className="alert alert-dark"
+    role="alert"
+  >
+    This post is expired... but maybe it can still help you.
+  </div>
+  <div
     className="row"
   >
     <div
@@ -220,6 +226,15 @@ exports[`PostDetails renders correctly 1`] = `
          
         Belleza
       </p>
+      <p
+        className="card-text"
+      >
+        <strong>
+          Expiration:
+        </strong>
+         
+        7/12/2022 11:46
+      </p>
       <div
         className="copy-button"
       >
@@ -281,7 +296,6 @@ exports[`PostDetails renders correctly 1`] = `
       <div
         className="row"
       >
-             
         <button
           className="page-link mt-2"
           data-testid="MarkAsValidButton"

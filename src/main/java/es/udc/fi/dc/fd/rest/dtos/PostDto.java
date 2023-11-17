@@ -35,14 +35,13 @@ public class PostDto {
 	private int positiveRatings;
 	/** The negative ratings count. */
 	private int negativeRatings;
-	/** If is expired or not */
-	private boolean expired;
 	/** The validation date */
 	private Long validationDate;
 	/** The type of the post */
 	private String type;
 	/** The properties of the post */
 	private Map<String, String> properties;
+	private Long expirationDate;
 
 	/**
 	 * @@param id the id
@@ -63,7 +62,9 @@ public class PostDto {
 	 */
 	public PostDto(Long id, String title, String description, String url, BigDecimal price, CategoryDto categoryDto,
 			UserSummaryDto userCreatorDto, List<byte[]> images, Long creationDate, int positiveRatings,
-			int negativeRatings, boolean expired, Long validationDate, String type, Map<String, String> properties) {
+			int negativeRatings, Long validationDate, String type, Map<String, String> properties,
+			Long expirationDate) {
+
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -75,10 +76,11 @@ public class PostDto {
 		this.creationDate = creationDate;
 		this.positiveRatings = positiveRatings;
 		this.negativeRatings = negativeRatings;
-		this.expired = expired;
 		this.validationDate = validationDate;
 		this.type = type;
+		this.expirationDate = expirationDate;
 		this.properties = new HashMap<>(properties);
+
 	}
 
 	public PostDto() {

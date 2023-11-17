@@ -7,7 +7,7 @@ import * as actions from '../actions';
 
 import UpdatePostForm from './UpdatePostForm';
 
-const UpdatePost = () => {
+const UpdatePost = ({ min }) => {
 	const post = useSelector(selectors.getPost);
 	const { id } = useParams();
     const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const UpdatePost = () => {
     
     return(
 		<div>
-			<UpdatePostForm/>
+			<UpdatePostForm min={min}/>
 		</div>
 	);
 };

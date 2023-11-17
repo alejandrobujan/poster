@@ -41,7 +41,7 @@ public class Post {
 	/** The negative ratings count. */
 	private int negativeRatings;
 	/** If is expired or not */
-	private boolean expired;
+	private LocalDateTime expirationDate;
 	/** The last validation date */
 	private LocalDateTime validationDate;
 	/** The post author. */
@@ -69,7 +69,7 @@ public class Post {
 	 * @param category     the category associated to the post
 	 */
 	public Post(String title, String description, String url, BigDecimal price, LocalDateTime creationDate, User user,
-			Category category) {
+			Category category, LocalDateTime expirationDate) {
 		this.title = title;
 		this.description = description;
 		this.url = url;
@@ -79,7 +79,7 @@ public class Post {
 		this.category = category;
 		this.positiveRatings = 0;
 		this.negativeRatings = 0;
-		this.expired = false;
+		this.expirationDate = expirationDate;
 	}
 
 	/**
@@ -299,21 +299,17 @@ public class Post {
 	}
 
 	/**
-	 * Gets if the post is expired or not
-	 * 
-	 * @return if the post is expired or not
+	 * @return the expirationDate
 	 */
-	public boolean isExpired() {
-		return expired;
+	public LocalDateTime getExpirationDate() {
+		return expirationDate;
 	}
 
 	/**
-	 * Sets the expired attribute
-	 * 
-	 * @param expired value to set (if it is expired or not)
+	 * @param expirationDate the expirationDate to set
 	 */
-	public void setExpired(boolean expired) {
-		this.expired = expired;
+	public void setExpirationDate(LocalDateTime expirationDate) {
+		this.expirationDate = expirationDate;
 	}
 
 	/**
@@ -338,8 +334,8 @@ public class Post {
 	public String toString() {
 		return "Post [id=" + id + ", title=" + title + ", description=" + description + ", url=" + url + ", price="
 				+ price + ", creationDate=" + creationDate + ", positiveRatings=" + positiveRatings
-				+ ", negativeRatings=" + negativeRatings + ", expired=" + expired + ", validationDate=" + validationDate
-				+ ", user=" + user + ", category=" + category + ", images=" + images + "]";
+				+ ", negativeRatings=" + negativeRatings + ", expirationDate=" + expirationDate + ", validationDate="
+				+ validationDate + ", user=" + user + ", category=" + category + ", images=" + images + "]";
 	}
 
 }

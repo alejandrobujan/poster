@@ -31,13 +31,13 @@ const PostDetails = () => {
 	const [comment, setComment] = useState('');
 	const [backendErrors, setBackendErrors] = useState(null);
 	const [buttonPressed, setButtonPressed] = useState(false);
-	
+
 	let form;
 
 	const components = {
 		'Offer': OfferIcon,
 		'Coupon': CouponIcon
-	}; 
+	};
 
 	const handleSubmit = event => {
 
@@ -85,7 +85,7 @@ const PostDetails = () => {
 	return (
 		<div className="container mt-5">
 			<Errors id="createPostErrors" errors={backendErrors} onClose={() => setBackendErrors(null)} />
-			{post.expired && <div className="alert alert-dark" role="alert">
+			{post.expirationDate <= (new Date().getTime()) && <div className="alert alert-dark" role="alert">
 				This post is expired... but maybe it can still help you.
 			</div>}
 			<div className="row">
@@ -166,9 +166,11 @@ const PostDetails = () => {
 					{post.categoryDto &&
 						<p className="card-text"><strong>Category:</strong> {post.categoryDto.name}</p>
 					}
+
+					<p className="card-text"><strong>Expiration:</strong> {getDate(post.expirationDate).substring(0, getDate(post.expirationDate).length - 3)}</p>
 					{post.validationDate &&
-        				<p className="mt-2"><strong>Marked as valid on:</strong> {getDate(post.validationDate).substring(0, getDate(post.validationDate).length - 3)} </p>
-      				}
+						<p className="mt-2"><strong>Marked as valid on:</strong> {getDate(post.validationDate).substring(0, getDate(post.validationDate).length - 3)} </p>
+					}
 					{post.properties.code &&
 						<div className="copy-button">
 							<input id="copyvalue" type="text" readOnly value={post.properties.code} />
@@ -196,17 +198,17 @@ const PostDetails = () => {
 					</div>
 
 					<div className="row">
-						{isLoggedIn && post.userSummaryDto.id === user.id &&
-							<button className="page-link mt-2"
-								onClick={() => dispatch(actions.markPostAsExpired(id, !post.expired, errors => setBackendErrors(errors)))}>
-								{post.expired ? "Unmark as expired" : "Mark as expired"}
+						{
+							isLoggedIn && post.userSummaryDto.id === user.id && (post.expirationDate > (new Date().getTime())) &&
+							<button className="page-link mt-2 mr-4"
+								onClick={() => dispatch(actions.markPostAsExpired(id, errors => setBackendErrors(errors)))}>
+								Mark as expired
 							</button>
-	
+
 						}
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						{isLoggedIn &&
 							<button className="page-link mt-2" data-testid="MarkAsValidButton"
-								onClick={() => dispatch(actions.markPostAsValid(id, errors => setBackendErrors(errors)))}>					
+								onClick={() => dispatch(actions.markPostAsValid(id, errors => setBackendErrors(errors)))}>
 								Mark as still valid
 							</button>
 						}
@@ -231,7 +233,7 @@ const PostDetails = () => {
 								maxLength={256}
 								required />
 							<div data-testid="ErrorForm" className="invalid-feedback">
-										The comment size must be between 1 and 256
+								The comment size must be between 1 and 256
 							</div>
 						</div>
 						<div className="text-right">
@@ -242,7 +244,7 @@ const PostDetails = () => {
 					</form>
 				}
 				<div data-testid="Comments">
-					<Comments comments={comments.elems.items} postId={id}/>
+					<Comments comments={comments.elems.items} postId={id} />
 					<Pager
 						back={{
 							enabled: comments.page >= 1,
@@ -252,9 +254,9 @@ const PostDetails = () => {
 							enabled: comments.elems.existMoreItems,
 							onClick: () => dispatch(commentActions.nextFindCommentsResultPage(id, null, comments.page))
 						}} />
-				</div>
-			</div>
-		</div>
+				</div >
+			</div >
+		</div >
 
 	);
 }

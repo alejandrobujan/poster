@@ -29,18 +29,18 @@ public class Offer extends Post {
 	 * @param category     the category associated to the offer
 	 */
 	public Offer(String title, String description, String url, BigDecimal price, LocalDateTime creationDate, User user,
-			Category category) {
-		super(title, description, url, price, creationDate, user, category);
+			Category category, LocalDateTime expirationDate) {
+		super(title, description, url, price, creationDate, user, category, expirationDate);
 	}
 
 	@Override
 	public String toString() {
+
 		return "Offer [getId()=" + getId() + ", getTitle()=" + getTitle() + ", getDescription()=" + getDescription()
 				+ ", getUrl()=" + getUrl() + ", getPrice()=" + getPrice() + ", getCreationDate()=" + getCreationDate()
 				+ ", getUser()=" + getUser() + ", getCategory()=" + getCategory() + ", getImages()=" + getImages()
 				+ ", getPositiveRatings()=" + getPositiveRatings() + ", getNegativeRatings()=" + getNegativeRatings()
-				+ ", isExpired()=" + isExpired() + ", getValidationDate()=" + getValidationDate() + ", toString()="
-				+ "]";
+				+ ", expirationDate=" + getExpirationDate() + ", getValidationDate()=" + getValidationDate() + "]";
 	}
 
 }

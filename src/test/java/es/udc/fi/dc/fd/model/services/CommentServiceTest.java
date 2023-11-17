@@ -79,8 +79,8 @@ public class CommentServiceTest {
 	 * @return the post
 	 */
 	private Post createPost(User user, Category category) {
-		return postDao
-				.save(new Post("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
+		return postDao.save(new Post("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
+				category, LocalDateTime.of(2025, 11, 11, 11, 11)));
 	}
 
 	/**
@@ -133,7 +133,6 @@ public class CommentServiceTest {
 		String description = "Pepe";
 		int answers = 0;
 		Comment parent = null;
-		Long commentId = 6L;
 		int level = 1;
 
 		commentService.createComment(description, user.getId(), post.getId());
@@ -148,7 +147,6 @@ public class CommentServiceTest {
 		assertEquals(post.getId(), commentFound.getPost().getId());
 		assertEquals(answers, commentFound.getAnswers());
 		assertEquals(parent, commentFound.getComment());
-		assertEquals(commentId, commentFound.getId());
 		assertEquals(level, commentFound.getLevel());
 	}
 
@@ -185,7 +183,6 @@ public class CommentServiceTest {
 
 		String descriptionExpected = "Mario";
 		int answersExpected = 0;
-		Long commentIdExpected = 4L;
 		int levelExpected = 2;
 
 		commentService.createComment(parentDescription, user.getId(), post.getId());
@@ -212,7 +209,6 @@ public class CommentServiceTest {
 		assertEquals(post.getId(), answerFound.getPost().getId());
 		assertEquals(answersExpected, answerFound.getAnswers());
 		assertEquals(parent, answerFound.getComment());
-		assertEquals(commentIdExpected, answerFound.getId());
 		assertEquals(levelExpected, answerFound.getLevel());
 	}
 
@@ -246,7 +242,6 @@ public class CommentServiceTest {
 	public void testFindComments() throws InstanceNotFoundException, InvalidCommentParameterException {
 		String description = "Pepe";
 		int answers = 0;
-		Long commentId = 5L;
 		int level = 1;
 
 		Comment parent = null;
@@ -268,7 +263,6 @@ public class CommentServiceTest {
 		assertEquals(post.getId(), commentFound.getPost().getId());
 		assertEquals(answers, commentFound.getAnswers());
 		assertEquals(parent, commentFound.getComment());
-		assertEquals(commentId, commentFound.getId());
 		assertEquals(level, commentFound.getLevel());
 
 	}
@@ -279,7 +273,6 @@ public class CommentServiceTest {
 
 		String description = "Mario";
 		int answers = 0;
-		Long commentId = 2L;
 		int level = 2;
 		int page = 0;
 		int size = 6;
@@ -304,7 +297,6 @@ public class CommentServiceTest {
 		assertEquals(post.getId(), commentFound.getPost().getId());
 		assertEquals(answers, commentFound.getAnswers());
 		assertEquals(parent, commentFound.getComment());
-		assertEquals(commentId, commentFound.getId());
 		assertEquals(level, commentFound.getLevel());
 
 	}

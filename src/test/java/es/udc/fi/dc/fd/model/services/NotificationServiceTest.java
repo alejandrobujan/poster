@@ -103,7 +103,7 @@ public class NotificationServiceTest {
 	 */
 	private Post createOffer(String title, User user, Category category) {
 		return postDao
-				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
+				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category, LocalDateTime.now()));
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class NotificationServiceTest {
 	 */
 	private Post createCoupon(String title, User user, Category category) {
 		return postDao.save(new Coupon(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), "EXTRA25",
-				user, category));
+				user, category, LocalDateTime.now()));
 	}
 
 	/**

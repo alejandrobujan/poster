@@ -89,8 +89,10 @@ public class CatalogServiceTest {
 	 * @param category the category of the post
 	 * @return the offer
 	 */
+
 	private Post createOffer(String title, User user, Category category, BigDecimal price) {
-		return postDao.save(new Offer(title, "description", "url", price, LocalDateTime.now(), user, category));
+		return postDao.save(new Offer(title, "description", "url", price, LocalDateTime.now(), user, category,
+				LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -101,9 +103,10 @@ public class CatalogServiceTest {
 	 * @param category the category of the post
 	 * @return the post
 	 */
+
 	private Post createCoupon(String title, User user, Category category, BigDecimal price) {
-		return postDao
-				.save(new Coupon(title, "description", "url", price, LocalDateTime.now(), "EXTRA25", user, category));
+		return postDao.save(new Coupon(title, "description", "url", price, LocalDateTime.now(), "REBAJA", user,
+				category, LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -247,9 +250,12 @@ public class CatalogServiceTest {
 	 * @throws MaximumImageSizeExceededException
 	 *
 	 */
+
 	@Test
 	public void testFindAllPostsWithTypeFilter() throws MaximumImageSizeExceededException, DuplicateInstanceException {
 		searchFilters.setType("Coupon");
+
+		Block<Post> findPost = catalogService.findPosts(searchFilters, null, 0, 2);
 
 		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
 				false);
@@ -407,7 +413,7 @@ public class CatalogServiceTest {
 	@Test
 	public void testFindAllPostsExpired() throws MaximumImageSizeExceededException, DuplicateInstanceException,
 			InstanceNotFoundException, PermissionException {
-		postService.markAsExpired(users.get(0).getId(), posts.get(0).getId(), true);
+		postService.markAsExpired(users.get(0).getId(), posts.get(0).getId());
 
 		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
 				false);
@@ -423,7 +429,6 @@ public class CatalogServiceTest {
 	public void testFindAllPostsWithSomeFilters() throws MaximumImageSizeExceededException, DuplicateInstanceException {
 		posts.get(0).setPrice(new BigDecimal(100));
 		posts.get(0).setTitle("pepe");
-		posts.get(0).setExpired(true);
 		postDao.save(posts.get(0));
 		searchFilters.setCategoryId(categories.get(0).getId());
 		searchFilters.setPrice(Map.of("gte", new BigDecimal("50"), "lte", new BigDecimal("10000")));
@@ -463,7 +468,7 @@ public class CatalogServiceTest {
 		assertEquals(post.getCreationDate(), foundPost.getCreationDate());
 		assertEquals(post.getPositiveRatings(), foundPost.getPositiveRatings());
 		assertEquals(post.getNegativeRatings(), foundPost.getNegativeRatings());
-		assertEquals(post.isExpired(), foundPost.isExpired());
+		assertEquals(post.getExpirationDate(), foundPost.getExpirationDate());
 		assertEquals(post.getUser(), foundPost.getUser());
 		assertEquals(post.getCategory(), foundPost.getCategory());
 		assertEquals(post.getImages(), foundPost.getImages());

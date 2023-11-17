@@ -25,9 +25,10 @@ public class NotificationTest {
 				new User("user2", "password", "User", "Two", "user2@udc.es", new byte[] {}),
 				new User("user3", "password", "User", "Three", "user3@udc.es", new byte[] {}));
 		posts = List.of(
-				new Offer("Title1", "Description1", null, new BigDecimal(10), LocalDateTime.now(), users.get(1), null),
+				new Offer("Title1", "Description1", null, new BigDecimal(10), LocalDateTime.now(), users.get(1), null,
+						LocalDateTime.now()),
 				new Coupon("Title2", "Description2", null, new BigDecimal(10), LocalDateTime.now(), "CODE",
-						users.get(1), null));
+						users.get(1), null, LocalDateTime.now()));
 		comments = List.of(new Comment("Comment1", LocalDateTime.now(), users.get(0), posts.get(0), null, 0, 0),
 				new Comment("Comment2", LocalDateTime.now(), users.get(0), posts.get(1), null, 0, 0));
 		notification = new Notification("Notification", false, LocalDateTime.of(2025, 2, 4, 0, 0, 0), users.get(0),

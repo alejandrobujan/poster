@@ -78,7 +78,7 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 			parameters.add("p.category.id = :categoryId");
 
 		if (!filters.isExpired())
-			parameters.add("p.expired = :expired");
+			parameters.add("p.expirationDate > :expirationDate");
 
 		if (filters.getPrice() != null && filters.getPrice().get("gte") != null)
 			parameters.add("p.price >= :gte");
@@ -141,7 +141,7 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 			query.setParameter("categoryId", filters.getCategoryId());
 
 		if (!filters.isExpired())
-			query.setParameter("expired", filters.isExpired());
+			query.setParameter("expirationDate", LocalDateTime.now());
 
 		if (filters.getPrice() != null && filters.getPrice().get("gte") != null)
 			query.setParameter("gte", filters.getPrice().get("gte"));

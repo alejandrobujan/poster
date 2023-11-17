@@ -17,7 +17,7 @@ describe("postService", () => {
         successCallback();
       });
 
-      await postService.createPost("mockTitle", "mockDescription", "mockUrl", 100, 1, [], "mockType", {}, onSuccess, onErrors);
+      await postService.createPost("mockTitle", "mockDescription", "mockUrl", 100, 1, [], "mockType", {}, Date.now, onSuccess, onErrors);
 
       expect(appFetchModule.appFetch).toHaveBeenCalledWith(
         "/posts/post",
@@ -38,7 +38,7 @@ describe("postService", () => {
         errorCallback();
       });
 
-      await postService.createPost("mockTitle", "mockDescription", "mockUrl", 100, 1, [], "mockType", {}, onSuccess, onErrors);
+      await postService.createPost("mockTitle", "mockDescription", "mockUrl", 100, 1, [], "mockType", {}, Date.now, onSuccess, onErrors);
 
       expect(onErrors).toHaveBeenCalled();
       expect(onSuccess).not.toHaveBeenCalled();
@@ -132,7 +132,7 @@ describe("postService", () => {
         successCallback();
       });
 
-      await postService.maskPostAsExpired(1, true, onSuccess, onErrors);
+      await postService.maskPostAsExpired(1, onSuccess, onErrors);
 
       expect(appFetchModule.appFetch).toHaveBeenCalledWith(
         "/posts/post/1/markAsExpired",
@@ -153,7 +153,7 @@ describe("postService", () => {
         errorCallback();
       });
 
-      await postService.maskPostAsExpired(1, true, onSuccess, onErrors);
+      await postService.maskPostAsExpired(1, onSuccess, onErrors);
 
       expect(onErrors).toHaveBeenCalled();
       expect(onSuccess).not.toHaveBeenCalled();

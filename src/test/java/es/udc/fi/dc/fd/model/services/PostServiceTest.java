@@ -93,8 +93,8 @@ public class PostServiceTest {
 	 * @return the offer
 	 */
 	private Post createOffer(User user, Category category) {
-		return postDao.save(
-				new Offer("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category));
+		return postDao.save(new Offer("title", "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
+				category, LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class PostServiceTest {
 	 */
 	private Post createCoupon(User user, Category category) {
 		return postDao.save(new Coupon("title", "description", "url", new BigDecimal(10), LocalDateTime.now(),
-				"EXTRA25", user, category));
+				"EXTRA25", user, category, LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -168,9 +168,10 @@ public class PostServiceTest {
 		String code = "EXTRA25";
 
 		Post post1 = postService.createPost(title, description, url, price, user.getId(), category.getId(),
-				new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", code)));
+				new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", code)),
+				LocalDateTime.of(2025, 2, 3, 0, 0, 0));
 		Post post2 = postService.createPost(title, description, url, price, user.getId(), category.getId(),
-				new ArrayList<byte[]>(), "Offer", Map.ofEntries());
+				new ArrayList<byte[]>(), "Offer", Map.ofEntries(), LocalDateTime.of(2025, 2, 3, 0, 0, 0));
 
 		Post actualPost1 = postDao.findById(post1.getId()).get();
 		Post actualPost2 = postDao.findById(post2.getId()).get();
@@ -220,9 +221,9 @@ public class PostServiceTest {
 		List<byte[]> images = List.of(new byte[] { 1, 2, 3 }, new byte[] { 2, 3, 4 });
 
 		Post post1 = postService.createPost(title, description, url, price, user.getId(), category.getId(), images,
-				"Coupon", Map.ofEntries(entry("code", code)));
+				"Coupon", Map.ofEntries(entry("code", code)), LocalDateTime.now());
 		Post post2 = postService.createPost(title, description, url, price, user.getId(), category.getId(), images,
-				"Offer", Map.ofEntries());
+				"Offer", Map.ofEntries(), LocalDateTime.now());
 
 		Post actualPost1 = postDao.findById(post1.getId()).get();
 		Post actualPost2 = postDao.findById(post2.getId()).get();
@@ -263,7 +264,8 @@ public class PostServiceTest {
 			throws MaximumImageSizeExceededException, DuplicateInstanceException, MissingRequiredParameterException {
 		assertThrows(InstanceNotFoundException.class,
 				() -> postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(),
-						NON_EXISTENT_ID, new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25"))));
+						NON_EXISTENT_ID, new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")),
+						LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -281,7 +283,7 @@ public class PostServiceTest {
 		assertThrows(MaximumImageSizeExceededException.class,
 				() -> postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(),
 						category.getId(), List.of(new byte[EXCEEDED_BYTE_SIZE]), "Coupon",
-						Map.ofEntries(entry("code", "EXTRA25"))));
+						Map.ofEntries(entry("code", "EXTRA25")), LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -298,7 +300,8 @@ public class PostServiceTest {
 			throws MaximumImageSizeExceededException, DuplicateInstanceException, MissingRequiredParameterException {
 		assertThrows(MissingRequiredParameterException.class,
 				() -> postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(),
-						category.getId(), List.of(new byte[EXCEEDED_BYTE_SIZE]), "Coupon", Map.ofEntries()));
+						category.getId(), List.of(new byte[EXCEEDED_BYTE_SIZE]), "Coupon", Map.ofEntries(),
+						LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -313,7 +316,8 @@ public class PostServiceTest {
 			throws MaximumImageSizeExceededException, DuplicateInstanceException, MissingRequiredParameterException {
 		assertThrows(IncorrectFormValuesException.class,
 				() -> postService.createPost(" ", "description", "url", new BigDecimal(10), user.getId(),
-						category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25"))));
+						category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")),
+						LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -328,7 +332,8 @@ public class PostServiceTest {
 			throws MaximumImageSizeExceededException, DuplicateInstanceException, MissingRequiredParameterException {
 		assertThrows(IncorrectFormValuesException.class,
 				() -> postService.createPost("title", " ", "url", new BigDecimal(10), user.getId(), category.getId(),
-						new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25"))));
+						new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")),
+						LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -411,17 +416,12 @@ public class PostServiceTest {
 	public void testMarkAsExpired() throws DuplicateInstanceException, MaximumImageSizeExceededException,
 			InstanceNotFoundException, PermissionException {
 
-		assertFalse(offer.isExpired());
+		assertFalse(offer.getExpirationDate().isBefore(LocalDateTime.now()));
 
-		postService.markAsExpired(user.getId(), offer.getId(), true);
+		postService.markAsExpired(user.getId(), offer.getId());
 		offer = catalogService.findPostById(offer.getId());
 
-		assertTrue(offer.isExpired());
-
-		postService.markAsExpired(user.getId(), offer.getId(), false);
-		offer = catalogService.findPostById(offer.getId());
-
-		assertFalse(offer.isExpired());
+		assertTrue(offer.getExpirationDate().isBefore(LocalDateTime.now()));
 	}
 
 	/**
@@ -435,8 +435,7 @@ public class PostServiceTest {
 	@Test
 	public void testMarkAsExpiredNoPost()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
-		assertThrows(InstanceNotFoundException.class,
-				() -> postService.markAsExpired(user.getId(), NON_EXISTENT_ID, true));
+		assertThrows(InstanceNotFoundException.class, () -> postService.markAsExpired(user.getId(), NON_EXISTENT_ID));
 	}
 
 	/**
@@ -451,7 +450,7 @@ public class PostServiceTest {
 	public void testMarkAsExpiredNoUser()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
 		assertThrows(PermissionException.class, () -> {
-			postService.markAsExpired(signUpUser("user2").getId(), offer.getId(), true);
+			postService.markAsExpired(signUpUser("user2").getId(), offer.getId());
 		});
 	}
 
@@ -466,7 +465,7 @@ public class PostServiceTest {
 	@Test
 	public void testMarkAsExpiredNonExistentUser()
 			throws DuplicateInstanceException, MaximumImageSizeExceededException, InstanceNotFoundException {
-		assertThrows(PermissionException.class, () -> postService.markAsExpired(NON_EXISTENT_ID, offer.getId(), true));
+		assertThrows(PermissionException.class, () -> postService.markAsExpired(NON_EXISTENT_ID, offer.getId()));
 	}
 
 	/**
@@ -494,7 +493,7 @@ public class PostServiceTest {
 		List<byte[]> images = List.of(new byte[] { 1, 2, 3 }, new byte[] { 2, 3, 4 });
 
 		Post updatedPost = postService.updatePost(offer.getId(), newTitle, newDescription, newUrl, newPrice,
-				user.getId(), newCategory.getId(), images, "Offer", Map.ofEntries());
+				user.getId(), newCategory.getId(), images, "Offer", Map.ofEntries(), LocalDateTime.now());
 
 		Post actualPost = postDao.findById(offer.getId()).get();
 
@@ -533,7 +532,8 @@ public class PostServiceTest {
 		BigDecimal newPrice = new BigDecimal(12);
 
 		Post updatedPost = postService.updatePost(offer.getId(), newTitle, newDescription, newUrl, newPrice,
-				user.getId(), newCategory.getId(), new ArrayList<byte[]>(), "Offer", Map.ofEntries());
+				user.getId(), newCategory.getId(), new ArrayList<byte[]>(), "Offer", Map.ofEntries(),
+				LocalDateTime.of(2025, 2, 3, 0, 0, 0));
 
 		Post actualPost = postDao.findById(offer.getId()).get();
 
@@ -575,7 +575,7 @@ public class PostServiceTest {
 
 		Post updatedPost = postService.updatePost(coupon.getId(), newTitle, newDescription, newUrl, newPrice,
 				user.getId(), newCategory.getId(), new ArrayList<byte[]>(), "Coupon",
-				Map.ofEntries(entry("code", newCode)));
+				Map.ofEntries(entry("code", newCode)), LocalDateTime.of(2025, 2, 3, 0, 0, 0));
 
 		Post actualPost = postDao.findById(coupon.getId()).get();
 
@@ -618,7 +618,8 @@ public class PostServiceTest {
 		String newCode = "EXTRANEW25";
 
 		Post updatedPost = postService.updatePost(coupon.getId(), newTitle, newDescription, newUrl, newPrice,
-				user.getId(), newCategory.getId(), images, "Coupon", Map.ofEntries(entry("code", newCode)));
+				user.getId(), newCategory.getId(), images, "Coupon", Map.ofEntries(entry("code", newCode)),
+				LocalDateTime.now());
 
 		Post actualPost = postDao.findById(coupon.getId()).get();
 
@@ -646,7 +647,7 @@ public class PostServiceTest {
 		assertThrows(InstanceNotFoundException.class,
 				() -> postService.updatePost(NON_EXISTENT_ID, "title", "description", "url", new BigDecimal(10),
 						user.getId(), category.getId(), new ArrayList<byte[]>(), "Coupon",
-						Map.ofEntries(entry("code", "EXTRA25"))));
+						Map.ofEntries(entry("code", "EXTRA25")), LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -667,7 +668,7 @@ public class PostServiceTest {
 		assertThrows(InstanceNotFoundException.class,
 				() -> postService.updatePost(coupon.getId(), "title", "description", "url", new BigDecimal(10),
 						user.getId(), NON_EXISTENT_ID, new ArrayList<byte[]>(), "Coupon",
-						Map.ofEntries(entry("code", "EXTRA25"))));
+						Map.ofEntries(entry("code", "EXTRA25")), LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -689,10 +690,12 @@ public class PostServiceTest {
 		User user = signUpUser("userName1");
 		Category category = createCategory("category1");
 		Post post = postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(),
-				category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")));
+				category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")),
+				LocalDateTime.of(2025, 2, 3, 0, 0, 0));
 		assertThrows(IncorrectFormValuesException.class,
 				() -> postService.updatePost(post.getId(), " ", "description", "url", new BigDecimal(10), user.getId(),
-						category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25"))));
+						category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")),
+						LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -714,10 +717,12 @@ public class PostServiceTest {
 		User user = signUpUser("userName1");
 		Category category = createCategory("category1");
 		Post post = postService.createPost("title", "description", "url", new BigDecimal(10), user.getId(),
-				category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")));
+				category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")),
+				LocalDateTime.of(2025, 2, 3, 0, 0, 0));
 		assertThrows(IncorrectFormValuesException.class,
 				() -> postService.updatePost(post.getId(), "title", " ", "url", new BigDecimal(10), user.getId(),
-						category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25"))));
+						category.getId(), new ArrayList<byte[]>(), "Coupon", Map.ofEntries(entry("code", "EXTRA25")),
+						LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -738,7 +743,7 @@ public class PostServiceTest {
 		assertThrows(MaximumImageSizeExceededException.class,
 				() -> postService.updatePost(coupon.getId(), "title", "description", "url", new BigDecimal(10),
 						user.getId(), category.getId(), List.of(new byte[EXCEEDED_BYTE_SIZE]), "Coupon",
-						Map.ofEntries(entry("code", "EXTRA25"))));
+						Map.ofEntries(entry("code", "EXTRA25")), LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -759,7 +764,7 @@ public class PostServiceTest {
 		assertThrows(MissingRequiredParameterException.class,
 				() -> postService.updatePost(coupon.getId(), "title", "description", "url", new BigDecimal(10),
 						user.getId(), category.getId(), List.of(new byte[EXCEEDED_BYTE_SIZE]), "Coupon",
-						Map.ofEntries()));
+						Map.ofEntries(), LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
