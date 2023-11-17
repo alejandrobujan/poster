@@ -16,7 +16,7 @@ import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
 import "react-image-gallery/styles/css/image-gallery.css";
 
-const UpdatePostForm = () => {
+const UpdatePostForm =({ min }) => {
 	const user = useSelector(userSelectors.getUser);
 	const post = useSelector(selectors.getPost);
 	const { id } = useParams();
@@ -114,11 +114,11 @@ const UpdatePostForm = () => {
 						className="needs-validation" noValidate
 						onSubmit={e => handleSubmit(e)}>
 						<div className="form-group row">
-							<label htmlFor="title" className="col-md-3 col-form-label">
+							<label data-testid="UpdatePostFormTitleLabel" htmlFor="title" className="col-md-3 col-form-label">
 								Title (*)
 							</label>
 							<div className="col-md-9">
-								<input type="text"
+								<input data-testid="UpdatePostFormTitleInput" type="text" 
 									id="title"
 									className="form-control"
 									value={title}
@@ -133,11 +133,11 @@ const UpdatePostForm = () => {
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="description" className="col-md-3 col-form-label">
+							<label data-testid="UpdatePostFormDescriptionLabel" htmlFor="description" className="col-md-3 col-form-label">
 								Description (*)
 							</label>
 							<div className="col-md-9">
-								<textarea
+								<textarea data-testid="UpdatePostFormDescriptionInput"
 									id="description"
 									className="form-control"
 									value={description}
@@ -151,13 +151,13 @@ const UpdatePostForm = () => {
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="url" className="col-md-3 col-form-label">
+							<label data-testid="UpdatePostFormUrlLabel" htmlFor="url" className="col-md-3 col-form-label">
 								Url
 							</label>
 							<div className="col-md-9">
 								<div className="input-group">
 									<span className="input-group-text">http(s)://</span>
-									<input type="text"
+									<input type="text" data-testid="UpdatePostFormUrlInput"
 										id="url"
 										className="form-control"
 										value={url}
@@ -172,12 +172,12 @@ const UpdatePostForm = () => {
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="price" className="col-md-3 col-form-label">
+							<label data-testid="UpdatePostFormPriceLabel" htmlFor="price" className="col-md-3 col-form-label">
 								Price (*)
 							</label>
 							<div className="col-md-3">
 								<div className="input-group">
-									<input type="number"
+									<input data-testid="UpdatePostFormPriceInput" type="number" 
 										id="price"
 										className="form-control"
 										value={price}
@@ -192,20 +192,20 @@ const UpdatePostForm = () => {
 									Price must be between 0 and 999999.99
 								</div>
 							</div>
-							<label htmlFor="categoryId" className="col-md-3 col-form-label">
+							<label data-testid="UpdatePostFormCategoryLabel" htmlFor="categoryId" className="col-md-3 col-form-label">
 								Category
 							</label>
 							<div className="col-md-3">
-								<CategorySelector id="categoryId" className="form-control"
+								<CategorySelector data-testid="UpdatePostFormCategoryInput" id="categoryId" className="form-control"
 									value={categoryId} onChange={e => setCategoryId(e.target.value)} />
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="images" className="col-md-3 col-form-label">
+							<label data-testid="UpdatePostFormImagesLabel" htmlFor="images" className="col-md-3 col-form-label">
 								Images
 							</label>
 							<div className="col-md-9">
-								<input ref={node => imagesInput = node} type="file"
+								<input data-testid="UpdatePostFormImagesInput" ref={node => imagesInput = node} type="file"
 									id="images"
 									accept="image/*"
 									onChange={handleImagesChange}
@@ -259,11 +259,11 @@ const UpdatePostForm = () => {
 						</div>
 						{post.type === 'Coupon' &&
 							<div className="form-group row">
-								<label htmlFor="code" className="col-md-3 col-form-label">
+								<label data-testid="UpdatePostFormCodeLabel" htmlFor="code" className="col-md-3 col-form-label">
 									Code (*)
 								</label>
 								<div className="col-md-9">
-									<input type="text"
+									<input data-testid="UpdatePostFormCodeInput" type="text"
 										id="code"
 										className="form-control"
 										value={code}
@@ -277,15 +277,15 @@ const UpdatePostForm = () => {
 							</div>
 						}
 						<div className="form-group row">
-							<label htmlFor="code" className="col-md-3 col-form-label">
+							<label data-testid="UpdatePostFormExpirationDateLabel" htmlFor="code" className="col-md-3 col-form-label">
 								Expiration date (*)
 							</label>
 							<div className="col-md-9">
-								<input type="datetime-local"
+								<input data-testid="UpdatePostFormExpirationDateInput" type="datetime-local"
 									id="code"
 									className="form-control"
 									value={expirationDate}
-									min={expirationDate !== '' && new Date().getTime() > parseInputDate(expirationDate) ? formatDateForInput(new Date().getTime()) : expirationDate}
+									min={min ? formatDateForInput(min) : formatDateForInput(new Date().getTime())}
 									onChange={e => setExpirationDate(e.target.value)}
 									required
 								/>
@@ -300,7 +300,7 @@ const UpdatePostForm = () => {
 							</p>
 						</div>
 						<div className="text-center">
-							<button type="submit" className="btn btn-primary">
+							<button data-testid="UpdatePostFormSaveButton" type="submit" className="btn btn-primary">
 								Save changes
 							</button>
 						</div>

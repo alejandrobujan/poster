@@ -105,13 +105,13 @@ const CreatePost = ({ min }) => {
 					<nav aria-label="page navigation">
 						<ul className="pagination justify-content-center">
 							<li className={`page-item ${type === 'Offer' ? "disabled" : ""}`}>
-								<button className="page-link"
+								<button data-testid="CreatePostOfferSelectButton" className="page-link" 
 									onClick={handleOfferTypeChange}>
 									Offer
 								</button>
 							</li>
 							<li className={`page-item ${type === 'Coupon' ? "disabled" : ""}`}>
-								<button className="page-link"
+								<button data-testid="CreatePostCouponSelectButton" className="page-link"
 									onClick={handleCouponTypeChange}>
 									Coupon
 								</button>
@@ -122,11 +122,11 @@ const CreatePost = ({ min }) => {
 						className="needs-validation" noValidate
 						onSubmit={e => handleSubmit(e)}>
 						<div className="form-group row">
-							<label htmlFor="title" className="col-md-3 col-form-label">
+							<label data-testid="CreatePostTitleLabel" htmlFor="title" className="col-md-3 col-form-label">
 								Title (*)
 							</label>
 							<div className="col-md-9">
-								<input type="text"
+								<input type="text" data-testid="CreatePostTitleInput"
 									id="title"
 									className="form-control"
 									value={title}
@@ -141,11 +141,11 @@ const CreatePost = ({ min }) => {
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="description" className="col-md-3 col-form-label">
+							<label data-testid="CreatePostDescriptionLabel" htmlFor="description" className="col-md-3 col-form-label">
 								Description (*)
 							</label>
 							<div className="col-md-9">
-								<textarea
+								<textarea data-testid="CreatePostDescriptionInput"
 									id="description"
 									className="form-control"
 									value={description}
@@ -159,13 +159,13 @@ const CreatePost = ({ min }) => {
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="url" className="col-md-3 col-form-label">
+							<label data-testid="CreatePostUrlLabel" htmlFor="url" className="col-md-3 col-form-label">
 								Url
 							</label>
 							<div className="col-md-9">
 								<div className="input-group">
 									<span className="input-group-text">http(s)://</span>
-									<input type="text"
+									<input type="text" data-testid="CreatePostUrlInput"
 										id="url"
 										className="form-control"
 										value={url}
@@ -180,12 +180,12 @@ const CreatePost = ({ min }) => {
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="price" className="col-md-3 col-form-label">
+							<label data-testid="CreatePostPriceLabel" htmlFor="price" className="col-md-3 col-form-label">
 								Price (*)
 							</label>
 							<div className="col-md-3">
 								<div className="input-group">
-									<input type="number"
+									<input type="number" data-testid="CreatePostPriceInput"
 										id="price"
 										className="form-control"
 										value={price}
@@ -200,20 +200,20 @@ const CreatePost = ({ min }) => {
 									Price must be between 0 and 999999.99
 								</div>
 							</div>
-							<label htmlFor="categoryId" className="col-md-3 col-form-label">
+							<label data-testid="CreatePostCategoryLabel" htmlFor="categoryId" className="col-md-3 col-form-label">
 								Category
 							</label>
 							<div className="col-md-3">
-								<CategorySelector id="categoryId" className="form-control"
+								<CategorySelector data-testid="CreatePostCategoryInput" id="categoryId" className="form-control"
 									value={categoryId} onChange={e => setCategoryId(e.target.value)} />
 							</div>
 						</div>
 						<div className="form-group row">
-							<label htmlFor="images" className="col-md-3 col-form-label">
+							<label data-testid="CreatePostImagesLabel" htmlFor="images" className="col-md-3 col-form-label">
 								Images
 							</label>
 							<div className="col-md-9">
-								<input ref={node => imagesInput = node} type="file"
+								<input data-testid="CreatePostImagesInput" ref={node => imagesInput = node} type="file"
 									id="images"
 									accept="image/*"
 									onChange={handleImagesChange}
@@ -251,11 +251,11 @@ const CreatePost = ({ min }) => {
 							</div>
 						}
 						<div className="form-group row">
-							<label htmlFor="code" className="col-md-3 col-form-label">
+							<label data-testid="CreatePostExpirationDateLabel" htmlFor="code" className="col-md-3 col-form-label">
 								Expiration date (*)
 							</label>
 							<div className="col-md-9">
-								<input type="datetime-local"
+								<input data-testid="CreatePostExpirationDateInput"type="datetime-local"
 									id="code"
 									className="form-control"
 									value={expirationDate}
@@ -274,7 +274,7 @@ const CreatePost = ({ min }) => {
 							</p>
 						</div>
 						<div className="text-center">
-							<button type="submit" className="btn btn-primary">
+							<button data-testid="CreatePostSubmitButton" type="submit" className="btn btn-primary">
 								Submit
 							</button>
 						</div>
