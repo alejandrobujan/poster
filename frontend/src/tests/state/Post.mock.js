@@ -38,7 +38,8 @@ export const postMock = {
 			type: "Coupon",
 			properties: {
 				code: "12345"
-			}
+			},
+			validationDate: 1670409960000
 		}
 	},
 	comment: {
