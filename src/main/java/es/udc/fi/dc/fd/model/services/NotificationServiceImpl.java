@@ -5,12 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Comment;
 import es.udc.fi.dc.fd.model.entities.Notification;
 import es.udc.fi.dc.fd.model.entities.NotificationDao;
 import es.udc.fi.dc.fd.model.entities.Post;
+import es.udc.fi.dc.fd.model.entities.Save;
+import es.udc.fi.dc.fd.model.entities.SaveDao;
 import es.udc.fi.dc.fd.model.entities.User;
-import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 
 @Service
@@ -18,6 +20,9 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Autowired
 	private NotificationDao notificationDao;
+
+	@Autowired
+	private SaveDao saveDao;
 
 	/** The post dao. */
 	@Autowired
@@ -43,6 +48,15 @@ public class NotificationServiceImpl implements NotificationService {
 
 		notificationDao.save(notification);
 
+	}
+
+	@Override
+	public void sendNotification(Post post) {
+		String text = "The post " + post.getTitle() + " has been modified";
+		List<Save> saves = saveDao.findSaveByPostId(post.getId());
+		for (Save save : saves) {
+			notificationDao.save(new Notification(text, null, save.getUser(), post));
+		}
 	}
 
 }

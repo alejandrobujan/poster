@@ -37,6 +37,9 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private PermissionChecker permissionChecker;
 
+	@Autowired
+	private NotificationService notificationService;
+
 	/**
 	 * Instantiates a new post service impl.
 	 * 
@@ -145,6 +148,8 @@ public class PostServiceImpl implements PostService {
 
 		post.setExpirationDate(LocalDateTime.now());
 
+		notificationService.sendNotification(post);
+
 		return postDao.save(post).getExpirationDate();
 	}
 
@@ -160,6 +165,8 @@ public class PostServiceImpl implements PostService {
 		Post post = permissionChecker.checkPost(postId);
 
 		post.setValidationDate(LocalDateTime.now());
+
+		notificationService.sendNotification(post);
 
 		return postDao.save(post).getValidationDate();
 	}

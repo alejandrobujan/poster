@@ -38,6 +38,10 @@ public abstract class PostHandler {
 	@Autowired
 	private PostDao postDao;
 
+	/** The notification service. */
+	@Autowired
+	private NotificationService notificationService;
+
 	/** The image dao. */
 	@Autowired
 	private ImageDao imageDao;
@@ -62,8 +66,9 @@ public abstract class PostHandler {
 	 * 
 	 */
 	public Post handleCreate(String title, String description, String url, BigDecimal price, Long userId,
-			Long categoryId, List<byte[]> imageList, Map<String, String> properties, LocalDateTime expirationDate) throws InstanceNotFoundException,
-			MaximumImageSizeExceededException, MissingRequiredParameterException, IncorrectFormValuesException {
+			Long categoryId, List<byte[]> imageList, Map<String, String> properties, LocalDateTime expirationDate)
+			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
+			IncorrectFormValuesException {
 
 		User user = permissionChecker.checkUser(userId);
 
@@ -135,6 +140,8 @@ public abstract class PostHandler {
 
 		Post post = updatePost(postId, title, description, url, price, userId, category, properties, expirationDate);
 		addImages(post, imageList);
+
+		notificationService.sendNotification(post);
 
 		return postDao.save(post);
 
