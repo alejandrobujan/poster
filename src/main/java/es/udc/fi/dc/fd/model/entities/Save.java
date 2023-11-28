@@ -31,8 +31,7 @@ public class Save {
 	 * @param post
 	 * @param user
 	 */
-	public Save(Long id, Post post, User user) {
-		this.id = id;
+	public Save(Post post, User user) {
 		this.post = post;
 		this.user = user;
 	}

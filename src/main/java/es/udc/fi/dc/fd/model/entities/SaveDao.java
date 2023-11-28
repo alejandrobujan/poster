@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface SaveDao extends JpaRepository<Save, Long> {
 	List<Save> findSaveByPostId(Long postId);
+
+	boolean existsSaveByPostIdAndUserId(Long postId, Long userId);
 }
