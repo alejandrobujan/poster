@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,7 +53,7 @@ public class SaveController {
 		saveService.savePost(postId, userId);
 	}
 
-	@PostMapping("/post/{postId}/save")
+	@GetMapping("/post/{postId}/save")
 	public boolean isPostSavedByUser(@RequestAttribute Long userId, @PathVariable Long postId) {
 		return saveService.isPostSavedByUser(postId, userId);
 	}

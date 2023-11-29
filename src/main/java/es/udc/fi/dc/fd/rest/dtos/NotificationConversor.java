@@ -9,7 +9,7 @@ public class NotificationConversor {
 
 	public final static NotificationDto toNotificationDto(Notification notification) {
 		return new NotificationDto(notification.getId(), notification.getText(), notification.isViewed(),
-				notification.getCreationDate(), notification.getPost().getId(),
+				notification.getCreationDate(), notification.getPost() != null ? notification.getPost().getId() : null,
 				new UserSummaryDto(notification.getNotifierUser().getId(), notification.getNotifierUser().getUserName(),
 						notification.getNotifierUser().getFirstName(), notification.getNotifierUser().getLastName(),
 						notification.getNotifierUser().getAvatar()));
