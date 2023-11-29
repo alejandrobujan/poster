@@ -10,6 +10,7 @@ import es.udc.fi.dc.fd.model.entities.Save;
 import es.udc.fi.dc.fd.model.entities.SaveDao;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.AlreadySavedException;
+import es.udc.fi.dc.fd.model.services.exceptions.SavePostUserCreatorException;
 
 @Service
 @Transactional
@@ -29,11 +30,14 @@ public class SaveServiceImpl implements SaveService {
 	}
 
 	@Override
-	public void savePost(Long postId, Long userId) throws InstanceNotFoundException, AlreadySavedException {
+	public void savePost(Long postId, Long userId)
+			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException {
 		Post post = permissionChecker.checkPost(postId);
 		User user = permissionChecker.checkUser(userId);
 		if (isPostSavedByUser(postId, userId))
 			throw new AlreadySavedException();
+		if (post.getUser().getId() == user.getId())
+			throw new SavePostUserCreatorException();
 		saveDao.save(new Save(post, user));
 	}
 }
