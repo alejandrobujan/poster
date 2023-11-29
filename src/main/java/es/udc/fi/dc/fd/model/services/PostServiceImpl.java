@@ -96,7 +96,10 @@ public class PostServiceImpl implements PostService {
 	public void deletePost(Long userId, Long postId) throws InstanceNotFoundException, PermissionException {
 		Post post = permissionChecker.checkPostExistsAndBelongsTo(postId, userId);
 
+		notificationService.sendNotification(post, "deleted");
+
 		postDao.delete(post);
+
 	}
 
 	/**

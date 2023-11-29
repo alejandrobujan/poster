@@ -50,13 +50,23 @@ public class NotificationServiceImpl implements NotificationService {
 
 	}
 
+	private void sendNotificationAux(Post post, String text) {
+		List<Save> saves = saveDao.findSaveByPostId(post.getId());
+		for (Save save : saves) {
+			notificationDao.save(new Notification(text, post.getUser(), save.getUser(), post));
+		}
+	}
+
 	@Override
 	public void sendNotification(Post post) {
 		String text = "The post " + post.getTitle() + " has been modified";
-		List<Save> saves = saveDao.findSaveByPostId(post.getId());
-		for (Save save : saves) {
-			notificationDao.save(new Notification(text, null, save.getUser(), post));
-		}
+		sendNotificationAux(post, text);
+	}
+
+	@Override
+	public void sendNotification(Post post, String message) {
+		String text = "The post " + post.getTitle() + " has been " + message;
+		sendNotificationAux(post, text);
 	}
 
 }

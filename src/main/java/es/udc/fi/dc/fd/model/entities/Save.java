@@ -27,7 +27,6 @@ public class Save {
 	}
 
 	/**
-	 * @param id
 	 * @param post
 	 * @param user
 	 */
