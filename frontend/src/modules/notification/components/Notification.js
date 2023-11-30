@@ -10,7 +10,8 @@ const Notification = ({ id, text, viewed, creationDate, postId, notifierUserDto 
 	
 	const handleNotificationClick = () => {
 		dispatch(actions.markAsViewed(id));
-		navigate(`/post/post-details/${postId}`);
+		if(postId)
+			navigate(`/post/post-details/${postId}`);
 	}
 
 	return (
