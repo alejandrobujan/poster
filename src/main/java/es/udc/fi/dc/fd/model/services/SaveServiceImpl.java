@@ -1,5 +1,7 @@
 package es.udc.fi.dc.fd.model.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +12,7 @@ import es.udc.fi.dc.fd.model.entities.Save;
 import es.udc.fi.dc.fd.model.entities.SaveDao;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.AlreadySavedException;
+import es.udc.fi.dc.fd.model.services.exceptions.AlreadyUnsavedException;
 import es.udc.fi.dc.fd.model.services.exceptions.SavePostUserCreatorException;
 
 @Service
@@ -36,8 +39,21 @@ public class SaveServiceImpl implements SaveService {
 		User user = permissionChecker.checkUser(userId);
 		if (isPostSavedByUser(postId, userId))
 			throw new AlreadySavedException();
-		if (post.getUser().getId() == user.getId())
+		if (post.getUser().getId().equals(user.getId()))
 			throw new SavePostUserCreatorException();
 		saveDao.save(new Save(post, user));
 	}
+
+	@Override
+	public void unSavePost(Long postId, Long userId) throws InstanceNotFoundException, AlreadyUnsavedException {
+		permissionChecker.checkPost(postId);
+		permissionChecker.checkUser(userId);
+		Optional<Save> save = saveDao.findSaveByPostIdAndUserId(postId, userId);
+		if (save.isPresent()) {
+			saveDao.delete(save.get());
+		} else {
+			throw new AlreadyUnsavedException();
+		}
+	}
+
 }
