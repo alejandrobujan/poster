@@ -53,7 +53,7 @@ public class NotificationServiceImpl implements NotificationService {
 	private void sendNotificationAux(Post post, String text) {
 		List<Save> saves = saveDao.findSaveByPostId(post.getId());
 		for (Save save : saves) {
-			notificationDao.save(new Notification(text, post.getUser(), save.getUser(), post));
+			notificationDao.save(new Notification(text, null, save.getUser(), post));
 		}
 	}
 
