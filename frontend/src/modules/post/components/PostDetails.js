@@ -139,7 +139,7 @@ const PostDetails = () => {
 						</button>
 						&nbsp;
 						{isLoggedIn && user.id !== post.userSummaryDto.id &&
-							<button className="btn btn-primary"
+							<button className="btn btn-primary" data-testid="SavePostButton"
 								onClick={ isSaved ? 
 								() => dispatch(actions.unSavePost(id, () => setIsSaved(false), errors => setBackendErrors(errors)))
 								:

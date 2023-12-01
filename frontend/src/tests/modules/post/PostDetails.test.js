@@ -105,6 +105,21 @@ describe("PostDetails", () => {
         const markedAsValidText = screen.getByTestId('MarkedAsValidText');        
             
 	});
+	
+	it("click save post", async () => {
+		render(
+			<Provider store={store}>
+				<MemoryRouter>
+                    <PostDetails />
+				</MemoryRouter>
+			</Provider>
+		);
+
+        const savePostButton = screen.getByTestId('SavePostButton');
+
+        await waitFor(() => fireEvent.click(savePostButton));     
+            
+	});
 
 
 
