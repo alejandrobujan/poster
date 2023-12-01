@@ -95,7 +95,7 @@ CREATE TABLE Notification (
 	text VARCHAR(128) NOT NULL,
 	viewed BOOLEAN NOT NULL,
 	creationDate TIMESTAMP NOT NULL,
-	notifierUserId BIGINT NOT NULL, 
+	notifierUserId BIGINT, 
 	notifiedUserId BIGINT NOT NULL, 
 	postId BIGINT,
 	commentId BIGINT,
