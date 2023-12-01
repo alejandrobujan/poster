@@ -3,11 +3,13 @@ package es.udc.fi.dc.fd.model.services;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,8 +32,12 @@ import es.udc.fi.dc.fd.model.entities.Offer;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
+import es.udc.fi.dc.fd.model.services.exceptions.AlreadySavedException;
+import es.udc.fi.dc.fd.model.services.exceptions.IncorrectFormValuesException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
+import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
+import es.udc.fi.dc.fd.model.services.exceptions.SavePostUserCreatorException;
 import jakarta.transaction.Transactional;
 
 /**
@@ -70,6 +76,14 @@ public class NotificationServiceTest {
 	@Autowired
 	private NotificationService notificationService;
 
+	/** The save service. */
+	@Autowired
+	private SaveService saveService;
+
+	/** The post service. */
+	@Autowired
+	private PostService postService;
+
 	/** The comment dao. */
 	@Autowired
 	private CommentDao commentDao;
@@ -102,8 +116,8 @@ public class NotificationServiceTest {
 	 * @return the offer
 	 */
 	private Post createOffer(String title, User user, Category category) {
-		return postDao
-				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category, LocalDateTime.now()));
+		return postDao.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
+				category, LocalDateTime.now()));
 	}
 
 	/**
@@ -140,7 +154,7 @@ public class NotificationServiceTest {
 
 	@Before
 	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException {
-		users = List.of(signUpUser("user"), signUpUser("user2"));
+		users = List.of(signUpUser("user"), signUpUser("user2"), signUpUser("user3"));
 		categories = List.of(createCategory("Meals"), createCategory("Motor"), createCategory("Home"),
 				createCategory("Toys"), createCategory("Tech"), createCategory("Leisure"));
 		posts = List.of(createOffer("offer1", users.get(0), categories.get(0)),
@@ -247,6 +261,134 @@ public class NotificationServiceTest {
 		assertEquals(users.get(0), notification.getNotifiedUser());
 		assertEquals(posts.get(0), notification.getPost());
 		assertFalse(notification.isViewed());
+
+	}
+
+	@Test
+	public void testSendNotificationMarkAsExpired()
+			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException {
+		saveService.savePost(posts.get(0).getId(), users.get(1).getId());
+		saveService.savePost(posts.get(0).getId(), users.get(2).getId());
+		postService.markAsExpired(users.get(0).getId(), posts.get(0).getId());
+		List<Notification> notificationsUser1 = notificationService.findUnviewedNotifications(users.get(1).getId());
+		List<Notification> notificationsUser2 = notificationService.findUnviewedNotifications(users.get(2).getId());
+		assertEquals(1, notificationsUser1.size());
+		assertEquals(1, notificationsUser2.size());
+
+		Notification notificationUser1 = notificationsUser1.get(0);
+
+		assertEquals(users.get(1), notificationUser1.getNotifiedUser());
+		assertNull(notificationUser1.getNotifierUser());
+		assertNull(notificationUser1.getComment());
+		assertEquals(posts.get(0), notificationUser1.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser1.getText());
+		assertFalse(notificationUser1.isViewed());
+
+		Notification notificationUser2 = notificationsUser2.get(0);
+
+		assertEquals(users.get(2), notificationUser2.getNotifiedUser());
+		assertNull(notificationUser2.getNotifierUser());
+		assertNull(notificationUser2.getComment());
+		assertEquals(posts.get(0), notificationUser2.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser2.getText());
+		assertFalse(notificationUser2.isViewed());
+
+	}
+
+	@Test
+	public void testSendNotificationDeletePost()
+			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException {
+		saveService.savePost(posts.get(0).getId(), users.get(1).getId());
+		saveService.savePost(posts.get(0).getId(), users.get(2).getId());
+		postService.deletePost(users.get(0).getId(), posts.get(0).getId());
+		List<Notification> notificationsUser1 = notificationService.findUnviewedNotifications(users.get(1).getId());
+		List<Notification> notificationsUser2 = notificationService.findUnviewedNotifications(users.get(2).getId());
+		assertEquals(1, notificationsUser1.size());
+		assertEquals(1, notificationsUser2.size());
+
+		Notification notificationUser1 = notificationsUser1.get(0);
+
+		assertEquals(users.get(1), notificationUser1.getNotifiedUser());
+		assertNull(notificationUser1.getNotifierUser());
+		assertNull(notificationUser1.getComment());
+		assertEquals(posts.get(0), notificationUser1.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been deleted", notificationUser1.getText());
+		assertFalse(notificationUser1.isViewed());
+
+		Notification notificationUser2 = notificationsUser2.get(0);
+
+		assertEquals(users.get(2), notificationUser2.getNotifiedUser());
+		assertNull(notificationUser2.getNotifierUser());
+		assertNull(notificationUser2.getComment());
+		assertEquals(posts.get(0), notificationUser2.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been deleted", notificationUser2.getText());
+		assertFalse(notificationUser2.isViewed());
+
+	}
+
+	@Test
+	public void testSendNotificationUpdatePost()
+			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException,
+			MaximumImageSizeExceededException, MissingRequiredParameterException, IncorrectFormValuesException {
+		saveService.savePost(posts.get(0).getId(), users.get(1).getId());
+		saveService.savePost(posts.get(0).getId(), users.get(2).getId());
+		postService.updatePost(posts.get(0).getId(), "Title cahnged", posts.get(0).getDescription(),
+				posts.get(0).getUrl(), posts.get(0).getPrice(), users.get(0).getId(),
+				posts.get(0).getCategory().getId(), List.of(new byte[] { 1, 2, 3 }, new byte[] { 2, 3, 4 }), "Offer",
+				Map.ofEntries(), LocalDateTime.now());
+		List<Notification> notificationsUser1 = notificationService.findUnviewedNotifications(users.get(1).getId());
+		List<Notification> notificationsUser2 = notificationService.findUnviewedNotifications(users.get(2).getId());
+		assertEquals(1, notificationsUser1.size());
+		assertEquals(1, notificationsUser2.size());
+
+		Notification notificationUser1 = notificationsUser1.get(0);
+
+		assertEquals(users.get(1), notificationUser1.getNotifiedUser());
+		assertNull(notificationUser1.getNotifierUser());
+		assertNull(notificationUser1.getComment());
+		assertEquals(posts.get(0), notificationUser1.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser1.getText());
+		assertFalse(notificationUser1.isViewed());
+
+		Notification notificationUser2 = notificationsUser2.get(0);
+
+		assertEquals(users.get(2), notificationUser2.getNotifiedUser());
+		assertNull(notificationUser2.getNotifierUser());
+		assertNull(notificationUser2.getComment());
+		assertEquals(posts.get(0), notificationUser2.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser2.getText());
+		assertFalse(notificationUser2.isViewed());
+
+	}
+
+	@Test
+	public void testSendNotificationMarkAsValid()
+			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException {
+		saveService.savePost(posts.get(0).getId(), users.get(1).getId());
+		saveService.savePost(posts.get(0).getId(), users.get(2).getId());
+		postService.markAsValid(posts.get(0).getId());
+		List<Notification> notificationsUser1 = notificationService.findUnviewedNotifications(users.get(1).getId());
+		List<Notification> notificationsUser2 = notificationService.findUnviewedNotifications(users.get(2).getId());
+		assertEquals(1, notificationsUser1.size());
+		assertEquals(1, notificationsUser2.size());
+
+		Notification notificationUser1 = notificationsUser1.get(0);
+
+		assertEquals(users.get(1), notificationUser1.getNotifiedUser());
+		assertNull(notificationUser1.getNotifierUser());
+		assertNull(notificationUser1.getComment());
+		assertEquals(posts.get(0), notificationUser1.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser1.getText());
+		assertFalse(notificationUser1.isViewed());
+
+		Notification notificationUser2 = notificationsUser2.get(0);
+
+		assertEquals(users.get(2), notificationUser2.getNotifiedUser());
+		assertNull(notificationUser2.getNotifierUser());
+		assertNull(notificationUser2.getComment());
+		assertEquals(posts.get(0), notificationUser2.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser2.getText());
+		assertFalse(notificationUser2.isViewed());
 
 	}
 
