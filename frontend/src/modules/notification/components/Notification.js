@@ -12,15 +12,19 @@ const Notification = ({ id, text, viewed, creationDate, postId, notifierUserDto 
 		dispatch(actions.markAsViewed(id));
 		if(postId)
 			navigate(`/post/post-details/${postId}`);
+		else
+			navigate('/not-found');	
 	}
 
 	return (
 		<button data-testid="NotificationButton" className="dropdown-item border-bottom" style={{ overflowX: 'hidden' }} onClick={handleNotificationClick}>
 			<div className='' style={{minWidth: '300px'}}>
 				<div className="row text-center">
-					<div className="col-2">
-						<img data-testid="Avatar" src={notifierUserDto.avatar ? `data:image/*;base64,${notifierUserDto.avatar}` : "/poster/assets/profile.png"} alt="Avatar" height="30px" width="30px" />
-					</div>
+					{notifierUserDto && 
+						<div className="col-2">
+							<img data-testid="Avatar" src={notifierUserDto.avatar ? `data:image/*;base64,${notifierUserDto.avatar}` : "/poster/assets/profile.png"} alt="Avatar" height="30px" width="30px" />
+						</div>
+					}
 					<div className="col-8 text-center">
 						<small style={{ maxWidth: '100%', display: 'block', whiteSpace: 'normal', fontSize: '12px' }}>
 							<span data-testid="Date" style={{ color: 'grey', display: 'block', whiteSpace: 'nowrap' }}>{getDate(creationDate)}</span><br />

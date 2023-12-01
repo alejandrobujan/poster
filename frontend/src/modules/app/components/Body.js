@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./Home";
 
 import { Login, SignUp, Logout, UpdateProfile, ProfileDetail, ChangePassword } from '../../users';
+import { PageNotFound } from '../../common';
 import users from '../../users';
 
 import {CreatePost, PostDetails, UpdatePost} from '../../post';
@@ -25,6 +26,7 @@ const Body = () => {
 	       {loggedIn && <Route path="/users/update-profile" element={<UpdateProfile />} />}
 	       {loggedIn && <Route path="/users/change-password" element={<ChangePassword/>}/>}
 	       {loggedIn && <Route path="/post/post-update/:id" element={<UpdatePost/>}/>}
+	       {loggedIn && <Route path="/not-found" element={<PageNotFound/>}/>}
 	    </Routes>
 	</div>    
   );
