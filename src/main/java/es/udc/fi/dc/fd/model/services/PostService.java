@@ -96,6 +96,6 @@ public interface PostService {
 	 * @return the validation date updated
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
-	LocalDateTime markAsValid(Long postId) throws InstanceNotFoundException;
+	LocalDateTime markAsValid(Long userId, Long postId) throws InstanceNotFoundException;
 
 }

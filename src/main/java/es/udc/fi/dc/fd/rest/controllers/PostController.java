@@ -193,8 +193,9 @@ public class PostController {
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	@PostMapping("/post/{id}/markAsValid")
-	public PostValidDto markPostAsValid(@PathVariable Long id) throws InstanceNotFoundException {
-		return new PostValidDto(postService.markAsValid(id));
+	public PostValidDto markPostAsValid(@RequestAttribute Long userId, @PathVariable Long id)
+			throws InstanceNotFoundException {
+		return new PostValidDto(postService.markAsValid(userId, id));
 
 	}
 
