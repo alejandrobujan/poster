@@ -777,7 +777,7 @@ public class PostServiceTest {
 
 		assertNull(offer.getValidationDate());
 
-		postService.markAsValid(offer.getId());
+		postService.markAsValid(user.getId(), offer.getId());
 		offer = catalogService.findPostById(offer.getId());
 
 		assertNotNull(offer.getValidationDate());
@@ -794,7 +794,17 @@ public class PostServiceTest {
 	 */
 	@Test
 	public void testMarkAsValidNoPost() throws InstanceNotFoundException {
-		assertThrows(InstanceNotFoundException.class, () -> postService.markAsValid(NON_EXISTENT_ID));
+		assertThrows(InstanceNotFoundException.class, () -> postService.markAsValid(user.getId(), NON_EXISTENT_ID));
+	}
+
+	/**
+	 * Test mark as valid no user.
+	 * 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	@Test
+	public void testMarkAsValidNoUser() throws InstanceNotFoundException {
+		assertThrows(InstanceNotFoundException.class, () -> postService.markAsValid(NON_EXISTENT_ID, offer.getId()));
 	}
 
 	/**

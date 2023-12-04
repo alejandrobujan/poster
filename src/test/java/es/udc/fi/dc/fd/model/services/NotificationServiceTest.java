@@ -281,7 +281,8 @@ public class NotificationServiceTest {
 		assertNull(notificationUser1.getNotifierUser());
 		assertNull(notificationUser1.getComment());
 		assertEquals(posts.get(0), notificationUser1.getPost());
-		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser1.getText());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been marked as expired",
+				notificationUser1.getText());
 		assertFalse(notificationUser1.isViewed());
 
 		Notification notificationUser2 = notificationsUser2.get(0);
@@ -290,7 +291,8 @@ public class NotificationServiceTest {
 		assertNull(notificationUser2.getNotifierUser());
 		assertNull(notificationUser2.getComment());
 		assertEquals(posts.get(0), notificationUser2.getPost());
-		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser2.getText());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been marked as expired",
+				notificationUser2.getText());
 		assertFalse(notificationUser2.isViewed());
 
 	}
@@ -366,20 +368,11 @@ public class NotificationServiceTest {
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException {
 		saveService.savePost(posts.get(0).getId(), users.get(1).getId());
 		saveService.savePost(posts.get(0).getId(), users.get(2).getId());
-		postService.markAsValid(posts.get(0).getId());
+		postService.markAsValid(users.get(1).getId(), posts.get(0).getId());
 		List<Notification> notificationsUser1 = notificationService.findUnviewedNotifications(users.get(1).getId());
 		List<Notification> notificationsUser2 = notificationService.findUnviewedNotifications(users.get(2).getId());
-		assertEquals(1, notificationsUser1.size());
+		assertEquals(0, notificationsUser1.size());
 		assertEquals(1, notificationsUser2.size());
-
-		Notification notificationUser1 = notificationsUser1.get(0);
-
-		assertEquals(users.get(1), notificationUser1.getNotifiedUser());
-		assertNull(notificationUser1.getNotifierUser());
-		assertNull(notificationUser1.getComment());
-		assertEquals(posts.get(0), notificationUser1.getPost());
-		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser1.getText());
-		assertFalse(notificationUser1.isViewed());
 
 		Notification notificationUser2 = notificationsUser2.get(0);
 
@@ -387,7 +380,7 @@ public class NotificationServiceTest {
 		assertNull(notificationUser2.getNotifierUser());
 		assertNull(notificationUser2.getComment());
 		assertEquals(posts.get(0), notificationUser2.getPost());
-		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser2.getText());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been marked as valid", notificationUser2.getText());
 		assertFalse(notificationUser2.isViewed());
 
 	}
