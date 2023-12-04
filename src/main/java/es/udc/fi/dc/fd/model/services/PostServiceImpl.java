@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
+import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectFormValuesException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
@@ -151,7 +152,7 @@ public class PostServiceImpl implements PostService {
 
 		post.setExpirationDate(LocalDateTime.now());
 
-		notificationService.sendNotification(post);
+		notificationService.sendNotification(post, "marked as expired");
 
 		return postDao.save(post).getExpirationDate();
 	}
@@ -164,12 +165,14 @@ public class PostServiceImpl implements PostService {
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	@Override
-	public LocalDateTime markAsValid(Long postId) throws InstanceNotFoundException {
+	public LocalDateTime markAsValid(Long userId, Long postId) throws InstanceNotFoundException {
 		Post post = permissionChecker.checkPost(postId);
+
+		User user = permissionChecker.checkUser(userId);
 
 		post.setValidationDate(LocalDateTime.now());
 
-		notificationService.sendNotification(post);
+		notificationService.sendNotification(post, user, "marked as valid");
 
 		return postDao.save(post).getValidationDate();
 	}

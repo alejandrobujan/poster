@@ -141,7 +141,7 @@ public abstract class PostHandler {
 		Post post = updatePost(postId, title, description, url, price, userId, category, properties, expirationDate);
 		addImages(post, imageList);
 
-		notificationService.sendNotification(post);
+		notificationService.sendNotification(post, "modified");
 
 		return postDao.save(post);
 

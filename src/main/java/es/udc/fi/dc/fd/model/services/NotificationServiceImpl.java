@@ -50,7 +50,9 @@ public class NotificationServiceImpl implements NotificationService {
 
 	}
 
-	private void sendNotificationAux(Post post, String text) {
+	@Override
+	public void sendNotification(Post post, String message) {
+		String text = "The post " + post.getTitle() + " has been " + message;
 		List<Save> saves = saveDao.findSaveByPostId(post.getId());
 		for (Save save : saves) {
 			notificationDao.save(new Notification(text, null, save.getUser(), post));
@@ -58,15 +60,13 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
-	public void sendNotification(Post post) {
-		String text = "The post " + post.getTitle() + " has been modified";
-		sendNotificationAux(post, text);
-	}
-
-	@Override
-	public void sendNotification(Post post, String message) {
+	public void sendNotification(Post post, User user, String message) {
 		String text = "The post " + post.getTitle() + " has been " + message;
-		sendNotificationAux(post, text);
+		List<Save> saves = saveDao.findSaveByPostId(post.getId());
+		for (Save save : saves) {
+			if (!user.getId().equals(save.getUser().getId()))
+				notificationDao.save(new Notification(text, null, save.getUser(), post));
+		}
 	}
 
 }

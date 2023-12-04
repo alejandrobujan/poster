@@ -16,7 +16,7 @@ public interface NotificationService {
 
 	void markAsViewed(Long notificationId, Long userId) throws InstanceNotFoundException, PermissionException;
 
-	void sendNotification(Post post);
-
 	void sendNotification(Post post, String message);
+
+	void sendNotification(Post post, User user, String message);
 }
