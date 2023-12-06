@@ -4,13 +4,18 @@ import static java.util.Map.entry;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Post;
@@ -34,6 +40,7 @@ import es.udc.fi.dc.fd.rest.dtos.OfferConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostDto;
 import es.udc.fi.dc.fd.rest.dtos.PostParamsDto;
+import es.udc.fi.dc.fd.rest.dtos.PostStreamDto;
 import es.udc.fi.dc.fd.rest.dtos.PostUpdateDto;
 import es.udc.fi.dc.fd.rest.dtos.PostValidDto;
 import es.udc.fi.dc.fd.rest.dtos.UserDto;
@@ -58,6 +65,8 @@ public class PostController {
 	/** The post service */
 	@Autowired
 	private PostService postService;
+
+    private final Set<SseEmitter> clients = ConcurrentHashMap.newKeySet();
 
 	/**
 	 * The post controller.
@@ -100,17 +109,31 @@ public class PostController {
 	 *                                           exception
 	 * @throws MissingRequiredParameterException the missing required parameter
 	 *                                           exception
+	 * @throws IOException
 	 */
 	@PostMapping("/post")
 	public PostDto createPost(@RequestAttribute Long userId, @Validated @RequestBody PostParamsDto params)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
-			IncorrectFormValuesException {
+			IncorrectFormValuesException, IOException {
 
 		PostConversor postConversor = conversors.get(params.getType());
 
 		Post post = postService.createPost(params.getTitle(), params.getDescription(), params.getUrl(),
 				params.getPrice(), userId, params.getCategoryId(), params.getImages(), params.getType(),
 				params.getProperties(), PostConversor.fromMillis(params.getExpirationDate()));
+
+		for (SseEmitter client : clients) {
+			System.out.println(client.toString());
+			try {
+				client.send(SseEmitter.event().name("postCreation").data(new PostStreamDto("posts.newPost")));
+			} catch (Exception e) {
+				System.err.println("Error creando post");
+				e.printStackTrace();
+			} finally {
+				client.complete();
+			}
+		}
+
 
 		return postConversor.toPostDto(post);
 
@@ -197,5 +220,19 @@ public class PostController {
 		return new PostValidDto(postService.markAsValid(id));
 
 	}
+
+	@GetMapping(value="/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter subscribe() {
+		try {
+			SseEmitter emitter = new SseEmitter();
+			clients.add(emitter);
+			emitter.onCompletion(() -> clients.remove(emitter));
+			return emitter;
+		} catch (Exception e) {
+			System.err.println("Error en suscripción");
+			e.printStackTrace();
+			throw e;
+		}
+    }
 
 }
