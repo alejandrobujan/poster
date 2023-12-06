@@ -10,3 +10,5 @@ export const SET_DATE = "poster/catalog/setDate";
 export const SET_EXPIRED = "poster/catalog/setExpired";
 export const SET_SORT_PARAM = "poster/catalog/setSortParam";
 export const SET_SORT_ORDER = "poster/catalog/setSortOrder";
+export const REQUEST_REFRESH = "poster/catalog/requestRefresh";
+export const SET_REQUEST_REFRESH = "poster/catalog/setRequestRefresh";

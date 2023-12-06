@@ -19,7 +19,8 @@ const initialState = {
 			sortParam: "creationDate",
 			sortOrder: "DESC"
 		}
-	}
+	},
+	requestRefresh: false
 };
 
 const categories = (state = initialState.categories, action) => {
@@ -91,11 +92,25 @@ const searchParams = (state = initialState.searchParams, action) => {
 
 }
 
+const requestRefresh = (state = initialState.requestRefresh, action) => {
+
+	switch (action.type) {
+
+		case actionTypes.SET_REQUEST_REFRESH:
+			return action.requestRefresh;
+
+		default:
+			return state;
+
+	}
+
+}
 
 const reducer = combineReducers({
 	categories,
 	postSearch,
-	searchParams
+	searchParams,
+	requestRefresh
 });
 
 export default reducer;
