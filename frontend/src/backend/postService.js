@@ -4,7 +4,7 @@ import {
 } from "./appFetch";
 import { config } from "../config/constants"; 
 
-const eventSource = new EventSource(`${config.BASE_PATH}/posts/subscribe`);
+let eventSource;
 
 export const createPost = (title, description, url, price, categoryId, images, type, properties, expirationDate, onSuccess, onErrors) => {
 	appFetch("/posts/post", fetchConfig("POST", { title, description, url, price, categoryId, images, type, properties, expirationDate }),
@@ -29,6 +29,8 @@ export const markPostAsValid = (id, onSuccess, onErrors) => {
 };
 
 export const subscribe = (onUpdate) => {
+	eventSource = new EventSource(`${config.BASE_PATH}/posts/subscribe?member=${sessionStorage.getItem("memberId")}`);
+
     eventSource.addEventListener("postCreation", (event) => {
       const eventData = JSON.parse(event.data);
       if (eventData && eventData.data === "posts.newPost") {

@@ -108,6 +108,16 @@ export const fetchConfig = (method, body) => {
     }
   }
 
+  const memberId = sessionStorage.getItem('memberId');
+
+  if (memberId) {
+    if (fConfig.headers) {
+      fConfig.headers["Member"] = `${memberId}`;
+    } else {
+      fConfig.headers = { Member: `${memberId}` };
+    }
+  }
+
   return fConfig;
 };
 
