@@ -187,8 +187,8 @@ public class PostControllerTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
-				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
-				.andExpect(status().isOk());
+				.header("member", "123456").contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsBytes(postParams))).andExpect(status().isOk());
 	}
 
 	/**
@@ -209,8 +209,8 @@ public class PostControllerTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
-				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
-				.andExpect(status().isBadRequest());
+				.header("member", "123456").contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsBytes(postParams))).andExpect(status().isBadRequest());
 	}
 
 	/**
@@ -238,7 +238,7 @@ public class PostControllerTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
-				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
+				.header("member", "123456").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
 				.andExpect(status().isBadRequest());
 
 	}
@@ -268,7 +268,7 @@ public class PostControllerTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
-				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
+				.header("member", "123456").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
 				.andExpect(status().isBadRequest());
 
 	}

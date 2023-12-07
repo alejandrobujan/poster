@@ -29,6 +29,10 @@ export const markPostAsValid = (id, onSuccess, onErrors) => {
 };
 
 export const subscribe = (onUpdate) => {
+	if(eventSource){
+		eventSource.close();
+	}
+	
 	eventSource = new EventSource(`${config.BASE_PATH}/posts/subscribe?member=${sessionStorage.getItem("memberId")}`);
 
     eventSource.addEventListener("postCreation", (event) => {

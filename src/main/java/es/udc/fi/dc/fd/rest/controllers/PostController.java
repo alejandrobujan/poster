@@ -127,13 +127,9 @@ public class PostController {
 				params.getProperties(), PostConversor.fromMillis(params.getExpirationDate()));
 
 		for (Map.Entry<String, SseEmitter> client : clients.entrySet()) {
-			System.out.println(client.toString());
 			if(!member.equals(client.getKey())){
 				try {
 					client.getValue().send(SseEmitter.event().name("postCreation").data(new PostStreamDto("posts.newPost")));
-				} catch (Exception e) {
-					System.err.println("Error creando post");
-					e.printStackTrace();
 				} finally {
 					client.getValue().complete();
 				}
@@ -229,16 +225,10 @@ public class PostController {
 
 	@GetMapping(value="/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(@RequestParam String member) {
-		try {
-			SseEmitter emitter = new SseEmitter(0L);
-			clients.put(member, emitter);
-			emitter.onCompletion(() -> clients.remove(member));
-			return emitter;
-		} catch (Exception e) {
-			System.err.println("Error en suscripción");
-			e.printStackTrace();
-			throw e;
-		}
+		SseEmitter emitter = new SseEmitter(0L);
+		clients.put(member, emitter);
+		emitter.onCompletion(() -> clients.remove(member));
+		return emitter;
     }
 
 }
