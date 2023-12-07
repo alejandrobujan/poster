@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,6 +57,8 @@ public class PostController {
 	/** The Constant INCORRECT_FORM_VALUES_EXCEPTION_CODE. */
 	private static final String INCORRECT_FORM_VALUES_EXCEPTION_CODE = "project.exceptions.IncorrectFormValuesException";
 
+	public static final String MEMBER_ID_HEADER = "Member";
+
 	/** The post conversor. */
 	private final Map<String, PostConversor> conversors;
 
@@ -66,7 +70,7 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 
-    private final Set<SseEmitter> clients = ConcurrentHashMap.newKeySet();
+    private final Map<String, SseEmitter> clients = new ConcurrentHashMap<>();
 
 	/**
 	 * The post controller.
@@ -112,7 +116,7 @@ public class PostController {
 	 * @throws IOException
 	 */
 	@PostMapping("/post")
-	public PostDto createPost(@RequestAttribute Long userId, @Validated @RequestBody PostParamsDto params)
+	public PostDto createPost(@RequestHeader(name = MEMBER_ID_HEADER) String member, @RequestAttribute Long userId, @Validated @RequestBody PostParamsDto params)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
 			IncorrectFormValuesException, IOException {
 
@@ -122,15 +126,17 @@ public class PostController {
 				params.getPrice(), userId, params.getCategoryId(), params.getImages(), params.getType(),
 				params.getProperties(), PostConversor.fromMillis(params.getExpirationDate()));
 
-		for (SseEmitter client : clients) {
+		for (Map.Entry<String, SseEmitter> client : clients.entrySet()) {
 			System.out.println(client.toString());
-			try {
-				client.send(SseEmitter.event().name("postCreation").data(new PostStreamDto("posts.newPost")));
-			} catch (Exception e) {
-				System.err.println("Error creando post");
-				e.printStackTrace();
-			} finally {
-				client.complete();
+			if(!member.equals(client.getKey())){
+				try {
+					client.getValue().send(SseEmitter.event().name("postCreation").data(new PostStreamDto("posts.newPost")));
+				} catch (Exception e) {
+					System.err.println("Error creando post");
+					e.printStackTrace();
+				} finally {
+					client.getValue().complete();
+				}
 			}
 		}
 
@@ -222,11 +228,11 @@ public class PostController {
 	}
 
 	@GetMapping(value="/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe() {
+    public SseEmitter subscribe(@RequestParam String member) {
 		try {
-			SseEmitter emitter = new SseEmitter();
-			clients.add(emitter);
-			emitter.onCompletion(() -> clients.remove(emitter));
+			SseEmitter emitter = new SseEmitter(0L);
+			clients.put(member, emitter);
+			emitter.onCompletion(() -> clients.remove(member));
 			return emitter;
 		} catch (Exception e) {
 			System.err.println("Error en suscripción");
