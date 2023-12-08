@@ -1,5 +1,6 @@
 package es.udc.fi.dc.fd.rest;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -517,4 +518,26 @@ public class PostControllerTest {
 				.andExpect(status().isNotFound());
 	}
 
+	/**
+	 * Test post subscribe OK.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testGetSubscribe_OK() throws Exception {
+		mockMvc.perform(
+				get("/api/posts/subscribe").param("member", "testMember").contentType(MediaType.TEXT_EVENT_STREAM))
+				.andExpect(status().isOk());
+	}
+
+	/**
+	 * Test post subscribe bad request.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testGetSubscribe_BadRequest() throws Exception {
+		mockMvc.perform(get("/api/posts/subscribe").contentType(MediaType.TEXT_EVENT_STREAM))
+				.andExpect(status().isBadRequest());
+	}
 }
