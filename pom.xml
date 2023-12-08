@@ -305,6 +305,16 @@
 						<phase>generate-resources</phase>
 					</execution>
 					<execution>
+						<id>yarn test</id>
+						<goals>
+							<goal>yarn</goal>
+						</goals>
+						<configuration>
+							<arguments>run test --reporters=jest-standard-reporter --coverage --watchAll=false</arguments>
+						</configuration>
+						<phase>generate-resources</phase>
+					</execution>
+					<execution>
 						<id>yarn build</id>
 						<goals>
 							<goal>yarn</goal>
