@@ -5,7 +5,6 @@ import { Pager } from '../../common';
 import * as actions from '../actions';
 import {SearchBar} from '../../catalog';
 import RefreshFeed from './RefreshFeed';
-import { useState } from 'react';
 
 const Feed = () => {
 	const posts = useSelector(selectors.getPostSearch);

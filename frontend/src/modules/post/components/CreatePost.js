@@ -8,9 +8,6 @@ import { Errors } from '../../common';
 
 import * as actions from '../actions';
 
-import catalog from '../../catalog';
-
-
 import { fileToBase64, isImage, formatDateForInput, parseInputDate } from '../../../backend/utils';
 
 const CreatePost = ({ min }) => {
