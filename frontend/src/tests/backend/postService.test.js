@@ -162,14 +162,10 @@ describe("postService", () => {
   describe('subscribe', () => {
     let mockEventSource;
     let originalEventSource;
-    let originalSessionStorage;
-    let eventSource;
 
     beforeAll(() => {
-      // Guardar referencias originales
       originalEventSource = global.EventSource;
   
-      // Mock de EventSource
       mockEventSource = jest.fn();
       mockEventSource.prototype.addEventListener = jest.fn();
       mockEventSource.prototype.close = jest.fn();
@@ -185,7 +181,6 @@ describe("postService", () => {
     );
   
     afterAll(() => {
-      // Restaurar valores originales
       global.EventSource = originalEventSource;
     });
 

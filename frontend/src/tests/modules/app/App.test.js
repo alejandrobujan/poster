@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { waitFor } from "@testing-library/react";
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
 import {Provider} from 'react-redux';
@@ -18,6 +18,26 @@ describe("App", () => {
             )
             .toJSON();
         expect(tree).toMatchSnapshot();
+    });
+
+    it("sets memberId correctly", async () => {
+        global.EventSource = jest.fn(() => ({
+            addEventListener: jest.fn(),
+            close: jest.fn(),
+        }));
+
+        renderer
+            .create(
+                <Provider store={store}>
+                    <MemoryRouter>
+                        <App/>
+                    </MemoryRouter>
+                </Provider>
+            );
+
+        await waitFor(() => {
+            expect(sessionStorage.getItem("memberId")).not.toBeUndefined();
+        });
     });
  
 });
