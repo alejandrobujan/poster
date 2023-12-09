@@ -31,6 +31,16 @@ import {
       expect(result.body).toBe(JSON.stringify(body));
     });
 
+    test("fetchConfig handles requests with service token without body", () => {
+      sessionStorage.setItem(config.SERVICE_TOKEN_NAME, "mockedToken");
+      const method = "GET";
+  
+      const result = fetchConfig(method, null);
+  
+      expect(result.method).toBe(method);
+      expect(result.headers.Authorization).toBe("Bearer mockedToken");
+    });
+
     test("fetchConfig handles requests with memberId", () => {
       sessionStorage.setItem("memberId", "123");
       const method = "GET";
@@ -41,6 +51,16 @@ import {
       expect(result.method).toBe(method);
       expect(result.headers.Member).toBe("123");
       expect(result.body).toBe(JSON.stringify(body));
+    });
+
+    test("fetchConfig handles requests with memberId without body", () => {
+      sessionStorage.setItem("memberId", "123");
+      const method = "GET";
+  
+      const result = fetchConfig(method, null);
+  
+      expect(result.method).toBe(method);
+      expect(result.headers.Member).toBe("123");
     });
   
     test("fetchConfig handles requests without service token", () => {
