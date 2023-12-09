@@ -1,4 +1,4 @@
-FROM eclipse-temurin:11-jre
+FROM eclipse-temurin:17-jre
 
 # Copy the packaged jar file into our docker image
 COPY maven/*.jar /app.jar
