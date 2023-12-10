@@ -34,8 +34,6 @@ import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.entities.User.RoleType;
 import es.udc.fi.dc.fd.model.entities.UserDao;
-import es.udc.fi.dc.fd.model.services.NotificationService;
-import es.udc.fi.dc.fd.model.services.UserService;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.rest.controllers.UserController;
@@ -59,10 +57,6 @@ public class NotificationControllerTest {
 
 	private static Long INEXISTENT_ID = 1L;
 
-	/** The user service. */
-	@Autowired
-	private UserService userService;
-
 	/** The mock mvc. */
 	@Autowired
 	private MockMvc mockMvc;
@@ -78,10 +72,6 @@ public class NotificationControllerTest {
 	/** The notification dao. */
 	@Autowired
 	private NotificationDao notificationDao;
-
-	/** The notification service. */
-	@Autowired
-	private NotificationService notificationService;
 
 	/** The password encoder. */
 	@Autowired
