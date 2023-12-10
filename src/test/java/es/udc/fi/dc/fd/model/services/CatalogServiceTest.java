@@ -255,7 +255,7 @@ public class CatalogServiceTest {
 	public void testFindAllPostsWithTypeFilter() throws MaximumImageSizeExceededException, DuplicateInstanceException {
 		searchFilters.setType("Coupon");
 
-		catalogService.findPosts(searchFilters, null, 0, 2);
+		Block<Post> findPost = catalogService.findPosts(searchFilters, null, 0, 2);
 
 		assertPostBlockEquals(catalogService.findPosts(searchFilters, null, 0, 2), List.of(posts.get(2), posts.get(1)),
 				false);

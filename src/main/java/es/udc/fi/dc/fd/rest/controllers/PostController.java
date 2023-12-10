@@ -4,29 +4,23 @@ import static java.util.Map.entry;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import es.udc.fi.dc.fd.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.dc.fd.model.entities.Post;
@@ -56,10 +50,10 @@ public class PostController {
 	/** The Constant INCORRECT_FORM_VALUES_EXCEPTION_CODE. */
 	private static final String INCORRECT_FORM_VALUES_EXCEPTION_CODE = "project.exceptions.IncorrectFormValuesException";
 
-	public static final String MEMBER_ID_HEADER = "Member";
-
 	/** The post conversor. */
 	private final Map<String, PostConversor> conversors;
+
+	private final SimpMessagingTemplate messagingTemplate;
 
 	/** The message source. */
 	@Autowired
@@ -69,8 +63,6 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 
-    private final Map<String, SseEmitter> clients = new ConcurrentHashMap<>();
-
 	/**
 	 * The post controller.
 	 * 
@@ -78,8 +70,9 @@ public class PostController {
 	 * @param couponConversor the coupon conversor
 	 */
 	@Autowired
-	public PostController(OfferConversor offerConversor, CouponConversor couponConversor) {
+	public PostController(OfferConversor offerConversor, CouponConversor couponConversor, SimpMessagingTemplate messagingTemplate) {
 		this.conversors = Map.ofEntries(entry("Offer", offerConversor), entry("Coupon", couponConversor));
+		this.messagingTemplate = messagingTemplate;
 	}
 
 	/**
@@ -112,12 +105,11 @@ public class PostController {
 	 *                                           exception
 	 * @throws MissingRequiredParameterException the missing required parameter
 	 *                                           exception
-	 * @throws IOException
 	 */
 	@PostMapping("/post")
-	public PostDto createPost(@RequestHeader(name = MEMBER_ID_HEADER) String member, @RequestAttribute Long userId, @Validated @RequestBody PostParamsDto params)
+	public PostDto createPost(@RequestAttribute Long userId, @Validated @RequestBody PostParamsDto params)
 			throws InstanceNotFoundException, MaximumImageSizeExceededException, MissingRequiredParameterException,
-			IncorrectFormValuesException, IOException {
+			IncorrectFormValuesException {
 
 		PostConversor postConversor = conversors.get(params.getType());
 
@@ -125,16 +117,7 @@ public class PostController {
 				params.getPrice(), userId, params.getCategoryId(), params.getImages(), params.getType(),
 				params.getProperties(), PostConversor.fromMillis(params.getExpirationDate()));
 
-		for (Map.Entry<String, SseEmitter> client : clients.entrySet()) {
-			if(!member.equals(client.getKey())){
-				try {
-					client.getValue().send(SseEmitter.event().name("postCreation").data(new PostStreamDto("posts.newPost")));
-				} finally {
-					client.getValue().complete();
-				}
-			}
-		}
-
+		messagingTemplate.convertAndSend("/topic/posts", new PostStreamDto("posts.newPost"));
 
 		return postConversor.toPostDto(post);
 
@@ -222,13 +205,5 @@ public class PostController {
 		return new PostValidDto(postService.markAsValid(userId, id));
 
 	}
-
-	@GetMapping(value="/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe(@RequestParam String member) {
-		SseEmitter emitter = new SseEmitter(0L);
-		clients.put(member, emitter);
-		emitter.onCompletion(() -> clients.remove(member));
-		return emitter;
-    }
 
 }

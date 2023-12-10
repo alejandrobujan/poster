@@ -53,7 +53,7 @@ public class SecurityConfig {
                 .requestMatchers(antMatcher("/api/catalog/categories")).permitAll()
                 .requestMatchers(antMatcher("/api/catalog/postDetail/*")).permitAll()
 				.requestMatchers(antMatcher("/api/comments/post/{id}")).permitAll()
-				.requestMatchers(antMatcher("/api/posts/subscribe")).permitAll()
+				.requestMatchers(antMatcher("/api/ws/**")).permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

@@ -1,6 +1,5 @@
 package es.udc.fi.dc.fd.rest;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -41,7 +40,6 @@ import es.udc.fi.dc.fd.model.entities.UserDao;
 import es.udc.fi.dc.fd.model.services.UserService;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
-import es.udc.fi.dc.fd.rest.controllers.PostController;
 import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
@@ -102,10 +100,6 @@ public class PostControllerTest {
 	/** The user controller. */
 	@Autowired
 	private UserController userController;
-
-	/** The post controller. */
-	@Autowired
-	private PostController postController;
 
 	/**
 	 * Creates the authenticated user.
@@ -179,13 +173,6 @@ public class PostControllerTest {
 	 */
 	@Test
 	public void testPostCreatePost_Ok() throws Exception {
-
-		AuthenticatedUserDto user = createAuthenticatedUser("pepe", RoleType.USER);
-		AuthenticatedUserDto user1 = createAuthenticatedUser("ramiro", RoleType.USER);
-
-		postController.subscribe(user.getUserDto().getUserName());
-		postController.subscribe(user1.getUserDto().getUserName());
-
 		PostParamsDto postParams = new PostParamsDto();
 		postParams.setCategoryId(categoryDao.save(new Category("Meals")).getId());
 		postParams.setDescription("Tarta de Santiago");
@@ -200,8 +187,8 @@ public class PostControllerTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
-				.header("member", user1.getUserDto().getUserName()).contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writeValueAsBytes(postParams))).andExpect(status().isOk());
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
+				.andExpect(status().isOk());
 	}
 
 	/**
@@ -222,8 +209,8 @@ public class PostControllerTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + authenticatedUser.getServiceToken())
-				.header("member", "123456").contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writeValueAsBytes(postParams))).andExpect(status().isBadRequest());
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
+				.andExpect(status().isBadRequest());
 	}
 
 	/**
@@ -251,7 +238,7 @@ public class PostControllerTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
-				.header("member", "123456").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
 				.andExpect(status().isBadRequest());
 
 	}
@@ -281,7 +268,7 @@ public class PostControllerTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		mockMvc.perform(post("/api/posts/post").header("Authorization", "Bearer " + user.getServiceToken())
-				.header("member", "123456").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
+				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsBytes(postParams)))
 				.andExpect(status().isBadRequest());
 
 	}
@@ -530,26 +517,4 @@ public class PostControllerTest {
 				.andExpect(status().isNotFound());
 	}
 
-	/**
-	 * Test post subscribe OK.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void testGetSubscribe_OK() throws Exception {
-		mockMvc.perform(
-				get("/api/posts/subscribe").param("member", "testMember").contentType(MediaType.TEXT_EVENT_STREAM))
-				.andExpect(status().isOk());
-	}
-
-	/**
-	 * Test post subscribe bad request.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void testGetSubscribe_BadRequest() throws Exception {
-		mockMvc.perform(get("/api/posts/subscribe").contentType(MediaType.TEXT_EVENT_STREAM))
-				.andExpect(status().isBadRequest());
-	}
 }
