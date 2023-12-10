@@ -159,46 +159,4 @@ describe("postService", () => {
       expect(onSuccess).not.toHaveBeenCalled();
     });
   });
-  describe('subscribe', () => {
-    let mockEventSource;
-    let originalEventSource;
-
-    beforeAll(() => {
-      originalEventSource = global.EventSource;
-  
-      mockEventSource = jest.fn();
-      mockEventSource.prototype.addEventListener = jest.fn();
-      mockEventSource.prototype.close = jest.fn();
-      global.EventSource = mockEventSource;
-      sessionStorage.setItem(
-        'memberId',
-        '123');
-      });
-
-
-    afterAll(() => 
-        sessionStorage.removeItem('memberId')
-    );
-  
-    afterAll(() => {
-      global.EventSource = originalEventSource;
-    });
-
-  
-    it('should subscribe to eventSource with correct URL', () => {
-      postService.subscribe(jest.fn());
-      expect(mockEventSource).toHaveBeenCalledWith('/poster/api/posts/subscribe?member=123');
-    });
-  
-    it('should handle error eventSource.onerror', () => {
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockReturnValue();
-      postService.subscribe(jest.fn());
-  
-      const error = 'EventSource error';
-      const eventSourceInstance = mockEventSource.mock.instances[0];  
-      eventSourceInstance.onerror(error);
-  
-      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
-    });
-  });
 });

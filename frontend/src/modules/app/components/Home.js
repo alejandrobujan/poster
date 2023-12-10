@@ -33,7 +33,6 @@ const Home = () => {
 			dispatch(actions.setFirstSearch(false));
 		}
 		dispatch(catalog.actions.setRequestRefresh(false));
-		dispatch(catalog.actions.subscribe());
 	}, [dispatch, firstSearch]);
 
 	if (referred) {

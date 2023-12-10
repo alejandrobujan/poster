@@ -89,7 +89,7 @@ export const setSortOrder = sortOrder => ({
 });
 
 export const subscribe = () => dispatch => {
-    backend.postService.subscribe(
+    backend.webSocketService.subscribe(
         () => dispatch(setRequestRefresh(true))
     );
 }

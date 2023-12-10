@@ -92,6 +92,7 @@ const searchParams = (state = initialState.searchParams, action) => {
 
 }
 
+
 const requestRefresh = (state = initialState.requestRefresh, action) => {
 
 	switch (action.type) {
