@@ -3,9 +3,11 @@ import { Stomp } from '@stomp/stompjs';
 
 import { config } from "../config/constants";
 
+export let stompClient;
+
 export const subscribe = (onUpdate) => {
     const socket = new SockJS(`${config.BASE_PATH}/ws`);
-    const stompClient = Stomp.over(() => socket); 
+    stompClient = Stomp.over(() => socket); 
     stompClient.debug = () => {};
     stompClient.connect({}, () => {
         stompClient.subscribe('/topic/posts', (message) => {

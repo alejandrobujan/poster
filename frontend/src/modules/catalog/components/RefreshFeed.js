@@ -6,7 +6,7 @@ const RefreshFeed = () => {
 
 	return (
 		<div className="m-2 alert alert-warning d-flex justify-content-between align-items-center" role="alert">
-					<span className='mb-0'>New posts were added. Refresh the feed to get the last updates!</span>
+					<span className='mb-0'>New posts were added. Refresh the feed to get the latest updates!</span>
 					<span className="text-right">
 						<button onClick={handleRefresh} type="button" className="px-2 btn btn-secondary d-flex justify-content-between align-items-center">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-repeat" viewBox="0 0 16 16">

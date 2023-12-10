@@ -1,12 +1,16 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { waitFor } from "@testing-library/react";
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
 import {Provider} from 'react-redux';
 import renderer from "react-test-renderer";
 import { App } from "../../../modules/app";
 import store from "../../../store";
+import { stompClient } from "../../../backend/webSocketService";
+import { TextEncoder, TextDecoder } from 'util';
 
 describe("App", () => {
+    Object.assign(global, { TextDecoder, TextEncoder });
+
     it("renders correctly", () => {
         const tree = renderer
             .create(
@@ -20,12 +24,7 @@ describe("App", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    /*it("sets memberId correctly", async () => {
-        global.EventSource = jest.fn(() => ({
-            addEventListener: jest.fn(),
-            close: jest.fn(),
-        }));
-
+    it("sets stompClient correctly", async () => {
         renderer
             .create(
                 <Provider store={store}>
@@ -36,8 +35,8 @@ describe("App", () => {
             );
 
         await waitFor(() => {
-            expect(sessionStorage.getItem("memberId")).not.toBeUndefined();
+            expect(stompClient).not.toBeUndefined();
         });
-    });*/
+    });
  
 });
