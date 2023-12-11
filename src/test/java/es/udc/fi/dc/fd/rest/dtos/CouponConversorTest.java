@@ -1,4 +1,4 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.dtos;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.Coupon;
 import es.udc.fi.dc.fd.model.entities.User;
-import es.udc.fi.dc.fd.rest.dtos.CouponConversor;
-import es.udc.fi.dc.fd.rest.dtos.PostDto;
 
 public class CouponConversorTest {
 

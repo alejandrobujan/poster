@@ -1,4 +1,4 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.dtos;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -7,8 +7,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import es.udc.fi.dc.fd.rest.dtos.SearchFiltersDto;
 
 public class SearchFiltersDtoTest {
 

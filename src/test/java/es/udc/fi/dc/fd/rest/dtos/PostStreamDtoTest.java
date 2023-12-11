@@ -1,11 +1,9 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.dtos;
 
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import es.udc.fi.dc.fd.rest.dtos.PostStreamDto;
 
 public class PostStreamDtoTest {
 
