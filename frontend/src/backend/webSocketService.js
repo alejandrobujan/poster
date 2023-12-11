@@ -11,10 +11,14 @@ export const subscribe = (onUpdate) => {
     stompClient.debug = () => {};
     stompClient.connect({}, () => {
         stompClient.subscribe('/topic/posts', (message) => {
-            const received = JSON.parse(message.body);
-            if(received && received.data === "posts.newPost"){
-                onUpdate(received.data);
-            }
+            onReceive(message, onUpdate);
         });
     });
+}
+
+export const onReceive = (message, onUpdate) => {
+    const received = JSON.parse(message.body);
+    if(received && received.data === "posts.newPost"){
+        onUpdate(received.data);
+    }
 }
