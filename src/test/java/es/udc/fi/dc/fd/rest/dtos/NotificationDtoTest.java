@@ -1,4 +1,4 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.dtos;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -8,9 +8,6 @@ import java.time.LocalDateTime;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-
-import es.udc.fi.dc.fd.rest.dtos.NotificationDto;
-import es.udc.fi.dc.fd.rest.dtos.UserSummaryDto;
 
 public class NotificationDtoTest {
 

@@ -32,6 +32,7 @@ const Home = () => {
 			  }, page: 0 }));
 			dispatch(actions.setFirstSearch(false));
 		}
+		dispatch(catalog.actions.setRequestRefresh(false));
 	}, [dispatch, firstSearch]);
 
 	if (referred) {

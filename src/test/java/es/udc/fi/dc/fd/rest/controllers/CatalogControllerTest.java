@@ -1,4 +1,4 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -124,7 +124,7 @@ public class CatalogControllerTest {
 				"", 0);
 		
 		User user = createUser("admin");
-		Post coupon = postDao.save(new Coupon("Title", "Lorem Ipsum dolor sit amet", "url", new BigDecimal(10), LocalDateTime.now(), "EXTRA", user, createCategory("Misc"), LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
+		postDao.save(new Coupon("Title", "Lorem Ipsum dolor sit amet", "url", new BigDecimal(10), LocalDateTime.now(), "EXTRA", user, createCategory("Misc"), LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 		Post offer = postDao.save(new Offer("Title", "Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. ", "url", new BigDecimal(10), LocalDateTime.now(), user, createCategory("Misc"), LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 		Set<Image> images = new HashSet<>();
 		images.add(new Image(new byte[]{1, 2, 3}, offer));

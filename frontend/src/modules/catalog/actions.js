@@ -87,3 +87,14 @@ export const setSortOrder = sortOrder => ({
     type: actionTypes.SET_SORT_ORDER, 
     sortOrder
 });
+
+export const subscribe = () => dispatch => {
+    backend.webSocketService.subscribe(
+        () => dispatch(setRequestRefresh(true))
+    );
+}
+
+export const setRequestRefresh = requestRefresh => ({
+    type: actionTypes.SET_REQUEST_REFRESH, 
+    requestRefresh
+});

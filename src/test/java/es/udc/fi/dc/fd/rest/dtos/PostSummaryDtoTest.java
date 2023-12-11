@@ -1,4 +1,4 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.dtos;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,9 +9,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import es.udc.fi.dc.fd.rest.dtos.CategoryDto;
-import es.udc.fi.dc.fd.rest.dtos.PostSummaryDto;
 
 public class PostSummaryDtoTest {
 

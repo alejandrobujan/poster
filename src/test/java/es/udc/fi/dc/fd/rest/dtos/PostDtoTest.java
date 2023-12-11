@@ -1,4 +1,4 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.dtos;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -11,10 +11,6 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-
-import es.udc.fi.dc.fd.rest.dtos.CategoryDto;
-import es.udc.fi.dc.fd.rest.dtos.PostDto;
-import es.udc.fi.dc.fd.rest.dtos.UserSummaryDto;
 
 public class PostDtoTest {
 

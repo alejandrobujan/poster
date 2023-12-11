@@ -40,7 +40,7 @@ const CreatePost = ({ min }) => {
 		if (form.checkValidity()) {
 			dispatch(actions.createPost(
 				title, description, url,
-				price, categoryId !== '' ? categoryId : null, images, type, properties, parseInputDate(expirationDate), () => navigate('/'), errors => setBackendErrors(errors)
+				price, categoryId !== '' ? categoryId : null, images, type, properties, parseInputDate(expirationDate), () => new Promise(r => setTimeout(r, 1000)).then(() => navigate('/')), errors => setBackendErrors(errors)
 			));
 		} else {
 			setBackendErrors(null);

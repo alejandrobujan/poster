@@ -1,4 +1,4 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.dtos;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import es.udc.fi.dc.fd.model.entities.Offer;
 import es.udc.fi.dc.fd.model.entities.User;
-import es.udc.fi.dc.fd.rest.dtos.OfferConversor;
-import es.udc.fi.dc.fd.rest.dtos.PostDto;
 
 public class OfferConversorTest {
 

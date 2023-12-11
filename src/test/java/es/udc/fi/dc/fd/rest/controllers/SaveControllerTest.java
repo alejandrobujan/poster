@@ -1,5 +1,7 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.controllers;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,6 +27,8 @@ import es.udc.fi.dc.fd.model.entities.CategoryDao;
 import es.udc.fi.dc.fd.model.entities.Offer;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
+import es.udc.fi.dc.fd.model.entities.Save;
+import es.udc.fi.dc.fd.model.entities.SaveDao;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.entities.User.RoleType;
 import es.udc.fi.dc.fd.model.entities.UserDao;
@@ -33,22 +37,21 @@ import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.rest.common.JwtGenerator;
 import es.udc.fi.dc.fd.rest.common.JwtInfo;
-import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
 
-/**
- * The Class RatingControllerTest.
- */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-public class RatingControllerTest {
+public class SaveControllerTest {
 
 	/** The authenticated user dto */
 	private AuthenticatedUserDto authenticatedUser;
+
+	/** The authenticated user2 dto */
+	private AuthenticatedUserDto authenticatedUser2;
 
 	/** The offer */
 	private Post offer;
@@ -73,6 +76,10 @@ public class RatingControllerTest {
 	/** The user dao. */
 	@Autowired
 	private UserDao userDao;
+
+	/** The save dao. */
+	@Autowired
+	private SaveDao saveDao;
 
 	/** The post dao. */
 	@Autowired
@@ -126,8 +133,8 @@ public class RatingControllerTest {
 	 * @return the offer
 	 */
 	private Post createOffer(String title, User user, Category category) {
-		return postDao
-				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category, LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
+		return postDao.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
+				category, LocalDateTime.of(2025, 2, 3, 0, 0, 0)));
 	}
 
 	/**
@@ -182,135 +189,141 @@ public class RatingControllerTest {
 	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException, IncorrectLoginException,
 			InstanceNotFoundException {
 		authenticatedUser = createAuthenticatedUser("user", RoleType.USER);
+		authenticatedUser2 = createAuthenticatedUser("user2", RoleType.USER);
 		category = createCategory("category");
 		offer = createOffer("offer", userService.loginFromId(authenticatedUser.getUserDto().getId()), category);
 	}
 
 	/**
-	 * Test post rate positive ok.
+	 * Test save post ok.
 	 *
 	 * @throws Exception the exception
 	 */
+
 	@Test
-	public void testPostRatePositive_Ok() throws Exception {
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/ratePositive").header("Authorization",
-				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
+	public void testSavePost_Ok() throws Exception {
+		mockMvc.perform(post("/api/saves/post/" + offer.getId()).header("Authorization",
+				"Bearer " + authenticatedUser2.getServiceToken())).andExpect(status().isOk());
 
 	}
 
 	/**
-	 * Test post rate negative ok.
+	 * Test save post not ok same creator.
 	 *
 	 * @throws Exception the exception
 	 */
+
 	@Test
-	public void testPostRateNegative_Ok() throws Exception {
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/rateNegative").header("Authorization",
-				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
+	public void testSavePost_NotOk_SameCreator() throws Exception {
+		mockMvc.perform(post("/api/saves/post/" + offer.getId()).header("Authorization",
+				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isForbidden());
+
 	}
 
 	/**
-	 * Test post rate negative twice ok.
+	 * Test save post not found.
 	 *
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testPostRateNegativeTwice_Ok() throws Exception {
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/rateNegative").header("Authorization",
-				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/rateNegative").header("Authorization",
-				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
-	}
-
-	/**
-	 * Test post rate positive twice ok.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void testPostRatePositiveTwice_Ok() throws Exception {
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/ratePositive").header("Authorization",
-				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/ratePositive").header("Authorization",
-				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
-	}
-
-	/**
-	 * Test post rate positive to negative ok.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void testPostRatePositiveToNegative_Ok() throws Exception {
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/ratePositive").header("Authorization",
-				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/rateNegative").header("Authorization",
-				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
-	}
-
-	/**
-	 * Test post rate negative to positive ok.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void testPostRateNegativeToPositive_Ok() throws Exception {
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/rateNegative").header("Authorization",
-				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/ratePositive").header("Authorization",
-				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
-	}
-
-	/**
-	 * Test post rate positive not found.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void testPostRatePositive_NotOkNotFound() throws Exception {
-		mockMvc.perform(post("/api/rating/post/" + NON_EXISTENT_ID + "/ratePositive").header("Authorization",
+	public void testSavePost_NoPost() throws Exception {
+		mockMvc.perform(post("/api/saves/post/" + NON_EXISTENT_ID).header("Authorization",
 				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isNotFound());
 	}
 
 	/**
-	 * Test post rate negative not found.
+	 * Test save post user not found.
 	 *
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testPostRateNegative_NotOkNotFound() throws Exception {
-		mockMvc.perform(post("/api/rating/post/" + NON_EXISTENT_ID + "/rateNegative").header("Authorization",
-				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isNotFound());
-	}
-
-	/**
-	 * Test post rate positive user not found.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	public void testPostRatePositive_NoUser() throws Exception {
+	public void testSavePost_NotOk_NoUser() throws Exception {
 		User nobody = createUser("nobody");
 		nobody.setId(NON_EXISTENT_ID);
 
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/ratePositive").header("Authorization",
+		mockMvc.perform(post("/api/saves/post/" + offer.getId()).header("Authorization",
 				"Bearer " + generateServiceToken(nobody))).andExpect(status().isNotFound());
 
 	}
 
 	/**
-	 * Test post rate negative user not found.
+	 * Test save post user already saved.
 	 *
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testPostRateNegative_NoUser() throws Exception {
+	public void testSavePost_NotOk_AlreadySaved() throws Exception {
+		User user = createUser("Pepe");
+		saveDao.save(new Save(offer, user));
+		mockMvc.perform(post("/api/saves/post/" + offer.getId()).header("Authorization",
+				"Bearer " + generateServiceToken(user))).andExpect(status().isForbidden());
+	}
+
+	/**
+	 * Test is post saved by user ok.
+	 *
+	 * @throws Exception the exception
+	 */
+
+	@Test
+	public void testIsPostSavedByUser_Ok() throws Exception {
+		mockMvc.perform(get("/api/saves/post/" + offer.getId() + "/save").header("Authorization",
+				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isOk());
+
+	}
+
+	/**
+	 * Test unsaved post ok.
+	 *
+	 * @throws Exception the exception
+	 */
+
+	@Test
+	public void testUnsavePost_Ok() throws Exception {
+		User user = createUser("Pepe");
+		saveDao.save(new Save(offer, user));
+		mockMvc.perform(delete("/api/saves/post/" + offer.getId()).header("Authorization",
+				"Bearer " + generateServiceToken(user))).andExpect(status().isOk());
+
+	}
+
+	/**
+	 * Test unsave post not found.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testUnsavePost_NoPost() throws Exception {
+		User user = createUser("Pepe");
+		saveDao.save(new Save(offer, user));
+		mockMvc.perform(delete("/api/saves/post/" + NON_EXISTENT_ID).header("Authorization",
+				"Bearer " + generateServiceToken(user))).andExpect(status().isNotFound());
+	}
+
+	/**
+	 * Test unsave post user not found.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testUnsavePost_NotOk_NoUser() throws Exception {
 		User nobody = createUser("nobody");
 		nobody.setId(NON_EXISTENT_ID);
 
-		mockMvc.perform(post("/api/rating/post/" + offer.getId() + "/rateNegative").header("Authorization",
+		mockMvc.perform(delete("/api/saves/post/" + offer.getId()).header("Authorization",
 				"Bearer " + generateServiceToken(nobody))).andExpect(status().isNotFound());
 
+	}
+
+	/**
+	 * Test unsave post user already saved.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void testUnsavePost_NotOk_AlreadyUnsaved() throws Exception {
+		mockMvc.perform(delete("/api/saves/post/" + offer.getId()).header("Authorization",
+				"Bearer " + authenticatedUser.getServiceToken())).andExpect(status().isForbidden());
 	}
 
 }

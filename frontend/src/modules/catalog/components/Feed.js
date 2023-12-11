@@ -4,9 +4,11 @@ import * as selectors from '../selectors';
 import { Pager } from '../../common';
 import * as actions from '../actions';
 import {SearchBar} from '../../catalog';
+import RefreshFeed from './RefreshFeed';
 
 const Feed = () => {
 	const posts = useSelector(selectors.getPostSearch);
+	const requestRefresh = useSelector(selectors.getRequestRefresh);
 	const dispatch = useDispatch();
 	
 	if (!posts) {
@@ -16,6 +18,9 @@ const Feed = () => {
 	return (
 		<div>
 			<SearchBar />
+			{requestRefresh && 
+				<RefreshFeed/>
+			}
 			<Posts posts={posts.result.items} />
 			<Pager
 				back={{

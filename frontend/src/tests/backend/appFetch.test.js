@@ -31,6 +31,16 @@ import {
       expect(result.body).toBe(JSON.stringify(body));
     });
   
+    test("fetchConfig handles requests with service token without body", () => {
+      sessionStorage.setItem(config.SERVICE_TOKEN_NAME, "mockedToken");
+      const method = "GET";
+  
+      const result = fetchConfig(method, null);
+  
+      expect(result.method).toBe(method);
+      expect(result.headers.Authorization).toBe("Bearer mockedToken");
+    });
+  
     test("fetchConfig handles requests without service token", () => {
       const method = "GET";
       const body = { key: "value" };
