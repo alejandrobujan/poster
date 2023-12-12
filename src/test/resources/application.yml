@@ -4,11 +4,8 @@ logging:
       hibernate:
         SQL: debug
 spring:
-  sql:
-    init:
-      mode: always
   datasource:
-    url: @dataSource.url@
+    url: @testDataSource.url@
     username: @dataSource.user@
     password: @dataSource.password@
     max-active: 4
