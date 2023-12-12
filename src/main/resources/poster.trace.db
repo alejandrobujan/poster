@@ -1,9 +1,0 @@
-2023-12-12 09:53:03 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CATEGORY" not found (this database is empty); SQL statement:
-select c1_0.id,c1_0.name from Category c1_0 order by c1_0.id [42104-214]
-2023-12-12 09:53:03 jdbc[5]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "POST" not found (this database is empty); SQL statement:
-select p1_0.id,case when p1_1.id is not null then 1 when p1_2.id is not null then 2 when p1_0.id is not null then 0 end,p1_0.categoryId,p1_0.creationDate,p1_0.description,p1_0.expirationDate,p1_0.negativeRatings,p1_0.positiveRatings,p1_0.price,p1_0.title,p1_0.url,p1_0.userId,p1_0.validationDate,p1_1.code from Post p1_0 left join Coupon p1_1 on p1_0.id=p1_1.id left join Offer p1_2 on p1_0.id=p1_2.id where p1_0.expirationDate>? and p1_0.price>=? and p1_0.price<=? order by p1_0.creationDate desc offset ? rows fetch first ? rows only [42104-214]
-2023-12-12 09:53:03 jdbc[4]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "POST" not found (this database is empty); SQL statement:
-select p1_0.id,case when p1_1.id is not null then 1 when p1_2.id is not null then 2 when p1_0.id is not null then 0 end,p1_0.categoryId,p1_0.creationDate,p1_0.description,p1_0.expirationDate,p1_0.negativeRatings,p1_0.positiveRatings,p1_0.price,p1_0.title,p1_0.url,p1_0.userId,p1_0.validationDate,p1_1.code from Post p1_0 left join Coupon p1_1 on p1_0.id=p1_1.id left join Offer p1_2 on p1_0.id=p1_2.id where p1_0.expirationDate>? and p1_0.price>=? and p1_0.price<=? order by p1_0.creationDate desc offset ? rows fetch first ? rows only [42104-214]
