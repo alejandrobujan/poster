@@ -18,6 +18,7 @@ const Body = () => {
 	    <Routes>
 	       <Route path="/*" element={<Home />} />
 		   <Route path="/post/post-details/:id" element={<PostDetails/>}/>
+		   <Route path="/not-found" element={<PageNotFound/>}/>
 	       {loggedIn && <Route path="/users/logout" element={<Logout/>}/>}
 	       {!loggedIn && <Route path="/users/login" element={<Login/>}/>}
 	       {!loggedIn && <Route path="/users/signup" element={<SignUp/>}/>}
@@ -26,7 +27,6 @@ const Body = () => {
 	       {loggedIn && <Route path="/users/update-profile" element={<UpdateProfile />} />}
 	       {loggedIn && <Route path="/users/change-password" element={<ChangePassword/>}/>}
 	       {loggedIn && <Route path="/post/post-update/:id" element={<UpdatePost/>}/>}
-	       {loggedIn && <Route path="/not-found" element={<PageNotFound/>}/>}
 	    </Routes>
 	</div>    
   );
