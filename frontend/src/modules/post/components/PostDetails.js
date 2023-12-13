@@ -66,7 +66,7 @@ const PostDetails = () => {
 		const postId = Number(id);
 
 		if (!Number.isNaN(postId)) {
-			dispatch(actions.findPostById(postId));
+			dispatch(actions.findPostById(postId, () => navigate('/not-found')));
 			dispatch(commentActions.findComments(postId, null, 0));
 		}
 
@@ -79,7 +79,7 @@ const PostDetails = () => {
 			dispatch(commentActions.clearComments());
 		};
 
-	}, [id, isLoggedIn, dispatch]);
+	}, [id, isLoggedIn, dispatch, navigate]);
 
 	if (!post) {
 		return null;
