@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import renderer from "react-test-renderer";
-import { postMock } from "../../state/Post.mock";
+import { updatePostMock } from "../../state/UpdatePost.mock";
 
 import { UpdatePost } from "../../../modules/post";
 
@@ -15,7 +15,7 @@ describe("UpdatePostForm", () => {
 	const middlewares = [thunk];
 	const mockStore = configureMockStore(middlewares);
 	let store;
-	store = mockStore(postMock);
+	store = mockStore(updatePostMock);
 
 	it("renders correctly", () => {
 		const tree = renderer
