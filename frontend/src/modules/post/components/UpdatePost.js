@@ -9,6 +9,8 @@ import * as userSelectors from '../../users/selectors';
 
 import UpdatePostForm from './UpdatePostForm';
 
+import Forbidden from '../../common/components/Forbidden';
+
 const UpdatePost = ({ min }) => {
 	const post = useSelector(selectors.getPost);
 	const userId = useSelector(userSelectors.getUserId);
@@ -36,7 +38,7 @@ const UpdatePost = ({ min }) => {
 			{userId === post.userSummaryDto.id ?
 				<UpdatePostForm min={min}/>
 			:
-				navigate('/forbidden')
+				<Forbidden/>
 			}
 		</div>
 	);

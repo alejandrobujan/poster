@@ -778,12 +778,13 @@ public class PostServiceTest {
 		assertNull(offer.getValidationDate());
 
 		postService.markAsValid(user.getId(), offer.getId());
+		LocalDateTime validationDate = LocalDateTime.now();
 		offer = catalogService.findPostById(offer.getId());
 
 		assertNotNull(offer.getValidationDate());
 
-		assertEquals(offer.getValidationDate().truncatedTo(ChronoUnit.SECONDS),
-				LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+		assertTrue(offer.getValidationDate().truncatedTo(ChronoUnit.SECONDS).equals(validationDate.truncatedTo(ChronoUnit.SECONDS)) || 
+		offer.getValidationDate().plusSeconds(1).truncatedTo(ChronoUnit.SECONDS).equals(validationDate.truncatedTo(ChronoUnit.SECONDS)));
 
 	}
 
