@@ -7,15 +7,41 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import renderer from "react-test-renderer";
-import { postMock } from "../../state/Post.mock";
+import { updatePostMock } from "../../state/UpdatePost.mock";
+import { updatePostSecondConditionMock } from "../../state/UpdatePostSecondCondition.mock";
 
 import { UpdatePost } from "../../../modules/post";
+
+describe("UpdatePostFormSecondCondition", () => {
+	jest.mock('react-router-dom', () => ({
+		...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
+		useParams: () => ({ id: '1' }),
+	  }));
+
+	  const middlewares = [thunk];
+	  const mockStore = configureMockStore(middlewares);
+	  let store;
+	  store = mockStore(updatePostSecondConditionMock);  
+
+	  it("renders correctly", () => {
+		const tree = renderer
+			.create(
+				<Provider store={store}>
+					<MemoryRouter>
+						<UpdatePost min={10}/>
+					</MemoryRouter>
+				</Provider>
+			)
+			.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+}),
 
 describe("UpdatePostForm", () => {
 	const middlewares = [thunk];
 	const mockStore = configureMockStore(middlewares);
 	let store;
-	store = mockStore(postMock);
+	store = mockStore(updatePostMock);
 
 	it("renders correctly", () => {
 		const tree = renderer
