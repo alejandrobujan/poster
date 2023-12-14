@@ -5,9 +5,9 @@ export const createPost = (title, description, url, price, categoryId, images, t
 	onSuccess, onErrors) => dispatch =>
 		backend.postService.createPost(title, description, url, price, categoryId, images, type, properties, expirationDate, onSuccess, onErrors);
 
-export const findPostById = id => dispatch => {
+export const findPostById = (id, onErrors) => dispatch => {
 	backend.catalogService.findPostById(id,
-		post => dispatch(findPostByIdCompleted(post)));
+		post => dispatch(findPostByIdCompleted(post)), onErrors);
 }
 
 const findPostByIdCompleted = post => ({
