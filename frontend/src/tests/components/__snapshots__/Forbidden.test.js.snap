@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageNotFound Component renders correctly 1`] = `
+<div
+  className="container mt-5"
+>
+  <div
+    className="row"
+  >
+    <div
+      className="col md-8 mx-auto text-center"
+    >
+      <h1
+        className="display-4"
+        data-testid="Title"
+      >
+        403 - Forbidden
+      </h1>
+      <p
+        className="text-secondary"
+        data-testid="Description"
+      >
+        You don't have permission to see this page.
+      </p>
+    </div>
+  </div>
+</div>
+`;
