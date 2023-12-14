@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * The Class NotificationDto.
+ */
 @Getter
 @AllArgsConstructor
 public class NotificationDto {

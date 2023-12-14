@@ -41,6 +41,7 @@ public class PostDto {
 	private String type;
 	/** The properties of the post */
 	private Map<String, String> properties;
+	/** The expiration date */
 	private Long expirationDate;
 
 	/**
@@ -83,6 +84,9 @@ public class PostDto {
 
 	}
 
+	/**
+	 * Instantiates a new post
+	 */
 	public PostDto() {
 	}
 

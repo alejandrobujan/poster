@@ -47,6 +47,7 @@ public class PostParamsDto {
 	private List<byte[]> images = new ArrayList<>();
 	/** The properties of the post */
 	private Map<String, String> properties;
+	/** The expiration date */
 	@Setter
 	@NotNull
 	private Long expirationDate;

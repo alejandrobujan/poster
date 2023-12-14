@@ -11,6 +11,9 @@ import es.udc.fi.dc.fd.model.entities.Category;
 import es.udc.fi.dc.fd.model.entities.Coupon;
 import es.udc.fi.dc.fd.model.entities.User;
 
+/**
+ * The class CouponConversorTest
+ */
 public class CouponConversorTest {
 
 	/**

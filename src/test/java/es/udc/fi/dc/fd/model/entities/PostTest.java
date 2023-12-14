@@ -27,6 +27,9 @@ public class PostTest {
 		assertEquals(image.getPost(), post);
 	}
 
+	/**
+	 * Test to string.
+	 */
 	@Test
 	public void testToString() {
 		Long id = 1L;
@@ -41,11 +44,10 @@ public class PostTest {
 
 		Post post = new Post(title, description, url, price, now, user, category, expirationDate);
 		post.setId(id);
-		String expected = "Post [id=" + id + ", title=" + title + ", description=" + description + ", url=" 
-				+ url + ", price=" + price + ", creationDate="
-				+ now + ", positiveRatings=" + 0 + ", negativeRatings="
-				+ 0 + ", expirationDate=" + expirationDate + ", validationDate=" + null + ", user=" + user
-				+ ", category=" + category + ", images=" + (new HashSet<Image>()) + "]";
+		String expected = "Post [id=" + id + ", title=" + title + ", description=" + description + ", url=" + url
+				+ ", price=" + price + ", creationDate=" + now + ", positiveRatings=" + 0 + ", negativeRatings=" + 0
+				+ ", expirationDate=" + expirationDate + ", validationDate=" + null + ", user=" + user + ", category="
+				+ category + ", images=" + (new HashSet<Image>()) + "]";
 
 		assertEquals(expected, post.toString());
 	}

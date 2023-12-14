@@ -38,6 +38,7 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private PermissionChecker permissionChecker;
 
+	/** The notification service */
 	@Autowired
 	private NotificationService notificationService;
 

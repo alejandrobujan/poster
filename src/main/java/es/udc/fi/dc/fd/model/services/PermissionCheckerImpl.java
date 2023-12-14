@@ -113,6 +113,15 @@ public class PermissionCheckerImpl implements PermissionChecker {
 		return post.get();
 	}
 
+	/**
+	 * Check notification exists and belong to
+	 * 
+	 * @param notificationId the notification id
+	 * @param userId         the user id
+	 * @return the notification
+	 * @throws PermissionException       the permission exception
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
 	@Override
 	public Notification checkNotificationExistsAndBelongsTo(Long notificationId, Long userId)
 			throws PermissionException, InstanceNotFoundException {

@@ -13,8 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.fi.dc.fd.rest.dtos.PostStreamDto;
 
-
-
+/**
+ * The Class WebSocketControllerTest.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -22,14 +23,18 @@ import es.udc.fi.dc.fd.rest.dtos.PostStreamDto;
 @Transactional
 public class WebSocketControllerTest {
 
-    @Autowired
-    WebSocketController webSocketController;
+	/** The web socket controller */
+	@Autowired
+	WebSocketController webSocketController;
 
-    @Test
-    public void notifyNewPostTest() {
-        PostStreamDto postStreamDto = new PostStreamDto("posts.newPost");
+	/**
+	 * Test notify new post
+	 */
+	@Test
+	public void notifyNewPostTest() {
+		PostStreamDto postStreamDto = new PostStreamDto("posts.newPost");
 
-        assertEquals(postStreamDto, webSocketController.notifyNewPost(postStreamDto));
-    }
-    
+		assertEquals(postStreamDto, webSocketController.notifyNewPost(postStreamDto));
+	}
+
 }

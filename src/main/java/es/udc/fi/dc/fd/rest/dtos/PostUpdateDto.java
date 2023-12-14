@@ -48,6 +48,7 @@ public class PostUpdateDto {
 	private String type;
 	/** The properties of the post */
 	private Map<String, String> properties;
+	/** The expiration date */
 	@Setter
 	@NotNull
 	private Long expirationDate;
