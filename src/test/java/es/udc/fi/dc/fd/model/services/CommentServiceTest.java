@@ -128,6 +128,13 @@ public class CommentServiceTest {
 		post = createPost(user, category);
 	}
 
+	/**
+	 * Test create comment post
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testCreateCommentPost() throws InstanceNotFoundException, InvalidCommentParameterException {
 		String description = "Pepe";
@@ -150,6 +157,13 @@ public class CommentServiceTest {
 		assertEquals(level, commentFound.getLevel());
 	}
 
+	/**
+	 * Test create comment null post
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testCreateCommentPostNullPost() throws InstanceNotFoundException, InvalidCommentParameterException {
 		String description = "Pepe";
@@ -158,6 +172,13 @@ public class CommentServiceTest {
 				() -> commentService.createComment(description, user.getId(), null));
 	}
 
+	/**
+	 * Test create comment inexistent post
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testCreateCommentPostInexistentPostId()
 			throws InstanceNotFoundException, InvalidCommentParameterException {
@@ -167,6 +188,13 @@ public class CommentServiceTest {
 				() -> commentService.createComment(description, user.getId(), NON_EXISTENT_ID));
 	}
 
+	/**
+	 * Test create comment post inexistent user
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testCreateCommentPostInexistentUserId()
 			throws InstanceNotFoundException, InvalidCommentParameterException {
@@ -176,6 +204,13 @@ public class CommentServiceTest {
 				() -> commentService.createComment(description, NON_EXISTENT_ID, post.getId()));
 	}
 
+	/**
+	 * Test answer comment
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testAnswerComment() throws InstanceNotFoundException, InvalidCommentParameterException {
 		String parentDescription = "Pepe";
@@ -212,6 +247,13 @@ public class CommentServiceTest {
 		assertEquals(levelExpected, answerFound.getLevel());
 	}
 
+	/**
+	 * Test answer comment null post
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testAnswerCommentPostNullPost() throws InstanceNotFoundException, InvalidCommentParameterException {
 		String description = "Pepe";
@@ -220,6 +262,13 @@ public class CommentServiceTest {
 				() -> commentService.answerComment(description, user.getId(), null));
 	}
 
+	/**
+	 * Test answer comment intexistent post
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testAnswerCommentPostInexistentPostId()
 			throws InstanceNotFoundException, InvalidCommentParameterException {
@@ -229,6 +278,13 @@ public class CommentServiceTest {
 				() -> commentService.answerComment(description, user.getId(), NON_EXISTENT_ID));
 	}
 
+	/**
+	 * Test answer comment inexistent user
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testAnswerCommentPostInexistentUserId()
 			throws InstanceNotFoundException, InvalidCommentParameterException {
@@ -238,6 +294,13 @@ public class CommentServiceTest {
 				() -> commentService.answerComment(description, NON_EXISTENT_ID, post.getId()));
 	}
 
+	/**
+	 * Test find comments
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testFindComments() throws InstanceNotFoundException, InvalidCommentParameterException {
 		String description = "Pepe";
@@ -267,6 +330,13 @@ public class CommentServiceTest {
 
 	}
 
+	/**
+	 * Test find answers
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testFindAnswers() throws InstanceNotFoundException, InvalidCommentParameterException {
 		String parentDescription = "Pepe";
@@ -301,6 +371,13 @@ public class CommentServiceTest {
 
 	}
 
+	/**
+	 * Test find comments no comments
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testFindCommentsNoComments() throws InstanceNotFoundException, InvalidCommentParameterException {
 		int page = 0;
@@ -310,6 +387,13 @@ public class CommentServiceTest {
 
 	}
 
+	/**
+	 * Test find comments no post
+	 * 
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@Test
 	public void testFindCommentsNoPost() throws InstanceNotFoundException, InvalidCommentParameterException {
 		int page = 0;

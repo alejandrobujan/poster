@@ -123,7 +123,6 @@ public class SaveServiceTest {
 	 *                                           exception
 	 * @throws DuplicateInstanceException        the duplicate instance exception
 	 */
-
 	@Before
 	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException {
 		user = signUpUser("user");
@@ -132,6 +131,13 @@ public class SaveServiceTest {
 		post = createPost(user, category);
 	}
 
+	/**
+	 * Test save post
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 */
 	@Test
 	public void testSavePost() throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException {
 		assertFalse(saveDao.existsSaveByPostIdAndUserId(post.getId(), user2.getId()));
@@ -139,18 +145,39 @@ public class SaveServiceTest {
 		assertTrue(saveDao.existsSaveByPostIdAndUserId(post.getId(), user2.getId()));
 	}
 
+	/**
+	 * Test save no post
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 */
 	@Test
 	public void testSavePostNoPost()
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException {
 		assertThrows(InstanceNotFoundException.class, () -> saveService.savePost(NON_EXISTENT_ID, user.getId()));
 	}
 
+	/**
+	 * Test save post no user
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 */
 	@Test
 	public void testSavePostNoUser()
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException {
 		assertThrows(InstanceNotFoundException.class, () -> saveService.savePost(post.getId(), NON_EXISTENT_ID));
 	}
 
+	/**
+	 * Test save post already saved
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 */
 	@Test
 	public void testSavePostAlreadySaved()
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException {
@@ -160,12 +187,26 @@ public class SaveServiceTest {
 		assertThrows(AlreadySavedException.class, () -> saveService.savePost(post.getId(), user2.getId()));
 	}
 
+	/**
+	 * Test save post user creator
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 */
 	@Test
 	public void testSavePostUserCreator()
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException {
 		assertThrows(SavePostUserCreatorException.class, () -> saveService.savePost(post.getId(), user.getId()));
 	}
 
+	/**
+	 * Test is post saved by user
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 */
 	@Test
 	public void testisPostSavedByUser()
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException {
@@ -174,6 +215,13 @@ public class SaveServiceTest {
 		assertTrue(saveService.isPostSavedByUser(post.getId(), user2.getId()));
 	}
 
+	/**
+	 * Test unsave post
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 */
 	@Test
 	public void testUnsavePost() throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException,
 			AlreadyUnsavedException {
@@ -182,18 +230,40 @@ public class SaveServiceTest {
 		assertFalse(saveService.isPostSavedByUser(post.getId(), user2.getId()));
 	}
 
+	/**
+	 * Test unsave no post
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 */
 	@Test
 	public void testUnsavePostNoPost()
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException {
 		assertThrows(InstanceNotFoundException.class, () -> saveService.unSavePost(NON_EXISTENT_ID, user.getId()));
 	}
 
+	/**
+	 * Test unsave post no user
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 */
 	@Test
 	public void testUnsavePostNoUser()
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException {
 		assertThrows(InstanceNotFoundException.class, () -> saveService.unSavePost(post.getId(), NON_EXISTENT_ID));
 	}
 
+	/**
+	 * Test unsave post twice
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 * @throws AlreadyUnsavedException      the already unsaved exception
+	 */
 	@Test
 	public void testUnsavePostTwice() throws InstanceNotFoundException, AlreadySavedException,
 			SavePostUserCreatorException, AlreadyUnsavedException {

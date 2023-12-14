@@ -9,9 +9,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CommentDao extends JpaRepository<Comment, Long> {
 	/**
-	 * @param postId
-	 * @param pageable
-	 * @return
+	 * Find comment by post id and comment id order by date descending.
+	 * 
+	 * @param postId    the post id
+	 * @param commentId the comment id
+	 * @param pageable  the page
+	 * @return a slice of comment
 	 */
 	Slice<Comment> findByPostIdAndCommentIdOrderByDateDesc(Long postId, Long commentId, Pageable pageable);
 }

@@ -1,10 +1,14 @@
 package es.udc.fi.dc.fd.rest.dtos;
 
-import lombok.Getter;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+/**
+ * The class PostStreamDto
+ */
 @Getter
 @AllArgsConstructor
 public class PostStreamDto {
-    private String data;
+	/** The post data */
+	private String data;
 }

@@ -40,6 +40,9 @@ import es.udc.fi.dc.fd.rest.common.JwtInfo;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
 
+/**
+ * The Class SaveControllerTest.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc

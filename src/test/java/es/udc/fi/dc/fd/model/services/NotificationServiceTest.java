@@ -49,11 +49,16 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class NotificationServiceTest {
 
+	/** List of users */
 	private List<User> users;
+	/** List of posts */
 	private List<Post> posts;
+	/** List of categories */
 	private List<Category> categories;
+	/** List of comments */
 	private List<Comment> comments;
 
+	/** Inexistent notification id */
 	private static Long INEXISTENT_ID = 1L;
 
 	/** The user service. */
@@ -143,15 +148,39 @@ public class NotificationServiceTest {
 		return categoryDao.save(new Category(name));
 	}
 
+	/**
+	 * Creates a comment
+	 * 
+	 * @param description the description
+	 * @param user        the user
+	 * @param post        the post
+	 * @return the comment
+	 */
 	private Comment createComment(String description, User user, Post post) {
 		return commentDao.save(new Comment(description, LocalDateTime.now(), user, post, null, 1, 0));
 	}
 
+	/**
+	 * Creates a notification
+	 * 
+	 * @param text     the text
+	 * @param notifier the notifier user
+	 * @param notified the notified user
+	 * @param post     the post
+	 * @param comment  the comment
+	 * @return the notification
+	 */
 	private Notification createNotification(String text, User notifier, User notified, Post post, Comment comment) {
 		return notificationDao
 				.save(new Notification(text, false, LocalDateTime.now(), notifier, notified, post, comment));
 	}
 
+	/**
+	 * Set up
+	 * 
+	 * @throws DuplicateInstanceException
+	 * @throws MaximumImageSizeExceededException
+	 */
 	@Before
 	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException {
 		users = List.of(signUpUser("user"), signUpUser("user2"), signUpUser("user3"));
@@ -165,6 +194,9 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test find notifications
+	 */
 	@Test
 	public void testFindNotifications() {
 		Notification notification1 = createNotification("notification1", users.get(1), users.get(0), posts.get(0),
@@ -179,6 +211,9 @@ public class NotificationServiceTest {
 		assertEquals(2, notifications.size());
 	}
 
+	/**
+	 * Test find notifications with viewed
+	 */
 	@Test
 	public void testFindNotificationsWithViewed() {
 		Notification notification1 = createNotification("notification1", users.get(1), users.get(0), posts.get(0),
@@ -194,6 +229,9 @@ public class NotificationServiceTest {
 		assertEquals(1, notifications.size());
 	}
 
+	/**
+	 * Test find empty notifications
+	 */
 	@Test
 	public void testFindNotificationsEmpty() {
 		createNotification("notification1", users.get(1), users.get(0), posts.get(0), comments.get(0));
@@ -204,6 +242,12 @@ public class NotificationServiceTest {
 		assertTrue(notifications.isEmpty());
 	}
 
+	/**
+	 * Test mark notification as viewed
+	 * 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws PermissionException       the permission exception
+	 */
 	@Test
 	public void testMarkNotificationAsViewed() throws InstanceNotFoundException, PermissionException {
 		Notification notification = createNotification("notification", users.get(1), users.get(0), posts.get(0),
@@ -227,6 +271,12 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test mark notification as viewed inexistent notification
+	 * 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws PermissionException       the permission exception
+	 */
 	@Test
 	public void testMarkNotificationAsViewedInexistentNotification()
 			throws InstanceNotFoundException, PermissionException {
@@ -240,6 +290,12 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test mark notification as viewed no user notification
+	 * 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws PermissionException       the permission exception
+	 */
 	@Test
 	public void testMarkNotificationAsViewedNoUserNotification() throws InstanceNotFoundException, PermissionException {
 		Notification notification = createNotification("notification", users.get(1), users.get(0), posts.get(0),
@@ -252,6 +308,9 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test constructor
+	 */
 	@Test
 	public void testConstructor() {
 		Notification notification = new Notification("notification1", users.get(1), users.get(0), posts.get(0));
@@ -264,6 +323,14 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test send notification mark as expired
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 * @throws PermissionException          the permission exception
+	 */
 	@Test
 	public void testSendNotificationMarkAsExpired()
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException {
@@ -297,6 +364,14 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test send notification delete post
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 * @throws PermissionException          the permission exception
+	 */
 	@Test
 	public void testSendNotificationDeletePost()
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException {
@@ -328,6 +403,20 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test send notification update post
+	 * 
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws AlreadySavedException             the already saved exception
+	 * @throws SavePostUserCreatorException      the save post user creator
+	 *                                           exception
+	 * @throws PermissionException               the permission exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 * @throws MissingRequiredParameterException the missing required parameter
+	 *                                           exception
+	 * @throws IncorrectFormValuesException      the incorrect form values exception
+	 */
 	@Test
 	public void testSendNotificationUpdatePost()
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException,
@@ -363,6 +452,14 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test send notification mark as valid
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 * @throws PermissionException          the permission exception
+	 */
 	@Test
 	public void testSendNotificationMarkAsValid()
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException {

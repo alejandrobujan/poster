@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import es.udc.fi.dc.fd.model.entities.Offer;
 import es.udc.fi.dc.fd.model.entities.User;
 
+/**
+ * The class OfferConversorTest
+ */
 public class OfferConversorTest {
 
 	/**

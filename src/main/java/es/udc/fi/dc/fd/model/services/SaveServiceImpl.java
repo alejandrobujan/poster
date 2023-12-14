@@ -27,11 +27,27 @@ public class SaveServiceImpl implements SaveService {
 	@Autowired
 	private PermissionChecker permissionChecker;
 
+	/**
+	 * Returns if the post saved by user
+	 * 
+	 * @param postId the post id
+	 * @param userId the user id
+	 * @return if the post is saved by the user
+	 */
 	@Override
 	public boolean isPostSavedByUser(Long postId, Long userId) {
 		return saveDao.existsSaveByPostIdAndUserId(postId, userId);
 	}
 
+	/**
+	 * Save a post
+	 * 
+	 * @param postId the post id
+	 * @param userId the user id
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 */
 	@Override
 	public void savePost(Long postId, Long userId)
 			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException {
@@ -44,6 +60,14 @@ public class SaveServiceImpl implements SaveService {
 		saveDao.save(new Save(post, user));
 	}
 
+	/**
+	 * Unsave a post
+	 * 
+	 * @param postId the post id
+	 * @param userId the user id
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws AlreadyUnsavedException   the already unsaved exception
+	 */
 	@Override
 	public void unSavePost(Long postId, Long userId) throws InstanceNotFoundException, AlreadyUnsavedException {
 		permissionChecker.checkPost(postId);

@@ -19,13 +19,23 @@ import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
 import es.udc.fi.dc.fd.rest.dtos.NotificationConversor;
 import es.udc.fi.dc.fd.rest.dtos.NotificationDto;
 
+/**
+ * The Class NotificationController.
+ */
 @RestController
 @RequestMapping("/api/notifications")
 public class NotificationController {
 
+	/** The notification service. */
 	@Autowired
 	private NotificationService notificationService;
 
+	/**
+	 * Find unviewed notification
+	 * 
+	 * @param userId
+	 * @return a list of notification dto
+	 */
 	@GetMapping("/notifications")
 	public List<NotificationDto> findUnviewedNotifications(@RequestAttribute Long userId) {
 		List<Notification> notifications = notificationService.findUnviewedNotifications(userId);
@@ -33,6 +43,14 @@ public class NotificationController {
 		return NotificationConversor.toNotificationsDto(notifications);
 	}
 
+	/**
+	 * Mark as viewed
+	 * 
+	 * @param notificationId the notification id
+	 * @param userId         the user id
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws PermissionException       the permission exception
+	 */
 	@PostMapping("/{id}/view")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void markAsViewed(@RequestAttribute Long userId, @PathVariable Long id)
