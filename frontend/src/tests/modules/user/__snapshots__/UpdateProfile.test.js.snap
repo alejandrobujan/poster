@@ -161,6 +161,7 @@ exports[`UpdateProfile renders correctly 1`] = `
             <div
               className="offset-md-1 col-md-2"
             >
+              <br />
               <label
                 className="col-form-label"
                 data-testid="Preview"
