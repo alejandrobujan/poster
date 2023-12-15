@@ -1,0 +1,11 @@
+keywords,categoryId,type,gte,lte,date,expired,sortParam,sortOrder,page
+"",null,null,0,1000000,null,false,"creationDate","DESC",4
+"",1,"Offer",0,101,null,false,"price","DESC",1
+"hola",null,"Offer",0,101,null,false,"price","DESC",2
+"",null,"Coupon",0,101,null,false,"creationDate","DESC",3
+"",3,null,0,101,null,false,"price","DESC",0
+"",null,null,0,1000000,null,false,"price","DESC",5
+"",null,null,0,1000000,null,true,"price","DESC",0
+"chau",null,null,0,1000000,null,false,"price","DESC",7
+"adios",null,null,0,1000000,null,false,"price","DESC",8
+"a",null,null,0,1000000,null,false,"creationDate","ASC",9
