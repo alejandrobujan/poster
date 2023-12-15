@@ -5,9 +5,9 @@ export const createPost = (title, description, url, price, categoryId, images, t
 	onSuccess, onErrors) => dispatch =>
 		backend.postService.createPost(title, description, url, price, categoryId, images, type, properties, expirationDate, onSuccess, onErrors);
 
-export const findPostById = id => dispatch => {
+export const findPostById = (id, onErrors) => dispatch => {
 	backend.catalogService.findPostById(id,
-		post => dispatch(findPostByIdCompleted(post)));
+		post => dispatch(findPostByIdCompleted(post)), onErrors);
 }
 
 const findPostByIdCompleted = post => ({
@@ -67,4 +67,16 @@ export const ratePostPositive = (id, onErrors) => dispatch => {
 
 export const ratePostNegative = (id, onErrors) => dispatch => {
 	backend.ratingService.ratePostNegative(id, ratingCount => dispatch(ratePostCompleted(ratingCount)), onErrors);
+};
+
+export const savePost = (postId, onSuccess, onErrors) => dispatch => {
+	backend.saveService.savePost(postId, onSuccess, onErrors);
+};
+
+export const isPostSavedByUser = (postId, onSuccess, onErrors) => dispatch => {
+	backend.saveService.isPostSavedByUser(postId, onSuccess, onErrors);
+};
+
+export const unSavePost = (postId, onSuccess, onErrors) => dispatch => {
+	backend.saveService.unSavePost(postId, onSuccess, onErrors);
 };

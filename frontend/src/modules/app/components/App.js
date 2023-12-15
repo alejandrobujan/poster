@@ -16,6 +16,7 @@ const App = () => {
         dispatch(users.actions.tryLoginFromServiceToken(
             () => dispatch(users.actions.logout())));
         dispatch(catalog.actions.findAllCategories());
+        dispatch(catalog.actions.subscribe());
     });
     
     return(

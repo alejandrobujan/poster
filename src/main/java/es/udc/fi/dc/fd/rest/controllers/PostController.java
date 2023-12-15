@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +35,7 @@ import es.udc.fi.dc.fd.rest.dtos.OfferConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostConversor;
 import es.udc.fi.dc.fd.rest.dtos.PostDto;
 import es.udc.fi.dc.fd.rest.dtos.PostParamsDto;
+import es.udc.fi.dc.fd.rest.dtos.PostStreamDto;
 import es.udc.fi.dc.fd.rest.dtos.PostUpdateDto;
 import es.udc.fi.dc.fd.rest.dtos.PostValidDto;
 import es.udc.fi.dc.fd.rest.dtos.UserDto;
@@ -51,6 +53,8 @@ public class PostController {
 	/** The post conversor. */
 	private final Map<String, PostConversor> conversors;
 
+	private final SimpMessagingTemplate messagingTemplate;
+
 	/** The message source. */
 	@Autowired
 	private MessageSource messageSource;
@@ -66,8 +70,9 @@ public class PostController {
 	 * @param couponConversor the coupon conversor
 	 */
 	@Autowired
-	public PostController(OfferConversor offerConversor, CouponConversor couponConversor) {
+	public PostController(OfferConversor offerConversor, CouponConversor couponConversor, SimpMessagingTemplate messagingTemplate) {
 		this.conversors = Map.ofEntries(entry("Offer", offerConversor), entry("Coupon", couponConversor));
+		this.messagingTemplate = messagingTemplate;
 	}
 
 	/**
@@ -111,6 +116,8 @@ public class PostController {
 		Post post = postService.createPost(params.getTitle(), params.getDescription(), params.getUrl(),
 				params.getPrice(), userId, params.getCategoryId(), params.getImages(), params.getType(),
 				params.getProperties(), PostConversor.fromMillis(params.getExpirationDate()));
+
+		messagingTemplate.convertAndSend("/topic/posts", new PostStreamDto("posts.newPost"));
 
 		return postConversor.toPostDto(post);
 
@@ -193,8 +200,9 @@ public class PostController {
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	@PostMapping("/post/{id}/markAsValid")
-	public PostValidDto markPostAsValid(@PathVariable Long id) throws InstanceNotFoundException {
-		return new PostValidDto(postService.markAsValid(id));
+	public PostValidDto markPostAsValid(@RequestAttribute Long userId, @PathVariable Long id)
+			throws InstanceNotFoundException {
+		return new PostValidDto(postService.markAsValid(userId, id));
 
 	}
 

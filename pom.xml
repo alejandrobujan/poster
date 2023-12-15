@@ -96,7 +96,7 @@
 			</activation>
 			<properties>
 				<!--  Data source properties -->
-				<dataSource.url>jdbc:h2:mem:poster</dataSource.url>
+				<dataSource.url>jdbc:h2:file:./src/main/resources/poster</dataSource.url>
 				<testDataSource.url>jdbc:h2:mem:posterTest</testDataSource.url>
 				<dataSource.user>sa</dataSource.user>
 				<dataSource.password></dataSource.password>
@@ -141,6 +141,11 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 
 		<dependency>

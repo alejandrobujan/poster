@@ -1,4 +1,4 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.dtos;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -9,11 +9,15 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import es.udc.fi.dc.fd.model.entities.Category;
-import es.udc.fi.dc.fd.rest.dtos.CategoryConversor;
-import es.udc.fi.dc.fd.rest.dtos.CategoryDto;
 
+/**
+ * The class CategoryConversorTest
+ */
 public class CategoryConversorTest {
 
+	/**
+	 * Test to category dto
+	 */
 	@Test
 	public void testToCategoryDto() {
 		Category category = new Category(1L, "Example");
@@ -23,6 +27,9 @@ public class CategoryConversorTest {
 		assertEquals(category.getName(), categoryDto.getName());
 	}
 
+	/**
+	 * Test to category dto null
+	 */
 	@Test
 	public void testToCategoryDtoNull() {
 		CategoryDto categoryDto = CategoryConversor.toCategoryDto(null);
@@ -31,6 +38,9 @@ public class CategoryConversorTest {
 		assertNull(categoryDto.getName());
 	}
 
+	/**
+	 * Test to category dtos
+	 */
 	@Test
 	public void testToCategoryDtos() {
 		List<Category> categories = new ArrayList<>();
@@ -46,6 +56,9 @@ public class CategoryConversorTest {
 		}
 	}
 
+	/**
+	 * Test to category dtos empty list
+	 */
 	@Test
 	public void testToCategoryDtosEmptyList() {
 		List<Category> categories = new ArrayList<>();

@@ -8,15 +8,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 
+ * The Class FindCommentsParamsDto.
  */
 @Getter
 @AllArgsConstructor
 public class FindCommentsParamsDto {
 
+	/** The page. */
 	@NotNull
 	private int page;
 
+	/** The parent id. */
 	private Long parentId;
 
 }

@@ -1,20 +1,54 @@
 # REST Controllers Development
 
 ## UserController
-
-| Resource                           | Method | Input                            | Output                                       |
-| ---------------------------------- | ------ | -------------------------------- | -------------------------------------------- |
-| `/api/users/signUp`                | `POST` | UserDto [body]                   | ResponseEntity<AuthenticatedUserDto\> [body] |
-| `/api/users/login`                 | `POST` | LoginParamsDto [body]            | AuthenticatedUserDto [body]                  |
-| `/api/users/loginFromServiceToken` | `POST` | userId [jwt], serviceToken [jwt] | AuthenticatedUserDto [body]                  |
+| Resource                           | Method | Input                                                  | Output                                       |
+| ---------------------------------- | ------ | ------------------------------------------------------ | -------------------------------------------- |
+| `/api/users/signUp`                | `POST` | UserDto [body]                                         | ResponseEntity<AuthenticatedUserDto\> [body] |
+| `/api/users/login`                 | `POST` | LoginParamsDto [body]                                  | AuthenticatedUserDto [body]                  |
+| `/api/users/loginFromServiceToken` | `POST` | userId [jwt], serviceToken [jwt]                       | AuthenticatedUserDto [body]                  |
+| `/api/users/{id}`                  | `PUT`  | userId [jwt], id[path], UserDto [body]                 | UserDto [body]                               |
+| `/api/users/{id}/changePassword`   | `POST` | userId [jwt], id[path], ChangePasswordParamsDto [body] | UserDto [body]                               |
 
 ## PostController
+| Resource                             | Method   | Input                                         | Output              |
+| ------------------------------------ | ------   | --------------------------------------------- | ------------------- |
+| `/api/posts/post`                    | `POST`   | userId [jwt], PostParamsDto [body]            | PostDto [body]      |
+| `/api/posts/post/{id}`               | `DELETE` | userId [jwt], id [path]                       | void                |
+| `/api/posts/post/{id}/markAsExpired` | `POST`   | userId [jwt], id [path]                       | Long [body]         |
+| `/api/posts/post/{postId}`           | `PUT`    | userId [jwt], id [path], PostUpdateDto [body] | Long [body]         |
+| `/api/posts/post/{id}/markAsValid`   | `POST`   | userId [jwt], id [path]                       | PostValidDto [body] |
 
-| Resource                | Method | Input                              | Output                            |
-| ----------------------- | ------ | ---------------------------------- | --------------------------------- |
-| `/api/posts/post`       | `POST` | userId [jwt], PostParamsDto [body] | void                              |
-| `/api/posts/feed`       | `GET`  | page [param]                       | BlockDto\<PostSummaryDto\> [body] |
-| `/api/posts/categories` | `GET`  | void                               | List<CategoryDto\>                |
+## CatalogController
+| Resource                       | Method | Input                         | Output                            |
+| ------------------------------ | ------ | ----------------------------- | --------------------------------- |
+| `/api/catalog/feed`            | `POST` | SearchParamsDto params [body] | BlockDto\<PostSummaryDto\> [body] |
+| `/api/catalog/categories`      | `GET`  | void                          | List<CategoryDto>                 |
+| `/api/catalog/postDetail/{id}` | `GET`  | id [path]                     | PostDto                           |
+
+## CommentController
+| Resource                          | Method | Input                                            | Output                        |
+| --------------------------------- | ------ | ------------------------------------------------ | ----------------------------- |
+| `/api/comments/post/{id}/comment` | `POST` | userId [jwt], id [path], CommentParamsDto [body] | void                          |
+| `/api/comments/post/{id}`         | `POST` | id [path], FindCommentsParamsDto [body]          | BlockDto\<CommentDto\> [body] |
+
+## NotificationController
+| Resource                           | Method | Input                              | Output             |
+| ---------------------------------- | ------ | ----------------------- | ----------------------------- |
+| `/api/notifications/notifications` | `GET`  | userId [jwt]            | List<NotificationDto>  [body] |
+| `/api/notifications/{id}/view`     | `POST` | userId [jwt], id [path] | void                          |
+
+## SaveController
+| Resource                        | Method   | Input                       | Output         |
+| ------------------------------- | -------- | --------------------------- | -------------- |
+| `/api/saves/post/{postId}`      | `POST`   | userId [jwt], postId [path] | void           |
+| `/api/saves/post/{postId}/save` | `GET`    | userId [jwt], postId [path] | boolean [body] |
+| `/api/saves/post/{postId}`      | `DELETE` | userId [jwt], postId [path] | void           |
+
+## RatingController
+| Resource                             | Method | Input                    | Output             |
+| ------------------------------------ | ------ | ------------------------ | ------------------ |
+| `/api/rating/post/{id}/ratePositive` | `POST` | userId [jwt], id [path]  | RatePostDto [body] |
+| `/api/rating/post/{id}/rateNegative` | `POST` | userId [jwt], id [path]  | RatePostDto [body] |
 
 ## Sample requests
 

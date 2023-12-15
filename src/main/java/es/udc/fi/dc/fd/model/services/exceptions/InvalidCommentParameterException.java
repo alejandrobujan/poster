@@ -1,5 +1,8 @@
 package es.udc.fi.dc.fd.model.services.exceptions;
 
+/**
+ * The Class InvalidCommentParameterException.
+ */
 @SuppressWarnings("serial")
 public class InvalidCommentParameterException extends Exception {
 

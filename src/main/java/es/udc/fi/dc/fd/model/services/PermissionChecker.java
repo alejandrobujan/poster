@@ -49,6 +49,15 @@ public interface PermissionChecker {
 	public Post checkPostExistsAndBelongsTo(Long postId, Long userId)
 			throws PermissionException, InstanceNotFoundException;
 
+	/**
+	 * Check notification exists and belong to
+	 * 
+	 * @param notificationId the notification id
+	 * @param userId         the user id
+	 * @return the notification
+	 * @throws PermissionException       the permission exception
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
 	public Notification checkNotificationExistsAndBelongsTo(Long notificationId, Long userId)
 			throws PermissionException, InstanceNotFoundException;
 }

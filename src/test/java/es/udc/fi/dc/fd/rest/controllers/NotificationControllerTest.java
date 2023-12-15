@@ -1,4 +1,4 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,11 +34,8 @@ import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
 import es.udc.fi.dc.fd.model.entities.User.RoleType;
 import es.udc.fi.dc.fd.model.entities.UserDao;
-import es.udc.fi.dc.fd.model.services.NotificationService;
-import es.udc.fi.dc.fd.model.services.UserService;
 import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
-import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
 
@@ -52,16 +49,17 @@ import es.udc.fi.dc.fd.rest.dtos.LoginParamsDto;
 @Transactional
 public class NotificationControllerTest {
 
+	/** List of users */
 	private List<AuthenticatedUserDto> users;
+	/** List of posts */
 	private List<Post> posts;
+	/** List of categories */
 	private List<Category> categories;
+	/** List of comments */
 	private List<Comment> comments;
 
+	/** Inexistent notification id */
 	private static Long INEXISTENT_ID = 1L;
-
-	/** The user service. */
-	@Autowired
-	private UserService userService;
 
 	/** The mock mvc. */
 	@Autowired
@@ -78,10 +76,6 @@ public class NotificationControllerTest {
 	/** The notification dao. */
 	@Autowired
 	private NotificationDao notificationDao;
-
-	/** The notification service. */
-	@Autowired
-	private NotificationService notificationService;
 
 	/** The password encoder. */
 	@Autowired
@@ -158,15 +152,41 @@ public class NotificationControllerTest {
 		return categoryDao.save(new Category(name));
 	}
 
+	/**
+	 * Creates the comment
+	 * 
+	 * @param description the comment description
+	 * @param user        the user
+	 * @param post        the post
+	 * @return the comment
+	 */
 	private Comment createComment(String description, User user, Post post) {
 		return commentDao.save(new Comment(description, LocalDateTime.now(), user, post, null, 1, 0));
 	}
 
+	/**
+	 * Creates the notification
+	 * 
+	 * @param text     the notification text
+	 * @param notifier the notifier
+	 * @param notified the notified
+	 * @param post     the post
+	 * @param comment  the comment
+	 * @return the notification
+	 */
 	private Notification createNotification(String text, User notifier, User notified, Post post, Comment comment) {
 		return notificationDao
 				.save(new Notification(text, false, LocalDateTime.now(), notifier, notified, post, comment));
 	}
 
+	/**
+	 * Set up
+	 * 
+	 * @throws DuplicateInstanceException        the duplicate instance exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 * @throws IncorrectLoginException           the incorrect login exception
+	 */
 	@Before
 	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException, IncorrectLoginException {
 		users = List.of(createAuthenticatedUser("user"), createAuthenticatedUser("user2"));
@@ -183,7 +203,7 @@ public class NotificationControllerTest {
 	}
 
 	/**
-	 * Test get find all posts ok.
+	 * Test post find unviewed notifications ok.
 	 *
 	 * @throws Exception the exception
 	 */
@@ -198,6 +218,11 @@ public class NotificationControllerTest {
 				"Bearer " + users.get(0).getServiceToken())).andExpect(status().isOk());
 	}
 
+	/**
+	 * Test post mark as viewed notification ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostMarkAsViewedNotification_Ok() throws Exception {
 		Notification notification = createNotification("notification1",
@@ -208,6 +233,11 @@ public class NotificationControllerTest {
 				"Bearer " + users.get(0).getServiceToken())).andExpect(status().isNoContent());
 	}
 
+	/**
+	 * Test post mark as viewed notification no notification.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostMarkAsViewedNotification_NoNotification() throws Exception {
 
@@ -215,6 +245,11 @@ public class NotificationControllerTest {
 				"Bearer " + users.get(0).getServiceToken())).andExpect(status().isNotFound());
 	}
 
+	/**
+	 * Test post mark as viewed notification no user.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPostMarkAsViewedNotification_NoUser() throws Exception {
 		Notification notification = createNotification("notification1",

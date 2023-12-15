@@ -3,11 +3,13 @@ package es.udc.fi.dc.fd.model.services;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,8 +32,12 @@ import es.udc.fi.dc.fd.model.entities.Offer;
 import es.udc.fi.dc.fd.model.entities.Post;
 import es.udc.fi.dc.fd.model.entities.PostDao;
 import es.udc.fi.dc.fd.model.entities.User;
+import es.udc.fi.dc.fd.model.services.exceptions.AlreadySavedException;
+import es.udc.fi.dc.fd.model.services.exceptions.IncorrectFormValuesException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
+import es.udc.fi.dc.fd.model.services.exceptions.MissingRequiredParameterException;
 import es.udc.fi.dc.fd.model.services.exceptions.PermissionException;
+import es.udc.fi.dc.fd.model.services.exceptions.SavePostUserCreatorException;
 import jakarta.transaction.Transactional;
 
 /**
@@ -43,11 +49,16 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class NotificationServiceTest {
 
+	/** List of users */
 	private List<User> users;
+	/** List of posts */
 	private List<Post> posts;
+	/** List of categories */
 	private List<Category> categories;
+	/** List of comments */
 	private List<Comment> comments;
 
+	/** Inexistent notification id */
 	private static Long INEXISTENT_ID = 1L;
 
 	/** The user service. */
@@ -69,6 +80,14 @@ public class NotificationServiceTest {
 	/** The notification service. */
 	@Autowired
 	private NotificationService notificationService;
+
+	/** The save service. */
+	@Autowired
+	private SaveService saveService;
+
+	/** The post service. */
+	@Autowired
+	private PostService postService;
 
 	/** The comment dao. */
 	@Autowired
@@ -102,8 +121,8 @@ public class NotificationServiceTest {
 	 * @return the offer
 	 */
 	private Post createOffer(String title, User user, Category category) {
-		return postDao
-				.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user, category, LocalDateTime.now()));
+		return postDao.save(new Offer(title, "description", "url", new BigDecimal(10), LocalDateTime.now(), user,
+				category, LocalDateTime.now()));
 	}
 
 	/**
@@ -129,18 +148,42 @@ public class NotificationServiceTest {
 		return categoryDao.save(new Category(name));
 	}
 
+	/**
+	 * Creates a comment
+	 * 
+	 * @param description the description
+	 * @param user        the user
+	 * @param post        the post
+	 * @return the comment
+	 */
 	private Comment createComment(String description, User user, Post post) {
 		return commentDao.save(new Comment(description, LocalDateTime.now(), user, post, null, 1, 0));
 	}
 
+	/**
+	 * Creates a notification
+	 * 
+	 * @param text     the text
+	 * @param notifier the notifier user
+	 * @param notified the notified user
+	 * @param post     the post
+	 * @param comment  the comment
+	 * @return the notification
+	 */
 	private Notification createNotification(String text, User notifier, User notified, Post post, Comment comment) {
 		return notificationDao
 				.save(new Notification(text, false, LocalDateTime.now(), notifier, notified, post, comment));
 	}
 
+	/**
+	 * Set up
+	 * 
+	 * @throws DuplicateInstanceException
+	 * @throws MaximumImageSizeExceededException
+	 */
 	@Before
 	public void setUp() throws DuplicateInstanceException, MaximumImageSizeExceededException {
-		users = List.of(signUpUser("user"), signUpUser("user2"));
+		users = List.of(signUpUser("user"), signUpUser("user2"), signUpUser("user3"));
 		categories = List.of(createCategory("Meals"), createCategory("Motor"), createCategory("Home"),
 				createCategory("Toys"), createCategory("Tech"), createCategory("Leisure"));
 		posts = List.of(createOffer("offer1", users.get(0), categories.get(0)),
@@ -151,6 +194,9 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test find notifications
+	 */
 	@Test
 	public void testFindNotifications() {
 		Notification notification1 = createNotification("notification1", users.get(1), users.get(0), posts.get(0),
@@ -165,6 +211,9 @@ public class NotificationServiceTest {
 		assertEquals(2, notifications.size());
 	}
 
+	/**
+	 * Test find notifications with viewed
+	 */
 	@Test
 	public void testFindNotificationsWithViewed() {
 		Notification notification1 = createNotification("notification1", users.get(1), users.get(0), posts.get(0),
@@ -180,6 +229,9 @@ public class NotificationServiceTest {
 		assertEquals(1, notifications.size());
 	}
 
+	/**
+	 * Test find empty notifications
+	 */
 	@Test
 	public void testFindNotificationsEmpty() {
 		createNotification("notification1", users.get(1), users.get(0), posts.get(0), comments.get(0));
@@ -190,6 +242,12 @@ public class NotificationServiceTest {
 		assertTrue(notifications.isEmpty());
 	}
 
+	/**
+	 * Test mark notification as viewed
+	 * 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws PermissionException       the permission exception
+	 */
 	@Test
 	public void testMarkNotificationAsViewed() throws InstanceNotFoundException, PermissionException {
 		Notification notification = createNotification("notification", users.get(1), users.get(0), posts.get(0),
@@ -213,6 +271,12 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test mark notification as viewed inexistent notification
+	 * 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws PermissionException       the permission exception
+	 */
 	@Test
 	public void testMarkNotificationAsViewedInexistentNotification()
 			throws InstanceNotFoundException, PermissionException {
@@ -226,6 +290,12 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test mark notification as viewed no user notification
+	 * 
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws PermissionException       the permission exception
+	 */
 	@Test
 	public void testMarkNotificationAsViewedNoUserNotification() throws InstanceNotFoundException, PermissionException {
 		Notification notification = createNotification("notification", users.get(1), users.get(0), posts.get(0),
@@ -238,6 +308,9 @@ public class NotificationServiceTest {
 
 	}
 
+	/**
+	 * Test constructor
+	 */
 	@Test
 	public void testConstructor() {
 		Notification notification = new Notification("notification1", users.get(1), users.get(0), posts.get(0));
@@ -247,6 +320,165 @@ public class NotificationServiceTest {
 		assertEquals(users.get(0), notification.getNotifiedUser());
 		assertEquals(posts.get(0), notification.getPost());
 		assertFalse(notification.isViewed());
+
+	}
+
+	/**
+	 * Test send notification mark as expired
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 * @throws PermissionException          the permission exception
+	 */
+	@Test
+	public void testSendNotificationMarkAsExpired()
+			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException {
+		saveService.savePost(posts.get(0).getId(), users.get(1).getId());
+		saveService.savePost(posts.get(0).getId(), users.get(2).getId());
+		postService.markAsExpired(users.get(0).getId(), posts.get(0).getId());
+		List<Notification> notificationsUser1 = notificationService.findUnviewedNotifications(users.get(1).getId());
+		List<Notification> notificationsUser2 = notificationService.findUnviewedNotifications(users.get(2).getId());
+		assertEquals(1, notificationsUser1.size());
+		assertEquals(1, notificationsUser2.size());
+
+		Notification notificationUser1 = notificationsUser1.get(0);
+
+		assertEquals(users.get(1), notificationUser1.getNotifiedUser());
+		assertNull(notificationUser1.getNotifierUser());
+		assertNull(notificationUser1.getComment());
+		assertEquals(posts.get(0), notificationUser1.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been marked as expired",
+				notificationUser1.getText());
+		assertFalse(notificationUser1.isViewed());
+
+		Notification notificationUser2 = notificationsUser2.get(0);
+
+		assertEquals(users.get(2), notificationUser2.getNotifiedUser());
+		assertNull(notificationUser2.getNotifierUser());
+		assertNull(notificationUser2.getComment());
+		assertEquals(posts.get(0), notificationUser2.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been marked as expired",
+				notificationUser2.getText());
+		assertFalse(notificationUser2.isViewed());
+
+	}
+
+	/**
+	 * Test send notification delete post
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 * @throws PermissionException          the permission exception
+	 */
+	@Test
+	public void testSendNotificationDeletePost()
+			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException {
+		saveService.savePost(posts.get(0).getId(), users.get(1).getId());
+		saveService.savePost(posts.get(0).getId(), users.get(2).getId());
+		postService.deletePost(users.get(0).getId(), posts.get(0).getId());
+		List<Notification> notificationsUser1 = notificationService.findUnviewedNotifications(users.get(1).getId());
+		List<Notification> notificationsUser2 = notificationService.findUnviewedNotifications(users.get(2).getId());
+		assertEquals(1, notificationsUser1.size());
+		assertEquals(1, notificationsUser2.size());
+
+		Notification notificationUser1 = notificationsUser1.get(0);
+
+		assertEquals(users.get(1), notificationUser1.getNotifiedUser());
+		assertNull(notificationUser1.getNotifierUser());
+		assertNull(notificationUser1.getComment());
+		assertEquals(posts.get(0), notificationUser1.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been deleted", notificationUser1.getText());
+		assertFalse(notificationUser1.isViewed());
+
+		Notification notificationUser2 = notificationsUser2.get(0);
+
+		assertEquals(users.get(2), notificationUser2.getNotifiedUser());
+		assertNull(notificationUser2.getNotifierUser());
+		assertNull(notificationUser2.getComment());
+		assertEquals(posts.get(0), notificationUser2.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been deleted", notificationUser2.getText());
+		assertFalse(notificationUser2.isViewed());
+
+	}
+
+	/**
+	 * Test send notification update post
+	 * 
+	 * @throws InstanceNotFoundException         the instance not found exception
+	 * @throws AlreadySavedException             the already saved exception
+	 * @throws SavePostUserCreatorException      the save post user creator
+	 *                                           exception
+	 * @throws PermissionException               the permission exception
+	 * @throws MaximumImageSizeExceededException the maximum image size exceeded
+	 *                                           exception
+	 * @throws MissingRequiredParameterException the missing required parameter
+	 *                                           exception
+	 * @throws IncorrectFormValuesException      the incorrect form values exception
+	 */
+	@Test
+	public void testSendNotificationUpdatePost()
+			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException,
+			MaximumImageSizeExceededException, MissingRequiredParameterException, IncorrectFormValuesException {
+		saveService.savePost(posts.get(0).getId(), users.get(1).getId());
+		saveService.savePost(posts.get(0).getId(), users.get(2).getId());
+		postService.updatePost(posts.get(0).getId(), "Title cahnged", posts.get(0).getDescription(),
+				posts.get(0).getUrl(), posts.get(0).getPrice(), users.get(0).getId(),
+				posts.get(0).getCategory().getId(), List.of(new byte[] { 1, 2, 3 }, new byte[] { 2, 3, 4 }), "Offer",
+				Map.ofEntries(), LocalDateTime.now());
+		List<Notification> notificationsUser1 = notificationService.findUnviewedNotifications(users.get(1).getId());
+		List<Notification> notificationsUser2 = notificationService.findUnviewedNotifications(users.get(2).getId());
+		assertEquals(1, notificationsUser1.size());
+		assertEquals(1, notificationsUser2.size());
+
+		Notification notificationUser1 = notificationsUser1.get(0);
+
+		assertEquals(users.get(1), notificationUser1.getNotifiedUser());
+		assertNull(notificationUser1.getNotifierUser());
+		assertNull(notificationUser1.getComment());
+		assertEquals(posts.get(0), notificationUser1.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser1.getText());
+		assertFalse(notificationUser1.isViewed());
+
+		Notification notificationUser2 = notificationsUser2.get(0);
+
+		assertEquals(users.get(2), notificationUser2.getNotifiedUser());
+		assertNull(notificationUser2.getNotifierUser());
+		assertNull(notificationUser2.getComment());
+		assertEquals(posts.get(0), notificationUser2.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been modified", notificationUser2.getText());
+		assertFalse(notificationUser2.isViewed());
+
+	}
+
+	/**
+	 * Test send notification mark as valid
+	 * 
+	 * @throws InstanceNotFoundException    the instance not found exception
+	 * @throws AlreadySavedException        the already saved exception
+	 * @throws SavePostUserCreatorException the save post user creator exception
+	 * @throws PermissionException          the permission exception
+	 */
+	@Test
+	public void testSendNotificationMarkAsValid()
+			throws InstanceNotFoundException, AlreadySavedException, SavePostUserCreatorException, PermissionException {
+		saveService.savePost(posts.get(0).getId(), users.get(1).getId());
+		saveService.savePost(posts.get(0).getId(), users.get(2).getId());
+		postService.markAsValid(users.get(1).getId(), posts.get(0).getId());
+		List<Notification> notificationsUser1 = notificationService.findUnviewedNotifications(users.get(1).getId());
+		List<Notification> notificationsUser2 = notificationService.findUnviewedNotifications(users.get(2).getId());
+		assertEquals(0, notificationsUser1.size());
+		assertEquals(1, notificationsUser2.size());
+
+		Notification notificationUser2 = notificationsUser2.get(0);
+
+		assertEquals(users.get(2), notificationUser2.getNotifiedUser());
+		assertNull(notificationUser2.getNotifierUser());
+		assertNull(notificationUser2.getComment());
+		assertEquals(posts.get(0), notificationUser2.getPost());
+		assertEquals("The post " + posts.get(0).getTitle() + " has been marked as valid", notificationUser2.getText());
+		assertFalse(notificationUser2.isViewed());
 
 	}
 

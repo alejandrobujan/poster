@@ -48,9 +48,11 @@ public class CommentController {
 	private CommentService commentService;
 
 	/**
-	 * @param exception
-	 * @param locale
-	 * @return
+	 * Handle invalid comment parameter exception
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale
+	 * @return an errors dto
 	 */
 	@ExceptionHandler(InvalidCommentParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -66,6 +68,16 @@ public class CommentController {
 
 	}
 
+	/**
+	 * Create a comment
+	 * 
+	 * @param userId the user id
+	 * @param id     the comment id
+	 * @param params the params
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
+	 */
 	@PostMapping("/post/{id}/comment")
 	public void createComment(@RequestAttribute Long userId, @PathVariable Long id,
 			@Validated @RequestBody CommentParamsDto params)
@@ -79,6 +91,13 @@ public class CommentController {
 
 	}
 
+	/**
+	 * Find the comments
+	 * 
+	 * @param id     the comment id
+	 * @param params the params
+	 * @return a block dto of comment dto
+	 */
 	@PostMapping("/post/{id}")
 	public BlockDto<CommentDto> findComments(@PathVariable Long id, @RequestBody FindCommentsParamsDto params) {
 

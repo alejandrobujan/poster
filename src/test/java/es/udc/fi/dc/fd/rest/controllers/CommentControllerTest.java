@@ -1,7 +1,7 @@
 /**
  * 
  */
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,7 +42,6 @@ import es.udc.fi.dc.fd.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.dc.fd.model.services.exceptions.MaximumImageSizeExceededException;
 import es.udc.fi.dc.fd.rest.common.JwtGenerator;
 import es.udc.fi.dc.fd.rest.common.JwtInfo;
-import es.udc.fi.dc.fd.rest.controllers.UserController;
 import es.udc.fi.dc.fd.rest.dtos.AuthenticatedUserDto;
 import es.udc.fi.dc.fd.rest.dtos.CommentParamsDto;
 import es.udc.fi.dc.fd.rest.dtos.FindCommentsParamsDto;
@@ -233,6 +232,11 @@ public class CommentControllerTest {
 		parentCommentResponse = createComment(createUser("Pepe"), offer, parentComment);
 	}
 
+	/**
+	 * Test create comment ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testCreateComment_Ok() throws Exception {
 		CommentParamsDto commentParamsDto = new CommentParamsDto();
@@ -247,6 +251,11 @@ public class CommentControllerTest {
 				.andExpect(status().isOk());
 	}
 
+	/**
+	 * Test create comment no post.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testCreateComment_NoPost() throws Exception {
 		CommentParamsDto commentParamsDto = new CommentParamsDto();
@@ -261,6 +270,11 @@ public class CommentControllerTest {
 				.andExpect(status().isNotFound());
 	}
 
+	/**
+	 * Test create comment no user.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testCreateComment_NoUser() throws Exception {
 		CommentParamsDto commentParamsDto = new CommentParamsDto();
@@ -278,6 +292,11 @@ public class CommentControllerTest {
 				.andExpect(status().isNotFound());
 	}
 
+	/**
+	 * Test create answer ok.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testCreateAnswer_Ok() throws Exception {
 		CommentParamsDto commentParamsDto = new CommentParamsDto();
@@ -292,6 +311,11 @@ public class CommentControllerTest {
 				.andExpect(status().isOk());
 	}
 
+	/**
+	 * Test create answer no post.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testCreateAnswer_NoPost() throws Exception {
 		CommentParamsDto commentParamsDto = new CommentParamsDto();
@@ -306,6 +330,11 @@ public class CommentControllerTest {
 				.andExpect(status().isOk());
 	}
 
+	/**
+	 * Test create answer no user.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testCreateAnswer_NoUser() throws Exception {
 		CommentParamsDto commentParamsDto = new CommentParamsDto();
@@ -323,6 +352,12 @@ public class CommentControllerTest {
 				.andExpect(status().isNotFound());
 	}
 
+	/**
+	 * Test find comments ok.
+	 *
+	 * @throws JsonProcessingException the json processing exception
+	 * @throws Exception               the exception
+	 */
 	@Test
 	public void testFindComments_Ok() throws JsonProcessingException, Exception {
 		FindCommentsParamsDto findCommentsParamsDto = new FindCommentsParamsDto(0, null);
@@ -335,6 +370,12 @@ public class CommentControllerTest {
 				.andExpect(status().isOk());
 	}
 
+	/**
+	 * Test find comments empty.
+	 *
+	 * @throws JsonProcessingException the json processing exception
+	 * @throws Exception               the exception
+	 */
 	@Test
 	public void testFindComments_OkEmpty() throws JsonProcessingException, Exception {
 		FindCommentsParamsDto findCommentsParamsDto = new FindCommentsParamsDto(0, null);
@@ -349,6 +390,12 @@ public class CommentControllerTest {
 				.andExpect(status().isOk());
 	}
 
+	/**
+	 * Test find answers ok.
+	 *
+	 * @throws JsonProcessingException the json processing exception
+	 * @throws Exception               the exception
+	 */
 	@Test
 	public void testFindAnswers_Ok() throws JsonProcessingException, Exception {
 		FindCommentsParamsDto findCommentsParamsDto = new FindCommentsParamsDto(0, parentComment.getId());
@@ -361,6 +408,12 @@ public class CommentControllerTest {
 				.andExpect(status().isOk());
 	}
 
+	/**
+	 * Test find answers empty.
+	 *
+	 * @throws JsonProcessingException the json processing exception
+	 * @throws Exception               the exception
+	 */
 	@Test
 	public void testFindAnswers_OkEmpty() throws JsonProcessingException, Exception {
 		FindCommentsParamsDto findCommentsParamsDto = new FindCommentsParamsDto(0, parentCommentResponse.getId());

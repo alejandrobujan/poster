@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Feed renders correctly 1`] = `
+<div>
+  <form
+    data-testid="search-posts-form"
+    onSubmit={[Function]}
+  >
+    <div
+      className="input-group search-bar flex-nowrap mr-2"
+    >
+      <input
+        className="form-control"
+        data-testid="search-keywords-bar"
+        id="keywords"
+        onChange={[Function]}
+        placeholder="Search..."
+        type="text"
+        value=""
+      />
+      <div
+        className="input-group-append"
+      >
+        <button
+          className="btn btn-primary"
+          onClick={[Function]}
+          type="submit"
+        >
+          <svg
+            className="bi bi-search"
+            fill="currentColor"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+            />
+          </svg>
+        </button>
+        <button
+          className="btn btn-secondary"
+          data-testid="show-advanced-search-button"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="bi bi-funnel-fill"
+            fill="currentColor"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </form>
+  <div
+    className="m-2 alert alert-warning d-flex justify-content-between align-items-center"
+    role="alert"
+  >
+    <span
+      className="mb-0"
+    >
+      New posts were added. Refresh the feed to get the latest updates!
+    </span>
+    <span
+      className="text-right"
+    >
+      <button
+        className="px-2 btn btn-secondary d-flex justify-content-between align-items-center"
+        onClick={[Function]}
+        type="button"
+      >
+        <svg
+          className="bi bi-arrow-repeat"
+          fill="currentColor"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
+          />
+          <path
+            d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"
+            fillRule="evenodd"
+          />
+        </svg>
+      </button>
+    </span>
+  </div>
+  <div
+    className="alert alert-danger"
+    role="alert"
+  >
+    No posts found
+  </div>
+  <nav
+    aria-label="page navigation"
+  >
+    <ul
+      className="pagination justify-content-center"
+    >
+      <li
+        className="page-item disabled"
+      >
+        <button
+          className="page-link"
+          onClick={[Function]}
+        >
+          Back
+        </button>
+      </li>
+      <li
+        className="page-item disabled"
+      >
+        <button
+          className="page-link"
+          onClick={[Function]}
+        >
+          Next
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>
+`;

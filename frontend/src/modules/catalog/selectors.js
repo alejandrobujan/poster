@@ -8,3 +8,6 @@ export const getCategories = state =>
     
 export const getSearchParams = state => 
     getModuleState(state).searchParams;
+
+export const getRequestRefresh = state =>
+    getModuleState(state).requestRefresh;

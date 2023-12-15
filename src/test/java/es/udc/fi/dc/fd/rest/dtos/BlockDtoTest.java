@@ -1,4 +1,4 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.dtos;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,10 +12,14 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import es.udc.fi.dc.fd.rest.dtos.BlockDto;
-
+/**
+ * The class BlockDtoTest
+ */
 public class BlockDtoTest {
 
+	/**
+	 * Test default constructor
+	 */
 	@Test
 	public void testDefaultConstructor() {
 		BlockDto<String> blockDto = new BlockDto<>();
@@ -24,6 +28,9 @@ public class BlockDtoTest {
 		assertFalse(blockDto.getExistMoreItems());
 	}
 
+	/**
+	 * Test parametrized constructor
+	 */
 	@Test
 	public void testParametrizedConstructor() {
 		List<Integer> items = Arrays.asList(1, 2, 3);
@@ -35,6 +42,9 @@ public class BlockDtoTest {
 		assertEquals(existMoreItems, blockDto.getExistMoreItems());
 	}
 
+	/**
+	 * Test get items
+	 */
 	@Test
 	public void testGetItems() {
 		List<String> items = new ArrayList<>();
@@ -45,6 +55,9 @@ public class BlockDtoTest {
 		assertEquals(items, blockDto.getItems());
 	}
 
+	/**
+	 * Test set items
+	 */
 	@Test
 	public void testSetItems() {
 		BlockDto<Character> blockDto = new BlockDto<>();
@@ -54,6 +67,9 @@ public class BlockDtoTest {
 		assertEquals(items, blockDto.getItems());
 	}
 
+	/**
+	 * Test get exist more items
+	 */
 	@Test
 	public void testGetExistMoreItems() {
 		BlockDto<Boolean> blockDto = new BlockDto<>();
@@ -62,6 +78,9 @@ public class BlockDtoTest {
 		assertTrue(blockDto.getExistMoreItems());
 	}
 
+	/**
+	 * Test set exists more items
+	 */
 	@Test
 	public void testSetExistMoreItems() {
 		BlockDto<Double> blockDto = new BlockDto<>();

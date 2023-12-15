@@ -52,20 +52,22 @@ describe("catalogService", () => {
     describe("findPostById", () => {
       it("should call appFetch with the correct parameters on successful findPostById", async () => {
         const onSuccess = jest.fn();
+        const onErrors = jest.fn();
         const postId = 1;
-  
+
         appFetchModule.appFetch.mockImplementationOnce((url, config, successCallback) => {
           successCallback();
         });
-  
-        await catalogService.findPostById(postId, onSuccess);
-  
+
+        await catalogService.findPostById(postId, onSuccess, onErrors);
+
         expect(appFetchModule.appFetch).toHaveBeenCalledWith(
           `/catalog/postDetail/${postId}`,
           undefined,
+          expect.any(Function),
           expect.any(Function)
         );
-  
+
         expect(onSuccess).toHaveBeenCalled();
       });
     });

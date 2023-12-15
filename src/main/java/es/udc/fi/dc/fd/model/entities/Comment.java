@@ -49,6 +49,8 @@ public class Comment {
 	}
 
 	/**
+	 * Instantiates a new comment.
+	 * 
 	 * @param description
 	 * @param date
 	 * @param user
@@ -68,6 +70,8 @@ public class Comment {
 	}
 
 	/**
+	 * Gets the comment id.
+	 * 
 	 * @return the id
 	 */
 	@Id
@@ -77,6 +81,8 @@ public class Comment {
 	}
 
 	/**
+	 * Sets the comment id.
+	 * 
 	 * @param id the id to set
 	 */
 	public void setId(Long id) {
@@ -84,6 +90,8 @@ public class Comment {
 	}
 
 	/**
+	 * Gets the comment description.
+	 * 
 	 * @return the description
 	 */
 	public String getDescription() {
@@ -91,6 +99,8 @@ public class Comment {
 	}
 
 	/**
+	 * Sets the comment description.
+	 * 
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
@@ -98,6 +108,8 @@ public class Comment {
 	}
 
 	/**
+	 * Gets the comment date.
+	 * 
 	 * @return the date
 	 */
 	public LocalDateTime getDate() {
@@ -105,6 +117,8 @@ public class Comment {
 	}
 
 	/**
+	 * Sets the comment date.
+	 * 
 	 * @param date the date to set
 	 */
 	public void setDate(LocalDateTime date) {
@@ -112,6 +126,8 @@ public class Comment {
 	}
 
 	/**
+	 * Gets the user.
+	 * 
 	 * @return the user
 	 */
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -121,6 +137,8 @@ public class Comment {
 	}
 
 	/**
+	 * Sets the user.
+	 * 
 	 * @param user the user to set
 	 */
 	public void setUser(User user) {
@@ -128,6 +146,8 @@ public class Comment {
 	}
 
 	/**
+	 * Gets the comment id.
+	 * 
 	 * @return the post
 	 */
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -137,6 +157,8 @@ public class Comment {
 	}
 
 	/**
+	 * Sets the post.
+	 * 
 	 * @param post the post to set
 	 */
 	public void setPost(Post post) {
@@ -144,6 +166,8 @@ public class Comment {
 	}
 
 	/**
+	 * Gets the comment.
+	 * 
 	 * @return the comment
 	 */
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -153,6 +177,8 @@ public class Comment {
 	}
 
 	/**
+	 * Sets the comment.
+	 * 
 	 * @param comment the comment to set
 	 */
 	public void setComment(Comment comment) {
@@ -160,6 +186,8 @@ public class Comment {
 	}
 
 	/**
+	 * Gets the comment level.
+	 * 
 	 * @return the level
 	 */
 	public int getLevel() {
@@ -167,6 +195,8 @@ public class Comment {
 	}
 
 	/**
+	 * Sets the comment level.
+	 * 
 	 * @param level the level to set
 	 */
 	public void setLevel(int level) {
@@ -174,6 +204,8 @@ public class Comment {
 	}
 
 	/**
+	 * Gets the number of answers.
+	 * 
 	 * @return the answers
 	 */
 	public int getAnswers() {
@@ -181,6 +213,8 @@ public class Comment {
 	}
 
 	/**
+	 * Sets the number of answers.
+	 * 
 	 * @param answers the level to set
 	 */
 	public void setAnswers(int answers) {

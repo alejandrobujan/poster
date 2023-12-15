@@ -1,4 +1,4 @@
-package es.udc.fi.dc.fd.rest;
+package es.udc.fi.dc.fd.rest.dtos;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -8,12 +8,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import es.udc.fi.dc.fd.rest.dtos.SearchFiltersDto;
-
+/**
+ * The class SearchFiltersDtoTest
+ */
 public class SearchFiltersDtoTest {
 
+	/** The search filters dto */
 	private SearchFiltersDto searchFiltersDto;
 
+	/**
+	 * Set up
+	 */
 	@BeforeEach
 	public void setUp() {
 		Long categoryId = 1L;
@@ -28,6 +33,9 @@ public class SearchFiltersDtoTest {
 		searchFiltersDto = new SearchFiltersDto(categoryId, type, price, date, expired, sortParam, sortOrder);
 	}
 
+	/**
+	 * Test parametrized constructor not null
+	 */
 	@Test
 	public void testParametrizedConstructorNotNull() {
 		Long categoryId = 1L;
@@ -44,6 +52,9 @@ public class SearchFiltersDtoTest {
 		Assertions.assertNotNull(searchFiltersDto);
 	}
 
+	/**
+	 * Test set category id
+	 */
 	@Test
 	public void testSetCategoryId() {
 		Long categoryId = 1L;
@@ -51,6 +62,9 @@ public class SearchFiltersDtoTest {
 		Assertions.assertEquals(categoryId, searchFiltersDto.getCategoryId());
 	}
 
+	/**
+	 * Test set type
+	 */
 	@Test
 	public void testSetType() {
 		String type = "Offer";
@@ -58,6 +72,9 @@ public class SearchFiltersDtoTest {
 		Assertions.assertEquals(type, searchFiltersDto.getType());
 	}
 
+	/**
+	 * Test set price
+	 */
 	@Test
 	public void testSetPrice() {
 		Map<String, BigDecimal> price = new HashMap<>();
@@ -66,6 +83,9 @@ public class SearchFiltersDtoTest {
 		Assertions.assertEquals(price, searchFiltersDto.getPrice());
 	}
 
+	/**
+	 * Test set date
+	 */
 	@Test
 	public void testSetDate() {
 		String date = "2024-11-16";
@@ -73,6 +93,9 @@ public class SearchFiltersDtoTest {
 		Assertions.assertEquals(date, searchFiltersDto.getDate());
 	}
 
+	/**
+	 * Test set expired
+	 */
 	@Test
 	public void testSetExpired() {
 		boolean expired = true;
@@ -80,6 +103,9 @@ public class SearchFiltersDtoTest {
 		Assertions.assertTrue(searchFiltersDto.isExpired());
 	}
 
+	/**
+	 * Test set sort param
+	 */
 	@Test
 	public void testSetSortParam() {
 		String sortParam = "param";
@@ -87,6 +113,9 @@ public class SearchFiltersDtoTest {
 		Assertions.assertEquals(sortParam, searchFiltersDto.getSortParam());
 	}
 
+	/**
+	 * Test set sort order
+	 */
 	@Test
 	public void testSetSortOrder() {
 		String sortOrder = "asc";

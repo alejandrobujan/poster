@@ -42,12 +42,15 @@ public class CommentServiceImpl implements CommentService {
 	private NotificationService notificationService;
 
 	/**
-	 * @param description
-	 * @param userId
-	 * @param postId
-	 * @return
-	 * @throws InstanceNotFoundException
-	 * @throws InvalidCommentParameterException
+	 * Create a comment.
+	 * 
+	 * @param description the description
+	 * @param userId      the user id
+	 * @param postId      the post id
+	 * @return the comment
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
 	 */
 	@Override
 	public Comment createComment(String description, Long userId, Long postId)
@@ -80,12 +83,15 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	/**
-	 * @param description
-	 * @param userId
-	 * @param parentId
-	 * @return
-	 * @throws InstanceNotFoundException
-	 * @throws InvalidCommentParameterException
+	 * Answer a comment
+	 * 
+	 * @param description the description
+	 * @param userId      the user id
+	 * @param parentId    the parent id
+	 * @return the comment
+	 * @throws InstanceNotFoundException        the instance not found exception
+	 * @throws InvalidCommentParameterException the invalid comment parameter
+	 *                                          exception
 	 */
 	@Override
 	public Comment answerComment(String description, Long userId, Long parentId)
@@ -130,6 +136,14 @@ public class CommentServiceImpl implements CommentService {
 		return comment;
 	}
 
+	/**
+	 * Find comments
+	 * 
+	 * @param postId the post id
+	 * @param page   the page
+	 * @param size   the size
+	 * @return a block of comments
+	 */
 	@Override
 	public Block<Comment> findComments(Long postId, int page, Long parentId, int size) {
 		Slice<Comment> slice = commentDao.findByPostIdAndCommentIdOrderByDateDesc(postId, parentId,

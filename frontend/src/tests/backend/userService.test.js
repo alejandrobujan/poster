@@ -80,7 +80,7 @@ describe("userService", () => {
   
       appFetchModule.getServiceToken.mockReturnValueOnce("mockedServiceToken");
       appFetchModule.appFetch.mockImplementationOnce((url, config, successCallback, errorCallback) => {
-        errorCallback(); // Simulating failure
+        errorCallback(); 
       });
   
       await userService.tryLoginFromServiceToken(onSuccess, reauthenticationCallback);

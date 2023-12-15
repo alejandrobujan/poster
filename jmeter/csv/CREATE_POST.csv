@@ -1,0 +1,4 @@
+postType,postTitle,postUrl,postDescription,postPrice,postCategoryId,postImages,postProperties,postExpirationDate
+Offer,hola,http://pepe.com,holaquetal,1,1,[],{},1802632404878
+Coupon,adios,http://pepe.com,holaquetal,100,2,[],{"code" : 1234},1802632404879
+Offer,chau,http://pepe.com,holaquetal,10000,3,[],{},1802632404880

@@ -7,8 +7,14 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * The Class CommentTest.
+ */
 public class CommentTest {
 
+	/**
+	 * Test setters.
+	 */
 	@Test
 	public void testSetters() {
 		Comment comment = new Comment();
@@ -30,6 +36,9 @@ public class CommentTest {
 		assertEquals(3, comment.getAnswers());
 	}
 
+	/**
+	 * Test to string.
+	 */
 	@Test
 	public void testToString() {
 		Comment comment = new Comment("Description", LocalDateTime.now(), new User(), new Post(), null, 1, 0);
