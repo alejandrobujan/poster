@@ -172,6 +172,7 @@ const UpdateProfile = () => {
 									</div>
 								</div>
 								<div className="offset-md-1 col-md-2" >
+									<br/>
 									<label htmlFor="avatar" className="col-form-label" data-testid="Preview" style={{ marginTop: '-10px', marginRight: '10px' }}>
 										Preview:
 									</label>
