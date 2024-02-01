@@ -107,11 +107,11 @@ Steps to follow:
 
 ## Authors ✒️
 
-* **Sergio Goyanes Legazpi**
-* **Patricia Mato Miragaya**
-* **Martín Regueiro Golán**
-* **Daniel Jueguen Pérez**
-* **Alejandro Buján Pampín**
-* **Alfredo Javier Freire Bouzas**
+* **Sergio Goyanes Legazpi** [@sergio-legazpi](https://github.com/sergio-legazpi)
+* **Patricia Mato Miragaya** [@patrimato](https://github.com/patrimato)
+* **Martín Regueiro Golán** [@martinregueirogolan](https://github.com/martinregueirogolan)
+* **Daniel Jueguen Pérez** [@DanielJueguenPerez](https://github.com/DanielJueguenPerez)
+* **Alejandro Buján Pampín** [@alejandrobujan](https://github.com/alejandrobujan)
+* **Alfredo Javier Freire Bouzas** [@JavierFreireBouzas](https://github.com/JavierFreireBouzas)
 
 ©2023
