@@ -1,10 +1,14 @@
 # ![Poster](doc/img/logo.png)
 
-## Documentation
+Poster is a Single Page Application (SPA) developed with React on the frontend and a backend implemented in Spring Boot. This platform enables users to create unique profiles with login credentials, password, name, and avatar. Users can generate posts that are displayed on the platform's feed, including titles, short descriptions, URLs, categories, prices, and images. Additionally, search, filtering, and sorting functionalities for posts have been implemented. Users also have the ability to create two types of posts: offers and coupons, with an additional field for associated coupon codes.
 
-- [PDF Report](doc/report.pdf)
-- [Model Documentation](doc/model.md)
-- [REST Documentation](doc/rest.md)
+## Objectives 🎯
+
+* __Develop an Interactive Application__: Create an application that allows users to seamlessly create profiles and posts. The user-friendly interface should enhance the overall user experience.
+* __Implement Post Management Functionalities__: Integrate features such as search, filtering, and sorting to provide users with efficient ways to manage and explore posts on the platform.
+* __Enable Offer and Coupon Creation__: Empower users to create and manage both offers and coupons. Include a dedicated field for coupon codes, enhancing the versatility of the platform.
+* __Facilitate User Ratings__: Implement a rating system for offers and coupons, enabling users to provide feedback and share their experiences. This enhances the credibility of the platform.
+* __Provide Interaction Tools__: Incorporate tools such as comments on posts and notifications to foster interaction and engagement among users.
 
 ## Starting 🚀
 
@@ -91,8 +95,11 @@ Steps to follow:
     mvn k8s:deploy
     ```
 
-## Built with 🛠️
+## Other Documentation
 
+* [PDF Report](doc/report.pdf)
+* [Model Documentation](doc/model.md)
+* [REST Documentation](doc/rest.md)
 * [Spring-Boot](https://spring.io/projects/spring-boot) - Backend
 * [React](https://es.reactjs.org/) - User Interface
 * [Maven](https://maven.apache.org/) & [yarn](https://yarnpkg.com/) - Project Management
