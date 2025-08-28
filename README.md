@@ -95,7 +95,7 @@ Steps to follow:
     mvn k8s:deploy
     ```
 
-## Other Documentation
+## Other Documentation 📄
 
 * [PDF Report](doc/report.pdf)
 * [Model Documentation](doc/model.md)
